@@ -1,0 +1,46 @@
+package com.phantomwing.thesilverage;
+
+import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+@Mod(TheSilverAge.MOD_ID)
+public class TheSilverAge
+{
+    public static final String MOD_ID = "thesilverage";
+
+    public TheSilverAge(IEventBus eventBus, ModContainer container)
+    {
+        NeoForge.EVENT_BUS.register(this);
+
+        registerManagers(eventBus);
+    }
+
+    // Register all managers to the event bus.
+    private void registerManagers(IEventBus eventBus) {
+        ModItems.register(eventBus);
+        ModBlocks.register(eventBus);
+        ModCreativeModeTab.register(eventBus);
+    }
+
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+    }
+
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+        }
+    }
+}
