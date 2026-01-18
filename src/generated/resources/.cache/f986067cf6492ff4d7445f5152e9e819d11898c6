@@ -1,4 +1,13 @@
-// 1.21	2026-01-17T21:19:30.4911015	Block States: thesilverage
+// 1.21.1	2026-01-18T15:56:22.7524427	Block States: thesilverage
+0c1d1c73a4ae4e9fae238373dd0a8710c34e0f93 assets/thesilverage/blockstates/deepslate_silver_ore.json
+0198ed759dafdb986c77c5d766123221b02aaf5f assets/thesilverage/blockstates/raw_silver_block.json
 85ad21b14697ee658019dbdc575bca951774fccb assets/thesilverage/blockstates/silver_block.json
+d5308c51beff294f2d454acba667b70d946061bb assets/thesilverage/blockstates/silver_ore.json
+7b05dcb1384aaa0b791454d7757b82d534fde373 assets/thesilverage/models/block/deepslate_silver_ore.json
+b84dbbc1b7e6e8bac7f56d6d4491dd53922c80ef assets/thesilverage/models/block/raw_silver_block.json
 62305907225721e2c5424aead8e8a4a655691d07 assets/thesilverage/models/block/silver_block.json
+816e8b5e4fcb71577cb7826b12a62bc4158d888c assets/thesilverage/models/block/silver_ore.json
+94e196a69662c919ed3f3dd18ac362a318b5876b assets/thesilverage/models/item/deepslate_silver_ore.json
+5ef30346299d234392eeebc0cdf84313a54bc22a assets/thesilverage/models/item/raw_silver_block.json
 6553bfe25b9c5604cf0473b055a1edd6a341c8e2 assets/thesilverage/models/item/silver_block.json
+9943ca312b804240e88b01e82141d9f48ed22087 assets/thesilverage/models/item/silver_ore.json

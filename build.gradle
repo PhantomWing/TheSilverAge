@@ -118,15 +118,10 @@ configurations {
 
 dependencies {
     // JEI
-    //compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}" // compile against the JEI API but do not include it at runtime
-    //compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    //localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}" // at runtime, use the full JEI jar for NeoForge
+    localRuntime("mezz.jei:jei-1.21.1-neoforge:${jei_version}")
 
     // Appleskin
-    //compileOnly "squeek.appleskin:appleskin-neoforge:${appleskin_version}:api"
-    //compileOnly "squeek.appleskin:appleskin-neoforge:${appleskin_version}"
-    //if (include_appleskin.toBoolean())
-    //    runtimeOnly "squeek.appleskin:appleskin-neoforge:${appleskin_version}"
+    localRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${appleskin_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

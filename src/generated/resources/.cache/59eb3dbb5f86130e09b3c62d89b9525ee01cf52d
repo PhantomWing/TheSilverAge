@@ -1,2 +1,5 @@
-// 1.21	2026-01-17T21:19:30.4921028	Loot Tables
+// 1.21.1	2026-01-18T15:56:22.7534405	Loot Tables
+2d651d87820f378a165517d3cb832dd5276ae7b3 data/thesilverage/loot_table/blocks/deepslate_silver_ore.json
+8797f6a48f007702ac4e3220989da3e286211883 data/thesilverage/loot_table/blocks/raw_silver_block.json
 1a6207d9966e28028750822ad4e859e75a777491 data/thesilverage/loot_table/blocks/silver_block.json
+ca27fb3bff676f8acccc28e6a0ffe1a0c558da51 data/thesilverage/loot_table/blocks/silver_ore.json

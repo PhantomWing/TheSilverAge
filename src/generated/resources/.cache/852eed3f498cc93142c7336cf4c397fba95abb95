@@ -1,1 +1,26 @@
-// 1.21	2026-01-17T21:19:30.494102	Tags for minecraft:item mod id thesilverage
+// 1.21.1	2026-01-18T16:09:57.0632846	Tags for minecraft:item mod id thesilverage
+7f3e4788da517bb0d2e594e7a06980a0e16a3747 data/c/tags/item/ingots.json
+4bb92944de7f902a6a10137b4614df8fdc23c50b data/c/tags/item/ingots/silver.json
+86d97f55ac5cf35510620c616d4a3bac4dea2f45 data/c/tags/item/nuggets.json
+e5dbb495d5372d3bf8313e5645c3d5a656bad010 data/c/tags/item/nuggets/silver.json
+8ab80abda2db9e67eaa37ac34355f9ee004b7ef1 data/c/tags/item/ores.json
+3e1aa8b43b0af8f7f2ea7aa351a2fce8ff9ef07b data/c/tags/item/ores_in_ground/deepslate.json
+504f9104489ddabe9a8933e3cfc99d22c7a7a2e4 data/c/tags/item/ores_in_ground/stone.json
+7a7cfc2e03bad26daf4e0f3ebcba02ddbfa9fd32 data/c/tags/item/ores_silver.json
+5c8e860e9ac5de1c480ea83152d77fef144ef993 data/c/tags/item/raw_materials.json
+9ab1d3d382a0a33c75e46e55239f89bdd59a6634 data/c/tags/item/raw_materials/silver.json
+eea26b51d63a26ed77f89e9a41a04bb5b20d1fed data/c/tags/item/storage_blocks.json
+4a7ad101d64d23afea17d047727ce2a9bdc63f1b data/c/tags/item/storage_blocks/raw_silver.json
+5417041c878adff51d8fc1f926adc0cedddea269 data/c/tags/item/storage_blocks/silver.json
+67f96cb6125e93de0ab38aa19ef244f1eef021bf data/minecraft/tags/item/axes.json
+4bb92944de7f902a6a10137b4614df8fdc23c50b data/minecraft/tags/item/beacon_payment_items.json
+36eebd1e2da4cd08b2283adf2775e0451f858938 data/minecraft/tags/item/chest_armor.json
+c2a40f9b8ecad8417330f9e6f2508d3836c4b0c2 data/minecraft/tags/item/foot_armor.json
+6fbc5dfcbb969c837786435d971e78462c349ca0 data/minecraft/tags/item/head_armor.json
+7dc2668a89ae961ef86e730b85235d0c597f9373 data/minecraft/tags/item/hoes.json
+89850840d9436e3bf8f2a11038d113c5ebc7facf data/minecraft/tags/item/leg_armor.json
+fa24a7ade6fc21d0b47e0ae409ddcf4ba24e5954 data/minecraft/tags/item/pickaxes.json
+3b28d740ab3276aa9bff1fc0ea616739f0278bfd data/minecraft/tags/item/shovels.json
+6d70980ce767a1862cd23ab45888b949a4caeae3 data/minecraft/tags/item/swords.json
+4bb92944de7f902a6a10137b4614df8fdc23c50b data/minecraft/tags/item/trim_materials.json
+4bb92944de7f902a6a10137b4614df8fdc23c50b data/thesilverage/tags/item/silver_tool_materials.json

@@ -6,6 +6,7 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -18,7 +19,10 @@ public class BlockLootTables extends BlockLootSubProvider {
     // Actually add our loot tables.
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.SILVER_BLOCK.get());
+        dropSelf(ModBlocks.RAW_SILVER_BLOCK);
+        dropSelf(ModBlocks.SILVER_BLOCK);
+        dropSelf(ModBlocks.SILVER_ORE);
+        dropSelf(ModBlocks.DEEPSLATE_SILVER_ORE);
     }
 
     // The contents of this Iterable are used for validation.
@@ -33,4 +37,7 @@ public class BlockLootTables extends BlockLootSubProvider {
                 .toList();
     }
 
+    protected void dropSelf(DeferredBlock<Block> block) {
+        this.dropSelf(block.get());
+    }
 }

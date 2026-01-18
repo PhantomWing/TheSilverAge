@@ -1,2 +1,17 @@
-// 1.21	2026-01-17T21:19:30.4931016	Item Models: thesilverage
+// 1.21.1	2026-01-18T15:56:22.7554412	Item Models: thesilverage
+94e196a69662c919ed3f3dd18ac362a318b5876b assets/thesilverage/models/item/deepslate_silver_ore.json
+9f721ec86d232bf7530d845e7fd225dd50f6f732 assets/thesilverage/models/item/raw_silver.json
+5ef30346299d234392eeebc0cdf84313a54bc22a assets/thesilverage/models/item/raw_silver_block.json
+cc4a20fc7ad4a0b01c622fcc12e386fa1659eb55 assets/thesilverage/models/item/silver_axe.json
 6553bfe25b9c5604cf0473b055a1edd6a341c8e2 assets/thesilverage/models/item/silver_block.json
+85ad4b864e501e1c2bd0ba926a198778787deecd assets/thesilverage/models/item/silver_boots.json
+8ff02b6945208bb465a3c5a817777904dc0a4dad assets/thesilverage/models/item/silver_chestplate.json
+affcf956924c889dd21375c255470718b7e94c6c assets/thesilverage/models/item/silver_helmet.json
+e37d23f7ae21df4f550fd44f2748ba39ccf19d85 assets/thesilverage/models/item/silver_hoe.json
+f1f21cead2110098a65f9cc67d819b1b970e9c47 assets/thesilverage/models/item/silver_ingot.json
+120beed6428b5cc33427f2bf4eab98cc2cd493ce assets/thesilverage/models/item/silver_leggings.json
+25e0c9673a5bddf23a0d4ebf76e6c3fd65822135 assets/thesilverage/models/item/silver_nugget.json
+9943ca312b804240e88b01e82141d9f48ed22087 assets/thesilverage/models/item/silver_ore.json
+549d377c28983d3aa4b33c6327c50f4df30c740a assets/thesilverage/models/item/silver_pickaxe.json
+3292a6947be0fffa24d034c222591900463c5d92 assets/thesilverage/models/item/silver_shovel.json
+24aa251e6fcd1b38996944abf27aa37bc66b4ed8 assets/thesilverage/models/item/silver_sword.json

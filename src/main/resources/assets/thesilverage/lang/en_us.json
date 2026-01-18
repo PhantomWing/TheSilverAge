@@ -1,4 +1,19 @@
 {
   "block.thesilverage.silver_block": "Block of Silver",
+  "block.thesilverage.raw_silver_block": "Block of Raw Silver",
+  "block.thesilverage.silver_ore": "Silver Ore",
+  "block.thesilverage.deepslate_silver_ore": "Deepslate Silver Ore",
+  "item.thesilverage.silver_ingot": "Silver Ingot",
+  "item.thesilverage.raw_silver": "Raw Silver",
+  "item.thesilverage.silver_nugget": "Silver Nugget",
+  "item.thesilverage.silver_sword": "Silver Sword",
+  "item.thesilverage.silver_shovel": "Silver Shovel",
+  "item.thesilverage.silver_pickaxe": "Silver Pickaxe",
+  "item.thesilverage.silver_axe": "Silver Axe",
+  "item.thesilverage.silver_hoe": "Silver Hoe",
+  "item.thesilverage.silver_boots": "Silver Boots",
+  "item.thesilverage.silver_leggings": "Silver Leggings",
+  "item.thesilverage.silver_chestplate": "Silver Chestplate",
+  "item.thesilverage.silver_helmet": "Silver Helmet",
   "itemGroup.thesilverage": "The Silver Age"
 }

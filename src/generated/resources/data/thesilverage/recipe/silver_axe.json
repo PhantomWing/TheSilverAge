@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "thesilverage:silver_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "##",
+    "#S",
+    " S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thesilverage:silver_axe"
+  }
+}

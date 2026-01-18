@@ -16,7 +16,7 @@ public class ModCreativeModeTab {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MOD_TAB =
             CREATIVE_MODE_TABS.register(TheSilverAge.MOD_ID + "_tab", () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(ModItems.SILVER_BLOCK.get()))
+                    .icon(() -> new ItemStack(ModItems.SILVER_INGOT.get()))
                     .title(Component.translatable(("itemGroup." + TheSilverAge.MOD_ID)))
                     .displayItems((parameters, output) -> {
                         // Add items to this tab.
