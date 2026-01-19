@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage;
 
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,7 @@ public class TheSilverAge
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModCreativeModeTab.register(eventBus);
+        ModArmorMaterials.register(eventBus);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

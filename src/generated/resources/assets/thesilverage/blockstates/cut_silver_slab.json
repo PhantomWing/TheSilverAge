@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "thesilverage:block/cut_silver_slab"
+    },
+    "type=double": {
+      "model": "thesilverage:block/cut_silver"
+    },
+    "type=top": {
+      "model": "thesilverage:block/cut_silver_slab_top"
+    }
+  }
+}

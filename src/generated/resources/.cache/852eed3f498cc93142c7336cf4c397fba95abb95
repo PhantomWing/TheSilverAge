@@ -1,4 +1,4 @@
-// 1.21.1	2026-01-18T16:09:57.0632846	Tags for minecraft:item mod id thesilverage
+// 1.21.1	2026-01-18T19:36:56.3205762	Tags for minecraft:item mod id thesilverage
 7f3e4788da517bb0d2e594e7a06980a0e16a3747 data/c/tags/item/ingots.json
 4bb92944de7f902a6a10137b4614df8fdc23c50b data/c/tags/item/ingots/silver.json
 86d97f55ac5cf35510620c616d4a3bac4dea2f45 data/c/tags/item/nuggets.json
@@ -15,12 +15,17 @@ eea26b51d63a26ed77f89e9a41a04bb5b20d1fed data/c/tags/item/storage_blocks.json
 67f96cb6125e93de0ab38aa19ef244f1eef021bf data/minecraft/tags/item/axes.json
 4bb92944de7f902a6a10137b4614df8fdc23c50b data/minecraft/tags/item/beacon_payment_items.json
 36eebd1e2da4cd08b2283adf2775e0451f858938 data/minecraft/tags/item/chest_armor.json
+a6f6a80d6a8acbb7c8e43dd0514f7aacadb17123 data/minecraft/tags/item/doors.json
 c2a40f9b8ecad8417330f9e6f2508d3836c4b0c2 data/minecraft/tags/item/foot_armor.json
 6fbc5dfcbb969c837786435d971e78462c349ca0 data/minecraft/tags/item/head_armor.json
 7dc2668a89ae961ef86e730b85235d0c597f9373 data/minecraft/tags/item/hoes.json
 89850840d9436e3bf8f2a11038d113c5ebc7facf data/minecraft/tags/item/leg_armor.json
 fa24a7ade6fc21d0b47e0ae409ddcf4ba24e5954 data/minecraft/tags/item/pickaxes.json
 3b28d740ab3276aa9bff1fc0ea616739f0278bfd data/minecraft/tags/item/shovels.json
+a4b5a18b4e934b35e83fa570680f3df1ee0fefd8 data/minecraft/tags/item/slabs.json
+71980d9e0343a458dd55f3ad8a388e35fb59bbe5 data/minecraft/tags/item/stairs.json
 6d70980ce767a1862cd23ab45888b949a4caeae3 data/minecraft/tags/item/swords.json
+47cdbecfa42682d2b3a2d2b737401d34c60ed03c data/minecraft/tags/item/trapdoors.json
+ba30a49f72bfe93ac082136f42bce0194792f3f5 data/minecraft/tags/item/trimmable_armor.json
 4bb92944de7f902a6a10137b4614df8fdc23c50b data/minecraft/tags/item/trim_materials.json
 4bb92944de7f902a6a10137b4614df8fdc23c50b data/thesilverage/tags/item/silver_tool_materials.json

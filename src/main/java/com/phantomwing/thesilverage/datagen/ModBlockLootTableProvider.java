@@ -1,4 +1,4 @@
-package com.phantomwing.thesilverage.datagen.loot;
+package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.core.HolderLookup;
@@ -6,23 +6,39 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class BlockLootTables extends BlockLootSubProvider {
-    public BlockLootTables(HolderLookup.Provider lookupProvider) {
+public class ModBlockLootTableProvider extends BlockLootSubProvider {
+    public ModBlockLootTableProvider(HolderLookup.Provider lookupProvider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
     }
 
     // Actually add our loot tables.
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.RAW_SILVER_BLOCK);
-        dropSelf(ModBlocks.SILVER_BLOCK);
         dropSelf(ModBlocks.SILVER_ORE);
         dropSelf(ModBlocks.DEEPSLATE_SILVER_ORE);
+
+        dropSelf(ModBlocks.RAW_SILVER_BLOCK);
+
+        dropSelf(ModBlocks.SILVER_BLOCK);
+        dropSelf(ModBlocks.EXPOSED_SILVER);
+        dropSelf(ModBlocks.WEATHERED_SILVER);
+        dropSelf(ModBlocks.OXIDIZED_SILVER);
+
+        dropSelf(ModBlocks.CUT_SILVER);
+        dropSlab(ModBlocks.CUT_SILVER_SLAB);
+        dropSelf(ModBlocks.CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.CHISELED_SILVER);
+        dropSelf(ModBlocks.SILVER_GRATE);
+
+        dropDoor(ModBlocks.SILVER_DOOR);
+        dropSelf(ModBlocks.SILVER_TRAPDOOR);
     }
 
     // The contents of this Iterable are used for validation.
@@ -37,7 +53,15 @@ public class BlockLootTables extends BlockLootSubProvider {
                 .toList();
     }
 
-    protected void dropSelf(DeferredBlock<Block> block) {
+    private <T extends Block> void dropSelf(DeferredBlock<T> block) {
         this.dropSelf(block.get());
+    }
+
+    private void dropSlab(DeferredBlock<SlabBlock> block) {
+        add(block.get(), (b) -> createSlabItemTable(block.get()));
+    }
+
+    private void dropDoor(DeferredBlock<DoorBlock> block) {
+        add(block.get(), (b) -> createDoorTable(block.get()));
     }
 }

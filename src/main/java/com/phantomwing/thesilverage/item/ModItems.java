@@ -2,7 +2,9 @@ package com.phantomwing.thesilverage.item;
 
 import com.google.common.collect.Sets;
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
@@ -30,17 +32,31 @@ public class ModItems {
     public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModToolTiers.SILVER);
 
     // Silver armor
-    public static final DeferredItem<Item> SILVER_HELMET = register("silver_helmet");
-    public static final DeferredItem<Item> SILVER_CHESTPLATE = register("silver_chestplate");
-    public static final DeferredItem<Item> SILVER_LEGGINGS = register("silver_leggings");
-    public static final DeferredItem<Item> SILVER_BOOTS = register("silver_boots");
+    public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 20);
+    public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 20);
+    public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 20);
+    public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 20);
 
     // Silver blocks
-    public static final DeferredItem<Item> SILVER_BLOCK = registerBlock(ModBlocks.SILVER_BLOCK);
-    public static final DeferredItem<Item> RAW_SILVER_BLOCK = registerBlock(ModBlocks.RAW_SILVER_BLOCK);
+
     public static final DeferredItem<Item> SILVER_ORE = registerBlock(ModBlocks.SILVER_ORE);
     public static final DeferredItem<Item> DEEPSLATE_SILVER_ORE = registerBlock(ModBlocks.DEEPSLATE_SILVER_ORE);
 
+    public static final DeferredItem<Item> RAW_SILVER_BLOCK = registerBlock(ModBlocks.RAW_SILVER_BLOCK);
+
+    public static final DeferredItem<Item> SILVER_BLOCK = registerBlock(ModBlocks.SILVER_BLOCK);
+    public static final DeferredItem<Item> EXPOSED_SILVER = registerBlock(ModBlocks.EXPOSED_SILVER);
+    public static final DeferredItem<Item> WEATHERED_SILVER = registerBlock(ModBlocks.WEATHERED_SILVER);
+    public static final DeferredItem<Item> OXIDIZED_SILVER = registerBlock(ModBlocks.OXIDIZED_SILVER);
+
+    public static final DeferredItem<Item> CUT_SILVER = registerBlock(ModBlocks.CUT_SILVER);
+    public static final DeferredItem<Item> CUT_SILVER_SLAB = registerBlock(ModBlocks.CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> CUT_SILVER_STAIRS = registerBlock(ModBlocks.CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> CHISELED_SILVER = registerBlock(ModBlocks.CHISELED_SILVER);
+    public static final DeferredItem<Item> SILVER_GRATE = registerBlock(ModBlocks.SILVER_GRATE);
+
+    public static final DeferredItem<Item> SILVER_DOOR = registerBlock(ModBlocks.SILVER_DOOR);
+    public static final DeferredItem<Item> SILVER_TRAPDOOR = registerBlock(ModBlocks.SILVER_TRAPDOOR);
 
     // Helper functions
     public static Item.Properties baseItem() {
@@ -48,6 +64,12 @@ public class ModItems {
     }
 
     // Registry functions
+    private static DeferredItem<Item> registerArmor(String name, Holder<ArmorMaterial> material, ArmorItem.Type armorItemType, int durabilityFactor) {
+        Item.Properties baseProps = baseItem().durability(armorItemType.getDurability(durabilityFactor));
+        return register(name, (props) -> new ArmorItem(material, armorItemType, props), baseProps);
+    }
+
+
     private static DeferredItem<Item> registerSword(String name, Tier tier) {
         Item.Properties baseProps = baseItem().attributes(SwordItem.createAttributes(tier, 3, -2.4f));
         return register(name, (props) -> new SwordItem(tier, props), baseProps);
@@ -73,11 +95,11 @@ public class ModItems {
         return register(name, (props) -> new HoeItem(tier, props), baseProps);
     }
 
-    private static DeferredItem<Item> registerBlock(DeferredBlock<Block> block) {
+    private static <T extends Block> DeferredItem<Item> registerBlock(DeferredBlock<T> block) {
         return registerBlock(block, baseItem());
     }
 
-    private static DeferredItem<Item> registerBlock(DeferredBlock<Block> block, Item.Properties properties) {
+    private static <T extends Block> DeferredItem<Item> registerBlock(DeferredBlock<T> block, Item.Properties properties) {
         String name = block.getRegisteredName().replaceFirst(TheSilverAge.MOD_ID + ":", "");
         return register(name, (props) -> new BlockItem(block.get(), props), properties);
     }

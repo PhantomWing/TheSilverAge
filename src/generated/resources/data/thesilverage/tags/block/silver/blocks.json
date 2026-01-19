@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#c:ores_silver",
+    "thesilverage:raw_silver_block",
+    "thesilverage:silver_block",
+    "thesilverage:exposed_silver",
+    "thesilverage:weathered_silver",
+    "thesilverage:oxidized_silver",
+    "thesilverage:cut_silver",
+    "thesilverage:cut_silver_slab",
+    "thesilverage:cut_silver_stairs",
+    "thesilverage:chiseled_silver",
+    "thesilverage:silver_grate",
+    "thesilverage:silver_door",
+    "thesilverage:silver_trapdoor"
+  ]
+}

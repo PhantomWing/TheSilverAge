@@ -31,8 +31,17 @@ public class BlockUtils {
         return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block));
     }
 
+    public static ResourceLocation getPrefixedResourceLocationWithSuffix(Block block, String prefix, String suffix) {
+        String namespace = getNamespace(block);
+        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + "_" + suffix);
+    }
+
     public static ResourceLocation getBlockResourceLocation(Block block) {
         return getPrefixedResourceLocation(block, "block");
+    }
+
+    public static ResourceLocation getBlockResourceLocation(Block block, String suffix) {
+        return getPrefixedResourceLocationWithSuffix(block, "block", suffix);
     }
 
     public static ModelFile getModel(BlockModelProvider provider, Block block) {

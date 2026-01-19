@@ -2,7 +2,6 @@ package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
-import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -39,13 +38,29 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // Silver blocks
         tag(ModTags.Blocks.SILVER_BLOCKS)
                 .addTag(CommonTags.Blocks.ORES_SILVER)
-                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER)
-                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER);
+                .add(ModBlocks.RAW_SILVER_BLOCK.get())
+                .add(ModBlocks.SILVER_BLOCK.get())
+                .add(ModBlocks.EXPOSED_SILVER.get())
+                .add(ModBlocks.WEATHERED_SILVER.get())
+                .add(ModBlocks.OXIDIZED_SILVER.get())
+                .add(ModBlocks.CUT_SILVER.get())
+                .add(ModBlocks.CUT_SILVER_SLAB.get())
+                .add(ModBlocks.CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.CHISELED_SILVER.get())
+                .add(ModBlocks.SILVER_GRATE.get())
+                .add(ModBlocks.SILVER_DOOR.get())
+                .add(ModBlocks.SILVER_TRAPDOOR.get());
 
         // Tool requirements
         tag(ModTags.Blocks.NEEDS_SILVER_TOOL).addTag(BlockTags.NEEDS_IRON_TOOL);
         tag(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL).remove(ModTags.Blocks.NEEDS_SILVER_TOOL);
         tag(BlockTags.NEEDS_IRON_TOOL).addTag(ModTags.Blocks.SILVER_BLOCKS);
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.SILVER_BLOCKS);
+
+        // Slabs
+        tag(BlockTags.SLABS).add(ModBlocks.CUT_SILVER_SLAB.get());
+        tag(BlockTags.STAIRS).add(ModBlocks.CUT_SILVER_STAIRS.get());
+        tag(BlockTags.DOORS).add(ModBlocks.SILVER_DOOR.get());
+        tag(BlockTags.TRAPDOORS).add(ModBlocks.SILVER_TRAPDOOR.get());
     }
 }

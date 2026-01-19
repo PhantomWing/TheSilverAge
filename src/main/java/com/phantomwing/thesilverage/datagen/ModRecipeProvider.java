@@ -36,33 +36,98 @@ public class ModRecipeProvider extends RecipeProvider {
         axe(output, ModItems.SILVER_INGOT, ModItems.SILVER_AXE);
         hoe(output, ModItems.SILVER_INGOT, ModItems.SILVER_HOE);
         shovel(output, ModItems.SILVER_INGOT, ModItems.SILVER_SHOVEL);
+
+        // Cut Silver
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CUT_SILVER, ModItems.SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.CUT_SILVER, ModItems.SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.CUT_SILVER_STAIRS, ModItems.SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.SILVER_BLOCK, 8);
+
+
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER_SLAB, 2);
+        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER, 1);
+        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.SILVER_BLOCK, 4);
+
+        stairsWithCutting(output, ModItems.CUT_SILVER_STAIRS, ModItems.CUT_SILVER);
+        slabWithCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.CUT_SILVER);
+
+        // Silver blocks
+        door(output, ModItems.SILVER_DOOR, ModItems.CUT_SILVER);
+        trapdoor(output, ModItems.SILVER_TRAPDOOR, ModItems.CUT_SILVER);
     }
 
-    protected static void oneToOne(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike result, int count) {
+    private static void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        stoneCutting(recipeOutput, item, material, 1);
+        stairs(recipeOutput, item, material);
+    }
+
+    private static void stairs(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        stairBuilder(item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    private static void slabWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        stoneCutting(recipeOutput, item, material, 2);
+        slab(recipeOutput, item, material);
+    }
+
+    private static void slab(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        slabBuilder(RecipeCategory.BUILDING_BLOCKS, item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    private static void door(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        doorBuilder(item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    private static void trapdoor(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        trapdoorBuilder(item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    protected static void oneToOne(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
         ShapelessRecipeBuilder.shapeless(category, result, count)
-                .requires(item)
-                .unlockedBy(getHasName(item), has(item))
-                .save(recipeOutput, getRecipeName(item, result));
+                .requires(material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, result));
     }
 
-    protected static void horizontalRecipe(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike result, int count) {
+    protected static void horizontalRecipe(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
         ShapedRecipeBuilder.shaped(category, result, count)
                 .pattern("###")
-                .define('#', item)
-                .unlockedBy(getHasName(item), has(item))
-                .save(recipeOutput, getRecipeName(item, result));
+                .define('#', material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, result));
     }
 
-    protected static void twoBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike result, int count) {
+    private static void twoBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
         ShapedRecipeBuilder.shaped(category, result, count)
                 .pattern("##")
                 .pattern("##")
-                .define('#', item)
-                .unlockedBy(getHasName(item), has(item))
-                .save(recipeOutput, getRecipeName(item, result));
+                .define('#', material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, result));
     }
 
-    protected static void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
+    private static void oneBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        ShapedRecipeBuilder.shaped(category, result, count)
+                .pattern("#")
+                .pattern("#")
+                .define('#', material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, result));
+    }
+
+    private static void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
         // From item to storageItem
         ShapedRecipeBuilder.shaped(category, storageItem)
                 .pattern("###")
@@ -164,6 +229,12 @@ public class ModRecipeProvider extends RecipeProvider {
                 .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_smoking");
+    }
+
+    protected static void stoneCutting(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike result, @NotNull ItemLike material, int count) {
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), RecipeCategory.BUILDING_BLOCKS, result, count)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_stonecutting");
     }
 
     protected static void campfireCooking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {

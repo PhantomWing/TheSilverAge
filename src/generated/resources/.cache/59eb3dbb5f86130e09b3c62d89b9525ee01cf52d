@@ -1,5 +1,15 @@
-// 1.21.1	2026-01-18T15:56:22.7534405	Loot Tables
+// 1.21.1	2026-01-19T23:10:17.1837896	Loot Tables
+876b174ead975e1b7ce68a8561bb5e4f3b0cc066 data/thesilverage/loot_table/blocks/chiseled_silver.json
+c8531570459b184947602728ef4f3f2348dc011f data/thesilverage/loot_table/blocks/cut_silver.json
+208493ee6daa5112b05371b0376472cf1170252d data/thesilverage/loot_table/blocks/cut_silver_slab.json
+e1ba43651a0a6c1f2826726bab611680c9f0b83b data/thesilverage/loot_table/blocks/cut_silver_stairs.json
 2d651d87820f378a165517d3cb832dd5276ae7b3 data/thesilverage/loot_table/blocks/deepslate_silver_ore.json
+9cef09f279bcf540a72f1ab54749dcb5b9ce5634 data/thesilverage/loot_table/blocks/exposed_silver.json
+683426e958222084ac2cc23e7e256392b2965d2f data/thesilverage/loot_table/blocks/oxidized_silver.json
 8797f6a48f007702ac4e3220989da3e286211883 data/thesilverage/loot_table/blocks/raw_silver_block.json
 1a6207d9966e28028750822ad4e859e75a777491 data/thesilverage/loot_table/blocks/silver_block.json
+b807dee974e0394323caa80f812c3b7422ff5d31 data/thesilverage/loot_table/blocks/silver_door.json
+3bf55c3cff78dc98ead8d16114fd73fec5c198d8 data/thesilverage/loot_table/blocks/silver_grate.json
 ca27fb3bff676f8acccc28e6a0ffe1a0c558da51 data/thesilverage/loot_table/blocks/silver_ore.json
+c4e6a69dc00092c2522416eedffe32a8aa7055e0 data/thesilverage/loot_table/blocks/silver_trapdoor.json
+f18748b6915073dda36cc76e8ace5d2ef1b63296 data/thesilverage/loot_table/blocks/weathered_silver.json

@@ -1,8 +1,18 @@
 {
   "block.thesilverage.silver_block": "Block of Silver",
+  "block.thesilverage.exposed_silver": "Exposed Silver",
+  "block.thesilverage.weathered_silver": "Weathered Silver",
+  "block.thesilverage.oxidized_silver": "Oxidized Silver",
   "block.thesilverage.raw_silver_block": "Block of Raw Silver",
   "block.thesilverage.silver_ore": "Silver Ore",
   "block.thesilverage.deepslate_silver_ore": "Deepslate Silver Ore",
+  "block.thesilverage.cut_silver": "Cut Silver",
+  "block.thesilverage.cut_silver_slab": "Cut Silver Slab",
+  "block.thesilverage.cut_silver_stairs": "Cut Silver Stairs",
+  "block.thesilverage.chiseled_silver": "Chiseled Silver",
+  "block.thesilverage.silver_grate": "Silver Grate",
+  "block.thesilverage.silver_door": "Silver Door",
+  "block.thesilverage.silver_trapdoor": "Silver Trapdoor",
   "item.thesilverage.silver_ingot": "Silver Ingot",
   "item.thesilverage.raw_silver": "Raw Silver",
   "item.thesilverage.silver_nugget": "Silver Nugget",
@@ -15,5 +25,6 @@
   "item.thesilverage.silver_leggings": "Silver Leggings",
   "item.thesilverage.silver_chestplate": "Silver Chestplate",
   "item.thesilverage.silver_helmet": "Silver Helmet",
-  "itemGroup.thesilverage": "The Silver Age"
+  "itemGroup.thesilverage": "The Silver Age",
+  "trim_material.thesilverage.silver": "Silver Material"
 }

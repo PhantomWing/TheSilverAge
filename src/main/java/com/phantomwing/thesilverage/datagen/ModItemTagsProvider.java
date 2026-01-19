@@ -11,6 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +22,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());
         tag(ItemTags.SHOVELS).add(ModItems.SILVER_SHOVEL.get());
@@ -35,6 +36,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.CHEST_ARMOR).add(ModItems.SILVER_CHESTPLATE.get());
         tag(ItemTags.LEG_ARMOR).add(ModItems.SILVER_LEGGINGS.get());
         tag(ItemTags.FOOT_ARMOR).add(ModItems.SILVER_BOOTS.get());
+        tag(ItemTags.TRIMMABLE_ARMOR).add(
+                ModItems.SILVER_HELMET.get(),
+                ModItems.SILVER_CHESTPLATE.get(),
+                ModItems.SILVER_LEGGINGS.get(),
+                ModItems.SILVER_BOOTS.get()
+        );
 
         // Storage blocks
         tag(CommonTags.Items.STORAGE_BLOCKS_SILVER).add(ModItems.SILVER_BLOCK.get());
@@ -64,5 +71,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Silver misc
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(ModItems.SILVER_INGOT.get());
         tag(ItemTags.TRIM_MATERIALS).add(ModItems.SILVER_INGOT.get());
+
+        // Slabs
+        tag(ItemTags.SLABS).add(ModItems.CUT_SILVER_SLAB.get());
+        tag(ItemTags.STAIRS).add(ModItems.CUT_SILVER_STAIRS.get());
+        tag(ItemTags.DOORS).add(ModItems.SILVER_DOOR.get());
+        tag(ItemTags.TRAPDOORS).add(ModItems.SILVER_TRAPDOOR.get());
     }
 }

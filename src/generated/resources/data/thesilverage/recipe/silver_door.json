@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "cut_silver",
+  "key": {
+    "#": {
+      "item": "thesilverage:cut_silver"
+    }
+  },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "id": "thesilverage:silver_door"
+  }
+}
