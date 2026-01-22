@@ -30,6 +30,17 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -122,6 +133,9 @@ dependencies {
 
     // Appleskin
     localRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${appleskin_version}")
+
+    // Jade
+    localRuntime "curse.maven:jade-324717:7428884"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

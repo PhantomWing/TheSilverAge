@@ -1,4 +1,4 @@
-// 1.21.1	2026-01-19T23:07:57.7358195	Tags for minecraft:block mod id thesilverage
+// 1.21.1	2026-01-22T10:25:31.5349978	Tags for minecraft:block mod id thesilverage
 8ab80abda2db9e67eaa37ac34355f9ee004b7ef1 data/c/tags/block/ores.json
 3e1aa8b43b0af8f7f2ea7aa351a2fce8ff9ef07b data/c/tags/block/ores_in_ground/deepslate.json
 504f9104489ddabe9a8933e3cfc99d22c7a7a2e4 data/c/tags/block/ores_in_ground/stone.json
@@ -15,4 +15,4 @@ a4b5a18b4e934b35e83fa570680f3df1ee0fefd8 data/minecraft/tags/block/slabs.json
 47cdbecfa42682d2b3a2d2b737401d34c60ed03c data/minecraft/tags/block/trapdoors.json
 ba9b602ba9af8bb5fbeac697c4f513915c068648 data/thesilverage/tags/block/incorrect_for_silver_tool.json
 32b13946c4cd1f944b029659ccce5fcb2adad4ff data/thesilverage/tags/block/needs_silver_tool.json
-3aa0440d0282a65d073de9cd6cab9a8634028be8 data/thesilverage/tags/block/silver/blocks.json
+3d58ad11598418caf125a3ee2383307e0e748016 data/thesilverage/tags/block/silver/blocks.json

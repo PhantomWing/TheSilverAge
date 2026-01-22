@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thesilverage:waxed_exposed_cut_silver"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "thesilverage:blocks/waxed_exposed_cut_silver"
+}

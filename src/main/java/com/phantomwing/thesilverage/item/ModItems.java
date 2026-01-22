@@ -48,12 +48,55 @@ public class ModItems {
     public static final DeferredItem<Item> EXPOSED_SILVER = registerBlock(ModBlocks.EXPOSED_SILVER);
     public static final DeferredItem<Item> WEATHERED_SILVER = registerBlock(ModBlocks.WEATHERED_SILVER);
     public static final DeferredItem<Item> OXIDIZED_SILVER = registerBlock(ModBlocks.OXIDIZED_SILVER);
+    public static final DeferredItem<Item> WAXED_SILVER_BLOCK = registerBlock(ModBlocks.WAXED_SILVER_BLOCK);
+    public static final DeferredItem<Item> WAXED_EXPOSED_SILVER = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER);
+    public static final DeferredItem<Item> WAXED_WEATHERED_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER);
 
     public static final DeferredItem<Item> CUT_SILVER = registerBlock(ModBlocks.CUT_SILVER);
+    public static final DeferredItem<Item> EXPOSED_CUT_SILVER = registerBlock(ModBlocks.EXPOSED_CUT_SILVER);
+    public static final DeferredItem<Item> WEATHERED_CUT_SILVER = registerBlock(ModBlocks.WEATHERED_CUT_SILVER);
+    public static final DeferredItem<Item> OXIDIZED_CUT_SILVER = registerBlock(ModBlocks.OXIDIZED_CUT_SILVER);
+    public static final DeferredItem<Item> WAXED_CUT_SILVER = registerBlock(ModBlocks.WAXED_CUT_SILVER);
+    public static final DeferredItem<Item> WAXED_EXPOSED_CUT_SILVER = registerBlock(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
+    public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
     public static final DeferredItem<Item> CUT_SILVER_SLAB = registerBlock(ModBlocks.CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> EXPOSED_CUT_SILVER_SLAB = registerBlock(ModBlocks.EXPOSED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> WEATHERED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WEATHERED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> OXIDIZED_CUT_SILVER_SLAB = registerBlock(ModBlocks.OXIDIZED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> WAXED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> WAXED_EXPOSED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
+
     public static final DeferredItem<Item> CUT_SILVER_STAIRS = registerBlock(ModBlocks.CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> EXPOSED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> WEATHERED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> OXIDIZED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> WAXED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> WAXED_EXPOSED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
+
     public static final DeferredItem<Item> CHISELED_SILVER = registerBlock(ModBlocks.CHISELED_SILVER);
+    public static final DeferredItem<Item> EXPOSED_CHISELED_SILVER = registerBlock(ModBlocks.EXPOSED_CHISELED_SILVER);
+    public static final DeferredItem<Item> WEATHERED_CHISELED_SILVER = registerBlock(ModBlocks.WEATHERED_CHISELED_SILVER);
+    public static final DeferredItem<Item> OXIDIZED_CHISELED_SILVER = registerBlock(ModBlocks.OXIDIZED_CHISELED_SILVER);
+    public static final DeferredItem<Item> WAXED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_CHISELED_SILVER);
+    public static final DeferredItem<Item> WAXED_EXPOSED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
+    public static final DeferredItem<Item> WAXED_WEATHERED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
+
     public static final DeferredItem<Item> SILVER_GRATE = registerBlock(ModBlocks.SILVER_GRATE);
+    public static final DeferredItem<Item> EXPOSED_SILVER_GRATE = registerBlock(ModBlocks.EXPOSED_SILVER_GRATE);
+    public static final DeferredItem<Item> WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WEATHERED_SILVER_GRATE);
+    public static final DeferredItem<Item> OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.OXIDIZED_SILVER_GRATE);
+    public static final DeferredItem<Item> WAXED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_SILVER_GRATE);
+    public static final DeferredItem<Item> WAXED_EXPOSED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
+    public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
     public static final DeferredItem<Item> SILVER_DOOR = registerBlock(ModBlocks.SILVER_DOOR);
     public static final DeferredItem<Item> SILVER_TRAPDOOR = registerBlock(ModBlocks.SILVER_TRAPDOOR);

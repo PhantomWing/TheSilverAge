@@ -62,19 +62,63 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.SILVER_BOOTS);
 
         // Blocks
+        blockItem(ModBlocks.SILVER_ORE);
+        blockItem(ModBlocks.DEEPSLATE_SILVER_ORE);
+        blockItem(ModBlocks.RAW_SILVER_BLOCK);
+
         blockItem(ModBlocks.SILVER_BLOCK);
         blockItem(ModBlocks.EXPOSED_SILVER);
         blockItem(ModBlocks.WEATHERED_SILVER);
         blockItem(ModBlocks.OXIDIZED_SILVER);
+        blockItem(ModBlocks.WAXED_SILVER_BLOCK);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER);
 
-        blockItem(ModBlocks.RAW_SILVER_BLOCK);
-        blockItem(ModBlocks.SILVER_ORE);
-        blockItem(ModBlocks.DEEPSLATE_SILVER_ORE);
         blockItem(ModBlocks.CUT_SILVER);
+        blockItem(ModBlocks.EXPOSED_CUT_SILVER);
+        blockItem(ModBlocks.WEATHERED_CUT_SILVER);
+        blockItem(ModBlocks.OXIDIZED_CUT_SILVER);
+        blockItem(ModBlocks.WAXED_CUT_SILVER);
+        blockItem(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
+        blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
+        blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
         blockItem(ModBlocks.CUT_SILVER_SLAB);
+        blockItem(ModBlocks.EXPOSED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.WEATHERED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.OXIDIZED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.WAXED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
+        blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
+
         blockItem(ModBlocks.CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.WAXED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
+        blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
+
         blockItem(ModBlocks.CHISELED_SILVER);
+        blockItem(ModBlocks.EXPOSED_CHISELED_SILVER);
+        blockItem(ModBlocks.WEATHERED_CHISELED_SILVER);
+        blockItem(ModBlocks.OXIDIZED_CHISELED_SILVER);
+        blockItem(ModBlocks.WAXED_CHISELED_SILVER);
+        blockItem(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
+        blockItem(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
+        blockItem(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
+
         blockItem(ModBlocks.SILVER_GRATE);
+        blockItem(ModBlocks.EXPOSED_SILVER_GRATE);
+        blockItem(ModBlocks.WEATHERED_SILVER_GRATE);
+        blockItem(ModBlocks.OXIDIZED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
         blockItem2D(ModBlocks.SILVER_DOOR);
         blockItem(ModBlocks.SILVER_TRAPDOOR, "bottom");

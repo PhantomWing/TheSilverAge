@@ -30,12 +30,55 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.EXPOSED_SILVER);
         dropSelf(ModBlocks.WEATHERED_SILVER);
         dropSelf(ModBlocks.OXIDIZED_SILVER);
+        dropSelf(ModBlocks.WAXED_SILVER_BLOCK);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER);
 
         dropSelf(ModBlocks.CUT_SILVER);
+        dropSelf(ModBlocks.EXPOSED_CUT_SILVER);
+        dropSelf(ModBlocks.WEATHERED_CUT_SILVER);
+        dropSelf(ModBlocks.OXIDIZED_CUT_SILVER);
+        dropSelf(ModBlocks.WAXED_CUT_SILVER);
+        dropSelf(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
+        dropSelf(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
         dropSlab(ModBlocks.CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.EXPOSED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.WEATHERED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.OXIDIZED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.WAXED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
+        dropSlab(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
+
         dropSelf(ModBlocks.CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.WAXED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
+
         dropSelf(ModBlocks.CHISELED_SILVER);
+        dropSelf(ModBlocks.EXPOSED_CHISELED_SILVER);
+        dropSelf(ModBlocks.WEATHERED_CHISELED_SILVER);
+        dropSelf(ModBlocks.OXIDIZED_CHISELED_SILVER);
+        dropSelf(ModBlocks.WAXED_CHISELED_SILVER);
+        dropSelf(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
+        dropSelf(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
+
         dropSelf(ModBlocks.SILVER_GRATE);
+        dropSelf(ModBlocks.EXPOSED_SILVER_GRATE);
+        dropSelf(ModBlocks.WEATHERED_SILVER_GRATE);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_GRATE);
+        dropSelf(ModBlocks.WAXED_SILVER_GRATE);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
         dropDoor(ModBlocks.SILVER_DOOR);
         dropSelf(ModBlocks.SILVER_TRAPDOOR);

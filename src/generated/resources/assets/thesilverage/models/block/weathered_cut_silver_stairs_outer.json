@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "thesilverage:block/weathered_cut_silver",
+    "side": "thesilverage:block/weathered_cut_silver",
+    "top": "thesilverage:block/weathered_cut_silver"
+  }
+}

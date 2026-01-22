@@ -1,0 +1,76 @@
+{
+  "values": {
+    "thesilverage:chiseled_silver": {
+      "waxed": "thesilverage:waxed_chiseled_silver"
+    },
+    "thesilverage:cut_silver": {
+      "waxed": "thesilverage:waxed_cut_silver"
+    },
+    "thesilverage:cut_silver_slab": {
+      "waxed": "thesilverage:waxed_cut_silver_slab"
+    },
+    "thesilverage:cut_silver_stairs": {
+      "waxed": "thesilverage:waxed_cut_silver_stairs"
+    },
+    "thesilverage:exposed_chiseled_silver": {
+      "waxed": "thesilverage:waxed_exposed_chiseled_silver"
+    },
+    "thesilverage:exposed_cut_silver": {
+      "waxed": "thesilverage:waxed_exposed_cut_silver"
+    },
+    "thesilverage:exposed_cut_silver_slab": {
+      "waxed": "thesilverage:waxed_exposed_cut_silver_slab"
+    },
+    "thesilverage:exposed_cut_silver_stairs": {
+      "waxed": "thesilverage:waxed_exposed_cut_silver_stairs"
+    },
+    "thesilverage:exposed_silver": {
+      "waxed": "thesilverage:waxed_exposed_silver"
+    },
+    "thesilverage:exposed_silver_grate": {
+      "waxed": "thesilverage:waxed_exposed_silver_grate"
+    },
+    "thesilverage:oxidized_chiseled_silver": {
+      "waxed": "thesilverage:waxed_oxidized_chiseled_silver"
+    },
+    "thesilverage:oxidized_cut_silver": {
+      "waxed": "thesilverage:waxed_oxidized_cut_silver"
+    },
+    "thesilverage:oxidized_cut_silver_slab": {
+      "waxed": "thesilverage:waxed_oxidized_cut_silver_slab"
+    },
+    "thesilverage:oxidized_cut_silver_stairs": {
+      "waxed": "thesilverage:waxed_oxidized_cut_silver_stairs"
+    },
+    "thesilverage:oxidized_silver": {
+      "waxed": "thesilverage:waxed_oxidized_silver"
+    },
+    "thesilverage:oxidized_silver_grate": {
+      "waxed": "thesilverage:waxed_oxidized_silver_grate"
+    },
+    "thesilverage:silver_block": {
+      "waxed": "thesilverage:waxed_silver_block"
+    },
+    "thesilverage:silver_grate": {
+      "waxed": "thesilverage:waxed_silver_grate"
+    },
+    "thesilverage:weathered_chiseled_silver": {
+      "waxed": "thesilverage:waxed_weathered_chiseled_silver"
+    },
+    "thesilverage:weathered_cut_silver": {
+      "waxed": "thesilverage:waxed_weathered_cut_silver"
+    },
+    "thesilverage:weathered_cut_silver_slab": {
+      "waxed": "thesilverage:waxed_weathered_cut_silver_slab"
+    },
+    "thesilverage:weathered_cut_silver_stairs": {
+      "waxed": "thesilverage:waxed_weathered_cut_silver_stairs"
+    },
+    "thesilverage:weathered_silver": {
+      "waxed": "thesilverage:waxed_weathered_silver"
+    },
+    "thesilverage:weathered_silver_grate": {
+      "waxed": "thesilverage:waxed_weathered_silver_grate"
+    }
+  }
+}
