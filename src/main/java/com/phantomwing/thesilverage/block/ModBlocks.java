@@ -79,10 +79,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> WEATHERED_SILVER_GRATE = registerWeatheringGrate("weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
     public static final DeferredBlock<Block> OXIDIZED_SILVER_GRATE = registerWeatheringGrate("oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> WAXED_SILVER_GRATE = registerBlock("waxed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER_GRATE = registerBlock("waxed_exposed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.EXPOSED), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER_GRATE = registerBlock("waxed_weathered_silver_grate", getSilverProps(WeatheringCopper.WeatherState.WEATHERED), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER_GRATE = registerBlock("waxed_oxidized_silver_grate", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED), WaterloggedTransparentBlock::new);
+    public static final DeferredBlock<Block> WAXED_SILVER_GRATE = registerBlock("waxed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
+    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER_GRATE = registerBlock("waxed_exposed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.EXPOSED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
+    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER_GRATE = registerBlock("waxed_weathered_silver_grate", getSilverProps(WeatheringCopper.WeatherState.WEATHERED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
+    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER_GRATE = registerBlock("waxed_oxidized_silver_grate", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
 
     public static final DeferredBlock<DoorBlock> SILVER_DOOR = registerDoor("silver_door", Blocks.IRON_DOOR);
     public static final DeferredBlock<TrapDoorBlock> SILVER_TRAPDOOR = registerTrapdoor("silver_trapdoor", Blocks.IRON_TRAPDOOR);
@@ -145,7 +145,7 @@ public class ModBlocks {
 
         switch (weatherState) {
             case UNAFFECTED -> {
-                baseProps = baseProps.mapColor(MapColor.TERRACOTTA_WHITE);
+                baseProps = baseProps.mapColor(MapColor.METAL);
             }
             case EXPOSED -> {
                 baseProps = baseProps.mapColor(MapColor.TERRACOTTA_LIGHT_GRAY);
