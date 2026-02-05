@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thesilverage:item/oxidized_silver_door"
+  }
+}

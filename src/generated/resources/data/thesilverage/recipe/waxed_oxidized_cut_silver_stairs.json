@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "waxed_oxidized_cut_silver",
+  "key": {
+    "#": {
+      "item": "thesilverage:waxed_oxidized_cut_silver"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "thesilverage:waxed_oxidized_cut_silver_stairs"
+  }
+}

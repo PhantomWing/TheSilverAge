@@ -61,11 +61,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.SILVER_LEGGINGS);
         trimmedArmorItem(ModItems.SILVER_BOOTS);
 
-        // Blocks
+        // Ores and Blocks
         blockItem(ModBlocks.SILVER_ORE);
         blockItem(ModBlocks.DEEPSLATE_SILVER_ORE);
         blockItem(ModBlocks.RAW_SILVER_BLOCK);
 
+        // Block of Silver
         blockItem(ModBlocks.SILVER_BLOCK);
         blockItem(ModBlocks.EXPOSED_SILVER);
         blockItem(ModBlocks.WEATHERED_SILVER);
@@ -75,6 +76,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_SILVER);
 
+        // Cut Silver
         blockItem(ModBlocks.CUT_SILVER);
         blockItem(ModBlocks.EXPOSED_CUT_SILVER);
         blockItem(ModBlocks.WEATHERED_CUT_SILVER);
@@ -84,6 +86,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
 
+        // Cut Silver Slab
         blockItem(ModBlocks.CUT_SILVER_SLAB);
         blockItem(ModBlocks.EXPOSED_CUT_SILVER_SLAB);
         blockItem(ModBlocks.WEATHERED_CUT_SILVER_SLAB);
@@ -93,6 +96,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
         blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
 
+        // Cut Silver Stairs
         blockItem(ModBlocks.CUT_SILVER_STAIRS);
         blockItem(ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
         blockItem(ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
@@ -102,6 +106,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
         blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
 
+        // Chiseled Silver
         blockItem(ModBlocks.CHISELED_SILVER);
         blockItem(ModBlocks.EXPOSED_CHISELED_SILVER);
         blockItem(ModBlocks.WEATHERED_CHISELED_SILVER);
@@ -111,6 +116,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
+        // Silver Grate
         blockItem(ModBlocks.SILVER_GRATE);
         blockItem(ModBlocks.EXPOSED_SILVER_GRATE);
         blockItem(ModBlocks.WEATHERED_SILVER_GRATE);
@@ -120,8 +126,25 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
         blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
+        // Silver Trapdoor
+        trapdoorItem(ModBlocks.SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.WEATHERED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.WAXED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
+        trapdoorItem(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
+
+        // Silver Door
         blockItem2D(ModBlocks.SILVER_DOOR);
-        blockItem(ModBlocks.SILVER_TRAPDOOR, "bottom");
+        blockItem2D(ModBlocks.EXPOSED_SILVER_DOOR);
+        blockItem2D(ModBlocks.WEATHERED_SILVER_DOOR);
+        blockItem2D(ModBlocks.OXIDIZED_SILVER_DOOR);
+        blockItem2DWithTexture(ModBlocks.WAXED_SILVER_DOOR, ModBlocks.SILVER_DOOR);
+        blockItem2DWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
+        blockItem2DWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
+        blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
     }
 
     // Shoutout to El_Redstoniano for making this
@@ -181,6 +204,11 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .texture("layer0", ItemUtils.getItemResourceLocation(block.get()));
     }
 
+    private <T extends Block> void blockItem2DWithTexture(DeferredBlock<T> block, DeferredBlock<T> textureBlock) {
+        withExistingParent(ItemUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+                .texture("layer0", ItemUtils.getItemResourceLocation(textureBlock.get()));
+    }
+
     private <T extends Item> void handheldItem(DeferredItem<T> item) {
         withExistingParent(ItemUtils.getName(item.get()), ResourceLocation.withDefaultNamespace("item/handheld"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(item.get()));
@@ -192,5 +220,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private <T extends Block> void blockItem(DeferredBlock<T> block, String suffix) {
         this.withExistingParent(BlockUtils.getNameWithNamespace(block.get()), BlockUtils.getBlockResourceLocation(block.get(), suffix));
+    }
+
+    private <T extends Block> void trapdoorItem(DeferredBlock<T> block) {
+        blockItem(block, "bottom");
     }
 }

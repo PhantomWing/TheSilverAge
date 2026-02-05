@@ -1,7 +1,12 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.world.ModBiomeModifiers;
+import com.phantomwing.thesilverage.world.ModConfiguredFeatures;
+import com.phantomwing.thesilverage.world.ModPlacedFeatures;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
@@ -10,6 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.Set;
@@ -23,7 +29,7 @@ public class DataGenerators {
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
+        
         generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new LootTableProvider(
             output,
@@ -38,6 +44,9 @@ public class DataGenerators {
 
         ModBlockTagsProvider blockTagsProvider = generator.addProvider(event.includeServer(), new ModBlockTagsProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(output, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new ModBiomeTagsProvider(output, lookupProvider, existingFileHelper));
+
+        generator.addProvider(event.includeServer(), new ModGlobalLootModifiersProvider(output, lookupProvider));
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
     }

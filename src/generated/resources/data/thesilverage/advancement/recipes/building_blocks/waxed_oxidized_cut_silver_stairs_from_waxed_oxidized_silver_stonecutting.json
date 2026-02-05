@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_oxidized_cut_silver_stairs_from_waxed_oxidized_silver_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_oxidized_silver": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:waxed_oxidized_silver"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_waxed_oxidized_silver"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_oxidized_cut_silver_stairs_from_waxed_oxidized_silver_stonecutting"
+    ]
+  }
+}

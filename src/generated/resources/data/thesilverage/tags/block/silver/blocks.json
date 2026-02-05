@@ -1,6 +1,7 @@
 {
   "values": [
-    "#c:ores_silver",
+    "thesilverage:silver_ore",
+    "thesilverage:deepslate_silver_ore",
     "thesilverage:raw_silver_block",
     "thesilverage:silver_block",
     "thesilverage:exposed_silver",
@@ -50,7 +51,21 @@
     "thesilverage:waxed_exposed_silver_grate",
     "thesilverage:waxed_weathered_silver_grate",
     "thesilverage:waxed_oxidized_silver_grate",
+    "thesilverage:silver_trapdoor",
+    "thesilverage:exposed_silver_trapdoor",
+    "thesilverage:weathered_silver_trapdoor",
+    "thesilverage:oxidized_silver_trapdoor",
+    "thesilverage:waxed_silver_trapdoor",
+    "thesilverage:waxed_exposed_silver_trapdoor",
+    "thesilverage:waxed_weathered_silver_trapdoor",
+    "thesilverage:waxed_oxidized_silver_trapdoor",
     "thesilverage:silver_door",
-    "thesilverage:silver_trapdoor"
+    "thesilverage:exposed_silver_door",
+    "thesilverage:weathered_silver_door",
+    "thesilverage:oxidized_silver_door",
+    "thesilverage:waxed_silver_door",
+    "thesilverage:waxed_exposed_silver_door",
+    "thesilverage:waxed_weathered_silver_door",
+    "thesilverage:waxed_oxidized_silver_door"
   ]
 }

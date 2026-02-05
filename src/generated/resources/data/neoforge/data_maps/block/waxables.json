@@ -27,8 +27,14 @@
     "thesilverage:exposed_silver": {
       "waxed": "thesilverage:waxed_exposed_silver"
     },
+    "thesilverage:exposed_silver_door": {
+      "waxed": "thesilverage:waxed_exposed_silver_door"
+    },
     "thesilverage:exposed_silver_grate": {
       "waxed": "thesilverage:waxed_exposed_silver_grate"
+    },
+    "thesilverage:exposed_silver_trapdoor": {
+      "waxed": "thesilverage:waxed_exposed_silver_trapdoor"
     },
     "thesilverage:oxidized_chiseled_silver": {
       "waxed": "thesilverage:waxed_oxidized_chiseled_silver"
@@ -45,14 +51,26 @@
     "thesilverage:oxidized_silver": {
       "waxed": "thesilverage:waxed_oxidized_silver"
     },
+    "thesilverage:oxidized_silver_door": {
+      "waxed": "thesilverage:waxed_oxidized_silver_door"
+    },
     "thesilverage:oxidized_silver_grate": {
       "waxed": "thesilverage:waxed_oxidized_silver_grate"
+    },
+    "thesilverage:oxidized_silver_trapdoor": {
+      "waxed": "thesilverage:waxed_oxidized_silver_trapdoor"
     },
     "thesilverage:silver_block": {
       "waxed": "thesilverage:waxed_silver_block"
     },
+    "thesilverage:silver_door": {
+      "waxed": "thesilverage:waxed_silver_door"
+    },
     "thesilverage:silver_grate": {
       "waxed": "thesilverage:waxed_silver_grate"
+    },
+    "thesilverage:silver_trapdoor": {
+      "waxed": "thesilverage:waxed_silver_trapdoor"
     },
     "thesilverage:weathered_chiseled_silver": {
       "waxed": "thesilverage:waxed_weathered_chiseled_silver"
@@ -69,8 +87,14 @@
     "thesilverage:weathered_silver": {
       "waxed": "thesilverage:waxed_weathered_silver"
     },
+    "thesilverage:weathered_silver_door": {
+      "waxed": "thesilverage:waxed_weathered_silver_door"
+    },
     "thesilverage:weathered_silver_grate": {
       "waxed": "thesilverage:waxed_weathered_silver_grate"
+    },
+    "thesilverage:weathered_silver_trapdoor": {
+      "waxed": "thesilverage:waxed_weathered_silver_trapdoor"
     }
   }
 }

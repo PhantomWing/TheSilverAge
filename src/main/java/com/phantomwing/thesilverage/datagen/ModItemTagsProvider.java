@@ -73,9 +73,44 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.TRIM_MATERIALS).add(ModItems.SILVER_INGOT.get());
 
         // Slabs
-        tag(ItemTags.SLABS).add(ModItems.CUT_SILVER_SLAB.get());
-        tag(ItemTags.STAIRS).add(ModItems.CUT_SILVER_STAIRS.get());
-        tag(ItemTags.DOORS).add(ModItems.SILVER_DOOR.get());
-        tag(ItemTags.TRAPDOORS).add(ModItems.SILVER_TRAPDOOR.get());
+        tag(ItemTags.SLABS)
+                .add(ModItems.CUT_SILVER_SLAB.get())
+                .add(ModItems.EXPOSED_CUT_SILVER_SLAB.get())
+                .add(ModItems.WEATHERED_CUT_SILVER_SLAB.get())
+                .add(ModItems.OXIDIZED_CUT_SILVER_SLAB.get())
+                .add(ModItems.WAXED_CUT_SILVER_SLAB.get())
+                .add(ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get())
+                .add(ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
+                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
+
+        tag(ItemTags.STAIRS)
+                .add(ModItems.CUT_SILVER_STAIRS.get())
+                .add(ModItems.EXPOSED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.WEATHERED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.OXIDIZED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.WAXED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
+
+        tag(ItemTags.TRAPDOORS)
+                .add(ModItems.SILVER_TRAPDOOR.get())
+                .add(ModItems.EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModItems.WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModItems.OXIDIZED_SILVER_TRAPDOOR.get())
+                .add(ModItems.WAXED_SILVER_TRAPDOOR.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+
+        tag(ItemTags.DOORS)
+                .add(ModItems.SILVER_DOOR.get())
+                .add(ModItems.EXPOSED_SILVER_DOOR.get())
+                .add(ModItems.WEATHERED_SILVER_DOOR.get())
+                .add(ModItems.OXIDIZED_SILVER_DOOR.get())
+                .add(ModItems.WAXED_SILVER_DOOR.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_DOOR.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_DOOR.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_DOOR.get());
     }
 }

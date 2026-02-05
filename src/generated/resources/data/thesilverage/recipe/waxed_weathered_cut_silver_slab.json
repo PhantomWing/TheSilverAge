@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "waxed_weathered_cut_silver",
+  "key": {
+    "#": {
+      "item": "thesilverage:waxed_weathered_cut_silver"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "thesilverage:waxed_weathered_cut_silver_slab"
+  }
+}

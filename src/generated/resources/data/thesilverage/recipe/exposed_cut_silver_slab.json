@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "exposed_cut_silver",
+  "key": {
+    "#": {
+      "item": "thesilverage:exposed_cut_silver"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "thesilverage:exposed_cut_silver_slab"
+  }
+}

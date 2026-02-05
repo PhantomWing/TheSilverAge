@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.loot.LootModifierManager;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -11,7 +12,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
@@ -24,6 +29,13 @@ public class TheSilverAge
     {
         NeoForge.EVENT_BUS.register(this);
 
+        container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
+
+        // This will use NeoForge's ConfigurationScreen to display this mod's configs (Client only)
+        if (FMLEnvironment.dist.isClient()) {
+            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        }
+
         registerManagers(eventBus);
     }
 
@@ -33,6 +45,7 @@ public class TheSilverAge
         ModBlocks.register(eventBus);
         ModCreativeModeTab.register(eventBus);
         ModArmorMaterials.register(eventBus);
+        LootModifierManager.register(eventBus);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

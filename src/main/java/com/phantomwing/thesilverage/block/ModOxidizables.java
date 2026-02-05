@@ -36,6 +36,16 @@ public class ModOxidizables {
         add(b, ModBlocks.SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE);
         add(b, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
         add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
+
+        // Silver Trapdoor
+        add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.EXPOSED_SILVER_TRAPDOOR);
+        add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR);
+        add(b, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
+
+        // Silver Door
+        add(b, ModBlocks.SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
+        add(b, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
+        add(b, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
     }
 
     private static <T extends Block> void add(DataMapProvider.Builder<Oxidizable, Block> builder, DeferredBlock<T> block, DeferredBlock<T> oxidizedBlock) {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "oxidized_cut_silver",
+  "key": {
+    "#": {
+      "item": "thesilverage:oxidized_cut_silver"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "thesilverage:oxidized_cut_silver_slab"
+  }
+}

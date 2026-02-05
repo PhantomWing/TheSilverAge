@@ -1,5 +1,12 @@
 {
   "values": [
-    "thesilverage:silver_door"
+    "thesilverage:silver_door",
+    "thesilverage:exposed_silver_door",
+    "thesilverage:weathered_silver_door",
+    "thesilverage:oxidized_silver_door",
+    "thesilverage:waxed_silver_door",
+    "thesilverage:waxed_exposed_silver_door",
+    "thesilverage:waxed_weathered_silver_door",
+    "thesilverage:waxed_oxidized_silver_door"
   ]
 }

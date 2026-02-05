@@ -5,9 +5,20 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public class ModTags {
+    // Block tags
+    public static class Biomes {
+        public static final TagKey<Biome> HAS_SILVER_ORE = tag("has_silver_ore");
+        public static final TagKey<Biome> HAS_EXTRA_SILVER_ORE = tag("has_extra_silver_ore");
+
+        private static TagKey<Biome> tag(String name) {
+            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+        }
+    }
+
     // Block tags
     public static class Blocks {
         public static final TagKey<Block> NEEDS_SILVER_TOOL = tag("needs_silver_tool");

@@ -10,6 +10,7 @@ import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +21,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Storage blocks
         tag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER).add(ModBlocks.SILVER_BLOCK.get());
         tag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER).add(ModBlocks.RAW_SILVER_BLOCK.get());
@@ -37,9 +38,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Silver blocks
         tag(ModTags.Blocks.SILVER_BLOCKS)
-                .addTag(CommonTags.Blocks.ORES_SILVER)
+                .add(ModBlocks.SILVER_ORE.get())
+                .add(ModBlocks.DEEPSLATE_SILVER_ORE.get())
                 .add(ModBlocks.RAW_SILVER_BLOCK.get())
 
+                // Block of Silver
                 .add(ModBlocks.SILVER_BLOCK.get())
                 .add(ModBlocks.EXPOSED_SILVER.get())
                 .add(ModBlocks.WEATHERED_SILVER.get())
@@ -49,6 +52,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER.get())
 
+                // Cut Silver
                 .add(ModBlocks.CUT_SILVER.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER.get())
                 .add(ModBlocks.WEATHERED_CUT_SILVER.get())
@@ -58,6 +62,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get())
 
+                // Cut Silver Slab
                 .add(ModBlocks.CUT_SILVER_SLAB.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
                 .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get())
@@ -67,6 +72,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get())
 
+                // Cut Silver Stairs
                 .add(ModBlocks.CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get())
@@ -76,6 +82,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get())
 
+                // Chiseled Silver
                 .add(ModBlocks.CHISELED_SILVER.get())
                 .add(ModBlocks.EXPOSED_CHISELED_SILVER.get())
                 .add(ModBlocks.WEATHERED_CHISELED_SILVER.get())
@@ -85,6 +92,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get())
 
+                // Silver Grate
                 .add(ModBlocks.SILVER_GRATE.get())
                 .add(ModBlocks.EXPOSED_SILVER_GRATE.get())
                 .add(ModBlocks.WEATHERED_SILVER_GRATE.get())
@@ -94,8 +102,25 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get())
 
+                // Silver Trapdoor
+                .add(ModBlocks.SILVER_TRAPDOOR.get())
+                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get())
+
+                // Silver Door
                 .add(ModBlocks.SILVER_DOOR.get())
-                .add(ModBlocks.SILVER_TRAPDOOR.get());
+                .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
 
         // Tool requirements
         tag(ModTags.Blocks.NEEDS_SILVER_TOOL).addTag(BlockTags.NEEDS_IRON_TOOL);
@@ -104,9 +129,45 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.SILVER_BLOCKS);
 
         // Slabs
-        tag(BlockTags.SLABS).add(ModBlocks.CUT_SILVER_SLAB.get());
-        tag(BlockTags.STAIRS).add(ModBlocks.CUT_SILVER_STAIRS.get());
-        tag(BlockTags.DOORS).add(ModBlocks.SILVER_DOOR.get());
-        tag(BlockTags.TRAPDOORS).add(ModBlocks.SILVER_TRAPDOOR.get());
+        tag(BlockTags.SLABS)
+                .add(ModBlocks.CUT_SILVER_SLAB.get())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.WAXED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
+
+        // Stairs
+        tag(BlockTags.STAIRS)
+                .add(ModBlocks.CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.WAXED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
+
+        tag(BlockTags.DOORS)
+                .add(ModBlocks.SILVER_DOOR.get())
+                .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+
+        tag(BlockTags.TRAPDOORS)
+                .add(ModBlocks.SILVER_TRAPDOOR.get())
+                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
     }
 }

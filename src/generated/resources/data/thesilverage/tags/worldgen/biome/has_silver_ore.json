@@ -1,0 +1,9 @@
+{
+  "remove": [
+    "minecraft:dripstone_caves",
+    "minecraft:lush_caves"
+  ],
+  "values": [
+    "#minecraft:is_overworld"
+  ]
+}

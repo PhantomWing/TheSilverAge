@@ -27,7 +27,6 @@ public class ModRecipeProvider extends RecipeProvider {
 
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET, ModItems.SILVER_INGOT);
-        storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_INGOT, ModItems.SILVER_BLOCK);
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER, ModItems.RAW_SILVER_BLOCK);
 
         // Tools
@@ -37,23 +36,156 @@ public class ModRecipeProvider extends RecipeProvider {
         hoe(output, ModItems.SILVER_INGOT, ModItems.SILVER_HOE);
         shovel(output, ModItems.SILVER_INGOT, ModItems.SILVER_SHOVEL);
 
+        // Block of Silver
+        storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_INGOT, ModItems.SILVER_BLOCK);
+        waxable(output, ModItems.SILVER_BLOCK, ModItems.WAXED_SILVER_BLOCK);
+        waxable(output, ModItems.EXPOSED_SILVER, ModItems.WAXED_EXPOSED_SILVER);
+        waxable(output, ModItems.WEATHERED_SILVER, ModItems.WAXED_WEATHERED_SILVER);
+        waxable(output, ModItems.OXIDIZED_SILVER, ModItems.WAXED_OXIDIZED_SILVER);
+
         // Cut Silver
         twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CUT_SILVER, ModItems.SILVER_BLOCK, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CUT_SILVER, ModItems.EXPOSED_SILVER, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CUT_SILVER, ModItems.WEATHERED_SILVER, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CUT_SILVER, ModItems.OXIDIZED_SILVER, 4);
+
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CUT_SILVER, ModItems.WAXED_SILVER_BLOCK, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CUT_SILVER, ModItems.WAXED_EXPOSED_SILVER, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CUT_SILVER, ModItems.WAXED_WEATHERED_SILVER, 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CUT_SILVER, ModItems.WAXED_OXIDIZED_SILVER, 4);
+
         stoneCutting(output, ModItems.CUT_SILVER, ModItems.SILVER_BLOCK, 4);
-        stoneCutting(output, ModItems.CUT_SILVER_STAIRS, ModItems.SILVER_BLOCK, 4);
-        stoneCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.SILVER_BLOCK, 8);
+        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER, ModItems.EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER, ModItems.WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER, ModItems.OXIDIZED_SILVER, 4);
 
+        stoneCutting(output, ModItems.WAXED_CUT_SILVER, ModItems.WAXED_SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER, ModItems.WAXED_EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER, ModItems.WAXED_WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER, ModItems.WAXED_OXIDIZED_SILVER, 4);
 
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER_SLAB, 2);
-        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER, 1);
-        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.SILVER_BLOCK, 4);
+        waxable(output, ModItems.CUT_SILVER, ModItems.WAXED_CUT_SILVER);
+        waxable(output, ModItems.EXPOSED_CUT_SILVER, ModItems.WAXED_EXPOSED_CUT_SILVER);
+        waxable(output, ModItems.WEATHERED_CUT_SILVER, ModItems.WAXED_WEATHERED_CUT_SILVER);
+        waxable(output, ModItems.OXIDIZED_CUT_SILVER, ModItems.WAXED_OXIDIZED_CUT_SILVER);
 
+        // Cut Silver Stairs
         stairsWithCutting(output, ModItems.CUT_SILVER_STAIRS, ModItems.CUT_SILVER);
-        slabWithCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.CUT_SILVER);
+        stairsWithCutting(output, ModItems.EXPOSED_CUT_SILVER_STAIRS, ModItems.EXPOSED_CUT_SILVER);
+        stairsWithCutting(output, ModItems.WEATHERED_CUT_SILVER_STAIRS, ModItems.WEATHERED_CUT_SILVER);
+        stairsWithCutting(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS, ModItems.OXIDIZED_CUT_SILVER);
 
-        // Silver blocks
-        door(output, ModItems.SILVER_DOOR, ModItems.CUT_SILVER);
-        trapdoor(output, ModItems.SILVER_TRAPDOOR, ModItems.CUT_SILVER);
+        stairsWithCutting(output, ModItems.WAXED_CUT_SILVER_STAIRS, ModItems.WAXED_CUT_SILVER);
+        stairsWithCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS, ModItems.WAXED_EXPOSED_CUT_SILVER);
+        stairsWithCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS, ModItems.WAXED_WEATHERED_CUT_SILVER);
+        stairsWithCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS, ModItems.WAXED_OXIDIZED_CUT_SILVER);
+
+        stoneCutting(output, ModItems.CUT_SILVER_STAIRS, ModItems.SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER_STAIRS, ModItems.EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER_STAIRS, ModItems.WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS, ModItems.OXIDIZED_SILVER, 4);
+
+        stoneCutting(output, ModItems.WAXED_CUT_SILVER_STAIRS, ModItems.WAXED_SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS, ModItems.WAXED_EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS, ModItems.WAXED_WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS, ModItems.WAXED_OXIDIZED_SILVER, 4);
+
+        waxable(output, ModItems.CUT_SILVER_STAIRS, ModItems.WAXED_CUT_SILVER_STAIRS);
+        waxable(output, ModItems.EXPOSED_CUT_SILVER_STAIRS, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS);
+        waxable(output, ModItems.WEATHERED_CUT_SILVER_STAIRS, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS);
+        waxable(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
+
+        // Cut Silver Slab
+        slabWithCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.CUT_SILVER);
+        slabWithCutting(output, ModItems.EXPOSED_CUT_SILVER_SLAB, ModItems.EXPOSED_CUT_SILVER);
+        slabWithCutting(output, ModItems.WEATHERED_CUT_SILVER_SLAB, ModItems.WEATHERED_CUT_SILVER);
+        slabWithCutting(output, ModItems.OXIDIZED_CUT_SILVER_SLAB, ModItems.OXIDIZED_CUT_SILVER);
+
+        slabWithCutting(output, ModItems.WAXED_CUT_SILVER_SLAB, ModItems.WAXED_CUT_SILVER);
+        slabWithCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB, ModItems.WAXED_EXPOSED_CUT_SILVER);
+        slabWithCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB, ModItems.WAXED_WEATHERED_CUT_SILVER);
+        slabWithCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB, ModItems.WAXED_OXIDIZED_CUT_SILVER);
+
+        stoneCutting(output, ModItems.CUT_SILVER_SLAB, ModItems.SILVER_BLOCK, 8);
+        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER_SLAB, ModItems.EXPOSED_SILVER, 8);
+        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER_SLAB, ModItems.WEATHERED_SILVER, 8);
+        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER_SLAB, ModItems.OXIDIZED_SILVER, 8);
+
+        stoneCutting(output, ModItems.WAXED_CUT_SILVER_SLAB, ModItems.WAXED_SILVER_BLOCK, 8);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB, ModItems.WAXED_EXPOSED_SILVER, 8);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB, ModItems.WAXED_WEATHERED_SILVER, 8);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB, ModItems.WAXED_OXIDIZED_SILVER, 8);
+
+        waxable(output, ModItems.CUT_SILVER_SLAB, ModItems.WAXED_CUT_SILVER_SLAB);
+        waxable(output, ModItems.EXPOSED_CUT_SILVER_SLAB, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB);
+        waxable(output, ModItems.WEATHERED_CUT_SILVER_SLAB, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB);
+        waxable(output, ModItems.OXIDIZED_CUT_SILVER_SLAB, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB);
+
+        // Chiseled Silver
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CHISELED_SILVER, ModItems.EXPOSED_CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CHISELED_SILVER, ModItems.WEATHERED_CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CHISELED_SILVER, ModItems.OXIDIZED_CUT_SILVER_SLAB, 2);
+
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CHISELED_SILVER, ModItems.WAXED_CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CHISELED_SILVER, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CHISELED_SILVER, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB, 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CHISELED_SILVER, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB, 2);
+
+        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.CUT_SILVER, 1);
+        stoneCutting(output, ModItems.EXPOSED_CHISELED_SILVER, ModItems.EXPOSED_CUT_SILVER, 1);
+        stoneCutting(output, ModItems.WEATHERED_CHISELED_SILVER, ModItems.WEATHERED_CUT_SILVER, 1);
+        stoneCutting(output, ModItems.OXIDIZED_CHISELED_SILVER, ModItems.OXIDIZED_CUT_SILVER, 1);
+
+        stoneCutting(output, ModItems.WAXED_CHISELED_SILVER, ModItems.WAXED_CUT_SILVER, 1);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_CHISELED_SILVER, ModItems.WAXED_EXPOSED_CUT_SILVER, 1);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_CHISELED_SILVER, ModItems.WAXED_WEATHERED_CUT_SILVER, 1);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_CHISELED_SILVER, ModItems.WAXED_OXIDIZED_CUT_SILVER, 1);
+
+        stoneCutting(output, ModItems.CHISELED_SILVER, ModItems.SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.EXPOSED_CHISELED_SILVER, ModItems.EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WEATHERED_CHISELED_SILVER, ModItems.WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.OXIDIZED_CHISELED_SILVER, ModItems.OXIDIZED_SILVER, 4);
+
+        stoneCutting(output, ModItems.WAXED_CHISELED_SILVER, ModItems.WAXED_SILVER_BLOCK, 4);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_CHISELED_SILVER, ModItems.WAXED_EXPOSED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_CHISELED_SILVER, ModItems.WAXED_WEATHERED_SILVER, 4);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_CHISELED_SILVER, ModItems.WAXED_OXIDIZED_SILVER, 4);
+
+        waxable(output, ModItems.CHISELED_SILVER, ModItems.WAXED_CHISELED_SILVER);
+        waxable(output, ModItems.EXPOSED_CHISELED_SILVER, ModItems.WAXED_EXPOSED_CHISELED_SILVER);
+        waxable(output, ModItems.WEATHERED_CHISELED_SILVER, ModItems.WAXED_WEATHERED_CHISELED_SILVER);
+        waxable(output, ModItems.OXIDIZED_CHISELED_SILVER, ModItems.WAXED_OXIDIZED_CHISELED_SILVER);
+
+        // Silver Grate
+        grateWithCutting(output, ModItems.SILVER_GRATE, ModItems.SILVER_BLOCK);
+        grateWithCutting(output, ModItems.EXPOSED_SILVER_GRATE, ModItems.EXPOSED_SILVER);
+        grateWithCutting(output, ModItems.WEATHERED_SILVER_GRATE, ModItems.WEATHERED_SILVER);
+        grateWithCutting(output, ModItems.OXIDIZED_SILVER_GRATE, ModItems.OXIDIZED_SILVER);
+
+        grateWithCutting(output, ModItems.WAXED_SILVER_GRATE, ModItems.WAXED_SILVER_BLOCK);
+        grateWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_GRATE, ModItems.WAXED_EXPOSED_SILVER);
+        grateWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_GRATE, ModItems.WAXED_WEATHERED_SILVER);
+        grateWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_GRATE, ModItems.WAXED_OXIDIZED_SILVER);
+
+        waxable(output, ModItems.SILVER_GRATE, ModItems.WAXED_SILVER_GRATE);
+        waxable(output, ModItems.EXPOSED_SILVER_GRATE, ModItems.WAXED_EXPOSED_SILVER_GRATE);
+        waxable(output, ModItems.WEATHERED_SILVER_GRATE, ModItems.WAXED_WEATHERED_SILVER_GRATE);
+        waxable(output, ModItems.OXIDIZED_SILVER_GRATE, ModItems.WAXED_OXIDIZED_SILVER_GRATE);
+
+        // Silver Door
+        door(output, ModItems.SILVER_DOOR, ModItems.SILVER_INGOT);
+        waxable(output, ModItems.SILVER_DOOR, ModItems.WAXED_SILVER_DOOR);
+        waxable(output, ModItems.EXPOSED_SILVER_DOOR, ModItems.WAXED_EXPOSED_SILVER_DOOR);
+        waxable(output, ModItems.WEATHERED_SILVER_DOOR, ModItems.WAXED_WEATHERED_SILVER_DOOR);
+        waxable(output, ModItems.OXIDIZED_SILVER_DOOR, ModItems.WAXED_OXIDIZED_SILVER_DOOR);
+
+        // Silver Trapdoor
+        trapdoor(output, ModItems.SILVER_TRAPDOOR, ModItems.SILVER_INGOT);
+        waxable(output, ModItems.SILVER_TRAPDOOR, ModItems.WAXED_SILVER_TRAPDOOR);
+        waxable(output, ModItems.EXPOSED_SILVER_TRAPDOOR, ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR);
+        waxable(output, ModItems.WEATHERED_SILVER_TRAPDOOR, ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR);
+        waxable(output, ModItems.OXIDIZED_SILVER_TRAPDOOR, ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR);
     }
 
     private static void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
@@ -127,6 +259,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(material, result));
     }
 
+    private static void grateWithCutting(RecipeOutput recipeOutput, ItemLike result, ItemLike material) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .define('#', material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, result));
+
+        stoneCutting(recipeOutput, result, material, 4);
+    }
+
     private static void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
         // From item to storageItem
         ShapedRecipeBuilder.shaped(category, storageItem)
@@ -142,6 +286,14 @@ public class ModRecipeProvider extends RecipeProvider {
                 .requires(storageItem)
                 .unlockedBy(getHasName(storageItem), has(storageItem))
                 .save(recipeOutput, getRecipeName(storageItem, item));
+    }
+
+    protected static void waxable(RecipeOutput recipeOutput, ItemLike item, ItemLike result) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 1)
+                .requires(item)
+                .requires(Items.HONEYCOMB)
+                .unlockedBy(getHasName(item), has(item))
+                .save(recipeOutput, getRecipeName(item, result));
     }
 
     protected static void sword(RecipeOutput recipeOutput, ItemLike material, ItemLike tool) {

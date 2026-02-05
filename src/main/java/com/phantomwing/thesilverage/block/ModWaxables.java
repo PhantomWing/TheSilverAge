@@ -42,6 +42,18 @@ public class ModWaxables {
         add(b, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
         add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
         add(b, ModBlocks.OXIDIZED_SILVER_GRATE, ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
+
+        // Silver Trapdoor
+        add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.WAXED_SILVER_TRAPDOOR);
+        add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR);
+        add(b, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
+        add(b, ModBlocks.OXIDIZED_SILVER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
+
+        // Silver Door
+        add(b, ModBlocks.SILVER_DOOR, ModBlocks.WAXED_SILVER_DOOR);
+        add(b, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
+        add(b, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
+        add(b, ModBlocks.OXIDIZED_SILVER_DOOR, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
     }
 
     private static <T extends Block> void add(DataMapProvider.Builder<Waxable, Block> builder, DeferredBlock<T> block, DeferredBlock<T> waxedBlock) {

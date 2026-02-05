@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "thesilverage:weathered_silver"
+  },
+  "result": {
+    "count": 4,
+    "id": "thesilverage:weathered_chiseled_silver"
+  }
+}

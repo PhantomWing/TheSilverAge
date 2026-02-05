@@ -27,14 +27,26 @@
     "thesilverage:exposed_silver": {
       "next_oxidation_stage": "thesilverage:weathered_silver"
     },
+    "thesilverage:exposed_silver_door": {
+      "next_oxidation_stage": "thesilverage:weathered_silver_door"
+    },
     "thesilverage:exposed_silver_grate": {
       "next_oxidation_stage": "thesilverage:weathered_silver_grate"
+    },
+    "thesilverage:exposed_silver_trapdoor": {
+      "next_oxidation_stage": "thesilverage:weathered_silver_trapdoor"
     },
     "thesilverage:silver_block": {
       "next_oxidation_stage": "thesilverage:exposed_silver"
     },
+    "thesilverage:silver_door": {
+      "next_oxidation_stage": "thesilverage:exposed_silver_door"
+    },
     "thesilverage:silver_grate": {
       "next_oxidation_stage": "thesilverage:exposed_silver_grate"
+    },
+    "thesilverage:silver_trapdoor": {
+      "next_oxidation_stage": "thesilverage:exposed_silver_trapdoor"
     },
     "thesilverage:weathered_chiseled_silver": {
       "next_oxidation_stage": "thesilverage:oxidized_chiseled_silver"
@@ -51,8 +63,14 @@
     "thesilverage:weathered_silver": {
       "next_oxidation_stage": "thesilverage:oxidized_silver"
     },
+    "thesilverage:weathered_silver_door": {
+      "next_oxidation_stage": "thesilverage:oxidized_silver_door"
+    },
     "thesilverage:weathered_silver_grate": {
       "next_oxidation_stage": "thesilverage:oxidized_silver_grate"
+    },
+    "thesilverage:weathered_silver_trapdoor": {
+      "next_oxidation_stage": "thesilverage:oxidized_silver_trapdoor"
     }
   }
 }

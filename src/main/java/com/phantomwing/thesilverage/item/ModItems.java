@@ -38,12 +38,11 @@ public class ModItems {
     public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 20);
 
     // Silver blocks
-
     public static final DeferredItem<Item> SILVER_ORE = registerBlock(ModBlocks.SILVER_ORE);
     public static final DeferredItem<Item> DEEPSLATE_SILVER_ORE = registerBlock(ModBlocks.DEEPSLATE_SILVER_ORE);
-
     public static final DeferredItem<Item> RAW_SILVER_BLOCK = registerBlock(ModBlocks.RAW_SILVER_BLOCK);
 
+    // Block of Silver
     public static final DeferredItem<Item> SILVER_BLOCK = registerBlock(ModBlocks.SILVER_BLOCK);
     public static final DeferredItem<Item> EXPOSED_SILVER = registerBlock(ModBlocks.EXPOSED_SILVER);
     public static final DeferredItem<Item> WEATHERED_SILVER = registerBlock(ModBlocks.WEATHERED_SILVER);
@@ -53,6 +52,7 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER);
     public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER);
 
+    // Cut Silver
     public static final DeferredItem<Item> CUT_SILVER = registerBlock(ModBlocks.CUT_SILVER);
     public static final DeferredItem<Item> EXPOSED_CUT_SILVER = registerBlock(ModBlocks.EXPOSED_CUT_SILVER);
     public static final DeferredItem<Item> WEATHERED_CUT_SILVER = registerBlock(ModBlocks.WEATHERED_CUT_SILVER);
@@ -62,6 +62,7 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
     public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
 
+    // Cut Silver Slab
     public static final DeferredItem<Item> CUT_SILVER_SLAB = registerBlock(ModBlocks.CUT_SILVER_SLAB);
     public static final DeferredItem<Item> EXPOSED_CUT_SILVER_SLAB = registerBlock(ModBlocks.EXPOSED_CUT_SILVER_SLAB);
     public static final DeferredItem<Item> WEATHERED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WEATHERED_CUT_SILVER_SLAB);
@@ -71,6 +72,7 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
     public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER_SLAB = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
 
+    // Cut Silver Stairs
     public static final DeferredItem<Item> CUT_SILVER_STAIRS = registerBlock(ModBlocks.CUT_SILVER_STAIRS);
     public static final DeferredItem<Item> EXPOSED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
     public static final DeferredItem<Item> WEATHERED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
@@ -80,6 +82,7 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
     public static final DeferredItem<Item> WAXED_OXIDIZED_CUT_SILVER_STAIRS = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
 
+    // Chiseled Silver
     public static final DeferredItem<Item> CHISELED_SILVER = registerBlock(ModBlocks.CHISELED_SILVER);
     public static final DeferredItem<Item> EXPOSED_CHISELED_SILVER = registerBlock(ModBlocks.EXPOSED_CHISELED_SILVER);
     public static final DeferredItem<Item> WEATHERED_CHISELED_SILVER = registerBlock(ModBlocks.WEATHERED_CHISELED_SILVER);
@@ -89,6 +92,7 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
     public static final DeferredItem<Item> WAXED_OXIDIZED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
+    // Silver Grate
     public static final DeferredItem<Item> SILVER_GRATE = registerBlock(ModBlocks.SILVER_GRATE);
     public static final DeferredItem<Item> EXPOSED_SILVER_GRATE = registerBlock(ModBlocks.EXPOSED_SILVER_GRATE);
     public static final DeferredItem<Item> WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WEATHERED_SILVER_GRATE);
@@ -98,8 +102,25 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
     public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
-    public static final DeferredItem<Item> SILVER_DOOR = registerBlock(ModBlocks.SILVER_DOOR);
+    // Silver Trapdoor
     public static final DeferredItem<Item> SILVER_TRAPDOOR = registerBlock(ModBlocks.SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> EXPOSED_SILVER_TRAPDOOR = registerBlock(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> WEATHERED_SILVER_TRAPDOOR = registerBlock(ModBlocks.WEATHERED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> OXIDIZED_SILVER_TRAPDOOR = registerBlock(ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> WAXED_SILVER_TRAPDOOR = registerBlock(ModBlocks.WAXED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> WAXED_EXPOSED_SILVER_TRAPDOOR = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_TRAPDOOR = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_TRAPDOOR = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
+
+    // Silver Door
+    public static final DeferredItem<Item> SILVER_DOOR = registerBlock(ModBlocks.SILVER_DOOR);
+    public static final DeferredItem<Item> EXPOSED_SILVER_DOOR = registerBlock(ModBlocks.EXPOSED_SILVER_DOOR);
+    public static final DeferredItem<Item> WEATHERED_SILVER_DOOR = registerBlock(ModBlocks.WEATHERED_SILVER_DOOR);
+    public static final DeferredItem<Item> OXIDIZED_SILVER_DOOR = registerBlock(ModBlocks.OXIDIZED_SILVER_DOOR);
+    public static final DeferredItem<Item> WAXED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_SILVER_DOOR);
+    public static final DeferredItem<Item> WAXED_EXPOSED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
+    public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
 
     // Helper functions
     public static Item.Properties baseItem() {

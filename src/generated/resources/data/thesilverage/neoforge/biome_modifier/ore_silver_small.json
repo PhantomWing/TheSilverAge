@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#thesilverage:has_silver_ore",
+  "features": "thesilverage:ore_silver_small",
+  "step": "underground_ores"
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "thesilverage:weathered_silver"
+  },
+  "result": {
+    "count": 1,
+    "id": "thesilverage:weathered_silver_grate"
+  }
+}
