@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_daylight_detector",
+  "textures": {
+    "side": "thesilverage:block/moon_phase_detector_side",
+    "top": "thesilverage:block/moon_phase_detector_top"
+  }
+}

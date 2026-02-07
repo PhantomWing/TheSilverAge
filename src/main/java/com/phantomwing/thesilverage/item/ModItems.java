@@ -41,6 +41,7 @@ public class ModItems {
 
     // Utility items
     public static final DeferredItem<Item> MOON_DIAL = register("moon_dial");
+    public static final DeferredItem<Item> MOON_PHASE_DETECTOR = registerBlock(ModBlocks.MOON_PHASE_DETECTOR);
 
     // Silver blocks
     public static final DeferredItem<Item> SILVER_ORE = registerBlock(ModBlocks.SILVER_ORE);

@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-07T18:00:58.4085888	Item Models: thesilverage
+// 1.21.1	2026-02-07T22:08:46.7091118	Item Models: thesilverage
 2e2a2838f022e1338b716c713fcbeaa87a3f21fe assets/minecraft/models/item/chainmail_boots.json
 a454719a3efa5b8f2d1edcab304d85901b2c2e59 assets/minecraft/models/item/chainmail_boots_silver_trim.json
 6ae28998d86cf640c5cb4da2ebed43c1fca894a5 assets/minecraft/models/item/chainmail_chestplate.json
@@ -77,6 +77,7 @@ bfdf7ab9e3f392358430c460d2a89e9f20843be2 assets/thesilverage/models/item/moon_di
 ed29449ead35df85c91fb2cb391af911025df5c7 assets/thesilverage/models/item/moon_dial_7.json
 1c7d6a53ffc31de5bd62adf5ed13f8e3cecbf195 assets/thesilverage/models/item/moon_dial_8.json
 a0aaa4155de39dcb574fdadf0f21ec3ee2ef7cf0 assets/thesilverage/models/item/moon_dial_9.json
+af46e44913ce4ec2589d6e0666bee25d74b258f5 assets/thesilverage/models/item/moon_phase_detector.json
 49438ddc2530b7fa1d9d7e656903245e07e9993b assets/thesilverage/models/item/oxidized_chiseled_silver.json
 c817eda7a65d3c1c38fdd46e726690ce977cf00c assets/thesilverage/models/item/oxidized_cut_silver.json
 c88e090d79f22bcfe7e4de3e674775e54c73ab89 assets/thesilverage/models/item/oxidized_cut_silver_slab.json

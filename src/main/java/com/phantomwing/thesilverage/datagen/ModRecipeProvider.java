@@ -9,6 +9,7 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -62,6 +63,28 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_LEGGINGS, ModItems.SILVER_NUGGET, XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_BOOTS, ModItems.SILVER_NUGGET, XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR, ModItems.SILVER_NUGGET, XP_TINY);
+
+        // Moon Dial
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModItems.MOON_DIAL, 1)
+                .pattern(" S ")
+                .pattern("SRS")
+                .pattern(" S ")
+                .define('R', Items.REDSTONE)
+                .define('S', ModItems.SILVER_INGOT)
+                .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
+                .unlockedBy(getHasName(ModItems.SILVER_INGOT), has(ModItems.SILVER_INGOT))
+                .save(output);
+
+        // Moon Phase Detector
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModItems.MOON_PHASE_DETECTOR, 1)
+                .pattern("GGG")
+                .pattern("AAA")
+                .pattern("SSS")
+                .define('G', Items.GLASS)
+                .define('A', Items.AMETHYST_SHARD)
+                .define('S', ModItems.SILVER_INGOT)
+                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
+                .save(output);
         
         // Block of Silver
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_INGOT, ModItems.SILVER_BLOCK);

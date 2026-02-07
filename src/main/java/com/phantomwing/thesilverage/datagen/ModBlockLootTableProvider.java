@@ -28,6 +28,9 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropOre(ModBlocks.DEEPSLATE_SILVER_ORE, ModItems.RAW_SILVER);
         dropSelf(ModBlocks.RAW_SILVER_BLOCK);
 
+        // Redstone blocks
+        dropSelf(ModBlocks.MOON_PHASE_DETECTOR);
+
         // Block of Silver
         dropSelf(ModBlocks.SILVER_BLOCK);
         dropSelf(ModBlocks.EXPOSED_SILVER);

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thesilverage:moon_phase_detector"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "thesilverage:blocks/moon_phase_detector"
+}

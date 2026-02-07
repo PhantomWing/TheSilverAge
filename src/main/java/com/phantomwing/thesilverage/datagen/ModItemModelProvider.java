@@ -78,6 +78,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         addModTrimsToArmorItem(Items.NETHERITE_LEGGINGS);
         addModTrimsToArmorItem(Items.NETHERITE_BOOTS);
 
+        // Redstone blocks
+        blockItem(ModBlocks.MOON_PHASE_DETECTOR);
+
         // Ores and Blocks
         blockItem(ModBlocks.SILVER_ORE);
         blockItem(ModBlocks.DEEPSLATE_SILVER_ORE);

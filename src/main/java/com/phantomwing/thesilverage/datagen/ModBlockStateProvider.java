@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.utils.BlockUtils;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
@@ -25,6 +26,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(ModBlocks.SILVER_ORE);
         simpleBlock(ModBlocks.DEEPSLATE_SILVER_ORE);
         simpleBlock(ModBlocks.RAW_SILVER_BLOCK);
+
+        // Redstone blocks
+        moonPhaseDetector(ModBlocks.MOON_PHASE_DETECTOR);
 
         // Block of Silver
         simpleBlock(ModBlocks.SILVER_BLOCK);
@@ -167,6 +171,28 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void blockWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> textureBlock) {
         ModelFile cubeAll = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get()));
         simpleBlock(block.get(), cubeAll);
+    }
+
+    private void moonPhaseDetector(DeferredBlock<MoonPhaseDetectorBlock> block) {
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            if(state.getValue(MoonPhaseDetectorBlock.INVERTED)) {
+                ModelFile invertedModel = this.models().withExistingParent(BlockUtils.getName(block.get()) + "_inverted", ResourceLocation.withDefaultNamespace("block/template_daylight_detector"))
+                        .texture("side", BlockUtils.getBlockResourceLocation(block.get(), "side"))
+                        .texture("top", BlockUtils.getBlockResourceLocation(block.get(), "inverted_top"));
+
+                return ConfiguredModel.builder().modelFile(invertedModel).build();
+            } else {
+                ModelFile model = this.models().withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/template_daylight_detector"))
+                        .texture("side", BlockUtils.getBlockResourceLocation(block.get(), "side"))
+                        .texture("top", BlockUtils.getBlockResourceLocation(block.get(), "top"));
+
+                return ConfiguredModel.builder().modelFile(model).build();
+            }
+        });
+    }
+
+    private void blockItem(DeferredBlock<?> deferredBlock, String appendix) {
+        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("tutorialmod:block/" + deferredBlock.getId().getPath() + appendix));
     }
 
     private void translucentBlock(DeferredBlock<Block> block) {

@@ -2,9 +2,11 @@ package com.phantomwing.thesilverage.block;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
+import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacingBlock;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.DaylightDetectorBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -23,6 +25,9 @@ public class ModBlocks {
 
     // Storage blocks
     public static final DeferredBlock<Block> RAW_SILVER_BLOCK = registerBlock("raw_silver_block", getBaseSilverProps(Blocks.RAW_GOLD_BLOCK), Block::new);
+
+    // Redstone blocks
+    public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerBlock("moon_phase_detector", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED), MoonPhaseDetectorBlock::new);
 
     // Silver block
     public static final DeferredBlock<Block> SILVER_BLOCK = registerWeatheringBlock("silver_block", WeatheringCopper.WeatherState.UNAFFECTED);

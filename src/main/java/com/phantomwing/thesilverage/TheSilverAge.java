@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage;
 
 import com.mojang.logging.LogUtils;
+import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.condition.ModConditions;
@@ -59,6 +60,7 @@ public class TheSilverAge
         ModConditions.register(eventBus);
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
+        ModBlockEntityTypes.register(eventBus);
         ModCreativeModeTab.register(eventBus);
         ModArmorMaterials.register(eventBus);
         LootModifierManager.register(eventBus);
