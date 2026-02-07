@@ -21,14 +21,14 @@ public class ModArmorMaterials {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, TheSilverAge.MOD_ID);
 
     public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIAL = register("silver",
-            2,
-            5,
+            3,
+            6,
             7,
-            2,
+            3,
             8,
-            15,
-            1,
             0,
+            0,
+            12,
             Ingredient.of(CommonTags.Items.INGOTS_SILVER)
     );
 

@@ -6,6 +6,7 @@ import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacin
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -190,7 +191,9 @@ public class ModBlocks {
     }
 
     private static BlockBehaviour.Properties getBaseSilverProps(Block baseBlock) {
-        return BlockBehaviour.Properties.ofFullCopy(baseBlock).mapColor(MapColor.TERRACOTTA_WHITE);
+        return BlockBehaviour.Properties.ofFullCopy(baseBlock)
+                .mapColor(MapColor.TERRACOTTA_WHITE)
+                .instrument(NoteBlockInstrument.BELL);
     }
 
     public static void register(IEventBus eventBus) {

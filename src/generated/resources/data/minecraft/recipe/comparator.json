@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "item": "thesilverage:silver_ingot"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "pattern": [
+    " T ",
+    "TQT",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:comparator"
+  }
+}

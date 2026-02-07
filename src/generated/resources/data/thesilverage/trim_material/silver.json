@@ -1,9 +1,9 @@
 {
   "asset_name": "silver",
   "description": {
-    "color": "#031CFC",
+    "color": "#7C9EB7",
     "translate": "trim_material.thesilverage.silver"
   },
   "ingredient": "thesilverage:silver_ingot",
-  "item_model_index": 1.1
+  "item_model_index": 0.0039207
 }

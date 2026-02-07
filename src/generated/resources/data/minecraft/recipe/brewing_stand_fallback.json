@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    " B ",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:brewing_stand"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_redstone_torch": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:redstone_torch"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:comparator_fallback"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_redstone_torch"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:comparator_fallback"
+    ]
+  }
+}

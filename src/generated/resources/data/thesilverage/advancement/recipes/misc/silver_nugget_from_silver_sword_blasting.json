@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_silver": {
+    "has_silver_sword": {
       "conditions": {
         "items": [
           {
-            "items": "thesilverage:raw_silver"
+            "items": "thesilverage:silver_sword"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_ingot_from_blasting"
+        "recipe": "thesilverage:silver_nugget_from_silver_sword_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_raw_silver"
+      "has_silver_sword"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thesilverage:silver_ingot_from_blasting"
+      "thesilverage:silver_nugget_from_silver_sword_blasting"
     ]
   }
 }

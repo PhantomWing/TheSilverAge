@@ -32,7 +32,7 @@ public class ModTags {
 
     // Item tags
     public static class Items {
-        public static final TagKey<Item> SILVER_TOOL_MATERIALS = tag("silver_tool_materials");
+        public static final TagKey<Item> GLISTERING_NUGGETS = tag("glistering_nuggets");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));

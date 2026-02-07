@@ -38,6 +38,7 @@ public class DataGenerators {
             lookupProvider)
         );
         generator.addProvider(event.includeServer(), new ModDataMapProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModSpriteSourceProvider(output, lookupProvider, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new ModItemModelProvider(output, existingFileHelper));

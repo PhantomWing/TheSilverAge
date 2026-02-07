@@ -9,6 +9,9 @@ public class Configuration {
     public static final String SILVERFISH_DROP_SILVER_ID = "silverfish_drop_silver";
     public static ModConfigSpec.BooleanValue SILVERFISH_DROP_SILVER;
 
+    public static final String OVERRIDE_VANILLA_RECIPES_ID = "override_vanilla_recipes";
+    public static ModConfigSpec.BooleanValue OVERRIDE_VANILLA_RECIPES;
+
     public static final String CHANCE_SILVER_ORE_ID = "silver_ore_chance";
     public static ModConfigSpec.IntValue CHANCE_SILVER_ORE;
 
@@ -23,7 +26,7 @@ public class Configuration {
     public static int getIntConfigurationValue(String id) {
         return switch (id) {
             case CHANCE_SILVER_ORE_ID -> Configuration.CHANCE_SILVER_ORE.get();
-            default -> 0;
+            default -> throw new Error("Invalid setting ID: " + id);
         };
     }
 
@@ -32,7 +35,8 @@ public class Configuration {
             case SILVERFISH_DROP_SILVER_ID -> Configuration.SILVERFISH_DROP_SILVER.get();
             case ENABLE_VILLAGER_TRADES_ID -> Configuration.ENABLE_VILLAGER_TRADES.get();
             case ENABLE_WANDERING_TRADER_TRADES_ID -> Configuration.ENABLE_WANDERING_TRADER_TRADES.get();
-            default -> false;
+            case OVERRIDE_VANILLA_RECIPES_ID -> Configuration.OVERRIDE_VANILLA_RECIPES.get();
+            default -> throw new Error("Invalid setting ID: " + id);
         };
     }
 
@@ -41,10 +45,11 @@ public class Configuration {
 
         // General settings
         SILVERFISH_DROP_SILVER = COMMON_BUILDER.comment("Should Silverfish drop Silver Nuggets?").define(SILVERFISH_DROP_SILVER_ID, true);
+        OVERRIDE_VANILLA_RECIPES = COMMON_BUILDER.comment("Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)").define(OVERRIDE_VANILLA_RECIPES_ID, true);
         ENABLE_VILLAGER_TRADES = COMMON_BUILDER.comment("Should villagers trade The Silver Age items? (May reduce chances of other trades appearing)").define(ENABLE_VILLAGER_TRADES_ID, true);
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.comment("Should the Wandering Trader sell The Silver Age items?").define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
 
-        // Crop settings
+        // Silver generation settings
         CHANCE_SILVER_ORE = COMMON_BUILDER.comment("Chance of generating silver ore. Smaller value = more frequent. Provide zero to disable generation.")
                 .defineInRange(CHANCE_SILVER_ORE_ID, 32, 0, Integer.MAX_VALUE);
 

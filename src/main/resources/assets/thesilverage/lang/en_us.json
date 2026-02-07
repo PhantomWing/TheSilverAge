@@ -78,9 +78,11 @@
   "item.thesilverage.silver_pickaxe": "Silver Pickaxe",
   "item.thesilverage.silver_shovel": "Silver Shovel",
   "item.thesilverage.silver_sword": "Silver Sword",
+  "item.thesilverage.silver_horse_armor": "Silver Horse Armor",
   "itemGroup.thesilverage": "The Silver Age",
   "trim_material.thesilverage.silver": "Silver Material",
   "thesilverage.configuration.silverfish_drop_silver": "Silverfish drop Silver Nuggets",
+  "thesilverage.configuration.override_vanilla_recipes": "Override vanilla recipes",
   "thesilverage.configuration.enable_villager_trades": "Enable villager trades",
   "thesilverage.configuration.enable_wandering_trader_trades": "Enable wandering trader trades"
 }

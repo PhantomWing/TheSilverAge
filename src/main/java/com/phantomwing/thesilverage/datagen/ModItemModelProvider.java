@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.BlockUtils;
@@ -11,8 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -20,23 +22,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 
-import java.util.LinkedHashMap;
-
 public class ModItemModelProvider extends ItemModelProvider {
-    private static final LinkedHashMap<ResourceKey<TrimMaterial>, Float> trimMaterials = new LinkedHashMap<>();
-    static {
-        trimMaterials.put(TrimMaterials.QUARTZ, 0.1F);
-        trimMaterials.put(TrimMaterials.IRON, 0.2F);
-        trimMaterials.put(TrimMaterials.NETHERITE, 0.3F);
-        trimMaterials.put(TrimMaterials.REDSTONE, 0.4F);
-        trimMaterials.put(TrimMaterials.COPPER, 0.5F);
-        trimMaterials.put(TrimMaterials.GOLD, 0.6F);
-        trimMaterials.put(TrimMaterials.EMERALD, 0.7F);
-        trimMaterials.put(TrimMaterials.DIAMOND, 0.8F);
-        trimMaterials.put(TrimMaterials.LAPIS, 0.9F);
-        trimMaterials.put(TrimMaterials.AMETHYST, 1.0F);
-    }
-
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, TheSilverAge.MOD_ID, existingFileHelper);
     }
@@ -56,10 +42,37 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.SILVER_HOE);
 
         // Silver armor
-        trimmedArmorItem(ModItems.SILVER_HELMET);
-        trimmedArmorItem(ModItems.SILVER_CHESTPLATE);
-        trimmedArmorItem(ModItems.SILVER_LEGGINGS);
-        trimmedArmorItem(ModItems.SILVER_BOOTS);
+        armorItem(ModItems.SILVER_HELMET);
+        armorItem(ModItems.SILVER_CHESTPLATE);
+        armorItem(ModItems.SILVER_LEGGINGS);
+        armorItem(ModItems.SILVER_BOOTS);
+        simpleItem(ModItems.SILVER_HORSE_ARMOR);
+
+        // Extend existing vanilla armor to support Silver as a trim material
+        addModTrimsToArmorItem(Items.LEATHER_HELMET);
+        addModTrimsToArmorItem(Items.LEATHER_CHESTPLATE);
+        addModTrimsToArmorItem(Items.LEATHER_LEGGINGS);
+        addModTrimsToArmorItem(Items.LEATHER_BOOTS);
+        addModTrimsToArmorItem(Items.CHAINMAIL_HELMET);
+        addModTrimsToArmorItem(Items.CHAINMAIL_CHESTPLATE);
+        addModTrimsToArmorItem(Items.CHAINMAIL_LEGGINGS);
+        addModTrimsToArmorItem(Items.CHAINMAIL_BOOTS);
+        addModTrimsToArmorItem(Items.IRON_HELMET);
+        addModTrimsToArmorItem(Items.IRON_CHESTPLATE);
+        addModTrimsToArmorItem(Items.IRON_LEGGINGS);
+        addModTrimsToArmorItem(Items.IRON_BOOTS);
+        addModTrimsToArmorItem(Items.GOLDEN_HELMET);
+        addModTrimsToArmorItem(Items.GOLDEN_CHESTPLATE);
+        addModTrimsToArmorItem(Items.GOLDEN_LEGGINGS);
+        addModTrimsToArmorItem(Items.GOLDEN_BOOTS);
+        addModTrimsToArmorItem(Items.DIAMOND_HELMET);
+        addModTrimsToArmorItem(Items.DIAMOND_CHESTPLATE);
+        addModTrimsToArmorItem(Items.DIAMOND_LEGGINGS);
+        addModTrimsToArmorItem(Items.DIAMOND_BOOTS);
+        addModTrimsToArmorItem(Items.NETHERITE_HELMET);
+        addModTrimsToArmorItem(Items.NETHERITE_CHESTPLATE);
+        addModTrimsToArmorItem(Items.NETHERITE_LEGGINGS);
+        addModTrimsToArmorItem(Items.NETHERITE_BOOTS);
 
         // Ores and Blocks
         blockItem(ModBlocks.SILVER_ORE);
@@ -147,52 +160,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
     }
 
-    // Shoutout to El_Redstoniano for making this
-    private void trimmedArmorItem(DeferredItem<Item> itemDeferredItem) {
-        final String MOD_ID = TheSilverAge.MOD_ID; // Change this to your mod id
-
-        if(itemDeferredItem.get() instanceof ArmorItem armorItem) {
-            trimMaterials.forEach((trimMaterial, value) -> {
-                float trimValue = value;
-
-                String armorType = switch (armorItem.getEquipmentSlot()) {
-                    case HEAD -> "helmet";
-                    case CHEST -> "chestplate";
-                    case LEGS -> "leggings";
-                    case FEET -> "boots";
-                    default -> "";
-                };
-
-                String armorItemPath = armorItem.toString();
-                String trimPath = "trims/items/" + armorType + "_trim_" + trimMaterial.location().getPath();
-                String currentTrimName = armorItemPath + "_" + trimMaterial.location().getPath() + "_trim";
-                ResourceLocation armorItemResLoc = ResourceLocation.parse(armorItemPath);
-                ResourceLocation trimResLoc = ResourceLocation.parse(trimPath); // minecraft namespace
-                ResourceLocation trimNameResLoc = ResourceLocation.parse(currentTrimName);
-
-                // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will
-                // avoid an IllegalArgumentException
-                existingFileHelper.trackGenerated(trimResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
-
-                // Trimmed armorItem files
-                getBuilder(currentTrimName)
-                        .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                        .texture("layer0", armorItemResLoc.getNamespace() + ":item/" + armorItemResLoc.getPath())
-                        .texture("layer1", trimResLoc);
-
-                // Non-trimmed armorItem file (normal variant)
-                this.withExistingParent(itemDeferredItem.getId().getPath(),
-                                mcLoc("item/generated"))
-                        .override()
-                        .model(new ModelFile.UncheckedModelFile(trimNameResLoc.getNamespace()  + ":item/" + trimNameResLoc.getPath()))
-                        .predicate(mcLoc("trim_type"), trimValue).end()
-                        .texture("layer0",
-                                ResourceLocation.fromNamespaceAndPath(MOD_ID,
-                                        "item/" + itemDeferredItem.getId().getPath()));
-            });
-        }
-    }
-
     // A simple item with a model generated from its sprite.
     private <T extends Item> void simpleItem(DeferredItem<T> item) {
         withExistingParent(ItemUtils.getName(item.get()), ResourceLocation.withDefaultNamespace("item/generated"))
@@ -224,5 +191,66 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private <T extends Block> void trapdoorItem(DeferredBlock<T> block) {
         blockItem(block, "bottom");
+    }
+
+    /** Generate new armor models for all TrimMaterials. */
+    private void armorItem(DeferredItem<Item> item) {
+        ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
+            generateTrimArmorModel(item, trimMaterial);
+        });
+
+        generateBaseArmorModel(item);
+    }
+
+    /** Generate new armor models for a specific TrimMaterial. */
+    private void addModTrimsToArmorItem(ItemLike item) {
+        ModTrimMaterials.MOD_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
+            generateTrimArmorModel(item, trimMaterial);
+        });
+
+        generateBaseArmorModel(item);
+    }
+
+    private void generateTrimArmorModel(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
+        if (item.asItem() instanceof ArmorItem armorItem) {
+            String armorType = switch (armorItem.getEquipmentSlot()) {
+                case HEAD -> "helmet";
+                case CHEST -> "chestplate";
+                case LEGS -> "leggings";
+                case FEET -> "boots";
+                default -> "";
+            };
+
+            String trimTexturePath = "trims/items/" + armorType + "_trim_" + ItemUtils.getTrimNameForArmor(armorItem, trimMaterial);
+            String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
+            ResourceLocation armorItemResLoc = ItemUtils.getResourceLocation(armorItem);
+            ResourceLocation trimTextureResLoc = ResourceLocation.parse(trimTexturePath); // minecraft namespace
+
+            // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
+            existingFileHelper.trackGenerated(trimTextureResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
+
+            // Trimmed armorItem file.
+            getBuilder(trimModelName)
+                    .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", armorItemResLoc.getNamespace() + ":item/" + armorItemResLoc.getPath())
+                    .texture("layer1", trimTextureResLoc);
+        }
+    }
+
+    private void generateBaseArmorModel(ItemLike item) {
+        if (item.asItem() instanceof ArmorItem armorItem) {
+            String armorItemPath = armorItem.toString();
+
+            ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
+                String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
+                ResourceLocation trimModelResLoc = ResourceLocation.parse(trimModelName);
+
+                this.withExistingParent(armorItemPath, mcLoc("item/generated"))
+                        .override()
+                        .model(new ModelFile.UncheckedModelFile(trimModelResLoc.getNamespace() + ":item/" + trimModelResLoc.getPath()))
+                        .predicate(mcLoc("trim_type"), trimValue).end()
+                        .texture("layer0", ItemUtils.getItemResourceLocation(armorItem));
+            });
+        }
     }
 }

@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_nugget"
+    },
+    "M": {
+      "item": "minecraft:melon_slice"
+    }
+  },
+  "pattern": [
+    "###",
+    "#M#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:glistering_melon_slice"
+  }
+}

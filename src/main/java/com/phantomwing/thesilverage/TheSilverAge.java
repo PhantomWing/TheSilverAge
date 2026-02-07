@@ -2,6 +2,8 @@ package com.phantomwing.thesilverage;
 
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
+import com.phantomwing.thesilverage.condition.ModConditions;
+import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.loot.LootModifierManager;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
@@ -14,6 +16,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -27,7 +30,7 @@ public class TheSilverAge
 
     public TheSilverAge(IEventBus eventBus, ModContainer container)
     {
-        NeoForge.EVENT_BUS.register(this);
+        eventBus.addListener(this::commonSetup);
 
         container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
 
@@ -36,11 +39,20 @@ public class TheSilverAge
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
 
+        NeoForge.EVENT_BUS.register(this);
         registerManagers(eventBus);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            // Register Firework Star Recipes.
+            ModFireworks.register();
+        });
     }
 
     // Register all managers to the event bus.
     private void registerManagers(IEventBus eventBus) {
+        ModConditions.register(eventBus);
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModCreativeModeTab.register(eventBus);

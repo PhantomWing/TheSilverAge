@@ -1,10 +1,10 @@
 package com.phantomwing.thesilverage.utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 
 import java.util.Objects;
 
@@ -33,5 +33,20 @@ public class ItemUtils {
 
     public static ResourceLocation getItemResourceLocation(ItemLike item) {
         return getPrefixedResourceLocation(item, "item");
+    }
+
+    public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
+        String itemName = item.toString();
+        String trimName = trimMaterial.location().getPath();
+
+        if (itemName.contains(trimName)) {
+            return trimName + "_darker";
+        }
+
+        return trimName;
+    }
+
+    public static String getArmorTrimModelName(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
+        return item.toString() + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
     }
 }

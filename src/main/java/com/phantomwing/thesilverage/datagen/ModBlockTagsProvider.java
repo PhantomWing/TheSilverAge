@@ -22,19 +22,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
-        // Storage blocks
-        tag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER).add(ModBlocks.SILVER_BLOCK.get());
-        tag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER).add(ModBlocks.RAW_SILVER_BLOCK.get());
-        tag(Tags.Blocks.STORAGE_BLOCKS)
-                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER)
-                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER);
+        addModTags(provider);
+        addCommonTags(provider);
+        addMinecraftTags(provider);
+    }
 
-        // Ores
-        tag(CommonTags.Blocks.ORES_SILVER).add(ModBlocks.SILVER_ORE.get(), ModBlocks.DEEPSLATE_SILVER_ORE.get());
-        tag(Tags.Blocks.ORES).addTag(CommonTags.Blocks.ORES_SILVER);
-        tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(ModBlocks.SILVER_ORE.get());
-        tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(ModBlocks.DEEPSLATE_SILVER_ORE.get());
-        tag(Tags.Blocks.ORE_RATES_SINGULAR).addTag(CommonTags.Blocks.ORES_SILVER);
+    private void addModTags(HolderLookup.@NotNull Provider provider) {
+        // Tool requirements
+        tag(ModTags.Blocks.NEEDS_SILVER_TOOL).addTag(BlockTags.NEEDS_IRON_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL).remove(ModTags.Blocks.NEEDS_SILVER_TOOL);
 
         // Silver blocks
         tag(ModTags.Blocks.SILVER_BLOCKS)
@@ -121,12 +117,39 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+    }
 
+    private void addCommonTags(HolderLookup.@NotNull Provider provider) {
+        // Storage blocks
+        tag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER).add(ModBlocks.SILVER_BLOCK.get());
+        tag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER).add(ModBlocks.RAW_SILVER_BLOCK.get());
+        tag(Tags.Blocks.STORAGE_BLOCKS)
+                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER)
+                .addTag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER);
+
+        // Ores
+        tag(CommonTags.Blocks.ORES_SILVER).add(ModBlocks.SILVER_ORE.get(), ModBlocks.DEEPSLATE_SILVER_ORE.get());
+        tag(Tags.Blocks.ORES).addTag(CommonTags.Blocks.ORES_SILVER);
+        tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(ModBlocks.SILVER_ORE.get());
+        tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(ModBlocks.DEEPSLATE_SILVER_ORE.get());
+        tag(Tags.Blocks.ORE_RATES_SINGULAR).addTag(CommonTags.Blocks.ORES_SILVER);
+    }
+
+    private void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
         // Tool requirements
-        tag(ModTags.Blocks.NEEDS_SILVER_TOOL).addTag(BlockTags.NEEDS_IRON_TOOL);
-        tag(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL).remove(ModTags.Blocks.NEEDS_SILVER_TOOL);
         tag(BlockTags.NEEDS_IRON_TOOL).addTag(ModTags.Blocks.SILVER_BLOCKS);
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.SILVER_BLOCKS);
+
+        // Beacon
+        tag(BlockTags.BEACON_BASE_BLOCKS)
+                .add(ModBlocks.SILVER_BLOCK.get())
+                .add(ModBlocks.EXPOSED_SILVER.get())
+                .add(ModBlocks.WEATHERED_SILVER.get())
+                .add(ModBlocks.OXIDIZED_SILVER.get())
+                .add(ModBlocks.WAXED_SILVER_BLOCK.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get());
 
         // Slabs
         tag(BlockTags.SLABS)
@@ -150,6 +173,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
 
+        // Doors
         tag(BlockTags.DOORS)
                 .add(ModBlocks.SILVER_DOOR.get())
                 .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
@@ -160,6 +184,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
 
+        // Trapdoors
         tag(BlockTags.TRAPDOORS)
                 .add(ModBlocks.SILVER_TRAPDOOR.get())
                 .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())

@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.item;
 import com.google.common.collect.Sets;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
+import com.phantomwing.thesilverage.tool.ModTiers;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.*;
@@ -25,17 +26,18 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_SILVER = register("raw_silver");
 
     // Silver tools
-    public static final DeferredItem<Item> SILVER_SWORD = registerSword("silver_sword", ModToolTiers.SILVER);
-    public static final DeferredItem<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModToolTiers.SILVER);
-    public static final DeferredItem<Item> SILVER_PICKAXE = registerPickaxe("silver_pickaxe", ModToolTiers.SILVER);
-    public static final DeferredItem<Item> SILVER_AXE = registerAxe("silver_axe", ModToolTiers.SILVER);
-    public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModToolTiers.SILVER);
+    public static final DeferredItem<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
+    public static final DeferredItem<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);
+    public static final DeferredItem<Item> SILVER_PICKAXE = registerPickaxe("silver_pickaxe", ModTiers.SILVER);
+    public static final DeferredItem<Item> SILVER_AXE = registerAxe("silver_axe", ModTiers.SILVER);
+    public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
 
     // Silver armor
     public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 20);
     public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 20);
     public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 20);
     public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 20);
+    public static final DeferredItem<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
 
     // Silver blocks
     public static final DeferredItem<Item> SILVER_ORE = registerBlock(ModBlocks.SILVER_ORE);

@@ -41,7 +41,7 @@ public class ModPlacedFeatures {
 
         // Extra generation - distribute extra veins in specific biomes, no matter air exposure.
         register(context, ORE_SILVER_EXTRA, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER),
-                commonOrePlacement(25, HeightRangePlacement.uniform(VerticalAnchor.absolute(40), VerticalAnchor.absolute(256))));
+                commonOrePlacement(25, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(128))));
     }
 
     private static void registerWithConfigurableChance(BootstrapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures, ResourceKey<PlacedFeature> placedFeatureKey, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, String configuredChanceId) {

@@ -2,6 +2,12 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
+      "model": "thesilverage:item/silver_chestplate_silver_darker_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.0039207
+      }
+    },
+    {
       "model": "thesilverage:item/silver_chestplate_quartz_trim",
       "predicate": {
         "minecraft:trim_type": 0.1
