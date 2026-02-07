@@ -1,21 +1,16 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.world.ModBiomeModifiers;
-import com.phantomwing.thesilverage.world.ModConfiguredFeatures;
-import com.phantomwing.thesilverage.world.ModPlacedFeatures;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.Set;
@@ -31,12 +26,26 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         
         generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookupProvider));
+
         generator.addProvider(event.includeServer(), new LootTableProvider(
             output,
             Set.of(),
             List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)),
             lookupProvider)
         );
+
+        generator.addProvider(
+                // Tell generator to run only when server data are generating
+                event.includeServer(),
+                new AdvancementProvider(
+                        output,
+                        event.getLookupProvider(),
+                        event.getExistingFileHelper(),
+                        // Sub providers which generate the advancements
+                        List.of(new ModAdvancementProvider())
+                )
+        );
+
         generator.addProvider(event.includeServer(), new ModDataMapProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new ModSpriteSourceProvider(output, lookupProvider, existingFileHelper));
 

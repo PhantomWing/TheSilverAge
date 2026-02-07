@@ -1,0 +1,33 @@
+{
+  "parent": "thesilverage:main/root",
+  "criteria": {
+    "silver_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:silver_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "thesilverage.advancement.obtain_silver_ingot.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "thesilverage:silver_ingot"
+    },
+    "title": {
+      "translate": "thesilverage.advancement.obtain_silver_ingot"
+    }
+  },
+  "requirements": [
+    [
+      "silver_ingot"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "root": {
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/block/bricks.png",
+    "description": {
+      "translate": "thesilverage.advancement.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "thesilverage:raw_silver"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "thesilverage.advancement.root"
+    }
+  },
+  "requirements": [
+    [
+      "root"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
