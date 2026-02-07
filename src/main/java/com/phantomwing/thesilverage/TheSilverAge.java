@@ -1,9 +1,11 @@
 package com.phantomwing.thesilverage;
 
+import com.mojang.logging.LogUtils;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
+import com.phantomwing.thesilverage.item.ModItemProperties;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.loot.LootModifierManager;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
@@ -22,11 +24,13 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.slf4j.Logger;
 
 @Mod(TheSilverAge.MOD_ID)
 public class TheSilverAge
 {
     public static final String MOD_ID = "thesilverage";
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public TheSilverAge(IEventBus eventBus, ModContainer container)
     {
@@ -69,6 +73,7 @@ public class TheSilverAge
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            ModItemProperties.register();
         }
     }
 

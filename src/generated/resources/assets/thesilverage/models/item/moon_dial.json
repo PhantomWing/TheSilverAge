@@ -1,0 +1,104 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "thesilverage:item/moon_dial_0",
+      "predicate": {
+        "thesilverage:moon_phase": 0.0
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_1",
+      "predicate": {
+        "thesilverage:moon_phase": 0.01
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_2",
+      "predicate": {
+        "thesilverage:moon_phase": 0.02
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_3",
+      "predicate": {
+        "thesilverage:moon_phase": 0.03
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_4",
+      "predicate": {
+        "thesilverage:moon_phase": 0.04
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_5",
+      "predicate": {
+        "thesilverage:moon_phase": 0.05
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_6",
+      "predicate": {
+        "thesilverage:moon_phase": 0.06
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_7",
+      "predicate": {
+        "thesilverage:moon_phase": 0.07
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_8",
+      "predicate": {
+        "thesilverage:moon_phase": 0.08
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_9",
+      "predicate": {
+        "thesilverage:moon_phase": 0.09
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_10",
+      "predicate": {
+        "thesilverage:moon_phase": 0.1
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_11",
+      "predicate": {
+        "thesilverage:moon_phase": 0.11
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_12",
+      "predicate": {
+        "thesilverage:moon_phase": 0.12
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_13",
+      "predicate": {
+        "thesilverage:moon_phase": 0.13
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_14",
+      "predicate": {
+        "thesilverage:moon_phase": 0.14
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_15",
+      "predicate": {
+        "thesilverage:moon_phase": 0.15
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "thesilverage:item/moon_dial"
+  }
+}

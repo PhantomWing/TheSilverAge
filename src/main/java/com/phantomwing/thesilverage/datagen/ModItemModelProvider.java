@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.datagen;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.item.ModItemProperties;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.BlockUtils;
 import com.phantomwing.thesilverage.utils.ItemUtils;
@@ -47,6 +48,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         armorItem(ModItems.SILVER_LEGGINGS);
         armorItem(ModItems.SILVER_BOOTS);
         simpleItem(ModItems.SILVER_HORSE_ARMOR);
+
+        // Utility items
+        lunarClockItem(ModItems.MOON_DIAL);
 
         // Extend existing vanilla armor to support Silver as a trim material
         addModTrimsToArmorItem(Items.LEATHER_HELMET);
@@ -192,6 +196,37 @@ public class ModItemModelProvider extends ItemModelProvider {
     private <T extends Block> void trapdoorItem(DeferredBlock<T> block) {
         blockItem(block, "bottom");
     }
+
+
+    private void lunarClockItem(DeferredItem<Item> deferredItem) {
+        Item item = deferredItem.get();
+        String itemPath = item.toString();
+
+        for (int i = 0; i <= 15; i++) {
+            String modelName = itemPath + "_" + i;
+            ResourceLocation phaseModelLoc = ResourceLocation.parse(modelName);
+
+            ResourceLocation phaseTexture = ItemUtils.getItemResourceLocation(item, i + "");
+            ResourceLocation itemLoc = ItemUtils.getItemResourceLocation(item);
+
+            // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
+            existingFileHelper.trackGenerated(phaseTexture, PackType.CLIENT_RESOURCES, ".png", "textures");
+
+            // Moon phase model variant.
+            getBuilder(modelName)
+                    .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", itemLoc.getNamespace() + ":" + itemLoc.getPath())
+                    .texture("layer1", phaseTexture);
+
+            // Base item model, containing an override for each moon phase.
+            this.withExistingParent(itemPath, mcLoc("item/generated"))
+                    .override()
+                    .model(new ModelFile.UncheckedModelFile(phaseModelLoc.getNamespace() + ":item/" + phaseModelLoc.getPath()))
+                    .predicate(ModItemProperties.MOON_PHASE, i / 100f).end()
+                    .texture("layer0", ItemUtils.getItemResourceLocation(item));
+        }
+    }
+
 
     /** Generate new armor models for all TrimMaterials. */
     private void armorItem(DeferredItem<Item> item) {

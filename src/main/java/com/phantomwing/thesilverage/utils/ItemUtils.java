@@ -26,13 +26,17 @@ public class ItemUtils {
         return rl.getNamespace() + ":" + rl.getPath();
     }
 
-    public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix) {
+    public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
         String namespace = getNamespace(item);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item));
+        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
     public static ResourceLocation getItemResourceLocation(ItemLike item) {
-        return getPrefixedResourceLocation(item, "item");
+        return getPrefixedResourceLocation(item, "item", "");
+    }
+
+    public static ResourceLocation getItemResourceLocation(ItemLike item, String suffix) {
+        return getPrefixedResourceLocation(item, "item", suffix);
     }
 
     public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {

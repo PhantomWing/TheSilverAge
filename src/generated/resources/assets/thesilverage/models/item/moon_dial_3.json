@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thesilverage:item/moon_dial",
+    "layer1": "thesilverage:item/moon_dial_3"
+  }
+}

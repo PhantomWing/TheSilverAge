@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-07T13:46:42.8396453	Item Models: thesilverage
+// 1.21.1	2026-02-07T18:00:58.4085888	Item Models: thesilverage
 2e2a2838f022e1338b716c713fcbeaa87a3f21fe assets/minecraft/models/item/chainmail_boots.json
 a454719a3efa5b8f2d1edcab304d85901b2c2e59 assets/minecraft/models/item/chainmail_boots_silver_trim.json
 6ae28998d86cf640c5cb4da2ebed43c1fca894a5 assets/minecraft/models/item/chainmail_chestplate.json
@@ -60,6 +60,23 @@ d37c70519a5b5b185312be55e03b782559a643f9 assets/thesilverage/models/item/exposed
 84e6990feb69a178621fec88d3a87fe295772f5b assets/thesilverage/models/item/exposed_silver_door.json
 39979f38c61ee9f5da88eff8e78613ef2fe8d823 assets/thesilverage/models/item/exposed_silver_grate.json
 2baec8f337043f5f3ae657a2958d0d659ebefd3a assets/thesilverage/models/item/exposed_silver_trapdoor.json
+f7a7ae5d3d390f9c8fd01b093f9d10b3f2466093 assets/thesilverage/models/item/moon_dial.json
+08c9573f37b4ac1d341bad70b75564c1ee384abd assets/thesilverage/models/item/moon_dial_0.json
+e72fef56f79de12d393f5bee70ffa3d5ee2145c3 assets/thesilverage/models/item/moon_dial_1.json
+1468bfd3c8062e898fb0c9f5760d55e13977f92e assets/thesilverage/models/item/moon_dial_10.json
+49c4f2d2f8f72eb28aff3eab6450ec131c12ba1b assets/thesilverage/models/item/moon_dial_11.json
+f483e122014d64ffd40450fc951ce673e7f0e1b0 assets/thesilverage/models/item/moon_dial_12.json
+4728b2695f4acf9111f0f2cd00e233c3491f8833 assets/thesilverage/models/item/moon_dial_13.json
+17161dd6e69bd6717af31f7a7c9e608500f7d66a assets/thesilverage/models/item/moon_dial_14.json
+2da19659f55401de25b6789fffea1f81115630b7 assets/thesilverage/models/item/moon_dial_15.json
+62fd9c11f1f1c99e857f32ca157c9fc811956894 assets/thesilverage/models/item/moon_dial_2.json
+e62c26a0eebcec93ccdcee6d239ad5d58d46b3c8 assets/thesilverage/models/item/moon_dial_3.json
+bfdf7ab9e3f392358430c460d2a89e9f20843be2 assets/thesilverage/models/item/moon_dial_4.json
+9b7f481d3f841d5c151197c79c25061185ee00c3 assets/thesilverage/models/item/moon_dial_5.json
+0b8f47d11a1576b9d1ea948ed0046eee40066741 assets/thesilverage/models/item/moon_dial_6.json
+ed29449ead35df85c91fb2cb391af911025df5c7 assets/thesilverage/models/item/moon_dial_7.json
+1c7d6a53ffc31de5bd62adf5ed13f8e3cecbf195 assets/thesilverage/models/item/moon_dial_8.json
+a0aaa4155de39dcb574fdadf0f21ec3ee2ef7cf0 assets/thesilverage/models/item/moon_dial_9.json
 49438ddc2530b7fa1d9d7e656903245e07e9993b assets/thesilverage/models/item/oxidized_chiseled_silver.json
 c817eda7a65d3c1c38fdd46e726690ce977cf00c assets/thesilverage/models/item/oxidized_cut_silver.json
 c88e090d79f22bcfe7e4de3e674775e54c73ab89 assets/thesilverage/models/item/oxidized_cut_silver_slab.json
