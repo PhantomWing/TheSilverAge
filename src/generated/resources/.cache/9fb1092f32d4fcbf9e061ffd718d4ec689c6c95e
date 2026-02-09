@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-07T23:31:58.013129	Recipes
+// 1.21.1	2026-02-08T10:04:29.7323507	Recipes
 10fe497199f95e31e39e301c5fe4b85ae0cb78b1 data/minecraft/advancement/recipes/misc/brewing_stand.json
 10c2a8bd8198a470cebb78e12269bb136c0f790b data/minecraft/advancement/recipes/misc/brewing_stand_fallback.json
 2fccb48db35b4145407b9aa2e75c3744a849faa1 data/minecraft/advancement/recipes/misc/glistering_melon_slice.json
@@ -194,7 +194,7 @@ b552fb57c1740314637b3597e37d92bc2c667571 data/thesilverage/advancement/recipes/m
 897a0fda48b4a3ef08ff2d692e501a0827b1e9c8 data/thesilverage/advancement/recipes/misc/silver_nugget_from_silver_shovel_smelting.json
 cefcfb08ae70b8381a0be2bf3d17e05ed345e157 data/thesilverage/advancement/recipes/misc/silver_nugget_from_silver_sword_blasting.json
 421b48c4dcc33744250b2bfa18a8d95dd8181a3d data/thesilverage/advancement/recipes/misc/silver_nugget_from_silver_sword_smelting.json
-1c135c44988eadfeeaac29193bcc12825a1bfcce data/thesilverage/advancement/recipes/redstone/moon_dial.json
+867911f9ed7e79231905143ad81e24c1bfd9cabc data/thesilverage/advancement/recipes/redstone/moon_dial.json
 41cacc2c4d48cd8156c3040d07c13ed609fe2654 data/thesilverage/advancement/recipes/redstone/moon_phase_detector.json
 73e8b71cd3cd77d3269639f8a35b80b5bde8105f data/thesilverage/advancement/recipes/redstone/silver_door.json
 13407c80ea3e1e7f42688187a49a53dd53359abb data/thesilverage/advancement/recipes/redstone/silver_trapdoor.json

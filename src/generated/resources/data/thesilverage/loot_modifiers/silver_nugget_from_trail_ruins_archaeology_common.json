@@ -1,0 +1,19 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:archaeology/trail_ruins_common"
+    },
+    {
+      "chance": 0.5,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 0,
+  "item": "thesilverage:silver_nugget",
+  "max_stacks": 0,
+  "removed_item": [
+    "minecraft:gold_nugget"
+  ]
+}

@@ -38,6 +38,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.DEEPSLATE_SILVER_ORE.get())
                 .add(ModBlocks.RAW_SILVER_BLOCK.get())
 
+                .add(ModBlocks.MOON_PHASE_DETECTOR.get())
+
                 // Block of Silver
                 .add(ModBlocks.SILVER_BLOCK.get())
                 .add(ModBlocks.EXPOSED_SILVER.get())

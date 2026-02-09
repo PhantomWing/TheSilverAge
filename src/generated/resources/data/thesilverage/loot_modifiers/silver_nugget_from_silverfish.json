@@ -4,6 +4,10 @@
     {
       "condition": "neoforge:loot_table_id",
       "loot_table_id": "minecraft:entities/silverfish"
+    },
+    {
+      "chance": 1.0,
+      "condition": "minecraft:random_chance"
     }
   ],
   "item": "thesilverage:silver_nugget",

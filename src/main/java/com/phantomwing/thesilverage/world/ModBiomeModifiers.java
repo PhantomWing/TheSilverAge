@@ -19,7 +19,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ORE_SILVER = registerKey("ore_silver");
     public static final ResourceKey<BiomeModifier> ORE_SILVER_LOWER = registerKey("ore_silver_lower");
-    public static final ResourceKey<BiomeModifier> ORE_SILVER_SMALL = registerKey("ore_silver_small");
     public static final ResourceKey<BiomeModifier> ORE_SILVER_EXTRA = registerKey("ore_silver_extra");
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context){
@@ -29,7 +28,6 @@ public class ModBiomeModifiers {
     private static void registerWildCrops(BootstrapContext<BiomeModifier> context) {
         registerOre(context, ORE_SILVER, ModPlacedFeatures.ORE_SILVER, ModTags.Biomes.HAS_SILVER_ORE);
         registerOre(context, ORE_SILVER_LOWER, ModPlacedFeatures.ORE_SILVER_LOWER, ModTags.Biomes.HAS_SILVER_ORE);
-        registerOre(context, ORE_SILVER_SMALL, ModPlacedFeatures.ORE_SILVER_SMALL, ModTags.Biomes.HAS_SILVER_ORE);
         registerOre(context, ORE_SILVER_EXTRA, ModPlacedFeatures.ORE_SILVER_EXTRA, ModTags.Biomes.HAS_EXTRA_SILVER_ORE);
 
     }

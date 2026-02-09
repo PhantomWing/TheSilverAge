@@ -15,21 +15,21 @@ import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
-public class SilverfishDropSilverModifier extends LootModifier {
-    public static final MapCodec<SilverfishDropSilverModifier> CODEC = RecordCodecBuilder.mapCodec(inst ->
+public class SilverfishDropsModifier extends LootModifier {
+    public static final MapCodec<SilverfishDropsModifier> CODEC = RecordCodecBuilder.mapCodec(inst ->
             LootModifier.codecStart(inst).and(inst.group(
                     BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(e -> e.item),
                     Codec.INT.fieldOf("minAmount").forGetter(e -> e.minAmount),
                     Codec.INT.fieldOf("maxAmount").forGetter(e -> e.maxAmount)
                     )
-            ).apply(inst, SilverfishDropSilverModifier::new)
+            ).apply(inst, SilverfishDropsModifier::new)
     );
 
     private final Item item;
     private final int minAmount;
     private final int maxAmount;
 
-    public SilverfishDropSilverModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
+    public SilverfishDropsModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
         super(conditionsIn);
 
         this.item = item;

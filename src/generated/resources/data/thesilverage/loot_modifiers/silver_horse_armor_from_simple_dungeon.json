@@ -1,0 +1,20 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/simple_dungeon"
+    },
+    {
+      "chance": 0.25,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 1,
+  "item": "thesilverage:silver_horse_armor",
+  "max_stacks": 1,
+  "removed_item": [
+    "minecraft:golden_horse_armor",
+    "minecraft:iron_horse_armor"
+  ]
+}

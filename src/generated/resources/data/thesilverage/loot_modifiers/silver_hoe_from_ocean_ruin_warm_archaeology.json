@@ -1,0 +1,19 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:archaeology/ocean_ruin_warm"
+    },
+    {
+      "chance": 0.25,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 0,
+  "item": "thesilverage:silver_hoe",
+  "max_stacks": 0,
+  "removed_item": [
+    "minecraft:wooden_hoe"
+  ]
+}

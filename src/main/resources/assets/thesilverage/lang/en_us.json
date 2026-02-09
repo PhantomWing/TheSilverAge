@@ -85,10 +85,13 @@
   "trim_material.thesilverage.silver": "Silver Material",
   "thesilverage.configuration.silverfish_drop_silver": "Silverfish drop Silver Nuggets",
   "thesilverage.configuration.override_vanilla_recipes": "Override vanilla recipes",
+  "thesilverage.configuration.generate_structure_loot": "Generate structure loot",
   "thesilverage.configuration.enable_villager_trades": "Enable villager trades",
   "thesilverage.configuration.enable_wandering_trader_trades": "Enable wandering trader trades",
   "thesilverage.advancement.root": "The Silver Age",
-  "thesilverage.advancement.root.description": "Welcome to the Silver Age!",
-  "thesilverage.advancement.obtain_silver_ingot": "Silver Age",
-  "thesilverage.advancement.obtain_silver_ingot.description": "Smelt Raw Silver into a Silver Ingot."
+  "thesilverage.advancement.root.description": "Not all that glitters is gold",
+  "thesilverage.advancement.obtain_silver_ingot": "Sterling Work",
+  "thesilverage.advancement.obtain_silver_ingot.description": "Smelt a Silver Ingot",
+  "thesilverage.advancement.obtain_moon_dial": "Dial M for Moon",
+  "thesilverage.advancement.obtain_moon_dial.description": "Observe the current moon phase using a Moon Dial"
 }

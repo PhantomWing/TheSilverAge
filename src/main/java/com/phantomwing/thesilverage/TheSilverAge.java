@@ -8,7 +8,7 @@ import com.phantomwing.thesilverage.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.item.ModItemProperties;
 import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.loot.LootModifierManager;
+import com.phantomwing.thesilverage.loot.ModLootModifiers;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -63,7 +63,7 @@ public class TheSilverAge
         ModBlockEntityTypes.register(eventBus);
         ModCreativeModeTab.register(eventBus);
         ModArmorMaterials.register(eventBus);
-        LootModifierManager.register(eventBus);
+        ModLootModifiers.register(eventBus);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

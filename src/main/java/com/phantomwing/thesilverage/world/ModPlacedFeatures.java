@@ -21,7 +21,6 @@ public class ModPlacedFeatures {
 
     public static final ResourceKey<PlacedFeature> ORE_SILVER = registerKey("ore_silver");
     public static final ResourceKey<PlacedFeature> ORE_SILVER_LOWER = registerKey("ore_silver_lower");
-    public static final ResourceKey<PlacedFeature> ORE_SILVER_SMALL = registerKey("ore_silver_small");
     public static final ResourceKey<PlacedFeature> ORE_SILVER_EXTRA = registerKey("ore_silver_extra");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context){
@@ -36,12 +35,8 @@ public class ModPlacedFeatures {
                 orePlacement(CountPlacement.of(UniformInt.of(0, 1)), HeightRangePlacement.uniform(VerticalAnchor.absolute(ANCIENT_CITY_LAYER), VerticalAnchor.absolute(ANCIENT_CITY_LAYER + 16))));
 
         // Distribute a few smaller veins uniformly until a somewhat higher level, no matter air exposure.
-        register(context, ORE_SILVER_SMALL, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER_SMALL),
+        register(context, ORE_SILVER_EXTRA, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER_SMALL),
                 commonOrePlacement(8, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(48))));
-
-        // Extra generation - distribute extra veins in specific biomes, no matter air exposure.
-        register(context, ORE_SILVER_EXTRA, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER),
-                commonOrePlacement(25, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(128))));
     }
 
     private static void registerWithConfigurableChance(BootstrapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures, ResourceKey<PlacedFeature> placedFeatureKey, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, String configuredChanceId) {

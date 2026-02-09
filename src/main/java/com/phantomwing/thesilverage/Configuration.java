@@ -12,6 +12,9 @@ public class Configuration {
     public static final String OVERRIDE_VANILLA_RECIPES_ID = "override_vanilla_recipes";
     public static ModConfigSpec.BooleanValue OVERRIDE_VANILLA_RECIPES;
 
+    public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
+    public static ModConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
+
     public static final String CHANCE_SILVER_ORE_ID = "silver_ore_chance";
     public static ModConfigSpec.IntValue CHANCE_SILVER_ORE;
 
@@ -36,6 +39,7 @@ public class Configuration {
             case ENABLE_VILLAGER_TRADES_ID -> Configuration.ENABLE_VILLAGER_TRADES.get();
             case ENABLE_WANDERING_TRADER_TRADES_ID -> Configuration.ENABLE_WANDERING_TRADER_TRADES.get();
             case OVERRIDE_VANILLA_RECIPES_ID -> Configuration.OVERRIDE_VANILLA_RECIPES.get();
+            case GENERATE_STRUCTURE_LOOT_ID -> Configuration.GENERATE_STRUCTURE_LOOT.get();
             default -> throw new Error("Invalid setting ID: " + id);
         };
     }
@@ -48,6 +52,7 @@ public class Configuration {
         OVERRIDE_VANILLA_RECIPES = COMMON_BUILDER.comment("Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)").define(OVERRIDE_VANILLA_RECIPES_ID, true);
         ENABLE_VILLAGER_TRADES = COMMON_BUILDER.comment("Should villagers trade The Silver Age items? (May reduce chances of other trades appearing)").define(ENABLE_VILLAGER_TRADES_ID, true);
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.comment("Should the Wandering Trader sell The Silver Age items?").define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
+        GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.comment("Generate The Silver Age loot in structures?").define(GENERATE_STRUCTURE_LOOT_ID, true);
 
         // Silver generation settings
         CHANCE_SILVER_ORE = COMMON_BUILDER.comment("Chance of generating silver ore. Smaller value = more frequent. Provide zero to disable generation.")

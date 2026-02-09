@@ -1,0 +1,19 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/abandoned_mineshaft"
+    },
+    {
+      "chance": 0.1,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 0,
+  "item": "thesilverage:silver_pickaxe",
+  "max_stacks": 0,
+  "removed_item": [
+    "minecraft:iron_pickaxe"
+  ]
+}

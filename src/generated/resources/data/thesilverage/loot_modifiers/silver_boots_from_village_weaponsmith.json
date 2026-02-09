@@ -1,0 +1,19 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_weaponsmith"
+    },
+    {
+      "chance": 0.1,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 1,
+  "item": "thesilverage:silver_boots",
+  "max_stacks": 1,
+  "removed_item": [
+    "minecraft:iron_boots"
+  ]
+}

@@ -6,7 +6,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "minecraft:textures/block/bricks.png",
+    "background": "thesilverage:textures/block/exposed_silver_block.png",
     "description": {
       "translate": "thesilverage.advancement.root.description"
     },

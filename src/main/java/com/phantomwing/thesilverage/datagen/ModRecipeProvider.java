@@ -9,7 +9,6 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -72,7 +71,6 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('R', Items.REDSTONE)
                 .define('S', ModItems.SILVER_INGOT)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
-                .unlockedBy(getHasName(ModItems.SILVER_INGOT), has(ModItems.SILVER_INGOT))
                 .save(output);
 
         // Moon Phase Detector

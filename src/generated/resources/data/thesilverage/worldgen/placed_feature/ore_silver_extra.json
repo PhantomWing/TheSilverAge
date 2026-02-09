@@ -1,9 +1,9 @@
 {
-  "feature": "thesilverage:ore_silver",
+  "feature": "thesilverage:ore_silver_small",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 25
+      "count": 8
     },
     {
       "type": "minecraft:in_square"
@@ -13,7 +13,7 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 128
+          "absolute": 48
         },
         "min_inclusive": {
           "above_bottom": 0

@@ -1,0 +1,33 @@
+{
+  "parent": "thesilverage:main/obtain_silver_ingot",
+  "criteria": {
+    "moon_dial": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:moon_dial"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "thesilverage.advancement.obtain_moon_dial.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "thesilverage:moon_dial"
+    },
+    "title": {
+      "translate": "thesilverage.advancement.obtain_moon_dial"
+    }
+  },
+  "requirements": [
+    [
+      "moon_dial"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

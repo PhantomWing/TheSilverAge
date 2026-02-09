@@ -1,0 +1,19 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_temple"
+    },
+    {
+      "chance": 0.5,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 1,
+  "item": "thesilverage:silver_ingot",
+  "max_stacks": 1,
+  "removed_item": [
+    "minecraft:gold_ingot"
+  ]
+}

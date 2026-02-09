@@ -27,13 +27,14 @@ public class ModAdvancementProvider implements AdvancementProvider.AdvancementGe
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        ResourceLocation.parse("thesilverage:textures/block/silver_block.png"),
+                        ResourceLocation.parse("thesilverage:textures/block/exposed_silver_block.png"),
                         AdvancementType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));
 
         // Obtain Silver
         AdvancementHolder obtainSilverIngot = obtainItemAdvancement(consumer, theSilverAge, ModItems.SILVER_INGOT);
+        AdvancementHolder obtainMoonDial = obtainItemAdvancement(consumer, obtainSilverIngot, ModItems.MOON_DIAL);
     }
 
     protected static AdvancementHolder obtainItemAdvancement(Consumer<AdvancementHolder> consumer, AdvancementHolder parent, ItemLike item) {
