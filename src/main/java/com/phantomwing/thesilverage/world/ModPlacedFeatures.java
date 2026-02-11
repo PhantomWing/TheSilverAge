@@ -1,12 +1,10 @@
 package com.phantomwing.thesilverage.world;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.world.modifiers.ConfigurableRarityFilter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -34,15 +32,9 @@ public class ModPlacedFeatures {
         register(context, ORE_SILVER_LOWER, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER_BURIED),
                 orePlacement(CountPlacement.of(UniformInt.of(0, 1)), HeightRangePlacement.uniform(VerticalAnchor.absolute(ANCIENT_CITY_LAYER), VerticalAnchor.absolute(ANCIENT_CITY_LAYER + 16))));
 
-        // Distribute a few smaller veins uniformly until a somewhat higher level, no matter air exposure.
+        // In some biomes, distribute a few smaller veins uniformly until a somewhat higher level, no matter air exposure.
         register(context, ORE_SILVER_EXTRA, configuredFeatures.getOrThrow(ModConfiguredFeatures.ORE_SILVER_SMALL),
                 commonOrePlacement(8, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(48))));
-    }
-
-    private static void registerWithConfigurableChance(BootstrapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures, ResourceKey<PlacedFeature> placedFeatureKey, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, String configuredChanceId) {
-        register(context, placedFeatureKey, configuredFeatures.getOrThrow(configuredFeatureKey), List.of(ConfigurableRarityFilter.withConfigurableChance(configuredChanceId),
-                InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
-        );
     }
 
     private static List<PlacementModifier> orePlacement(PlacementModifier pCountPlacement, PlacementModifier pHeightRange) {

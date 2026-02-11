@@ -6,7 +6,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "thesilverage:textures/block/exposed_silver_block.png",
+    "background": "thesilverage:textures/block/exposed_silver.png",
     "description": {
       "translate": "thesilverage.advancement.root.description"
     },

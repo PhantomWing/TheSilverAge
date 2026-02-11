@@ -33,10 +33,10 @@ public class ModItems {
     public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
 
     // Silver armor
-    public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 20);
-    public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 20);
-    public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 20);
-    public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 20);
+    public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 12);
+    public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 12);
+    public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 12);
+    public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 12);
     public static final DeferredItem<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
 
     // Utility items

@@ -1,0 +1,21 @@
+{
+  "type": "thesilverage:replace_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:gameplay/hero_of_the_village/weaponsmith_gift"
+    },
+    {
+      "chance": 0.25,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "in_stacks": 1,
+  "item": "thesilverage:silver_axe",
+  "max_stacks": 1,
+  "removed_item": [
+    "minecraft:stone_axe",
+    "minecraft:iron_axe",
+    "minecraft:golden_axe"
+  ]
+}

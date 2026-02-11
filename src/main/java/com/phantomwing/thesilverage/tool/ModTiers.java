@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.SimpleTier;
 
 public class ModTiers {
     public static final Tier SILVER = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL,
-            655,
+            224,
             7.0f,
             2.5f,
             18,

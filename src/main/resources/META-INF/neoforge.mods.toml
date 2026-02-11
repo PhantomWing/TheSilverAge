@@ -8,15 +8,14 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://github.com/PhantomWing/TheSilverAge"
-logoFile= "../logo.png"
+logoFile= "logo.png"
 logoBlur=false
 credits=""
 authors="${mod_authors}"
 description='''${mod_description}'''
 ## Catalogue mod compatibility
-itemIcon = "thesilverage:silver_block"
-configBackground = "minecraft:textures/block/bricks.png"
-featureFlags="META-INF/feature_flags.json"
+itemIcon = "thesilverage:raw_silver"
+configBackground = "thesilverage:textures/block/exposed_silver.png"
 
 [[dependencies.${mod_id}]]
 modId="neoforge"

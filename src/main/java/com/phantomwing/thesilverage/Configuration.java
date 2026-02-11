@@ -15,9 +15,6 @@ public class Configuration {
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
     public static ModConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
 
-    public static final String CHANCE_SILVER_ORE_ID = "silver_ore_chance";
-    public static ModConfigSpec.IntValue CHANCE_SILVER_ORE;
-
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
@@ -25,13 +22,6 @@ public class Configuration {
     // Wandering Trader trades
     public static final String ENABLE_WANDERING_TRADER_TRADES_ID = "enable_wandering_trader_trades";
     public static ModConfigSpec.BooleanValue ENABLE_WANDERING_TRADER_TRADES;
-
-    public static int getIntConfigurationValue(String id) {
-        return switch (id) {
-            case CHANCE_SILVER_ORE_ID -> Configuration.CHANCE_SILVER_ORE.get();
-            default -> throw new Error("Invalid setting ID: " + id);
-        };
-    }
 
     public static boolean getBooleanConfigurationValue(String id) {
         return switch (id) {
@@ -53,10 +43,6 @@ public class Configuration {
         ENABLE_VILLAGER_TRADES = COMMON_BUILDER.comment("Should villagers trade The Silver Age items? (May reduce chances of other trades appearing)").define(ENABLE_VILLAGER_TRADES_ID, true);
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.comment("Should the Wandering Trader sell The Silver Age items?").define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
         GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.comment("Generate The Silver Age loot in structures?").define(GENERATE_STRUCTURE_LOOT_ID, true);
-
-        // Silver generation settings
-        CHANCE_SILVER_ORE = COMMON_BUILDER.comment("Chance of generating silver ore. Smaller value = more frequent. Provide zero to disable generation.")
-                .defineInRange(CHANCE_SILVER_ORE_ID, 32, 0, Integer.MAX_VALUE);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

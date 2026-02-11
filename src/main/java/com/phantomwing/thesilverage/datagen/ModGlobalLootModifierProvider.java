@@ -174,6 +174,14 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 1
         ));
 
+        // Villager gifts
+        add("silver_axe_from_weaponsmith_gift", new ReplaceItemModifier(
+                conditions(BuiltInLootTables.WEAPONSMITH_GIFT, 0.25f),
+                ModItems.SILVER_AXE,
+                List.of(Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE),
+                1
+        ));
+
         // Mineshaft
         add("silver_ingot_from_mineshaft", new ReplaceItemModifier(
                 conditions(BuiltInLootTables.ABANDONED_MINESHAFT, 0.5f),

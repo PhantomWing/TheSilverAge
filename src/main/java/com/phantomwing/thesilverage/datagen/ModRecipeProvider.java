@@ -238,6 +238,17 @@ public class ModRecipeProvider extends RecipeProvider {
 
     /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */
     private void buildRecipeOverrides(@NotNull RecipeOutput output) {
+        // Glistering Melon Slice
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
+                .pattern("###")
+                .pattern("#M#")
+                .pattern("###")
+                .define('#', ModTags.Items.GLISTERING_NUGGETS)
+                .define('M', Items.MELON_SLICE)
+                .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
+                .save(output);
+
+        // Conditional overrides:
         ICondition condition = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
         RecipeOutput conditionalOutput = output.withConditions(condition);
         RecipeOutput fallbackOutput = output.withConditions(new NotCondition(condition));
@@ -276,31 +287,13 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");  // Original recipe if override is disabled
 
-        // Glistering Melon Slice
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
-                .pattern("###")
-                .pattern("#M#")
-                .pattern("###")
-                .define('#', ModTags.Items.GLISTERING_NUGGETS)
-                .define('M', Items.MELON_SLICE)
-                .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
-                .save(conditionalOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
-                .pattern("###")
-                .pattern("#M#")
-                .pattern("###")
-                .define('#', Items.GOLD_NUGGET)
-                .define('M', Items.MELON_SLICE)
-                .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.GLISTERING_MELON_SLICE) + "_fallback");  // Original recipe if override is disabled
-
         // Name Tag
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.NAME_TAG, 1)
-                .requires(Items.PAPER)
-                .requires(ModItems.SILVER_NUGGET)
-                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
-                .save(conditionalOutput);
-        // TODO: Add fallback recipe when Name Tag recipe is added in later Minecraft version
+//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.NAME_TAG, 1)
+//                .requires(Items.PAPER)
+//                .requires(ModItems.SILVER_NUGGET)
+//                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
+//                .save(conditionalOutput);
+        // TODO: Tweak Name Tag recipe when it is added in later Minecraft version
 
         // Redstone Comparator
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)

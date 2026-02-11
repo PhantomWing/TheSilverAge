@@ -1,10 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "thesilverage:config_boolean",
-      "settingId": "override_vanilla_recipes"
-    }
-  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_melon_slice": {

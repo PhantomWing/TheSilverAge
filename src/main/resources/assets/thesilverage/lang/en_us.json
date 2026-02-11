@@ -93,5 +93,13 @@
   "thesilverage.advancement.obtain_silver_ingot": "Sterling Work",
   "thesilverage.advancement.obtain_silver_ingot.description": "Smelt a Silver Ingot",
   "thesilverage.advancement.obtain_moon_dial": "Dial M for Moon",
-  "thesilverage.advancement.obtain_moon_dial.description": "Observe the current moon phase using a Moon Dial"
+  "thesilverage.advancement.obtain_moon_dial.description": "Observe the current moon phase using a Moon Dial",
+  "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Should the Wandering Trader sell The Silver Age items?",
+  "thesilverage.configuration.title": "The Silver Age Configuration",
+  "thesilverage.configuration.section.thesilverage.common.toml.title": "The Silver Age Configuration",
+  "thesilverage.configuration.override_vanilla_recipes.tooltip": "Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)",
+  "thesilverage.configuration.generate_structure_loot.tooltip": "Generate The Silver Age loot in structures?",
+  "thesilverage.configuration.section.thesilverage.common.toml": "Various configurable settings for The Silver Age.",
+  "thesilverage.configuration.silverfish_drop_silver.tooltip": "Should Silverfish randomly drop 0-2 Silver Nuggets?",
+  "thesilverage.configuration.enable_villager_trades.tooltip": "Should villagers trade The Silver Age items?"
 }
