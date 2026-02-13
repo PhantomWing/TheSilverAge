@@ -21,16 +21,17 @@ public class ModArmorMaterials {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, TheSilverAge.MOD_ID);
 
     public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIAL = register("silver",
-            3,
+            2,
             6,
             7,
             3,
             8,
             0,
             0,
-            12,
+            20,
             Ingredient.of(CommonTags.Items.INGOTS_SILVER)
     );
+
 
     private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantability, Ingredient repairIngredient) {
         EnumMap<ArmorItem.Type, Integer> typeProtection = Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {

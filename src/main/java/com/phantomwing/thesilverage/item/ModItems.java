@@ -33,10 +33,10 @@ public class ModItems {
     public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
 
     // Silver armor
-    public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 12);
-    public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 12);
-    public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 12);
-    public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 12);
+    public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 10); // Iron is 15, Gold is 7, Leather is 5, Diamond is 33, Netherite is 37
+    public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 10);
+    public static final DeferredItem<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 10);
+    public static final DeferredItem<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 10);
     public static final DeferredItem<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
 
     // Utility items
@@ -156,12 +156,12 @@ public class ModItems {
     }
 
     private static DeferredItem<Item> registerAxe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 5, -3.0f));
+        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 4.5f, -3.0f));
         return register(name, (props) -> new AxeItem(tier, props), baseProps);
     }
 
     private static DeferredItem<Item> registerHoe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(HoeItem.createAttributes(tier, 0, -3.0f));
+        Item.Properties baseProps = baseItem().attributes(HoeItem.createAttributes(tier, -2.5f, -0.5f));
         return register(name, (props) -> new HoeItem(tier, props), baseProps);
     }
 

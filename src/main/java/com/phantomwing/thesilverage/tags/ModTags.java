@@ -23,7 +23,7 @@ public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> NEEDS_SILVER_TOOL = tag("needs_silver_tool");
         public static final TagKey<Block> INCORRECT_FOR_SILVER_TOOL = tag("incorrect_for_silver_tool");
-        public static final TagKey<Block> SILVER_BLOCKS = tag("silver/blocks");
+        public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));

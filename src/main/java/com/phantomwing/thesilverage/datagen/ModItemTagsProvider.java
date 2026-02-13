@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -21,6 +22,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID, existingFileHelper);
     }
+
+    Zombie
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
@@ -67,6 +70,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     protected void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
+
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());
         tag(ItemTags.SHOVELS).add(ModItems.SILVER_SHOVEL.get());
