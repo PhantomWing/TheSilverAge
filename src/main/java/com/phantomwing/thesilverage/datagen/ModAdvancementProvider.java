@@ -27,7 +27,7 @@ public class ModAdvancementProvider implements AdvancementProvider.AdvancementGe
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        ResourceLocation.parse("thesilverage:textures/block/exposed_silver.png"),
+                        ResourceLocation.parse("thesilverage:textures/block/oxidized_cut_silver.png"),
                         AdvancementType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));

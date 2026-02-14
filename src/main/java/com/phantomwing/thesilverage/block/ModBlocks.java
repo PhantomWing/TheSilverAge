@@ -26,7 +26,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> RAW_SILVER_BLOCK = registerBlock("raw_silver_block", getBaseSilverProps(Blocks.RAW_GOLD_BLOCK), Block::new);
 
     // Redstone blocks
-    public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerBlock("moon_phase_detector", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED).sound(SoundType.AMETHYST), MoonPhaseDetectorBlock::new);
+    public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerBlock("moon_phase_detector", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED).sound(SoundType.AMETHYST).lightLevel((blockState) -> 3), MoonPhaseDetectorBlock::new);
 
     // Silver block
     public static final DeferredBlock<Block> SILVER_BLOCK = registerWeatheringBlock("silver_block", WeatheringCopper.WeatherState.UNAFFECTED);

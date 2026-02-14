@@ -21,17 +21,17 @@ public class ModItems {
     public static LinkedHashSet<DeferredItem<Item>> CREATIVE_TAB_ITEMS = Sets.newLinkedHashSet();
 
     // Silver items
-    public static final DeferredItem<Item> SILVER_NUGGET = register("silver_nugget");
-    public static final DeferredItem<Item> SILVER_INGOT = register("silver_ingot");
     public static final DeferredItem<Item> RAW_SILVER = register("raw_silver");
+    public static final DeferredItem<Item> SILVER_INGOT = register("silver_ingot");
+    public static final DeferredItem<Item> SILVER_NUGGET = register("silver_nugget");
 
     // Silver tools
-    public static final DeferredItem<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
     public static final DeferredItem<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);
     public static final DeferredItem<Item> SILVER_PICKAXE = registerPickaxe("silver_pickaxe", ModTiers.SILVER);
     public static final DeferredItem<Item> SILVER_AXE = registerAxe("silver_axe", ModTiers.SILVER);
     public static final DeferredItem<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
-
+    public static final DeferredItem<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
+    
     // Silver armor
     public static final DeferredItem<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 10); // Iron is 15, Gold is 7, Leather is 5, Diamond is 33, Netherite is 37
     public static final DeferredItem<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 10);

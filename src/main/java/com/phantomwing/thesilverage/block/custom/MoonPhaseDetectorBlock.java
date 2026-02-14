@@ -8,6 +8,9 @@ import com.phantomwing.thesilverage.block.entity.MoonPhaseDetectorBlockEntity;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -82,10 +85,15 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             } else {
+                // Invert the block.
                 BlockState blockstate = state.cycle(INVERTED);
                 level.setBlock(pos, blockstate, 2);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(player, blockstate));
                 updateSignalStrength(blockstate, level, pos);
+
+                // Play a sound when the block is toggled.
+                level.playSound(null, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.PLAYERS, 0.3f, 0.7f);
+
                 return InteractionResult.CONSUME;
             }
         } else {
