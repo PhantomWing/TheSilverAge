@@ -243,7 +243,7 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
         // Pillager Outpost
         add("silver_ingot_from_pillager_outpost", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.PILLAGER_OUTPOST), // Storeroom
+                conditions(BuiltInLootTables.PILLAGER_OUTPOST),
                 ModItems.SILVER_INGOT,
                 List.of(Items.IRON_INGOT),
                 0,
@@ -252,37 +252,37 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
         // Trial Chambers
         add("silver_ingot_from_trial_chambers_reward", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, 0.25f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, 0.25f),
                 ModItems.SILVER_INGOT,
                 List.of(Items.IRON_INGOT),
                 1
         ));
         add("silver_block_from_trial_chambers_reward_ominous", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, 0.1f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, 0.1f),
                 ModItems.SILVER_BLOCK,
                 List.of(Items.IRON_BLOCK),
                 1
         ));
         add("silver_block_from_trial_chambers_intersection", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION, 0.1f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION, 0.1f),
                 ModItems.SILVER_BLOCK,
                 List.of(Items.IRON_BLOCK),
                 1
         ));
         add("silver_axe_from_trial_chambers_intersection_barrel", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f),
                 ModItems.SILVER_AXE,
                 List.of(Items.GOLDEN_AXE),
                 1
         ));
         add("silver_pickaxe_from_trial_chambers_intersection_barrel", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f),
                 ModItems.SILVER_PICKAXE,
                 List.of(Items.GOLDEN_PICKAXE),
                 1
         ));
         add("silver_ingot_from_trial_chambers_corridor_pot", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.TRIAL_CHAMBERS_CORRIDOR_POT, 0.25f), // Storeroom
+                conditions(BuiltInLootTables.TRIAL_CHAMBERS_CORRIDOR_POT, 0.25f),
                 ModItems.SILVER_INGOT,
                 List.of(Items.IRON_INGOT),
                 1
@@ -290,16 +290,23 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
         // Ancient City
         add("silver_leggings_from_ancient_city", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.ANCIENT_CITY, 0.25f), // Storeroom
+                conditions(BuiltInLootTables.ANCIENT_CITY, 0.5f),
                 ModItems.SILVER_LEGGINGS,
                 List.of(Items.IRON_LEGGINGS),
                 1
         ));
         add("moon_dial_from_ancient_city", new ReplaceItemModifier(
-                conditions(BuiltInLootTables.ANCIENT_CITY, 0.25f), // Storeroom
+                conditions(BuiltInLootTables.ANCIENT_CITY, 0.5f),
                 ModItems.MOON_DIAL,
                 List.of(Items.COMPASS),
                 1
+        ));
+        add("silver_ingot_from_ancient_city", new ReplaceItemModifier(
+                conditions(BuiltInLootTables.ANCIENT_CITY, 0.25f),
+                ModItems.SILVER_INGOT,
+                List.of(Items.COAL),
+                1,
+                2
         ));
 
         // End City

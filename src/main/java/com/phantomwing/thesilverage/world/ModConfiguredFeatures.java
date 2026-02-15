@@ -18,6 +18,8 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.List;
 
+// To see Minecraft's built-in configured features, check out the OreFeatures class in the Minecraft codebase
+
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER = registerKey("ore_silver");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_BURIED = registerKey("ore_silver_buried");
@@ -26,7 +28,7 @@ public class ModConfiguredFeatures {
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
         registerOverworldOre(context, ORE_SILVER, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 10);
         registerOverworldOre(context, ORE_SILVER_BURIED, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 10, 0.5f);
-        registerOverworldOre(context, ORE_SILVER_SMALL, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 3);
+        registerOverworldOre(context, ORE_SILVER_SMALL, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 5);
     }
 
     /** Registers an overworld ore configured feature with both stone and deepslate variants.
