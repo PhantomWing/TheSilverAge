@@ -5,11 +5,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.Configuration;
+import com.phantomwing.thesilverage.utils.ItemUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -94,24 +94,7 @@ public class ReplaceItemModifier extends LootModifier
             generatedLoot.forEach((item) -> {
                 if (removedItems.stream().anyMatch(item::is) && stacksToAdd[0] > 0) {
                     try {
-                        int count = Math.min(new ItemStack(this.item).getMaxStackSize(), item.getCount());
-                        ItemStack toAdd = new ItemStack(this.item, count);
-
-                        // Carry over the durability of the replaced item if both items are damageable.
-                        if (item.isDamaged() && toAdd.isDamageableItem()) {
-                            int durability = Math.min(item.getDamageValue(), toAdd.getMaxDamage());
-                            toAdd.setDamageValue(durability);
-                        }
-
-                        // Carry over enchantments from the replaced item to the new item (if supported).
-                        if (item.isEnchanted() && toAdd.isEnchantable()) {
-                            ItemEnchantments enchantments = item.getTagEnchantments();
-                            enchantments.keySet().forEach(enchantment -> {
-                                if (toAdd.supportsEnchantment(enchantment)) {
-                                    toAdd.enchant(enchantment, item.getEnchantmentLevel(enchantment));
-                                }
-                            });
-                        }
+                        ItemStack toAdd = ItemUtils.tryTransmuteStack(item, this.item);
 
                         generatedLoot.remove(item);
                         lootArray.add(toAdd);

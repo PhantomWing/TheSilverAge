@@ -37,7 +37,7 @@ public class ModBlocks {
 
     // Redstone blocks
     public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerSilverBlock("moon_phase_detector",
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BELL).strength(3.0F, 6.0F).requiresCorrectToolForDrops().sound(ModSoundTypes.MOON_PHASE_DETECTOR).lightLevel((blockState) -> 3),
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BELL).strength(3.0F, 6.0F).requiresCorrectToolForDrops().sound(ModSoundTypes.SILVER).lightLevel((blockState) -> 3),
             MoonPhaseDetectorBlock::new
     );
 

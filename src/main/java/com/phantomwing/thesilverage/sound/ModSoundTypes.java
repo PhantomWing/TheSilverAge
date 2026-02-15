@@ -7,7 +7,6 @@ import net.neoforged.neoforge.common.util.DeferredSoundType;
 public class ModSoundTypes {
     public static final DeferredSoundType SILVER = ofCopy(SoundType.METAL, 1.0f, 0.9f);
     public static final DeferredSoundType SILVER_GRATE = ofCopy(SoundType.COPPER_GRATE, 1.0f, 0.8f);
-    public static final DeferredSoundType MOON_PHASE_DETECTOR = ofCopy(SoundType.AMETHYST, 1.0f, 0.5f);
 
     private static DeferredSoundType ofCopy(SoundType soundType, float volume, float pitch) {
         float baseVolume = soundType.getVolume();

@@ -3,7 +3,10 @@ package com.phantomwing.thesilverage.utils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.Objects;
@@ -52,5 +55,29 @@ public class ItemUtils {
 
     public static String getArmorTrimModelName(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
         return item.toString() + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
+    }
+
+    /** Change the item type of an ItemStack while preserving the count, durability, and enchantments (if applicable). */
+    public static ItemStack tryTransmuteStack(ItemStack from, ItemLike item) {
+        int count = Math.min(new ItemStack(item.asItem()).getMaxStackSize(), from.getCount());
+        ItemStack to = new ItemStack(item.asItem(), count);
+
+        // Carry over the durability of the replaced item if both items are damageable.
+        if (from.isDamaged() && to.isDamageableItem()) {
+            int durability = Math.min(from.getDamageValue(), to.getMaxDamage());
+            to.setDamageValue(durability);
+        }
+
+        // Carry over enchantments from the replaced item to the new item (if supported).
+        if (from.isEnchanted() && to.isEnchantable()) {
+            ItemEnchantments enchantments = from.getTagEnchantments();
+            enchantments.keySet().forEach(enchantment -> {
+                if (to.supportsEnchantment(enchantment)) {
+                    to.enchant(enchantment, from.getEnchantmentLevel(enchantment));
+                }
+            });
+        }
+
+        return to;
     }
 }
