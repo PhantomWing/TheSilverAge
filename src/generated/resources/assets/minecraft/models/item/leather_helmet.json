@@ -69,6 +69,7 @@
     }
   ],
   "textures": {
-    "layer0": "minecraft:item/leather_helmet"
+    "layer0": "minecraft:item/leather_helmet",
+    "layer1": "minecraft:item/leather_helmet_overlay"
   }
 }

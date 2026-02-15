@@ -53,10 +53,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         lunarClockItem(ModItems.MOON_DIAL);
 
         // Extend existing vanilla armor to support Silver as a trim material
-        addModTrimsToArmorItem(Items.LEATHER_HELMET);
-        addModTrimsToArmorItem(Items.LEATHER_CHESTPLATE);
-        addModTrimsToArmorItem(Items.LEATHER_LEGGINGS);
-        addModTrimsToArmorItem(Items.LEATHER_BOOTS);
+        addModTrimsToArmorItem(Items.LEATHER_HELMET, true);
+        addModTrimsToArmorItem(Items.LEATHER_CHESTPLATE, true);
+        addModTrimsToArmorItem(Items.LEATHER_LEGGINGS, true);
+        addModTrimsToArmorItem(Items.LEATHER_BOOTS, true);
         addModTrimsToArmorItem(Items.CHAINMAIL_HELMET);
         addModTrimsToArmorItem(Items.CHAINMAIL_CHESTPLATE);
         addModTrimsToArmorItem(Items.CHAINMAIL_LEGGINGS);
@@ -234,22 +234,27 @@ public class ModItemModelProvider extends ItemModelProvider {
     /** Generate new armor models for all TrimMaterials. */
     private void armorItem(DeferredItem<Item> item) {
         ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
-            generateTrimArmorModel(item, trimMaterial);
+            generateTrimArmorModel(item, trimMaterial, false);
         });
 
-        generateBaseArmorModel(item);
+        generateBaseArmorModel(item, false);
     }
 
     /** Generate new armor models for a specific TrimMaterial. */
     private void addModTrimsToArmorItem(ItemLike item) {
-        ModTrimMaterials.MOD_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
-            generateTrimArmorModel(item, trimMaterial);
-        });
-
-        generateBaseArmorModel(item);
+        this.addModTrimsToArmorItem(item, false);
     }
 
-    private void generateTrimArmorModel(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
+    /** Generate new armor models for a specific TrimMaterial. */
+    private void addModTrimsToArmorItem(ItemLike item, boolean hasOverlay) {
+        ModTrimMaterials.MOD_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
+            generateTrimArmorModel(item, trimMaterial, hasOverlay);
+        });
+
+        generateBaseArmorModel(item, hasOverlay);
+    }
+
+    private void generateTrimArmorModel(ItemLike item, ResourceKey<TrimMaterial> trimMaterial, boolean hasOverlay) {
         if (item.asItem() instanceof ArmorItem armorItem) {
             String armorType = switch (armorItem.getEquipmentSlot()) {
                 case HEAD -> "helmet";
@@ -261,21 +266,27 @@ public class ModItemModelProvider extends ItemModelProvider {
 
             String trimTexturePath = "trims/items/" + armorType + "_trim_" + ItemUtils.getTrimNameForArmor(armorItem, trimMaterial);
             String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
-            ResourceLocation armorItemResLoc = ItemUtils.getResourceLocation(armorItem);
             ResourceLocation trimTextureResLoc = ResourceLocation.parse(trimTexturePath); // minecraft namespace
 
             // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
             existingFileHelper.trackGenerated(trimTextureResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
 
             // Trimmed armorItem file.
-            getBuilder(trimModelName)
+            var itemResLoc = ItemUtils.getItemResourceLocation(armorItem);
+            var builder = getBuilder(trimModelName)
                     .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                    .texture("layer0", armorItemResLoc.getNamespace() + ":item/" + armorItemResLoc.getPath())
-                    .texture("layer1", trimTextureResLoc);
+                    .texture("layer0", itemResLoc);
+
+            // If the trim material has an overlay texture, add it as layer1. Otherwise, just use the trim texture as layer1.
+            if (hasOverlay) {
+                builder.texture("layer1", itemResLoc + "_overlay").texture("layer2", trimTextureResLoc);
+            } else {
+                builder.texture("layer1", trimTextureResLoc);
+            }
         }
     }
 
-    private void generateBaseArmorModel(ItemLike item) {
+    private void generateBaseArmorModel(ItemLike item, boolean hasOverlay) {
         if (item.asItem() instanceof ArmorItem armorItem) {
             String armorItemPath = armorItem.toString();
 
@@ -283,11 +294,16 @@ public class ModItemModelProvider extends ItemModelProvider {
                 String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
                 ResourceLocation trimModelResLoc = ResourceLocation.parse(trimModelName);
 
-                this.withExistingParent(armorItemPath, mcLoc("item/generated"))
+                var itemResLoc = ItemUtils.getItemResourceLocation(armorItem);
+                var builder = this.withExistingParent(armorItemPath, mcLoc("item/generated"))
                         .override()
                         .model(new ModelFile.UncheckedModelFile(trimModelResLoc.getNamespace() + ":item/" + trimModelResLoc.getPath()))
                         .predicate(mcLoc("trim_type"), trimValue).end()
-                        .texture("layer0", ItemUtils.getItemResourceLocation(armorItem));
+                        .texture("layer0", itemResLoc);
+
+                if (hasOverlay) {
+                    builder.texture("layer1", itemResLoc + "_overlay");
+                }
             });
         }
     }
