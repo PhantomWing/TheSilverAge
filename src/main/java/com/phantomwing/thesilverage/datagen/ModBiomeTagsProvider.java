@@ -21,9 +21,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(ModTags.Biomes.HAS_SILVER_ORE)
-            .addTag(BiomeTags.IS_OVERWORLD)
-            .remove(Biomes.DRIPSTONE_CAVES)
-            .remove(Biomes.LUSH_CAVES);
+            .addTag(BiomeTags.IS_OVERWORLD);
 
         this.tag(ModTags.Biomes.HAS_EXTRA_SILVER_ORE)
             .add(Biomes.DEEP_DARK)
