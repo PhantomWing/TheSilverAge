@@ -38,11 +38,11 @@ public class Configuration {
         ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
 
         // General settings
-        SILVERFISH_DROP_SILVER = COMMON_BUILDER.comment("Should Silverfish drop Silver Nuggets?").define(SILVERFISH_DROP_SILVER_ID, true);
-        OVERRIDE_VANILLA_RECIPES = COMMON_BUILDER.comment("Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)").define(OVERRIDE_VANILLA_RECIPES_ID, true);
-        ENABLE_VILLAGER_TRADES = COMMON_BUILDER.comment("Should villagers trade The Silver Age items? (May reduce chances of other trades appearing)").define(ENABLE_VILLAGER_TRADES_ID, true);
-        ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.comment("Should the Wandering Trader sell The Silver Age items?").define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
-        GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.comment("Generate The Silver Age loot in structures?").define(GENERATE_STRUCTURE_LOOT_ID, true);
+        SILVERFISH_DROP_SILVER = COMMON_BUILDER.define(SILVERFISH_DROP_SILVER_ID, true);
+        OVERRIDE_VANILLA_RECIPES = COMMON_BUILDER.define(OVERRIDE_VANILLA_RECIPES_ID, true);
+        ENABLE_VILLAGER_TRADES = COMMON_BUILDER.define(ENABLE_VILLAGER_TRADES_ID, true);
+        ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
+        GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.define(GENERATE_STRUCTURE_LOOT_ID, true);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

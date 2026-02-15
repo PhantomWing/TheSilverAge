@@ -8,7 +8,6 @@ import com.phantomwing.thesilverage.block.entity.MoonPhaseDetectorBlockEntity;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -34,7 +33,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-
 
 public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static final int MAX_POWER = 15;

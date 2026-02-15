@@ -1,7 +1,9 @@
-package com.phantomwing.thesilverage.event;
+package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.tags.ModTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,26 +15,22 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
+import java.util.List;
+
 @EventBusSubscriber(modid = TheSilverAge.MOD_ID)
-public class MobArmorHandler {
+public class MonsterArmorHandler {
     private static final float REPLACE_CHANCE = 0.5f; // 50% chance to replace full set
 
     @SubscribeEvent
     public static void onMobSpawn(EntityJoinLevelEvent event) {
+        // Only apply when the mob is spawning naturally in the world, not when loaded from disk or on the client side.
         if (event.getLevel().isClientSide() || event.loadedFromDisk()) {
             return;
         }
 
-        TheSilverAge.LOGGER.info("EntityJoinLevelEvent triggered for entity: {}", event.getEntity().getType());
-
-        // Check if this is a Zombie or Skeleton spawn.
-        Entity entity = event.getEntity();
-        if (entity.getType() != EntityType.ZOMBIE && entity.getType() != EntityType.SKELETON) {
-            return;
-        }
-
         // Check if we should equip Silver armor.
-        if (entity instanceof Mob mob) {
+        Entity entity = event.getEntity();
+        if (entity.getType().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR) && entity instanceof Mob mob) {
             RandomSource random = mob.getRandom();
 
             boolean hasGoldenHelmet = mob.getItemBySlot(EquipmentSlot.HEAD).is(Items.GOLDEN_HELMET);

@@ -3,12 +3,23 @@ package com.phantomwing.thesilverage.tags;
 import com.phantomwing.thesilverage.TheSilverAge;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public class ModTags {
+    // Entity type tags
+    public static class EntityTypes {
+        public static final TagKey<EntityType<?>> CAN_WEAR_SILVER_ARMOR = tag("can_wear_silver_armor");
+
+        private static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+        }
+    }
+
     // Block tags
     public static class Biomes {
         public static final TagKey<Biome> HAS_SILVER_ORE = tag("has_silver_ore");

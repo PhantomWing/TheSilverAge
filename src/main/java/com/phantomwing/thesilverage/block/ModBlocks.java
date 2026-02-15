@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacingBlock;
+import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -19,185 +20,214 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(TheSilverAge.MOD_ID);
 
     // Ores
-    public static final DeferredBlock<Block> SILVER_ORE = registerBlock("silver_ore", getBaseSilverProps(Blocks.GOLD_ORE), (props) -> new DropExperienceBlock(ConstantInt.of(0), props));
-    public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE = registerBlock("deepslate_silver_ore", getBaseSilverProps(Blocks.DEEPSLATE_GOLD_ORE), (props) -> new DropExperienceBlock(ConstantInt.of(0), props));
+    public static final DeferredBlock<Block> SILVER_ORE = registerSilverBlock("silver_ore",
+            BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE),
+            (props) -> new DropExperienceBlock(ConstantInt.of(0), props)
+    );
+    public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE = registerSilverBlock("deepslate_silver_ore",
+            BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE),
+            (props) -> new DropExperienceBlock(ConstantInt.of(0), props)
+    );
 
     // Storage blocks
-    public static final DeferredBlock<Block> RAW_SILVER_BLOCK = registerBlock("raw_silver_block", getBaseSilverProps(Blocks.RAW_GOLD_BLOCK), Block::new);
+    public static final DeferredBlock<Block> RAW_SILVER_BLOCK = registerSilverBlock("raw_silver_block",
+            BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.METAL),
+            Block::new
+    );
 
     // Redstone blocks
-    public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerBlock("moon_phase_detector", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED).sound(SoundType.AMETHYST).lightLevel((blockState) -> 3), MoonPhaseDetectorBlock::new);
+    public static final DeferredBlock<MoonPhaseDetectorBlock> MOON_PHASE_DETECTOR = registerSilverBlock("moon_phase_detector",
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BELL).strength(3.0F, 6.0F).requiresCorrectToolForDrops().sound(ModSoundTypes.MOON_PHASE_DETECTOR).lightLevel((blockState) -> 3),
+            MoonPhaseDetectorBlock::new
+    );
 
     // Silver block
-    public static final DeferredBlock<Block> SILVER_BLOCK = registerWeatheringBlock("silver_block", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<Block> EXPOSED_SILVER = registerWeatheringBlock("exposed_silver", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<Block> WEATHERED_SILVER = registerWeatheringBlock("weathered_silver", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<Block> OXIDIZED_SILVER = registerWeatheringBlock("oxidized_silver", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<Block> SILVER_BLOCK = registerWeatheringSilverBlock("silver_block", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> EXPOSED_SILVER = registerWeatheringSilverBlock("exposed_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WEATHERED_SILVER = registerWeatheringSilverBlock("weathered_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> OXIDIZED_SILVER = registerWeatheringSilverBlock("oxidized_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> WAXED_SILVER_BLOCK = registerBlock("waxed_silver_block", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), Block::new);
-    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER = registerBlock("waxed_exposed_silver", getSilverProps(WeatheringCopper.WeatherState.EXPOSED), Block::new);
-    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER = registerBlock("waxed_weathered_silver", getSilverProps(WeatheringCopper.WeatherState.WEATHERED), Block::new);
-    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER = registerBlock("waxed_oxidized_silver", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED), Block::new);
+    public static final DeferredBlock<Block> WAXED_SILVER_BLOCK = registerSilverBlock("waxed_silver_block", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER = registerSilverBlock("waxed_exposed_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER = registerSilverBlock("waxed_weathered_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER = registerSilverBlock("waxed_oxidized_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
     // Decorative silver blocks
-    public static final DeferredBlock<Block> CUT_SILVER = registerWeatheringBlock("cut_silver", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<Block> EXPOSED_CUT_SILVER = registerWeatheringBlock("exposed_cut_silver", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<Block> WEATHERED_CUT_SILVER = registerWeatheringBlock("weathered_cut_silver", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<Block> OXIDIZED_CUT_SILVER = registerWeatheringBlock("oxidized_cut_silver", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<Block> CUT_SILVER = registerWeatheringSilverBlock("cut_silver", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> EXPOSED_CUT_SILVER = registerWeatheringSilverBlock("exposed_cut_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WEATHERED_CUT_SILVER = registerWeatheringSilverBlock("weathered_cut_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> OXIDIZED_CUT_SILVER = registerWeatheringSilverBlock("oxidized_cut_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> WAXED_CUT_SILVER = registerBlock("waxed_cut_silver", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), Block::new);
-    public static final DeferredBlock<Block> WAXED_EXPOSED_CUT_SILVER = registerBlock("waxed_exposed_cut_silver", getSilverProps(WeatheringCopper.WeatherState.EXPOSED), Block::new);
-    public static final DeferredBlock<Block> WAXED_WEATHERED_CUT_SILVER = registerBlock("waxed_weathered_cut_silver", getSilverProps(WeatheringCopper.WeatherState.WEATHERED), Block::new);
-    public static final DeferredBlock<Block> WAXED_OXIDIZED_CUT_SILVER = registerBlock("waxed_oxidized_cut_silver", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED), Block::new);
+    public static final DeferredBlock<Block> WAXED_CUT_SILVER = registerSilverBlock("waxed_cut_silver", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> WAXED_EXPOSED_CUT_SILVER = registerSilverBlock("waxed_exposed_cut_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WAXED_WEATHERED_CUT_SILVER = registerSilverBlock("waxed_weathered_cut_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> WAXED_OXIDIZED_CUT_SILVER = registerSilverBlock("waxed_oxidized_cut_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<SlabBlock> CUT_SILVER_SLAB = registerWeatheringSlab("cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<SlabBlock> EXPOSED_CUT_SILVER_SLAB = registerWeatheringSlab("exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<SlabBlock> WEATHERED_CUT_SILVER_SLAB = registerWeatheringSlab("weathered_cut_silver_slab", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<SlabBlock> OXIDIZED_CUT_SILVER_SLAB = registerWeatheringSlab("oxidized_cut_silver_slab", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<SlabBlock> CUT_SILVER_SLAB = registerWeatheringSilverSlab("cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<SlabBlock> EXPOSED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<SlabBlock> WEATHERED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("weathered_cut_silver_slab", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<SlabBlock> OXIDIZED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("oxidized_cut_silver_slab", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<SlabBlock> WAXED_CUT_SILVER_SLAB = registerSlab("waxed_cut_silver_slab", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED));
-    public static final DeferredBlock<SlabBlock> WAXED_EXPOSED_CUT_SILVER_SLAB = registerSlab("waxed_exposed_cut_silver_slab", getSilverProps(WeatheringCopper.WeatherState.EXPOSED));
-    public static final DeferredBlock<SlabBlock> WAXED_WEATHERED_CUT_SILVER_SLAB = registerSlab("waxed_weathered_cut_silver_slab", getSilverProps(WeatheringCopper.WeatherState.WEATHERED));
-    public static final DeferredBlock<SlabBlock> WAXED_OXIDIZED_CUT_SILVER_SLAB = registerSlab("waxed_oxidized_cut_silver_slab", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED));
+    public static final DeferredBlock<SlabBlock> WAXED_CUT_SILVER_SLAB = registerSilverSlab("waxed_cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<SlabBlock> WAXED_EXPOSED_CUT_SILVER_SLAB = registerSilverSlab("waxed_exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<SlabBlock> WAXED_WEATHERED_CUT_SILVER_SLAB = registerSilverSlab("waxed_weathered_cut_silver_slab", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<SlabBlock> WAXED_OXIDIZED_CUT_SILVER_SLAB = registerSilverSlab("waxed_oxidized_cut_silver_slab", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<StairBlock> CUT_SILVER_STAIRS = registerWeatheringStairs("cut_silver_stairs", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<StairBlock> EXPOSED_CUT_SILVER_STAIRS = registerWeatheringStairs("exposed_cut_silver_stairs", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<StairBlock> WEATHERED_CUT_SILVER_STAIRS = registerWeatheringStairs("weathered_cut_silver_stairs", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<StairBlock> OXIDIZED_CUT_SILVER_STAIRS = registerWeatheringStairs("oxidized_cut_silver_stairs", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<StairBlock> CUT_SILVER_STAIRS = registerWeatheringSilverStairs("cut_silver_stairs", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<StairBlock> EXPOSED_CUT_SILVER_STAIRS = registerWeatheringSilverStairs("exposed_cut_silver_stairs", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<StairBlock> WEATHERED_CUT_SILVER_STAIRS = registerWeatheringSilverStairs("weathered_cut_silver_stairs", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<StairBlock> OXIDIZED_CUT_SILVER_STAIRS = registerWeatheringSilverStairs("oxidized_cut_silver_stairs", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<StairBlock> WAXED_CUT_SILVER_STAIRS = registerStairs("waxed_cut_silver_stairs", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED));
-    public static final DeferredBlock<StairBlock> WAXED_EXPOSED_CUT_SILVER_STAIRS = registerStairs("waxed_exposed_cut_silver_stairs", getSilverProps(WeatheringCopper.WeatherState.EXPOSED));
-    public static final DeferredBlock<StairBlock> WAXED_WEATHERED_CUT_SILVER_STAIRS = registerStairs("waxed_weathered_cut_silver_stairs", getSilverProps(WeatheringCopper.WeatherState.WEATHERED));
-    public static final DeferredBlock<StairBlock> WAXED_OXIDIZED_CUT_SILVER_STAIRS = registerStairs("waxed_oxidized_cut_silver_stairs", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED));
+    public static final DeferredBlock<StairBlock> WAXED_CUT_SILVER_STAIRS = registerSilverStairs("waxed_cut_silver_stairs", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<StairBlock> WAXED_EXPOSED_CUT_SILVER_STAIRS = registerSilverStairs("waxed_exposed_cut_silver_stairs", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<StairBlock> WAXED_WEATHERED_CUT_SILVER_STAIRS = registerSilverStairs("waxed_weathered_cut_silver_stairs", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<StairBlock> WAXED_OXIDIZED_CUT_SILVER_STAIRS = registerSilverStairs("waxed_oxidized_cut_silver_stairs", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> CHISELED_SILVER = registerWeatheringHorizontalFacingBlock("chiseled_silver", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<Block> EXPOSED_CHISELED_SILVER = registerWeatheringHorizontalFacingBlock("exposed_chiseled_silver", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<Block> WEATHERED_CHISELED_SILVER = registerWeatheringHorizontalFacingBlock("weathered_chiseled_silver", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<Block> OXIDIZED_CHISELED_SILVER = registerWeatheringHorizontalFacingBlock("oxidized_chiseled_silver", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<HorizontalFacingBlock> CHISELED_SILVER = registerWeatheringSilverHorizontalFacingBlock("chiseled_silver", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<HorizontalFacingBlock> EXPOSED_CHISELED_SILVER = registerWeatheringSilverHorizontalFacingBlock("exposed_chiseled_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<HorizontalFacingBlock> WEATHERED_CHISELED_SILVER = registerWeatheringSilverHorizontalFacingBlock("weathered_chiseled_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<HorizontalFacingBlock> OXIDIZED_CHISELED_SILVER = registerWeatheringSilverHorizontalFacingBlock("oxidized_chiseled_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> WAXED_CHISELED_SILVER = registerBlock("waxed_chiseled_silver", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), HorizontalFacingBlock::new);
-    public static final DeferredBlock<Block> WAXED_EXPOSED_CHISELED_SILVER = registerBlock("waxed_exposed_chiseled_silver", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), HorizontalFacingBlock::new);
-    public static final DeferredBlock<Block> WAXED_WEATHERED_CHISELED_SILVER = registerBlock("waxed_weathered_chiseled_silver", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), HorizontalFacingBlock::new);
-    public static final DeferredBlock<Block> WAXED_OXIDIZED_CHISELED_SILVER = registerBlock("waxed_oxidized_chiseled_silver", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED), HorizontalFacingBlock::new);
+    public static final DeferredBlock<HorizontalFacingBlock> WAXED_CHISELED_SILVER = registerSilverHorizontalFacingBlock("waxed_chiseled_silver", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<HorizontalFacingBlock> WAXED_EXPOSED_CHISELED_SILVER = registerSilverHorizontalFacingBlock("waxed_exposed_chiseled_silver", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<HorizontalFacingBlock> WAXED_WEATHERED_CHISELED_SILVER = registerSilverHorizontalFacingBlock("waxed_weathered_chiseled_silver", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<HorizontalFacingBlock> WAXED_OXIDIZED_CHISELED_SILVER = registerSilverHorizontalFacingBlock("waxed_oxidized_chiseled_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> SILVER_GRATE = registerWeatheringGrate("silver_grate", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<Block> EXPOSED_SILVER_GRATE = registerWeatheringGrate("exposed_silver_grate", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<Block> WEATHERED_SILVER_GRATE = registerWeatheringGrate("weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<Block> OXIDIZED_SILVER_GRATE = registerWeatheringGrate("oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<Block> SILVER_GRATE = registerWeatheringSilverGrate("silver_grate", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> EXPOSED_SILVER_GRATE = registerWeatheringSilverGrate("exposed_silver_grate", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WEATHERED_SILVER_GRATE = registerWeatheringSilverGrate("weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> OXIDIZED_SILVER_GRATE = registerWeatheringSilverGrate("oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<Block> WAXED_SILVER_GRATE = registerBlock("waxed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER_GRATE = registerBlock("waxed_exposed_silver_grate", getSilverProps(WeatheringCopper.WeatherState.EXPOSED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER_GRATE = registerBlock("waxed_weathered_silver_grate", getSilverProps(WeatheringCopper.WeatherState.WEATHERED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
-    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER_GRATE = registerBlock("waxed_oxidized_silver_grate", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED, Blocks.COPPER_GRATE), WaterloggedTransparentBlock::new);
+    public static final DeferredBlock<Block> WAXED_SILVER_GRATE = registerSilverGrate("waxed_silver_grate", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<Block> WAXED_EXPOSED_SILVER_GRATE = registerSilverGrate("waxed_exposed_silver_grate", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<Block> WAXED_WEATHERED_SILVER_GRATE = registerSilverGrate("waxed_weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<Block> WAXED_OXIDIZED_SILVER_GRATE = registerSilverGrate("waxed_oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<TrapDoorBlock> SILVER_TRAPDOOR = registerWeatheringTrapdoor("silver_trapdoor", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<TrapDoorBlock> EXPOSED_SILVER_TRAPDOOR = registerWeatheringTrapdoor("exposed_silver_trapdoor", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<TrapDoorBlock> WEATHERED_SILVER_TRAPDOOR = registerWeatheringTrapdoor("weathered_silver_trapdoor", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<TrapDoorBlock> OXIDIZED_SILVER_TRAPDOOR = registerWeatheringTrapdoor("oxidized_silver_trapdoor", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<TrapDoorBlock> SILVER_TRAPDOOR = registerWeatheringSilverTrapdoor("silver_trapdoor", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<TrapDoorBlock> EXPOSED_SILVER_TRAPDOOR = registerWeatheringSilverTrapdoor("exposed_silver_trapdoor", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<TrapDoorBlock> WEATHERED_SILVER_TRAPDOOR = registerWeatheringSilverTrapdoor("weathered_silver_trapdoor", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<TrapDoorBlock> OXIDIZED_SILVER_TRAPDOOR = registerWeatheringSilverTrapdoor("oxidized_silver_trapdoor", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<TrapDoorBlock> WAXED_SILVER_TRAPDOOR = registerTrapdoor("waxed_silver_trapdoor", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED, Blocks.IRON_TRAPDOOR));
-    public static final DeferredBlock<TrapDoorBlock> WAXED_EXPOSED_SILVER_TRAPDOOR = registerTrapdoor("waxed_exposed_silver_trapdoor", getSilverProps(WeatheringCopper.WeatherState.EXPOSED, Blocks.IRON_TRAPDOOR));
-    public static final DeferredBlock<TrapDoorBlock> WAXED_WEATHERED_SILVER_TRAPDOOR = registerTrapdoor("waxed_weathered_silver_trapdoor", getSilverProps(WeatheringCopper.WeatherState.WEATHERED, Blocks.IRON_TRAPDOOR));
-    public static final DeferredBlock<TrapDoorBlock> WAXED_OXIDIZED_SILVER_TRAPDOOR = registerTrapdoor("waxed_oxidized_silver_trapdoor", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED, Blocks.IRON_TRAPDOOR));
+    public static final DeferredBlock<TrapDoorBlock> WAXED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_silver_trapdoor", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<TrapDoorBlock> WAXED_EXPOSED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_exposed_silver_trapdoor", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<TrapDoorBlock> WAXED_WEATHERED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_weathered_silver_trapdoor", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<TrapDoorBlock> WAXED_OXIDIZED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_oxidized_silver_trapdoor", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<DoorBlock> SILVER_DOOR = registerWeatheringDoor("silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final DeferredBlock<DoorBlock> EXPOSED_SILVER_DOOR = registerWeatheringDoor("exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
-    public static final DeferredBlock<DoorBlock> WEATHERED_SILVER_DOOR = registerWeatheringDoor("weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
-    public static final DeferredBlock<DoorBlock> OXIDIZED_SILVER_DOOR = registerWeatheringDoor("oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final DeferredBlock<DoorBlock> SILVER_DOOR = registerWeatheringSilverDoor("silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<DoorBlock> EXPOSED_SILVER_DOOR = registerWeatheringSilverDoor("exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<DoorBlock> WEATHERED_SILVER_DOOR = registerWeatheringSilverDoor("weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<DoorBlock> OXIDIZED_SILVER_DOOR = registerWeatheringSilverDoor("oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final DeferredBlock<DoorBlock> WAXED_SILVER_DOOR = registerDoor("waxed_silver_door", getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED, Blocks.IRON_DOOR));
-    public static final DeferredBlock<DoorBlock> WAXED_EXPOSED_SILVER_DOOR = registerDoor("waxed_exposed_silver_door", getSilverProps(WeatheringCopper.WeatherState.EXPOSED, Blocks.IRON_DOOR));
-    public static final DeferredBlock<DoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerDoor("waxed_weathered_silver_door", getSilverProps(WeatheringCopper.WeatherState.WEATHERED, Blocks.IRON_DOOR));
-    public static final DeferredBlock<DoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerDoor("waxed_oxidized_silver_door", getSilverProps(WeatheringCopper.WeatherState.OXIDIZED, Blocks.IRON_DOOR));
+    public static final DeferredBlock<DoorBlock> WAXED_SILVER_DOOR = registerSilverDoor("waxed_silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final DeferredBlock<DoorBlock> WAXED_EXPOSED_SILVER_DOOR = registerSilverDoor("waxed_exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
+    public static final DeferredBlock<DoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerSilverDoor("waxed_weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
+    public static final DeferredBlock<DoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerSilverDoor("waxed_oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
-    private static DeferredBlock<Block> registerWeatheringBlock(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperFullBlock(weatherState, props));
-    }
-    private static DeferredBlock<Block> registerWeatheringHorizontalFacingBlock(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperHorizontalFacingBlock(weatherState, props));
+    private static DeferredBlock<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
+        return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperFullBlock(weatherState, props));
     }
 
-    private static DeferredBlock<Block> registerWeatheringGrate(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState, Blocks.COPPER_GRATE), (props) -> new WeatheringCopperGrateBlock(weatherState, props));
+    private static DeferredBlock<HorizontalFacingBlock> registerWeatheringSilverHorizontalFacingBlock(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperHorizontalFacingBlock(weatherState, props));
     }
 
-    private static DeferredBlock<SlabBlock> registerWeatheringSlab(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperSlabBlock(weatherState, props));
+    private static DeferredBlock<HorizontalFacingBlock> registerSilverHorizontalFacingBlock(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, HorizontalFacingBlock::new);
     }
 
-    private static DeferredBlock<StairBlock> registerWeatheringStairs(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperStairBlock(weatherState, Blocks.IRON_BLOCK.defaultBlockState(), props));
+    private static DeferredBlock<Block> registerWeatheringSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperGrateBlock(weatherState, props));
     }
 
-    private static DeferredBlock<TrapDoorBlock> registerWeatheringTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState, Blocks.IRON_TRAPDOOR), (props) -> new WeatheringCopperTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
+    private static DeferredBlock<Block> registerSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
+        return registerSilverBlock(name, baseProps, WaterloggedTransparentBlock::new);
     }
 
-    private static DeferredBlock<SlabBlock> registerSlab(String name, BlockBehaviour.Properties baseProps) {
-        return registerBlock(name, baseProps, SlabBlock::new);
+    private static DeferredBlock<SlabBlock> registerWeatheringSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperSlabBlock(weatherState, props));
     }
 
-    private static DeferredBlock<StairBlock> registerStairs(String name, BlockBehaviour.Properties baseProps) {
-        return registerBlock(name, baseProps, (props) -> new StairBlock(Blocks.IRON_BLOCK.defaultBlockState(), props));
+    private static DeferredBlock<SlabBlock> registerSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, SlabBlock::new);
     }
 
-    private static DeferredBlock<DoorBlock> registerWeatheringDoor(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerBlock(name, getSilverProps(weatherState, Blocks.IRON_DOOR), (props) -> new WeatheringCopperDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
+    private static DeferredBlock<StairBlock> registerWeatheringSilverStairs(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperStairBlock(weatherState, Blocks.IRON_BLOCK.defaultBlockState(), props));
     }
 
-    private static DeferredBlock<DoorBlock> registerDoor(String name, BlockBehaviour.Properties baseProps) {
-        return registerBlock(name, baseProps, (props) -> new DoorBlock(ModBlockSetTypes.SILVER, props));
+    private static DeferredBlock<StairBlock> registerSilverStairs(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, (props) -> new StairBlock(Blocks.IRON_BLOCK.defaultBlockState(), props));
     }
 
-    private static DeferredBlock<TrapDoorBlock> registerTrapdoor(String name, BlockBehaviour.Properties baseProps) {
-        return registerBlock(name, baseProps, (props) -> new TrapDoorBlock(ModBlockSetTypes.SILVER, props));
+    private static DeferredBlock<TrapDoorBlock> registerWeatheringSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
-    private static DeferredBlock<Block> registerBlock(String name, Block copy) {
-        return registerBlock(name, Block.Properties.ofFullCopy(copy), Block::new);
+    private static DeferredBlock<TrapDoorBlock> registerSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new TrapDoorBlock(ModBlockSetTypes.SILVER, props));
     }
 
-    private static DeferredBlock<Block> registerBlock(String name, Function<Block.Properties, Block> function) {
-        return registerBlock(name, Block.Properties.of(), function);
+    private static DeferredBlock<DoorBlock> registerWeatheringSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
-    private static DeferredBlock<Block> registerBlock(String name, Block copy, Function<Block.Properties, Block> function) {
-        return registerBlock(name, Block.Properties.ofFullCopy(copy), function);
+    private static DeferredBlock<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new DoorBlock(ModBlockSetTypes.SILVER, props));
     }
 
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, BlockBehaviour.Properties baseProps, Function<Block.Properties, T> function) {
+    private static DeferredBlock<Block> registerSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
+        return registerSilverBlock(name, baseProps, Block::new);
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerSilverBlock(String name, BlockBehaviour.Properties baseProps, Function<Block.Properties, T> function) {
         return BLOCKS.register(name, () ->  function.apply(baseProps));
     }
 
-    private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState) {
-        return getSilverProps(weatherState, Blocks.IRON_BLOCK);
-    }
-
-    private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState, Block baseBlock) {
-        BlockBehaviour.Properties baseProps = getBaseSilverProps(baseBlock);
+    private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps) {
+        BlockBehaviour.Properties props = baseProps
+                .strength(3.0F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.SILVER)
+                .mapColor(MapColor.METAL)
+                .instrument(NoteBlockInstrument.BELL);
 
         switch (weatherState) {
             case UNAFFECTED -> {
-                baseProps = baseProps.mapColor(MapColor.METAL);
+                props = props.mapColor(MapColor.METAL);
             }
             case EXPOSED -> {
-                baseProps = baseProps.mapColor(MapColor.TERRACOTTA_LIGHT_GRAY);
+                props = props.mapColor(MapColor.TERRACOTTA_LIGHT_GRAY);
             }
             case WEATHERED -> {
-                baseProps = baseProps.mapColor(MapColor.TERRACOTTA_GRAY);
+                props = props.mapColor(MapColor.TERRACOTTA_GRAY);
             }
             case OXIDIZED -> {
-                baseProps = baseProps.mapColor(MapColor.TERRACOTTA_BLACK);
+                props = props.mapColor(MapColor.TERRACOTTA_BLACK);
             }
         }
 
-        return baseProps;
+        return props;
     }
 
-    private static BlockBehaviour.Properties getBaseSilverProps(Block baseBlock) {
-        return BlockBehaviour.Properties.ofFullCopy(baseBlock)
-                .mapColor(MapColor.TERRACOTTA_WHITE)
-                .instrument(NoteBlockInstrument.BELL);
+    private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState) {
+        return getSilverProps(weatherState, BlockBehaviour.Properties.of());
+    }
+
+    private static BlockBehaviour.Properties getSilverProps() {
+        return getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED);
     }
 
     public static void register(IEventBus eventBus) {

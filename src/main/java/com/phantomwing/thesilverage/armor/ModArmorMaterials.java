@@ -28,12 +28,11 @@ public class ModArmorMaterials {
             8,
             0,
             0,
-            20,
+            12,
             Ingredient.of(CommonTags.Items.INGOTS_SILVER)
     );
 
-
-    private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantability, Ingredient repairIngredient) {
+    private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantmentValue, Ingredient repairIngredient) {
         EnumMap<ArmorItem.Type, Integer> typeProtection = Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
             attribute.put(ArmorItem.Type.BOOTS, bootsProtection);
             attribute.put(ArmorItem.Type.LEGGINGS, legsProtection);
@@ -46,7 +45,7 @@ public class ModArmorMaterials {
         Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
         List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));
 
-        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(typeProtection, enchantability, equipSound, () -> repairIngredient, layers, toughness, knockbackResistance));
+        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(typeProtection, enchantmentValue, equipSound, () -> repairIngredient, layers, toughness, knockbackResistance));
     }
 
     public static void register(IEventBus eventBus) {

@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.utils.BlockUtils;
 import net.minecraft.client.renderer.RenderType;
@@ -147,11 +148,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(block.get(), cubeAll(block.get()));
     }
 
-    private void horizontalBlock(DeferredBlock<Block> block) {
+    private void horizontalBlock(DeferredBlock<HorizontalFacingBlock> block) {
         horizontalBlock(block.get(), cubeAll(block.get()));
     }
 
-    private void horizontalBlockWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> textureBlock) {
+    private void horizontalBlockWithTexture(DeferredBlock<HorizontalFacingBlock> block, DeferredBlock<HorizontalFacingBlock> textureBlock) {
         ModelFile cubeAll = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get()));
         horizontalBlock(block.get(), cubeAll);
     }

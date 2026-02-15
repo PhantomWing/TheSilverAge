@@ -8,9 +8,9 @@ import net.neoforged.neoforge.common.SimpleTier;
 
 public class ModTiers {
     public static final Tier SILVER = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL,
-            224,
+            208, // Durability (Wood is 59, Stone is 131, Iron is 250, Diamond is 1561, Gold is 32, Netherite is 2031)
             7.0f,
             2.5f,
-            18,
+            16, // Enchantability (Wood is 15, Stone is 5, Iron is 14, Diamond is 10, Gold is 22, Netherite is 15)
             () -> Ingredient.of(CommonTags.Items.TOOL_MATERIALS_SILVER));
 }

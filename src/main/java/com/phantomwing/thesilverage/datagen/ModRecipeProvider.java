@@ -64,7 +64,7 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR, ModItems.SILVER_NUGGET, XP_TINY);
 
         // Moon Dial
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModItems.MOON_DIAL, 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_DIAL, 1)
                 .pattern(" S ")
                 .pattern("SRS")
                 .pattern(" S ")
