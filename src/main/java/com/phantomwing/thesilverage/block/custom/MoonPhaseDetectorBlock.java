@@ -37,12 +37,12 @@ import org.jetbrains.annotations.NotNull;
 public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static final int MAX_POWER = 15;
 
-    public static final MapCodec<net.minecraft.world.level.block.DaylightDetectorBlock> CODEC = simpleCodec(net.minecraft.world.level.block.DaylightDetectorBlock::new);
+    public static final MapCodec<MoonPhaseDetectorBlock> CODEC = simpleCodec(MoonPhaseDetectorBlock::new);
     public static final IntegerProperty POWER;
     public static final BooleanProperty INVERTED;
     protected static final VoxelShape SHAPE;
 
-    public @NotNull MapCodec<net.minecraft.world.level.block.DaylightDetectorBlock> codec() {
+    public @NotNull MapCodec<MoonPhaseDetectorBlock> codec() {
         return CODEC;
     }
 

@@ -43,6 +43,12 @@ public class ModWaxables {
         add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
         add(b, ModBlocks.OXIDIZED_SILVER_GRATE, ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
+        // Silver Bulb
+        add(b, ModBlocks.SILVER_BULB, ModBlocks.WAXED_SILVER_BULB);
+        add(b, ModBlocks.EXPOSED_SILVER_BULB, ModBlocks.WAXED_EXPOSED_SILVER_BULB);
+        add(b, ModBlocks.WEATHERED_SILVER_BULB, ModBlocks.WAXED_WEATHERED_SILVER_BULB);
+        add(b, ModBlocks.OXIDIZED_SILVER_BULB, ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
+
         // Silver Trapdoor
         add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.WAXED_SILVER_TRAPDOOR);
         add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR);

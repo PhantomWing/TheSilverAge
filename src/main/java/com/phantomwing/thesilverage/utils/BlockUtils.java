@@ -17,6 +17,10 @@ public class BlockUtils {
         return getResourceLocation(block).getPath();
     }
 
+    public static String getName(Block block, String suffix) {
+        return getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : "");
+    }
+
     public static String getNamespace(Block block) {
         return getResourceLocation(block).getNamespace();
     }
@@ -33,7 +37,7 @@ public class BlockUtils {
 
     public static ResourceLocation getPrefixedResourceLocationWithSuffix(Block block, String prefix, String suffix) {
         String namespace = getNamespace(block);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + "_" + suffix);
+        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
     public static ResourceLocation getBlockResourceLocation(Block block) {

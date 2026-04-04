@@ -4,6 +4,8 @@
     {
       "type": "paletted_permutations",
       "textures": [
+        "trims/models/armor/bolt",
+        "trims/models/armor/bolt_leggings",
         "trims/models/armor/coast",
         "trims/models/armor/coast_leggings",
         "trims/models/armor/sentry",
@@ -35,7 +37,9 @@
         "trims/models/armor/raiser",
         "trims/models/armor/raiser_leggings",
         "trims/models/armor/host",
-        "trims/models/armor/host_leggings"
+        "trims/models/armor/host_leggings",
+        "trims/models/armor/flow",
+        "trims/models/armor/flow_leggings"
       ],
       "palette_key": "trims/color_palettes/trim_palette",
       "permutations": {

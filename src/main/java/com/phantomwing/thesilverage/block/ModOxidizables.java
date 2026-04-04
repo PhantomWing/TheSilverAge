@@ -37,6 +37,11 @@ public class ModOxidizables {
         add(b, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
         add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
 
+        // Silver Bulb
+        add(b, ModBlocks.SILVER_BULB, ModBlocks.EXPOSED_SILVER_BULB);
+        add(b, ModBlocks.EXPOSED_SILVER_BULB, ModBlocks.WEATHERED_SILVER_BULB);
+        add(b, ModBlocks.WEATHERED_SILVER_BULB, ModBlocks.OXIDIZED_SILVER_BULB);
+
         // Silver Trapdoor
         add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.EXPOSED_SILVER_TRAPDOOR);
         add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR);

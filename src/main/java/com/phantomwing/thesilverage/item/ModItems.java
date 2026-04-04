@@ -108,6 +108,16 @@ public class ModItems {
     public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
     public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
+    // Silver Bulb
+    public static final DeferredItem<Item> SILVER_BULB = registerBlock(ModBlocks.SILVER_BULB);
+    public static final DeferredItem<Item> EXPOSED_SILVER_BULB = registerBlock(ModBlocks.EXPOSED_SILVER_BULB);
+    public static final DeferredItem<Item> WEATHERED_SILVER_BULB = registerBlock(ModBlocks.WEATHERED_SILVER_BULB);
+    public static final DeferredItem<Item> OXIDIZED_SILVER_BULB = registerBlock(ModBlocks.OXIDIZED_SILVER_BULB);
+    public static final DeferredItem<Item> WAXED_SILVER_BULB = registerBlock(ModBlocks.WAXED_SILVER_BULB);
+    public static final DeferredItem<Item> WAXED_EXPOSED_SILVER_BULB = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
+    public static final DeferredItem<Item> WAXED_WEATHERED_SILVER_BULB = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
+    public static final DeferredItem<Item> WAXED_OXIDIZED_SILVER_BULB = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
+
     // Silver Trapdoor
     public static final DeferredItem<Item> SILVER_TRAPDOOR = registerBlock(ModBlocks.SILVER_TRAPDOOR);
     public static final DeferredItem<Item> EXPOSED_SILVER_TRAPDOOR = registerBlock(ModBlocks.EXPOSED_SILVER_TRAPDOOR);

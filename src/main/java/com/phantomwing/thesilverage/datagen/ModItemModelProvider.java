@@ -146,6 +146,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
         blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
 
+        // Silver Bulb
+        blockItem(ModBlocks.SILVER_BULB);
+        blockItem(ModBlocks.EXPOSED_SILVER_BULB);
+        blockItem(ModBlocks.WEATHERED_SILVER_BULB);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
+
         // Silver Trapdoor
         trapdoorItem(ModBlocks.SILVER_TRAPDOOR);
         trapdoorItem(ModBlocks.EXPOSED_SILVER_TRAPDOOR);

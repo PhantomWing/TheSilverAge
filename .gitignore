@@ -17,6 +17,12 @@ out
 build
 .gradle
 
+# claude
+.claude
+
+# cache
+src/generated/resources/.cache
+
 # other
 eclipse
 run

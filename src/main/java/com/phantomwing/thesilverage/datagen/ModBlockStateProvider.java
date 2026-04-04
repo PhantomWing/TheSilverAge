@@ -91,6 +91,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         translucentBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
         translucentBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
 
+        // Silver Bulb
+        bulb(ModBlocks.SILVER_BULB);
+        bulb(ModBlocks.EXPOSED_SILVER_BULB);
+        bulb(ModBlocks.WEATHERED_SILVER_BULB);
+        bulb(ModBlocks.OXIDIZED_SILVER_BULB);
+        bulbWithTexture(ModBlocks.WAXED_SILVER_BULB, ModBlocks.SILVER_BULB);
+        bulbWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_BULB, ModBlocks.EXPOSED_SILVER_BULB);
+        bulbWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BULB, ModBlocks.WEATHERED_SILVER_BULB);
+        bulbWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BULB, ModBlocks.OXIDIZED_SILVER_BULB);
+
         // Silver Trapdoor
         trapdoor(ModBlocks.SILVER_TRAPDOOR);
         trapdoor(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
@@ -101,6 +111,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         trapdoorWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR);
         trapdoorWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
 
+        // Silver Door
         door(ModBlocks.SILVER_DOOR);
         door(ModBlocks.EXPOSED_SILVER_DOOR);
         door(ModBlocks.WEATHERED_SILVER_DOOR);
@@ -118,6 +129,26 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void slab(DeferredBlock<SlabBlock> slab, DeferredBlock<Block> parentBlock) {
         ResourceLocation texture = blockTexture(parentBlock.get());
         slabBlock(slab.get(), texture, texture);
+    }
+
+    private void bulb(DeferredBlock<Block> block) {
+        bulbWithTexture(block, block);
+    }
+
+    private void bulbWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> parentBlock) {
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            boolean lit = state.getValue(CopperBulbBlock.LIT);
+            boolean powered = state.getValue(CopperBulbBlock.POWERED);
+
+            String suffix = lit && powered ? "lit_powered" : lit ? "lit" : powered ? "powered" : "";
+            String name = BlockUtils.getName(block.get(), suffix);
+
+            ResourceLocation textureResource = BlockUtils.getBlockResourceLocation(parentBlock.get(), suffix);
+
+            ModelFile model = this.models().cubeAll(name, textureResource);
+
+            return ConfiguredModel.builder().modelFile(model).build();
+        });
     }
 
     private void door(DeferredBlock<DoorBlock> doorBlock) {
@@ -176,7 +207,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void moonPhaseDetector(DeferredBlock<MoonPhaseDetectorBlock> block) {
         getVariantBuilder(block.get()).forAllStates(state -> {
-            if(state.getValue(MoonPhaseDetectorBlock.INVERTED)) {
+            if (state.getValue(MoonPhaseDetectorBlock.INVERTED)) {
                 ModelFile invertedModel = this.models().withExistingParent(BlockUtils.getName(block.get()) + "_inverted", ResourceLocation.withDefaultNamespace("block/template_daylight_detector"))
                         .texture("side", BlockUtils.getBlockResourceLocation(block.get(), "side"))
                         .texture("top", BlockUtils.getBlockResourceLocation(block.get(), "inverted_top"));

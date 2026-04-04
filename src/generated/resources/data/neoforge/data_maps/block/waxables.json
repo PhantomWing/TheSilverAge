@@ -27,6 +27,9 @@
     "thesilverage:exposed_silver": {
       "waxed": "thesilverage:waxed_exposed_silver"
     },
+    "thesilverage:exposed_silver_bulb": {
+      "waxed": "thesilverage:waxed_exposed_silver_bulb"
+    },
     "thesilverage:exposed_silver_door": {
       "waxed": "thesilverage:waxed_exposed_silver_door"
     },
@@ -51,6 +54,9 @@
     "thesilverage:oxidized_silver": {
       "waxed": "thesilverage:waxed_oxidized_silver"
     },
+    "thesilverage:oxidized_silver_bulb": {
+      "waxed": "thesilverage:waxed_oxidized_silver_bulb"
+    },
     "thesilverage:oxidized_silver_door": {
       "waxed": "thesilverage:waxed_oxidized_silver_door"
     },
@@ -62,6 +68,9 @@
     },
     "thesilverage:silver_block": {
       "waxed": "thesilverage:waxed_silver_block"
+    },
+    "thesilverage:silver_bulb": {
+      "waxed": "thesilverage:waxed_silver_bulb"
     },
     "thesilverage:silver_door": {
       "waxed": "thesilverage:waxed_silver_door"
@@ -86,6 +95,9 @@
     },
     "thesilverage:weathered_silver": {
       "waxed": "thesilverage:waxed_weathered_silver"
+    },
+    "thesilverage:weathered_silver_bulb": {
+      "waxed": "thesilverage:waxed_weathered_silver_bulb"
     },
     "thesilverage:weathered_silver_door": {
       "waxed": "thesilverage:waxed_weathered_silver_door"

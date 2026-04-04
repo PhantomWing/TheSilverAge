@@ -100,6 +100,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get())
 
+                // Silver Bulb
+                .add(ModBlocks.SILVER_BULB.get())
+                .add(ModBlocks.EXPOSED_SILVER_BULB.get())
+                .add(ModBlocks.WEATHERED_SILVER_BULB.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get())
+
                 // Silver Trapdoor
                 .add(ModBlocks.SILVER_TRAPDOOR.get())
                 .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())
