@@ -6,7 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +23,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
             .add(EntityType.ZOMBIE) // Husks are not included, because the Desert is thematically more suitable for golden armor.
             .add(EntityType.ZOMBIE_VILLAGER)
             .add(EntityType.SKELETON)
-            .add(EntityType.STRAY)
-            .add(EntityType.BOGGED);
+            .add(EntityType.STRAY);
     }
 }

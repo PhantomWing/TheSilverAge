@@ -1,23 +1,14 @@
 package com.phantomwing.thesilverage.sound;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
-import net.neoforged.neoforge.common.util.DeferredSoundType;
 
 public class ModSoundTypes {
-    public static final DeferredSoundType SILVER = ofCopy(SoundType.METAL, 1.0f, 0.9f);
-    public static final DeferredSoundType SILVER_GRATE = ofCopy(SoundType.COPPER_GRATE, 1.0f, 0.8f);
-    public static final DeferredSoundType SILVER_BULB = ofCopy(SoundType.COPPER_BULB, 1.0f, 0.8f);
-
-    private static DeferredSoundType ofCopy(SoundType soundType, float volume, float pitch) {
-        float baseVolume = soundType.getVolume();
-        float basePitch = soundType.getPitch();
-        SoundEvent breakSound = soundType.getBreakSound();
-        SoundEvent stepSound = soundType.getStepSound();
-        SoundEvent placeSound = soundType.getPlaceSound();
-        SoundEvent hitSound = soundType.getHitSound();
-        SoundEvent fallSound = soundType.getFallSound();
-
-        return new DeferredSoundType(baseVolume * volume, basePitch * pitch, () -> breakSound, () -> stepSound, () -> placeSound, () -> hitSound, () -> fallSound);
-    }
+    public static final SoundType SILVER = new SoundType(
+            1.0f, 0.9f,
+            SoundType.METAL.getBreakSound(),
+            SoundType.METAL.getStepSound(),
+            SoundType.METAL.getPlaceSound(),
+            SoundType.METAL.getHitSound(),
+            SoundType.METAL.getFallSound()
+    );
 }

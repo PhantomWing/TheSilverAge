@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "thesilverage:block/exposed_silver_bulb"
-  }
-}

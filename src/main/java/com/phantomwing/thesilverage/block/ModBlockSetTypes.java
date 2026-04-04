@@ -7,10 +7,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class ModBlockSetTypes {
     public static final BlockSetType SILVER = BlockSetType.register(new BlockSetType("silver",
-            true,
             false,
-            false,
-            BlockSetType.PressurePlateSensitivity.EVERYTHING,
             ModSoundTypes.SILVER,
             SoundEvents.IRON_DOOR_CLOSE,
             SoundEvents.IRON_DOOR_OPEN,

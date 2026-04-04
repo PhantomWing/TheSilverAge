@@ -2,54 +2,79 @@ package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.tags.CommonTags;
-import net.minecraft.Util;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.function.Supplier;
 
-public class ModArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, TheSilverAge.MOD_ID);
+public enum ModArmorMaterials implements ArmorMaterial {
+    SILVER("thesilverage:silver", 10, new int[]{2, 6, 7, 3}, 12,
+            SoundEvents.ARMOR_EQUIP_GOLD, 0.0F, 0.0F,
+            () -> Ingredient.of(CommonTags.Items.INGOTS_SILVER));
 
-    public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIAL = register("silver",
-            2,
-            6,
-            7,
-            3,
-            8,
-            0,
-            0,
-            12,
-            Ingredient.of(CommonTags.Items.INGOTS_SILVER)
-    );
+    private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
+    private final String name;
+    private final int durabilityMultiplier;
+    private final int[] slotProtections;
+    private final int enchantmentValue;
+    private final SoundEvent equipSound;
+    private final float toughness;
+    private final float knockbackResistance;
+    private final Supplier<Ingredient> repairIngredient;
 
-    private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantmentValue, Ingredient repairIngredient) {
-        EnumMap<ArmorItem.Type, Integer> typeProtection = Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
-            attribute.put(ArmorItem.Type.BOOTS, bootsProtection);
-            attribute.put(ArmorItem.Type.LEGGINGS, legsProtection);
-            attribute.put(ArmorItem.Type.CHESTPLATE, chestProtection);
-            attribute.put(ArmorItem.Type.HELMET, headProtection);
-            attribute.put(ArmorItem.Type.BODY, bodyProtection); // Body is for Horse/Wolf armor
-        });
-
-        ResourceLocation location = TheSilverAge.resourceLocation(name);
-        Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
-        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));
-
-        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(typeProtection, enchantmentValue, equipSound, () -> repairIngredient, layers, toughness, knockbackResistance));
+    ModArmorMaterials(String name, int durabilityMultiplier, int[] slotProtections, int enchantmentValue,
+                      SoundEvent equipSound, float toughness, float knockbackResistance,
+                      Supplier<Ingredient> repairIngredient) {
+        this.name = name;
+        this.durabilityMultiplier = durabilityMultiplier;
+        this.slotProtections = slotProtections;
+        this.enchantmentValue = enchantmentValue;
+        this.equipSound = equipSound;
+        this.toughness = toughness;
+        this.knockbackResistance = knockbackResistance;
+        this.repairIngredient = repairIngredient;
     }
 
-    public static void register(IEventBus eventBus) {
-        ARMOR_MATERIALS.register(eventBus);
+    @Override
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return HEALTH_PER_SLOT[type.getSlot().getIndex()] * this.durabilityMultiplier;
     }
 
+    @Override
+    public int getDefenseForType(ArmorItem.Type type) {
+        return this.slotProtections[type.getSlot().getIndex()];
+    }
+
+    @Override
+    public int getEnchantmentValue() {
+        return this.enchantmentValue;
+    }
+
+    @Override
+    public SoundEvent getEquipSound() {
+        return this.equipSound;
+    }
+
+    @Override
+    public Ingredient getRepairIngredient() {
+        return this.repairIngredient.get();
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public float getToughness() {
+        return this.toughness;
+    }
+
+    @Override
+    public float getKnockbackResistance() {
+        return this.knockbackResistance;
+    }
 }

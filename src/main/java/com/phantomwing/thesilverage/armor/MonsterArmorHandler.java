@@ -10,11 +10,11 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
+@Mod.EventBusSubscriber(modid = TheSilverAge.MOD_ID)
 public class MonsterArmorHandler {
     private static final float REPLACE_CHANCE = 0.5f; // 50% chance to replace full set
 
@@ -44,27 +44,27 @@ public class MonsterArmorHandler {
             // If wearing a full set of Golden armor, try to replace the entire set with Silver armor.
             if (hasFullSet) {
                 if (random.nextFloat() < REPLACE_CHANCE) {
-                    mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET));
-                    mob.setItemSlot(EquipmentSlot.CHEST, ItemUtils.tryTransmuteStack(chestplate, ModItems.SILVER_CHESTPLATE));
-                    mob.setItemSlot(EquipmentSlot.LEGS, ItemUtils.tryTransmuteStack(leggings, ModItems.SILVER_LEGGINGS));
-                    mob.setItemSlot(EquipmentSlot.FEET, ItemUtils.tryTransmuteStack(boots, ModItems.SILVER_BOOTS));
+                    mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()));
+                    mob.setItemSlot(EquipmentSlot.CHEST, ItemUtils.tryTransmuteStack(chestplate, ModItems.SILVER_CHESTPLATE.get()));
+                    mob.setItemSlot(EquipmentSlot.LEGS, ItemUtils.tryTransmuteStack(leggings, ModItems.SILVER_LEGGINGS.get()));
+                    mob.setItemSlot(EquipmentSlot.FEET, ItemUtils.tryTransmuteStack(boots, ModItems.SILVER_BOOTS.get()));
                 }
             } else {
                 // If mob is wearing any separate pieces of Golden armor, try to individually replace with a piece of Silver armor.
                 if (hasGoldenHelmet && random.nextFloat() < REPLACE_CHANCE) {
-                    mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET));
+                    mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()));
                 }
 
                 if (hasGoldenChestplate && random.nextFloat() < REPLACE_CHANCE) {
-                    mob.setItemSlot(EquipmentSlot.CHEST, ItemUtils.tryTransmuteStack(chestplate, ModItems.SILVER_CHESTPLATE));
+                    mob.setItemSlot(EquipmentSlot.CHEST, ItemUtils.tryTransmuteStack(chestplate, ModItems.SILVER_CHESTPLATE.get()));
                 }
 
                 if (hasGoldenLeggings && random.nextFloat() < REPLACE_CHANCE) {
-                    mob.setItemSlot(EquipmentSlot.LEGS, ItemUtils.tryTransmuteStack(leggings, ModItems.SILVER_LEGGINGS));
+                    mob.setItemSlot(EquipmentSlot.LEGS, ItemUtils.tryTransmuteStack(leggings, ModItems.SILVER_LEGGINGS.get()));
                 }
 
                 if (hasGoldenBoots && random.nextFloat() < REPLACE_CHANCE) {
-                    mob.setItemSlot(EquipmentSlot.FEET, ItemUtils.tryTransmuteStack(boots, ModItems.SILVER_BOOTS));
+                    mob.setItemSlot(EquipmentSlot.FEET, ItemUtils.tryTransmuteStack(boots, ModItems.SILVER_BOOTS.get()));
                 }
             }
         }

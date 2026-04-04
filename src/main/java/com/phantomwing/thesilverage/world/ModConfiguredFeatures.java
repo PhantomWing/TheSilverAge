@@ -3,7 +3,7 @@ package com.phantomwing.thesilverage.world;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_BURIED = registerKey("ore_silver_buried");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_SMALL = registerKey("ore_silver_small");
 
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
+    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context){
         registerOverworldOre(context, ORE_SILVER, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 10);
         registerOverworldOre(context, ORE_SILVER_BURIED, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 10, 0.5f);
         registerOverworldOre(context, ORE_SILVER_SMALL, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 5);
@@ -40,7 +40,7 @@ public class ModConfiguredFeatures {
      * @param veinSize The size of the ore vein (number of blocks per vein).
      * @param <T> The type of block being registered as an ore.
      */
-    private static <T extends Block> void registerOverworldOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredBlock<T> stoneOre, DeferredBlock<T> deepslateOre, int veinSize) {
+    private static <T extends Block> void registerOverworldOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, RegistryObject<T> stoneOre, RegistryObject<T> deepslateOre, int veinSize) {
         registerOverworldOre(context, key, stoneOre, deepslateOre, veinSize, 0.0f);
     }
 
@@ -54,7 +54,7 @@ public class ModConfiguredFeatures {
      * @param airDiscardChance The chance (0.0 to 1.0) that an ore block will be discarded if exposed to air.
      * @param <T> The type of block being registered as an ore.
      */
-    private static <T extends Block> void registerOverworldOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredBlock<T> stoneOre, DeferredBlock<T> deepslateOre, int veinSize, float airDiscardChance) {
+    private static <T extends Block> void registerOverworldOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, RegistryObject<T> stoneOre, RegistryObject<T> deepslateOre, int veinSize, float airDiscardChance) {
         RuleTest stoneReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
 
@@ -66,10 +66,10 @@ public class ModConfiguredFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheSilverAge.MOD_ID, name));
     }
 
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
+    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
         context.register(key, new ConfiguredFeature<>(feature, configuration));
     }
 }

@@ -2,20 +2,19 @@ package com.phantomwing.thesilverage.loot;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.Configuration;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
-import net.neoforged.neoforge.common.loot.LootModifier;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.minecraftforge.common.loot.LootModifier;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,11 +22,11 @@ import java.util.function.Supplier;
 
 public class ReplaceItemModifier extends LootModifier
 {
-    public static final Supplier<MapCodec<ReplaceItemModifier>> CODEC = Suppliers.memoize(() ->
-            RecordCodecBuilder.mapCodec(inst -> codecStart(inst).and(
+    public static final Supplier<Codec<ReplaceItemModifier>> CODEC = Suppliers.memoize(() ->
+            RecordCodecBuilder.create(inst -> codecStart(inst).and(
                             inst.group(
-                                    BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter((m) -> m.item),
-                                    BuiltInRegistries.ITEM.byNameCodec().listOf().fieldOf("removed_item").forGetter((m) -> m.removedItems),
+                                    ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter((m) -> m.item),
+                                    ForgeRegistries.ITEMS.getCodec().listOf().fieldOf("removed_item").forGetter((m) -> m.removedItems),
                                     Codec.INT.fieldOf("in_stacks").forGetter((m) -> m.minStacks),
                                     Codec.INT.fieldOf("max_stacks").forGetter((m) -> m.maxStacks)
                             )
@@ -116,7 +115,7 @@ public class ReplaceItemModifier extends LootModifier
     }
 
     @Override
-    public @NotNull MapCodec<? extends IGlobalLootModifier> codec() {
+    public @NotNull Codec<? extends IGlobalLootModifier> codec() {
         return CODEC.get();
     }
 }

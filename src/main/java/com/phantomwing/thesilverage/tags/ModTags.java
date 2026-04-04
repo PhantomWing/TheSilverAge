@@ -16,7 +16,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CAN_WEAR_SILVER_ARMOR = tag("can_wear_silver_armor");
 
         private static TagKey<EntityType<?>> tag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -26,7 +26,7 @@ public class ModTags {
         public static final TagKey<Biome> HAS_EXTRA_SILVER_ORE = tag("has_extra_silver_ore");
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -37,7 +37,7 @@ public class ModTags {
         public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
 
         private static TagKey<Block> tag(String name) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -46,7 +46,7 @@ public class ModTags {
         public static final TagKey<Item> GLISTERING_NUGGETS = tag("glistering_nuggets");
 
         private static TagKey<Item> tag(String name) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 }

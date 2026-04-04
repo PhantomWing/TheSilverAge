@@ -1,19 +1,21 @@
 package com.phantomwing.thesilverage.utils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class ItemUtils {
     public static ResourceLocation getResourceLocation(ItemLike item) {
-        return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem()));
     }
 
     public static String getName(ItemLike item) {
@@ -31,7 +33,7 @@ public class ItemUtils {
 
     public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
         String namespace = getNamespace(item);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
+        return new ResourceLocation(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
     public static ResourceLocation getItemResourceLocation(ItemLike item) {
@@ -70,12 +72,14 @@ public class ItemUtils {
 
         // Carry over enchantments from the replaced item to the new item (if supported).
         if (from.isEnchanted() && to.isEnchantable()) {
-            ItemEnchantments enchantments = from.getTagEnchantments();
-            enchantments.keySet().forEach(enchantment -> {
-                if (to.supportsEnchantment(enchantment)) {
-                    to.enchant(enchantment, from.getEnchantmentLevel(enchantment));
+            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(from);
+            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                Enchantment enchantment = entry.getKey();
+                int level = entry.getValue();
+                if (enchantment.canEnchant(to)) {
+                    to.enchant(enchantment, level);
                 }
-            });
+            }
         }
 
         return to;

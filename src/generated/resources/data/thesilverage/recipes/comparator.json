@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "thesilverage:config_boolean",
+          "setting_id": "override_vanilla_recipes"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "redstone",
+        "key": {
+          "Q": {
+            "item": "minecraft:quartz"
+          },
+          "S": {
+            "item": "thesilverage:silver_ingot"
+          },
+          "T": {
+            "item": "minecraft:redstone_torch"
+          }
+        },
+        "pattern": [
+          " T ",
+          "TQT",
+          "SSS"
+        ],
+        "result": {
+          "item": "minecraft:comparator"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

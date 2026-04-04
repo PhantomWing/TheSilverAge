@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "thesilverage:glistering_nuggets"
+    },
+    "M": {
+      "item": "minecraft:melon_slice"
+    }
+  },
+  "pattern": [
+    "###",
+    "#M#",
+    "###"
+  ],
+  "result": {
+    "item": "minecraft:glistering_melon_slice"
+  },
+  "show_notification": true
+}

@@ -8,16 +8,15 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
-import net.neoforged.neoforge.event.village.WandererTradesEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
+@Mod.EventBusSubscriber(modid = TheSilverAge.MOD_ID)
 public class ModVillagerTrades {
     public static float PRICE_MULTIPLIER = 0.05f;
 
@@ -32,7 +31,7 @@ public class ModVillagerTrades {
 
         if (event.getType() == VillagerProfession.CLERIC) {
             trades.get(2).add((trader, random) -> new MerchantOffer(
-                    new ItemCost(ModItems.SILVER_INGOT.get(), 3),
+                    new ItemStack(ModItems.SILVER_INGOT.get(), 3),
                     new ItemStack(Items.EMERALD, 1),
                     12,
                     10,
@@ -42,7 +41,7 @@ public class ModVillagerTrades {
         else if (event.getType() == VillagerProfession.LIBRARIAN) {
             // TODO: Add trade for moon clock
             /* trades.get(4).add((trader, random) -> new MerchantOffer(
-                    new ItemCost(Items.EMERALD, 5),
+                    new ItemStack(Items.EMERALD, 5),
                     new ItemStack(ModItems.MOON_CLOCK, 1),
                     12,
                     15,
@@ -63,7 +62,7 @@ public class ModVillagerTrades {
         // TODO: Add trades for wandering trader
 
         /* genericTrades.add((trader, random) -> new MerchantOffer(
-                new ItemCost(Items.EMERALD, 24),
+                new ItemStack(Items.EMERALD, 24),
                 new ItemStack(ModItems.SILVER_HORSE_ARMOR.get(), 1),
                 1,
                 2,

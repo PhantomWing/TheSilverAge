@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "thesilverage:config_boolean",
+          "setting_id": "override_vanilla_recipes"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "key": {
+          "B": {
+            "item": "minecraft:blaze_rod"
+          },
+          "S": {
+            "item": "thesilverage:silver_ingot"
+          }
+        },
+        "pattern": [
+          " B ",
+          "SSS"
+        ],
+        "result": {
+          "item": "minecraft:brewing_stand"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

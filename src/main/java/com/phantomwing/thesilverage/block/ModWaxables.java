@@ -1,68 +1,84 @@
 package com.phantomwing.thesilverage.block;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
+import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.datamaps.builtin.Waxable;
+
+import java.lang.reflect.Field;
 
 public class ModWaxables {
-    public static void gather(DataMapProvider.Builder<Waxable, Block> b) {
+    public static void register() {
+        ImmutableBiMap.Builder<Block, Block> builder = ImmutableBiMap.builder();
+
+        // Add existing vanilla mappings
+        builder.putAll(HoneycombItem.WAXABLES.get());
+
         // Block of Silver
-        add(b, ModBlocks.SILVER_BLOCK, ModBlocks.WAXED_SILVER_BLOCK);
-        add(b, ModBlocks.EXPOSED_SILVER, ModBlocks.WAXED_EXPOSED_SILVER);
-        add(b, ModBlocks.WEATHERED_SILVER, ModBlocks.WAXED_WEATHERED_SILVER);
-        add(b, ModBlocks.OXIDIZED_SILVER, ModBlocks.WAXED_OXIDIZED_SILVER);
+        builder.put(ModBlocks.SILVER_BLOCK.get(), ModBlocks.WAXED_SILVER_BLOCK.get());
+        builder.put(ModBlocks.EXPOSED_SILVER.get(), ModBlocks.WAXED_EXPOSED_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_SILVER.get(), ModBlocks.WAXED_WEATHERED_SILVER.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER.get(), ModBlocks.WAXED_OXIDIZED_SILVER.get());
 
         // Cut Silver
-        add(b, ModBlocks.CUT_SILVER, ModBlocks.WAXED_CUT_SILVER);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER, ModBlocks.WAXED_EXPOSED_CUT_SILVER);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER, ModBlocks.WAXED_WEATHERED_CUT_SILVER);
-        add(b, ModBlocks.OXIDIZED_CUT_SILVER, ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+        builder.put(ModBlocks.CUT_SILVER.get(), ModBlocks.WAXED_CUT_SILVER.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER.get(), ModBlocks.WAXED_EXPOSED_CUT_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER.get(), ModBlocks.WAXED_WEATHERED_CUT_SILVER.get());
+        builder.put(ModBlocks.OXIDIZED_CUT_SILVER.get(), ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get());
 
         // Cut Silver Slab
-        add(b, ModBlocks.CUT_SILVER_SLAB, ModBlocks.WAXED_CUT_SILVER_SLAB);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER_SLAB, ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER_SLAB, ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB);
-        add(b, ModBlocks.OXIDIZED_CUT_SILVER_SLAB, ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB);
+        builder.put(ModBlocks.CUT_SILVER_SLAB.get(), ModBlocks.WAXED_CUT_SILVER_SLAB.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get(), ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get(), ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get());
+        builder.put(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get(), ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
 
         // Cut Silver Stairs
-        add(b, ModBlocks.CUT_SILVER_STAIRS, ModBlocks.WAXED_CUT_SILVER_STAIRS);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER_STAIRS, ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS);
-        add(b, ModBlocks.OXIDIZED_CUT_SILVER_STAIRS, ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS);
+        builder.put(ModBlocks.CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_CUT_SILVER_STAIRS.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get());
+        builder.put(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
 
         // Chiseled Silver
-        add(b, ModBlocks.CHISELED_SILVER, ModBlocks.WAXED_CHISELED_SILVER);
-        add(b, ModBlocks.EXPOSED_CHISELED_SILVER, ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
-        add(b, ModBlocks.WEATHERED_CHISELED_SILVER, ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
-        add(b, ModBlocks.OXIDIZED_CHISELED_SILVER, ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
-
-        // Silver Grate
-        add(b, ModBlocks.SILVER_GRATE, ModBlocks.WAXED_SILVER_GRATE);
-        add(b, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
-        add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
-        add(b, ModBlocks.OXIDIZED_SILVER_GRATE, ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
-
-        // Silver Bulb
-        add(b, ModBlocks.SILVER_BULB, ModBlocks.WAXED_SILVER_BULB);
-        add(b, ModBlocks.EXPOSED_SILVER_BULB, ModBlocks.WAXED_EXPOSED_SILVER_BULB);
-        add(b, ModBlocks.WEATHERED_SILVER_BULB, ModBlocks.WAXED_WEATHERED_SILVER_BULB);
-        add(b, ModBlocks.OXIDIZED_SILVER_BULB, ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
+        builder.put(ModBlocks.CHISELED_SILVER.get(), ModBlocks.WAXED_CHISELED_SILVER.get());
+        builder.put(ModBlocks.EXPOSED_CHISELED_SILVER.get(), ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_CHISELED_SILVER.get(), ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get());
+        builder.put(ModBlocks.OXIDIZED_CHISELED_SILVER.get(), ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get());
 
         // Silver Trapdoor
-        add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.WAXED_SILVER_TRAPDOOR);
-        add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR);
-        add(b, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
-        add(b, ModBlocks.OXIDIZED_SILVER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
+        builder.put(ModBlocks.SILVER_TRAPDOOR.get(), ModBlocks.WAXED_SILVER_TRAPDOOR.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get(), ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get(), ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get(), ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
 
         // Silver Door
-        add(b, ModBlocks.SILVER_DOOR, ModBlocks.WAXED_SILVER_DOOR);
-        add(b, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
-        add(b, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
-        add(b, ModBlocks.OXIDIZED_SILVER_DOOR, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
+        builder.put(ModBlocks.SILVER_DOOR.get(), ModBlocks.WAXED_SILVER_DOOR.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_DOOR.get(), ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_DOOR.get(), ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_DOOR.get(), ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+
+        BiMap<Block, Block> map = builder.build();
+
+        // HoneycombItem fields are in a class but still final. Use reflection with Unsafe
+        // to replace them since access transformers may not work for interface-sourced patterns.
+        try {
+            setStaticFinalField(HoneycombItem.class, "WAXABLES",
+                    com.google.common.base.Suppliers.memoize(() -> map));
+            setStaticFinalField(HoneycombItem.class, "WAX_OFF_BY_BLOCK",
+                    com.google.common.base.Suppliers.memoize(() -> map.inverse()));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to register silver waxable mappings", e);
+        }
     }
 
-    private static <T extends Block> void add(DataMapProvider.Builder<Waxable, Block> builder, DeferredBlock<T> block, DeferredBlock<T> waxedBlock) {
-        builder.add(block.getId(), new Waxable(waxedBlock.get()), false);
+    @SuppressWarnings("removal")
+    private static void setStaticFinalField(Class<?> clazz, String fieldName, Object value) throws Exception {
+        Field unsafeField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+        unsafeField.setAccessible(true);
+        sun.misc.Unsafe unsafe = (sun.misc.Unsafe) unsafeField.get(null);
+
+        Field field = clazz.getDeclaredField(fieldName);
+        Object base = unsafe.staticFieldBase(field);
+        long offset = unsafe.staticFieldOffset(field);
+        unsafe.putObject(base, offset, value);
     }
 }

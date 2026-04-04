@@ -4,7 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -42,10 +42,10 @@ public class ModTrimMaterials {
         map.putAll(MINECRAFT_TRIM_MATERIALS);
     });
 
-    public static void bootstrap(BootstrapContext<TrimMaterial> context) {
+    public static void bootstrap(BootstapContext<TrimMaterial> context) {
         registerMaterial(context, SILVER,
                 ModItems.SILVER_INGOT.get(),
-                Style.EMPTY.withColor(TextColor.parseColor("#7c9eb7").getOrThrow()),
+                Style.EMPTY.withColor(TextColor.parseColor("#7c9eb7")),
                 SILVER_INDEX);
     }
 
@@ -53,7 +53,7 @@ public class ModTrimMaterials {
         return ResourceKey.create(Registries.TRIM_MATERIAL, TheSilverAge.resourceLocation(name));
     }
 
-    private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
+    private static void registerMaterial(BootstapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
         TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item, itemModelIndex,
                 Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style), Map.of());
         context.register(trimKey, trimMaterial);

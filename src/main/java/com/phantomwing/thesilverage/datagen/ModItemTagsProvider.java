@@ -10,8 +10,8 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,10 +76,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
 
         // Armor
-        tag(ItemTags.HEAD_ARMOR).add(ModItems.SILVER_HELMET.get());
-        tag(ItemTags.CHEST_ARMOR).add(ModItems.SILVER_CHESTPLATE.get());
-        tag(ItemTags.LEG_ARMOR).add(ModItems.SILVER_LEGGINGS.get());
-        tag(ItemTags.FOOT_ARMOR).add(ModItems.SILVER_BOOTS.get());
         tag(ItemTags.TRIMMABLE_ARMOR).add(
                 ModItems.SILVER_HELMET.get(),
                 ModItems.SILVER_CHESTPLATE.get(),

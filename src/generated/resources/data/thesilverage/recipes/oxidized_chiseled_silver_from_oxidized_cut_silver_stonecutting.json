@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "thesilverage:oxidized_cut_silver"
+  },
+  "result": "thesilverage:oxidized_chiseled_silver"
+}

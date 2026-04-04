@@ -7,9 +7,9 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +30,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     private void addModTags(HolderLookup.@NotNull Provider provider) {
         // Tool requirements
         tag(ModTags.Blocks.NEEDS_SILVER_TOOL).addTag(BlockTags.NEEDS_IRON_TOOL);
-        tag(ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL).remove(ModTags.Blocks.NEEDS_SILVER_TOOL);
 
         // Silver blocks
         tag(ModTags.Blocks.SILVER_BLOCKS)
@@ -89,26 +88,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get())
                 .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get())
-
-                // Silver Grate
-                .add(ModBlocks.SILVER_GRATE.get())
-                .add(ModBlocks.EXPOSED_SILVER_GRATE.get())
-                .add(ModBlocks.WEATHERED_SILVER_GRATE.get())
-                .add(ModBlocks.OXIDIZED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get())
-
-                // Silver Bulb
-                .add(ModBlocks.SILVER_BULB.get())
-                .add(ModBlocks.EXPOSED_SILVER_BULB.get())
-                .add(ModBlocks.WEATHERED_SILVER_BULB.get())
-                .add(ModBlocks.OXIDIZED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get())
 
                 // Silver Trapdoor
                 .add(ModBlocks.SILVER_TRAPDOOR.get())

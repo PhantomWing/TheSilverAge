@@ -4,51 +4,50 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ModAdvancementProvider implements AdvancementProvider.AdvancementGenerator {
+public class ModAdvancementProvider implements ForgeAdvancementProvider.AdvancementGenerator {
     @Override
-    public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer, @NotNull ExistingFileHelper existingFileHelper) {
+    public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<Advancement> consumer, @NotNull ExistingFileHelper existingFileHelper) {
         // Root tab
-        AdvancementHolder theSilverAge = Advancement.Builder.advancement()
+        Advancement theSilverAge = Advancement.Builder.advancement()
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        ResourceLocation.parse("thesilverage:textures/block/oxidized_cut_silver.png"),
-                        AdvancementType.TASK, false, false, false)
+                        new ResourceLocation("thesilverage:textures/block/oxidized_cut_silver.png"),
+                        FrameType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));
 
         // Obtain Silver
-        AdvancementHolder obtainSilverIngot = obtainItemAdvancement(consumer, theSilverAge, ModItems.SILVER_INGOT);
-        AdvancementHolder obtainMoonDial = obtainItemAdvancement(consumer, obtainSilverIngot, ModItems.MOON_DIAL);
+        Advancement obtainSilverIngot = obtainItemAdvancement(consumer, theSilverAge, ModItems.SILVER_INGOT.get());
+        Advancement obtainMoonDial = obtainItemAdvancement(consumer, obtainSilverIngot, ModItems.MOON_DIAL.get());
     }
 
-    protected static AdvancementHolder obtainItemAdvancement(Consumer<AdvancementHolder> consumer, AdvancementHolder parent, ItemLike item) {
+    protected static Advancement obtainItemAdvancement(Consumer<Advancement> consumer, Advancement parent, ItemLike item) {
         String itemName = ItemUtils.getName(item);
-        return getAdvancement(consumer, parent, "obtain_" + itemName, item, AdvancementType.TASK,
+        return getAdvancement(consumer, parent, "obtain_" + itemName, item, FrameType.TASK,
                 builder -> builder.addCriterion(itemName, InventoryChangeTrigger.TriggerInstance.hasItems(item.asItem())));
     }
 
-    protected static AdvancementHolder getAdvancement(Consumer<AdvancementHolder> consumer, AdvancementHolder parent, String name, ItemLike display, AdvancementType frame, Function<Advancement.Builder, Advancement.Builder> function) {
+    protected static Advancement getAdvancement(Consumer<Advancement> consumer, Advancement parent, String name, ItemLike display, FrameType frame, Function<Advancement.Builder, Advancement.Builder> function) {
         Advancement.Builder builder = getAdvancement(parent, display, name, frame, true, true, false);
         return function.apply(builder).save(consumer, getNameId(name));
     }
 
-    protected static Advancement.Builder getAdvancement(AdvancementHolder parent, ItemLike display, String name, AdvancementType frame, boolean showToast, boolean announceToChat, boolean hidden) {
+    protected static Advancement.Builder getAdvancement(Advancement parent, ItemLike display, String name, FrameType frame, boolean showToast, boolean announceToChat, boolean hidden) {
         return Advancement.Builder.advancement().parent(parent).display(display,
                 getAdvancementTitle(name),
                 getAdvancementDesc(name),

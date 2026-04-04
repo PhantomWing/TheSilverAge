@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_weathered_cut_silver_stairs_from_weathered_cut_silver_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_weathered_cut_silver_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thesilverage:weathered_cut_silver_stairs"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_weathered_cut_silver_stairs",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_weathered_cut_silver_stairs_from_weathered_cut_silver_stairs"
+    ]
+  },
+  "sends_telemetry_event": false
+}

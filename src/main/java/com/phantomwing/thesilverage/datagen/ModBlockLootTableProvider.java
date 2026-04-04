@@ -2,7 +2,6 @@ package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -10,15 +9,14 @@ import net.minecraft.world.level.block.Block;
 
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 public class ModBlockLootTableProvider extends BlockLootSubProvider {
-    public ModBlockLootTableProvider(HolderLookup.Provider lookupProvider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
+    public ModBlockLootTableProvider() {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
     // Actually add our loot tables.
@@ -81,26 +79,6 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
         dropSelf(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
-        // Silver Grate
-        dropSelf(ModBlocks.SILVER_GRATE);
-        dropSelf(ModBlocks.EXPOSED_SILVER_GRATE);
-        dropSelf(ModBlocks.WEATHERED_SILVER_GRATE);
-        dropSelf(ModBlocks.OXIDIZED_SILVER_GRATE);
-        dropSelf(ModBlocks.WAXED_SILVER_GRATE);
-        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
-        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
-        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
-
-        // Silver Bulb
-        dropSelf(ModBlocks.SILVER_BULB);
-        dropSelf(ModBlocks.EXPOSED_SILVER_BULB);
-        dropSelf(ModBlocks.WEATHERED_SILVER_BULB);
-        dropSelf(ModBlocks.OXIDIZED_SILVER_BULB);
-        dropSelf(ModBlocks.WAXED_SILVER_BULB);
-        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
-        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
-        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
-
         // Silver Trapdoor
         dropSelf(ModBlocks.SILVER_TRAPDOOR);
         dropSelf(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
@@ -127,26 +105,22 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected @NotNull Iterable<Block> getKnownBlocks() {
         // The contents of our DeferredRegister.
-        return ModBlocks.BLOCKS.getEntries()
-                .stream()
-                // Cast to Block here, otherwise it will be a ? extends Block and Java will complain.
-                .map(e -> (Block) e.value())
-                .toList();
+        return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
     }
 
-    private <T extends Block> void dropSelf(DeferredBlock<T> block) {
+    private <T extends Block> void dropSelf(RegistryObject<T> block) {
         this.dropSelf(block.get());
     }
 
-    private void dropSlab(DeferredBlock<SlabBlock> block) {
+    private void dropSlab(RegistryObject<? extends SlabBlock> block) {
         add(block.get(), this::createSlabItemTable);
     }
 
-    private void dropDoor(DeferredBlock<DoorBlock> block) {
+    private void dropDoor(RegistryObject<? extends DoorBlock> block) {
         add(block.get(), this::createDoorTable);
     }
 
-    private void dropOre(DeferredBlock<Block> block, DeferredItem<Item> item) {
+    private void dropOre(RegistryObject<Block> block, RegistryObject<Item> item) {
         add(block.get(), (b) -> createOreDrop(b, item.get()));
     }
 }

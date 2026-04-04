@@ -17,11 +17,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -136,26 +135,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
-        // Silver Grate
-        blockItem(ModBlocks.SILVER_GRATE);
-        blockItem(ModBlocks.EXPOSED_SILVER_GRATE);
-        blockItem(ModBlocks.WEATHERED_SILVER_GRATE);
-        blockItem(ModBlocks.OXIDIZED_SILVER_GRATE);
-        blockItem(ModBlocks.WAXED_SILVER_GRATE);
-        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
-        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
-        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
-
-        // Silver Bulb
-        blockItem(ModBlocks.SILVER_BULB);
-        blockItem(ModBlocks.EXPOSED_SILVER_BULB);
-        blockItem(ModBlocks.WEATHERED_SILVER_BULB);
-        blockItem(ModBlocks.OXIDIZED_SILVER_BULB);
-        blockItem(ModBlocks.WAXED_SILVER_BULB);
-        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
-        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
-        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
-
         // Silver Trapdoor
         trapdoorItem(ModBlocks.SILVER_TRAPDOOR);
         trapdoorItem(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
@@ -178,46 +157,46 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
 
     // A simple item with a model generated from its sprite.
-    private <T extends Item> void simpleItem(DeferredItem<T> item) {
-        withExistingParent(ItemUtils.getName(item.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+    private void simpleItem(RegistryObject<Item> item) {
+        withExistingParent(ItemUtils.getName(item.get()), new ResourceLocation("item/generated"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(item.get()));
     }
 
-    private <T extends Block> void blockItem2D(DeferredBlock<T> block) {
-        withExistingParent(ItemUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+    private <T extends Block> void blockItem2D(RegistryObject<T> block) {
+        withExistingParent(ItemUtils.getName(block.get()), new ResourceLocation("item/generated"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(block.get()));
     }
 
-    private <T extends Block> void blockItem2DWithTexture(DeferredBlock<T> block, DeferredBlock<T> textureBlock) {
-        withExistingParent(ItemUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+    private <T extends Block> void blockItem2DWithTexture(RegistryObject<T> block, RegistryObject<T> textureBlock) {
+        withExistingParent(ItemUtils.getName(block.get()), new ResourceLocation("item/generated"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(textureBlock.get()));
     }
 
-    private <T extends Item> void handheldItem(DeferredItem<T> item) {
-        withExistingParent(ItemUtils.getName(item.get()), ResourceLocation.withDefaultNamespace("item/handheld"))
+    private void handheldItem(RegistryObject<Item> item) {
+        withExistingParent(ItemUtils.getName(item.get()), new ResourceLocation("item/handheld"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(item.get()));
     }
 
-    private <T extends Block> void blockItem(DeferredBlock<T> block) {
+    private <T extends Block> void blockItem(RegistryObject<T> block) {
         this.withExistingParent(BlockUtils.getNameWithNamespace(block.get()), BlockUtils.getBlockResourceLocation(block.get()));
     }
 
-    private <T extends Block> void blockItem(DeferredBlock<T> block, String suffix) {
+    private <T extends Block> void blockItem(RegistryObject<T> block, String suffix) {
         this.withExistingParent(BlockUtils.getNameWithNamespace(block.get()), BlockUtils.getBlockResourceLocation(block.get(), suffix));
     }
 
-    private <T extends Block> void trapdoorItem(DeferredBlock<T> block) {
+    private <T extends Block> void trapdoorItem(RegistryObject<T> block) {
         blockItem(block, "bottom");
     }
 
 
-    private void lunarClockItem(DeferredItem<Item> deferredItem) {
-        Item item = deferredItem.get();
+    private void lunarClockItem(RegistryObject<Item> registryObject) {
+        Item item = registryObject.get();
         String itemPath = item.toString();
 
         for (int i = 0; i <= 15; i++) {
             String modelName = itemPath + "_" + i;
-            ResourceLocation phaseModelLoc = ResourceLocation.parse(modelName);
+            ResourceLocation phaseModelLoc = new ResourceLocation(modelName);
 
             ResourceLocation phaseTexture = ItemUtils.getItemResourceLocation(item, i + "");
             ResourceLocation itemLoc = ItemUtils.getItemResourceLocation(item);
@@ -242,12 +221,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 
     /** Generate new armor models for all TrimMaterials. */
-    private void armorItem(DeferredItem<Item> item) {
+    private void armorItem(RegistryObject<Item> item) {
         ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
-            generateTrimArmorModel(item, trimMaterial, false);
+            generateTrimArmorModel(item.get(), trimMaterial, false);
         });
 
-        generateBaseArmorModel(item, false);
+        generateBaseArmorModel(item.get(), false);
     }
 
     /** Generate new armor models for a specific TrimMaterial. */
@@ -266,17 +245,17 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private void generateTrimArmorModel(ItemLike item, ResourceKey<TrimMaterial> trimMaterial, boolean hasOverlay) {
         if (item.asItem() instanceof ArmorItem armorItem) {
-            String armorType = switch (armorItem.getEquipmentSlot()) {
-                case HEAD -> "helmet";
-                case CHEST -> "chestplate";
-                case LEGS -> "leggings";
-                case FEET -> "boots";
+            String armorType = switch (armorItem.getType()) {
+                case HELMET -> "helmet";
+                case CHESTPLATE -> "chestplate";
+                case LEGGINGS -> "leggings";
+                case BOOTS -> "boots";
                 default -> "";
             };
 
             String trimTexturePath = "trims/items/" + armorType + "_trim_" + ItemUtils.getTrimNameForArmor(armorItem, trimMaterial);
             String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
-            ResourceLocation trimTextureResLoc = ResourceLocation.parse(trimTexturePath); // minecraft namespace
+            ResourceLocation trimTextureResLoc = new ResourceLocation(trimTexturePath); // minecraft namespace
 
             // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
             existingFileHelper.trackGenerated(trimTextureResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
@@ -302,7 +281,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
             ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
                 String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
-                ResourceLocation trimModelResLoc = ResourceLocation.parse(trimModelName);
+                ResourceLocation trimModelResLoc = new ResourceLocation(trimModelName);
 
                 var itemResLoc = ItemUtils.getItemResourceLocation(armorItem);
                 var builder = this.withExistingParent(armorItemPath, mcLoc("item/generated"))

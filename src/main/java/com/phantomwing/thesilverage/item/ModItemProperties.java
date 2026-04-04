@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 
 public class ModItemProperties {
-    public static final ResourceLocation MOON_PHASE = ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
+    public static final ResourceLocation MOON_PHASE = new ResourceLocation(TheSilverAge.MOD_ID, "moon_phase");
 
     public static void register() {
         ItemProperties.register(ModItems.MOON_DIAL.get(), MOON_PHASE, (stack, world, entity, seed) -> {

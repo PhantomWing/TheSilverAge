@@ -1,59 +1,78 @@
 package com.phantomwing.thesilverage.block;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable;
+import net.minecraft.world.level.block.WeatheringCopper;
+
+import java.lang.reflect.Field;
 
 public class ModOxidizables {
-    public static void gather(DataMapProvider.Builder<Oxidizable, Block> b) {
+    public static void register() {
+        // Build the oxidizable mappings
+        ImmutableBiMap.Builder<Block, Block> builder = ImmutableBiMap.builder();
+
+        // Add existing vanilla mappings
+        builder.putAll(WeatheringCopper.NEXT_BY_BLOCK.get());
+
         // Block of Silver
-        add(b, ModBlocks.SILVER_BLOCK, ModBlocks.EXPOSED_SILVER);
-        add(b, ModBlocks.EXPOSED_SILVER, ModBlocks.WEATHERED_SILVER);
-        add(b, ModBlocks.WEATHERED_SILVER, ModBlocks.OXIDIZED_SILVER);
+        builder.put(ModBlocks.SILVER_BLOCK.get(), ModBlocks.EXPOSED_SILVER.get());
+        builder.put(ModBlocks.EXPOSED_SILVER.get(), ModBlocks.WEATHERED_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_SILVER.get(), ModBlocks.OXIDIZED_SILVER.get());
 
         // Cut Silver
-        add(b, ModBlocks.CUT_SILVER, ModBlocks.EXPOSED_CUT_SILVER);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER, ModBlocks.WEATHERED_CUT_SILVER);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER, ModBlocks.OXIDIZED_CUT_SILVER);
+        builder.put(ModBlocks.CUT_SILVER.get(), ModBlocks.EXPOSED_CUT_SILVER.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER.get(), ModBlocks.WEATHERED_CUT_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER.get(), ModBlocks.OXIDIZED_CUT_SILVER.get());
 
         // Cut Silver Slab
-        add(b, ModBlocks.CUT_SILVER_SLAB, ModBlocks.EXPOSED_CUT_SILVER_SLAB);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER_SLAB, ModBlocks.WEATHERED_CUT_SILVER_SLAB);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER_SLAB, ModBlocks.OXIDIZED_CUT_SILVER_SLAB);
+        builder.put(ModBlocks.CUT_SILVER_SLAB.get(), ModBlocks.EXPOSED_CUT_SILVER_SLAB.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get(), ModBlocks.WEATHERED_CUT_SILVER_SLAB.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get(), ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get());
 
         // Cut Silver Stairs
-        add(b, ModBlocks.CUT_SILVER_STAIRS, ModBlocks.EXPOSED_CUT_SILVER_STAIRS);
-        add(b, ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.WEATHERED_CUT_SILVER_STAIRS);
-        add(b, ModBlocks.WEATHERED_CUT_SILVER_STAIRS, ModBlocks.OXIDIZED_CUT_SILVER_STAIRS);
+        builder.put(ModBlocks.CUT_SILVER_STAIRS.get(), ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get());
+        builder.put(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get(), ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get());
+        builder.put(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get(), ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get());
 
         // Chiseled Silver
-        add(b, ModBlocks.CHISELED_SILVER, ModBlocks.EXPOSED_CHISELED_SILVER);
-        add(b, ModBlocks.EXPOSED_CHISELED_SILVER, ModBlocks.WEATHERED_CHISELED_SILVER);
-        add(b, ModBlocks.WEATHERED_CHISELED_SILVER, ModBlocks.OXIDIZED_CHISELED_SILVER);
-
-        // Silver Grate
-        add(b, ModBlocks.SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE);
-        add(b, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
-        add(b, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
-
-        // Silver Bulb
-        add(b, ModBlocks.SILVER_BULB, ModBlocks.EXPOSED_SILVER_BULB);
-        add(b, ModBlocks.EXPOSED_SILVER_BULB, ModBlocks.WEATHERED_SILVER_BULB);
-        add(b, ModBlocks.WEATHERED_SILVER_BULB, ModBlocks.OXIDIZED_SILVER_BULB);
+        builder.put(ModBlocks.CHISELED_SILVER.get(), ModBlocks.EXPOSED_CHISELED_SILVER.get());
+        builder.put(ModBlocks.EXPOSED_CHISELED_SILVER.get(), ModBlocks.WEATHERED_CHISELED_SILVER.get());
+        builder.put(ModBlocks.WEATHERED_CHISELED_SILVER.get(), ModBlocks.OXIDIZED_CHISELED_SILVER.get());
 
         // Silver Trapdoor
-        add(b, ModBlocks.SILVER_TRAPDOOR, ModBlocks.EXPOSED_SILVER_TRAPDOOR);
-        add(b, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR);
-        add(b, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
+        builder.put(ModBlocks.SILVER_TRAPDOOR.get(), ModBlocks.EXPOSED_SILVER_TRAPDOOR.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get(), ModBlocks.WEATHERED_SILVER_TRAPDOOR.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get(), ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get());
 
         // Silver Door
-        add(b, ModBlocks.SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
-        add(b, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
-        add(b, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
+        builder.put(ModBlocks.SILVER_DOOR.get(), ModBlocks.EXPOSED_SILVER_DOOR.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_DOOR.get(), ModBlocks.WEATHERED_SILVER_DOOR.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_DOOR.get(), ModBlocks.OXIDIZED_SILVER_DOOR.get());
+
+        BiMap<Block, Block> map = builder.build();
+
+        // WeatheringCopper fields are interface constants (implicitly final) and cannot be
+        // modified via access transformers. Use reflection with Unsafe to replace them.
+        try {
+            setStaticFinalField(WeatheringCopper.class, "NEXT_BY_BLOCK",
+                    com.google.common.base.Suppliers.memoize(() -> map));
+            setStaticFinalField(WeatheringCopper.class, "PREVIOUS_BY_BLOCK",
+                    com.google.common.base.Suppliers.memoize(() -> map.inverse()));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to register silver oxidizable mappings", e);
+        }
     }
 
-    private static <T extends Block> void add(DataMapProvider.Builder<Oxidizable, Block> builder, DeferredBlock<T> block, DeferredBlock<T> oxidizedBlock) {
-        builder.add(block.getId(), new Oxidizable(oxidizedBlock.get()), false);
+    @SuppressWarnings("removal")
+    private static void setStaticFinalField(Class<?> clazz, String fieldName, Object value) throws Exception {
+        Field unsafeField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+        unsafeField.setAccessible(true);
+        sun.misc.Unsafe unsafe = (sun.misc.Unsafe) unsafeField.get(null);
+
+        Field field = clazz.getDeclaredField(fieldName);
+        Object base = unsafe.staticFieldBase(field);
+        long offset = unsafe.staticFieldOffset(field);
+        unsafe.putObject(base, offset, value);
     }
 }

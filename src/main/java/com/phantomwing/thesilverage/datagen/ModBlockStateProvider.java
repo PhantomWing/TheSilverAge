@@ -5,15 +5,14 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.utils.BlockUtils;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockStateProvider extends BlockStateProvider {
     private static final int DEFAULT_ANGLE_OFFSET = 180;
@@ -81,26 +80,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         horizontalBlockWithTexture(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER, ModBlocks.WEATHERED_CHISELED_SILVER);
         horizontalBlockWithTexture(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER, ModBlocks.OXIDIZED_CHISELED_SILVER);
 
-        // Silver Grate
-        translucentBlock(ModBlocks.SILVER_GRATE);
-        translucentBlock(ModBlocks.EXPOSED_SILVER_GRATE);
-        translucentBlock(ModBlocks.WEATHERED_SILVER_GRATE);
-        translucentBlock(ModBlocks.OXIDIZED_SILVER_GRATE);
-        translucentBlock(ModBlocks.WAXED_SILVER_GRATE, ModBlocks.SILVER_GRATE);
-        translucentBlock(ModBlocks.WAXED_EXPOSED_SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE);
-        translucentBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
-        translucentBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
-
-        // Silver Bulb
-        bulb(ModBlocks.SILVER_BULB);
-        bulb(ModBlocks.EXPOSED_SILVER_BULB);
-        bulb(ModBlocks.WEATHERED_SILVER_BULB);
-        bulb(ModBlocks.OXIDIZED_SILVER_BULB);
-        bulbWithTexture(ModBlocks.WAXED_SILVER_BULB, ModBlocks.SILVER_BULB);
-        bulbWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_BULB, ModBlocks.EXPOSED_SILVER_BULB);
-        bulbWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BULB, ModBlocks.WEATHERED_SILVER_BULB);
-        bulbWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BULB, ModBlocks.OXIDIZED_SILVER_BULB);
-
         // Silver Trapdoor
         trapdoor(ModBlocks.SILVER_TRAPDOOR);
         trapdoor(ModBlocks.EXPOSED_SILVER_TRAPDOOR);
@@ -122,99 +101,79 @@ public class ModBlockStateProvider extends BlockStateProvider {
         doorWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
     }
 
-    private void stairs(DeferredBlock<StairBlock> stairs, DeferredBlock<Block> parentBlock) {
+    private void stairs(RegistryObject<? extends StairBlock> stairs, RegistryObject<Block> parentBlock) {
         stairsBlock(stairs.get(), blockTexture(parentBlock.get()));
     }
 
-    private void slab(DeferredBlock<SlabBlock> slab, DeferredBlock<Block> parentBlock) {
+    private void slab(RegistryObject<? extends SlabBlock> slab, RegistryObject<Block> parentBlock) {
         ResourceLocation texture = blockTexture(parentBlock.get());
         slabBlock(slab.get(), texture, texture);
     }
 
-    private void bulb(DeferredBlock<Block> block) {
-        bulbWithTexture(block, block);
-    }
-
-    private void bulbWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> parentBlock) {
-        getVariantBuilder(block.get()).forAllStates(state -> {
-            boolean lit = state.getValue(CopperBulbBlock.LIT);
-            boolean powered = state.getValue(CopperBulbBlock.POWERED);
-
-            String suffix = lit && powered ? "lit_powered" : lit ? "lit" : powered ? "powered" : "";
-            String name = BlockUtils.getName(block.get(), suffix);
-
-            ResourceLocation textureResource = BlockUtils.getBlockResourceLocation(parentBlock.get(), suffix);
-
-            ModelFile model = this.models().cubeAll(name, textureResource);
-
-            return ConfiguredModel.builder().modelFile(model).build();
-        });
-    }
-
-    private void door(DeferredBlock<DoorBlock> doorBlock) {
+    private void door(RegistryObject<? extends DoorBlock> doorBlock) {
         this.doorWithTexture(doorBlock, doorBlock);
     }
 
-    private void doorWithTexture(DeferredBlock<DoorBlock> doorBlock, DeferredBlock<DoorBlock> textureBlock) {
+    private void doorWithTexture(RegistryObject<? extends DoorBlock> doorBlock, RegistryObject<? extends DoorBlock> textureBlock) {
         doorBlockWithRenderType(doorBlock.get(),
                 BlockUtils.getBlockResourceLocation(textureBlock.get(), "bottom"),
                 BlockUtils.getBlockResourceLocation(textureBlock.get(), "top"),
-                RenderType.cutout().name
+                "cutout"
         );
     }
 
-    private void trapdoor(DeferredBlock<TrapDoorBlock> trapdoor) {
+    private void trapdoor(RegistryObject<? extends TrapDoorBlock> trapdoor) {
         this.trapdoorWithTexture(trapdoor, trapdoor);
     }
 
-    private void trapdoorWithTexture(DeferredBlock<TrapDoorBlock> trapdoor, DeferredBlock<TrapDoorBlock> textureBlock) {
+    private void trapdoorWithTexture(RegistryObject<? extends TrapDoorBlock> trapdoor, RegistryObject<? extends TrapDoorBlock> textureBlock) {
         trapdoorBlockWithRenderType(trapdoor.get(),
                 BlockUtils.getBlockResourceLocation(textureBlock.get()),
                 true,
-                RenderType.cutout().name
+                "cutout"
         );
     }
 
-    private void simpleBlock(DeferredBlock<Block> block) {
+    private void simpleBlock(RegistryObject<Block> block) {
         simpleBlock(block.get(), cubeAll(block.get()));
     }
 
-    private void horizontalBlock(DeferredBlock<HorizontalFacingBlock> block) {
+    private void horizontalBlock(RegistryObject<? extends HorizontalFacingBlock> block) {
         horizontalBlock(block.get(), cubeAll(block.get()));
     }
 
-    private void horizontalBlockWithTexture(DeferredBlock<HorizontalFacingBlock> block, DeferredBlock<HorizontalFacingBlock> textureBlock) {
+    private void horizontalBlockWithTexture(RegistryObject<? extends HorizontalFacingBlock> block, RegistryObject<? extends HorizontalFacingBlock> textureBlock) {
         ModelFile cubeAll = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get()));
         horizontalBlock(block.get(), cubeAll);
     }
 
-    private void pillarBlock(DeferredBlock<Block> block) {
+    private void pillarBlock(RegistryObject<Block> block) {
         ResourceLocation side = BlockUtils.getBlockResourceLocation(block.get());
         ResourceLocation end = BlockUtils.getBlockResourceLocation(block.get(), "top");
         simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
     }
 
-    private void pillarBlockWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> textureBlock) {
+    private void pillarBlockWithTexture(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {
         ResourceLocation side = BlockUtils.getBlockResourceLocation(textureBlock.get());
         ResourceLocation end = BlockUtils.getBlockResourceLocation(textureBlock.get(), "top");
         simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
     }
 
-    private void blockWithTexture(DeferredBlock<Block> block, DeferredBlock<Block> textureBlock) {
+    private void blockWithTexture(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {
         ModelFile cubeAll = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get()));
         simpleBlock(block.get(), cubeAll);
     }
 
-    private void moonPhaseDetector(DeferredBlock<MoonPhaseDetectorBlock> block) {
+    private void moonPhaseDetector(RegistryObject<? extends MoonPhaseDetectorBlock> block) {
         getVariantBuilder(block.get()).forAllStates(state -> {
             if (state.getValue(MoonPhaseDetectorBlock.INVERTED)) {
-                ModelFile invertedModel = this.models().withExistingParent(BlockUtils.getName(block.get()) + "_inverted", ResourceLocation.withDefaultNamespace("block/template_daylight_detector"))
+                ModelFile invertedModel = this.models().withExistingParent(BlockUtils.getName(block.get()) + "_inverted", new ResourceLocation("block/template_daylight_detector"))
                         .texture("side", BlockUtils.getBlockResourceLocation(block.get(), "side"))
                         .texture("top", BlockUtils.getBlockResourceLocation(block.get(), "inverted_top"));
 
                 return ConfiguredModel.builder().modelFile(invertedModel).build();
             } else {
-                ModelFile model = this.models().withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/template_daylight_detector"))
+                ModelFile model = this.models().withExistingParent(BlockUtils.getName(block.get()), new ResourceLocation("block/template_daylight_detector"))
                         .texture("side", BlockUtils.getBlockResourceLocation(block.get(), "side"))
                         .texture("top", BlockUtils.getBlockResourceLocation(block.get(), "top"));
 
@@ -223,16 +182,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         });
     }
 
-    private void blockItem(DeferredBlock<?> deferredBlock, String appendix) {
-        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("tutorialmod:block/" + deferredBlock.getId().getPath() + appendix));
+    private void blockItem(RegistryObject<?> deferredBlock, String appendix) {
+        simpleBlockItem(((RegistryObject<Block>) deferredBlock).get(), new ModelFile.UncheckedModelFile("tutorialmod:block/" + deferredBlock.getId().getPath() + appendix));
     }
 
-    private void translucentBlock(DeferredBlock<Block> block) {
+    private void translucentBlock(RegistryObject<Block> block) {
         this.translucentBlock(block, block);
     }
 
-    private void translucentBlock(DeferredBlock<Block> block, DeferredBlock<Block> textureBlock) {
-        ModelFile translucentCube = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get())).renderType(RenderType.translucent().name);
+    private void translucentBlock(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {
+        ModelFile translucentCube = this.models().cubeAll(BlockUtils.getName(block.get()), this.blockTexture(textureBlock.get())).renderType("translucent");
         this.getVariantBuilder(block.get()).partialState().setModels(new ConfiguredModel(translucentCube));
     }
 }

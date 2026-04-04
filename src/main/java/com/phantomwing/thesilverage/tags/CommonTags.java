@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class CommonTags {
-    private static final String COMMON_MOD_ID = "c";
+    private static final String COMMON_MOD_ID = "forge";
 
     // Block tags
     public static class Blocks {
@@ -16,7 +16,7 @@ public class CommonTags {
         public static final TagKey<Block> ORES_SILVER = tag("ores_silver");
 
         private static TagKey<Block> tag(String path) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(COMMON_MOD_ID, path));
         }
     }
 
@@ -34,7 +34,7 @@ public class CommonTags {
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife");
 
         private static TagKey<Item> tag(String path) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(COMMON_MOD_ID, path));
         }
     }
 }

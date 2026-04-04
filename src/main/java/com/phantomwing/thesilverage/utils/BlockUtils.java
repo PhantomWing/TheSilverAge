@@ -1,16 +1,16 @@
 package com.phantomwing.thesilverage.utils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.BlockModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
 public class BlockUtils {
     public static ResourceLocation getResourceLocation(Block block) {
-        return Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block));
+        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
     }
 
     public static String getName(Block block) {
@@ -32,12 +32,12 @@ public class BlockUtils {
 
     public static ResourceLocation getPrefixedResourceLocation(Block block, String prefix) {
         String namespace = getNamespace(block);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block));
+        return new ResourceLocation(namespace, prefix + "/" + getName(block));
     }
 
     public static ResourceLocation getPrefixedResourceLocationWithSuffix(Block block, String prefix, String suffix) {
         String namespace = getNamespace(block);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : ""));
+        return new ResourceLocation(namespace, prefix + "/" + getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
     public static ResourceLocation getBlockResourceLocation(Block block) {

@@ -1,27 +1,27 @@
 package com.phantomwing.thesilverage;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class Configuration {
-    public static ModConfigSpec COMMON_CONFIG;
+    public static ForgeConfigSpec COMMON_CONFIG;
 
     // COMMON
     public static final String SILVERFISH_DROP_SILVER_ID = "silverfish_drop_silver";
-    public static ModConfigSpec.BooleanValue SILVERFISH_DROP_SILVER;
+    public static ForgeConfigSpec.BooleanValue SILVERFISH_DROP_SILVER;
 
     public static final String OVERRIDE_VANILLA_RECIPES_ID = "override_vanilla_recipes";
-    public static ModConfigSpec.BooleanValue OVERRIDE_VANILLA_RECIPES;
+    public static ForgeConfigSpec.BooleanValue OVERRIDE_VANILLA_RECIPES;
 
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
-    public static ModConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
+    public static ForgeConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
 
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
-    public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
+    public static ForgeConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
 
     // Wandering Trader trades
     public static final String ENABLE_WANDERING_TRADER_TRADES_ID = "enable_wandering_trader_trades";
-    public static ModConfigSpec.BooleanValue ENABLE_WANDERING_TRADER_TRADES;
+    public static ForgeConfigSpec.BooleanValue ENABLE_WANDERING_TRADER_TRADES;
 
     public static boolean getBooleanConfigurationValue(String id) {
         return switch (id) {
@@ -35,7 +35,7 @@ public class Configuration {
     }
 
     static {
-        ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
+        ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 
         // General settings
         SILVERFISH_DROP_SILVER = COMMON_BUILDER.define(SILVERFISH_DROP_SILVER_ID, true);

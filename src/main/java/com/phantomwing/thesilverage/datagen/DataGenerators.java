@@ -6,17 +6,17 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
+@Mod.EventBusSubscriber(modid = TheSilverAge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -24,30 +24,20 @@ public class DataGenerators {
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        
-        generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookupProvider));
 
-        generator.addProvider(event.includeServer(), new LootTableProvider(
-            output,
-            Set.of(),
-            List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)),
-            lookupProvider)
-        );
+        generator.addProvider(event.includeServer(), new ModRecipeProvider(output));
+
+        generator.addProvider(event.includeServer(), ModLootTableProvider.create(output));
 
         generator.addProvider(
-                // Tell generator to run only when server data are generating
                 event.includeServer(),
-                new AdvancementProvider(
+                new ForgeAdvancementProvider(
                         output,
-                        event.getLookupProvider(),
-                        event.getExistingFileHelper(),
-                        // Sub providers which generate the advancements
+                        lookupProvider,
+                        existingFileHelper,
                         List.of(new ModAdvancementProvider())
                 )
         );
-
-        generator.addProvider(event.includeServer(), new ModDataMapProvider(output, lookupProvider));
-        generator.addProvider(event.includeServer(), new ModSpriteSourceProvider(output, lookupProvider, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new ModItemModelProvider(output, existingFileHelper));
@@ -57,7 +47,7 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new ModBiomeTagsProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModEntityTypeTagsProvider(output, lookupProvider, existingFileHelper));
 
-        generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output));
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
     }
