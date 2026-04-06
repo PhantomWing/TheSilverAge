@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 4,
+  "ingredient": {
+    "item": "thesilverage:waxed_oxidized_silver"
+  },
+  "result": "thesilverage:waxed_oxidized_silver_grate"
+}

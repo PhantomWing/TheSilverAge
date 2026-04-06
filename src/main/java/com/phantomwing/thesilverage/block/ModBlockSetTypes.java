@@ -2,12 +2,11 @@ package com.phantomwing.thesilverage.block;
 
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class ModBlockSetTypes {
     public static final BlockSetType SILVER = BlockSetType.register(new BlockSetType("silver",
-            false,
+            true,
             ModSoundTypes.SILVER,
             SoundEvents.IRON_DOOR_CLOSE,
             SoundEvents.IRON_DOOR_OPEN,

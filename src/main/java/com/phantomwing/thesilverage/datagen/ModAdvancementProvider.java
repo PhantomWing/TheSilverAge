@@ -26,7 +26,7 @@ public class ModAdvancementProvider implements ForgeAdvancementProvider.Advancem
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        new ResourceLocation("thesilverage:textures/block/oxidized_cut_silver.png"),
+                        new ResourceLocation(TheSilverAge.MOD_ID, "textures/block/oxidized_cut_silver.png"),
                         FrameType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));

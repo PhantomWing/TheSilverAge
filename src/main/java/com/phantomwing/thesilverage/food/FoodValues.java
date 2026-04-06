@@ -1,7 +1,5 @@
 package com.phantomwing.thesilverage.food;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 
 public class FoodValues {

@@ -17,13 +17,15 @@ public class WeatheringCopperHorizontalFacingBlock extends HorizontalFacingBlock
         this.weatherState = weatherState;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(@NotNull BlockState state) {
         return WeatheringCopper.getNext(state.getBlock()).isPresent();
     }
 

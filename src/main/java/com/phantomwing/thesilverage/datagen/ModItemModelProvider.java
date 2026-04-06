@@ -154,6 +154,26 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem2DWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
         blockItem2DWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
         blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
+
+        // Silver Grate
+        blockItem(ModBlocks.SILVER_GRATE);
+        blockItem(ModBlocks.EXPOSED_SILVER_GRATE);
+        blockItem(ModBlocks.WEATHERED_SILVER_GRATE);
+        blockItem(ModBlocks.OXIDIZED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
+
+        // Silver Bulb
+        blockItem(ModBlocks.SILVER_BULB);
+        blockItem(ModBlocks.EXPOSED_SILVER_BULB);
+        blockItem(ModBlocks.WEATHERED_SILVER_BULB);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
     }
 
     // A simple item with a model generated from its sprite.
@@ -192,11 +212,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private void lunarClockItem(RegistryObject<Item> registryObject) {
         Item item = registryObject.get();
-        String itemPath = item.toString();
+        String itemPath = ItemUtils.getName(item);
 
         for (int i = 0; i <= 15; i++) {
             String modelName = itemPath + "_" + i;
-            ResourceLocation phaseModelLoc = new ResourceLocation(modelName);
+            ResourceLocation phaseModelLoc = new ResourceLocation(TheSilverAge.MOD_ID, modelName);
 
             ResourceLocation phaseTexture = ItemUtils.getItemResourceLocation(item, i + "");
             ResourceLocation itemLoc = ItemUtils.getItemResourceLocation(item);
@@ -253,6 +273,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                 default -> "";
             };
 
+            String itemNamespace = ItemUtils.getNamespace(armorItem);
             String trimTexturePath = "trims/items/" + armorType + "_trim_" + ItemUtils.getTrimNameForArmor(armorItem, trimMaterial);
             String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
             ResourceLocation trimTextureResLoc = new ResourceLocation(trimTexturePath); // minecraft namespace
@@ -260,9 +281,9 @@ public class ModItemModelProvider extends ItemModelProvider {
             // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
             existingFileHelper.trackGenerated(trimTextureResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
 
-            // Trimmed armorItem file.
+            // Trimmed armorItem file. Use the item's namespace so the model ends up in the right place.
             var itemResLoc = ItemUtils.getItemResourceLocation(armorItem);
-            var builder = getBuilder(trimModelName)
+            var builder = getBuilder(itemNamespace + ":" + trimModelName)
                     .parent(new ModelFile.UncheckedModelFile("item/generated"))
                     .texture("layer0", itemResLoc);
 
@@ -277,11 +298,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private void generateBaseArmorModel(ItemLike item, boolean hasOverlay) {
         if (item.asItem() instanceof ArmorItem armorItem) {
-            String armorItemPath = armorItem.toString();
+            String itemNamespace = ItemUtils.getNamespace(armorItem);
+            String armorItemPath = ItemUtils.getNameWithNamespace(armorItem);
 
             ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
                 String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
-                ResourceLocation trimModelResLoc = new ResourceLocation(trimModelName);
+                ResourceLocation trimModelResLoc = new ResourceLocation(itemNamespace, trimModelName);
 
                 var itemResLoc = ItemUtils.getItemResourceLocation(armorItem);
                 var builder = this.withExistingParent(armorItemPath, mcLoc("item/generated"))

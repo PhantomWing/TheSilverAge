@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": {
+      "item": "thesilverage:silver_block"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#R#",
+    " B "
+  ],
+  "result": {
+    "count": 4,
+    "item": "thesilverage:silver_bulb"
+  },
+  "show_notification": true
+}

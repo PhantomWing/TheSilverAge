@@ -50,6 +50,16 @@ public class ModOxidizables {
         builder.put(ModBlocks.EXPOSED_SILVER_DOOR.get(), ModBlocks.WEATHERED_SILVER_DOOR.get());
         builder.put(ModBlocks.WEATHERED_SILVER_DOOR.get(), ModBlocks.OXIDIZED_SILVER_DOOR.get());
 
+        // Silver Grate
+        builder.put(ModBlocks.SILVER_GRATE.get(), ModBlocks.EXPOSED_SILVER_GRATE.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_GRATE.get(), ModBlocks.WEATHERED_SILVER_GRATE.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_GRATE.get(), ModBlocks.OXIDIZED_SILVER_GRATE.get());
+
+        // Silver Bulb
+        builder.put(ModBlocks.SILVER_BULB.get(), ModBlocks.EXPOSED_SILVER_BULB.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_BULB.get(), ModBlocks.WEATHERED_SILVER_BULB.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_BULB.get(), ModBlocks.OXIDIZED_SILVER_BULB.get());
+
         BiMap<Block, Block> map = builder.build();
 
         // WeatheringCopper fields are interface constants (implicitly final) and cannot be

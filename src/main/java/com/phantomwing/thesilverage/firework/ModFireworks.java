@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ModFireworks {

@@ -219,6 +219,29 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+
+        // Silver Grate
+        grateWithCutting(output, ModItems.SILVER_GRATE.get(), ModItems.SILVER_BLOCK.get());
+        grateWithCutting(output, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.EXPOSED_SILVER.get());
+        grateWithCutting(output, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WEATHERED_SILVER.get());
+        grateWithCutting(output, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.OXIDIZED_SILVER.get());
+
+        grateWithCutting(output, ModItems.WAXED_SILVER_GRATE.get(), ModItems.WAXED_SILVER_BLOCK.get());
+        grateWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER.get());
+        grateWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER.get());
+        grateWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER.get());
+
+        waxable(output, ModItems.SILVER_GRATE.get(), ModItems.WAXED_SILVER_GRATE.get());
+        waxable(output, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER_GRATE.get());
+        waxable(output, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER_GRATE.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER_GRATE.get());
+
+        // Silver Bulb
+        bulb(output, ModItems.SILVER_BULB.get(), ModItems.SILVER_BLOCK.get());
+        waxable(output, ModItems.SILVER_BULB.get(), ModItems.WAXED_SILVER_BULB.get());
+        waxable(output, ModItems.EXPOSED_SILVER_BULB.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get());
+        waxable(output, ModItems.WEATHERED_SILVER_BULB.get(), ModItems.WAXED_WEATHERED_SILVER_BULB.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
     }
 
     /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */
@@ -332,6 +355,29 @@ public class ModRecipeProvider extends RecipeProvider {
                         .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                         .save(consumer))
                 .build(output, new ResourceLocation("minecraft", ItemUtils.getName(Items.REPEATER) + "_fallback"));
+    }
+
+    private static void grateWithCutting(Consumer<FinishedRecipe> recipeOutput, ItemLike item, ItemLike material) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, item, 4)
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .define('#', material)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput, getRecipeName(material, item));
+        stoneCutting(recipeOutput, item, material, 4);
+    }
+
+    private static void bulb(Consumer<FinishedRecipe> recipeOutput, ItemLike item, ItemLike material) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, item, 4)
+                .pattern(" # ")
+                .pattern("#R#")
+                .pattern(" B ")
+                .define('#', material)
+                .define('R', Items.REDSTONE)
+                .define('B', Items.BLAZE_ROD)
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
     }
 
     private static void stairsWithCutting(Consumer<FinishedRecipe> recipeOutput, ItemLike item, ItemLike material) {

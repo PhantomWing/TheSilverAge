@@ -59,6 +59,22 @@
     "thesilverage:waxed_silver_door",
     "thesilverage:waxed_exposed_silver_door",
     "thesilverage:waxed_weathered_silver_door",
-    "thesilverage:waxed_oxidized_silver_door"
+    "thesilverage:waxed_oxidized_silver_door",
+    "thesilverage:silver_grate",
+    "thesilverage:exposed_silver_grate",
+    "thesilverage:weathered_silver_grate",
+    "thesilverage:oxidized_silver_grate",
+    "thesilverage:waxed_silver_grate",
+    "thesilverage:waxed_exposed_silver_grate",
+    "thesilverage:waxed_weathered_silver_grate",
+    "thesilverage:waxed_oxidized_silver_grate",
+    "thesilverage:silver_bulb",
+    "thesilverage:exposed_silver_bulb",
+    "thesilverage:weathered_silver_bulb",
+    "thesilverage:oxidized_silver_bulb",
+    "thesilverage:waxed_silver_bulb",
+    "thesilverage:waxed_exposed_silver_bulb",
+    "thesilverage:waxed_weathered_silver_bulb",
+    "thesilverage:waxed_oxidized_silver_bulb"
   ]
 }

@@ -15,7 +15,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.LinkedHashSet;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TheSilverAge.MOD_ID);
@@ -120,6 +119,26 @@ public class ModItems {
     public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
     public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
     public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_DOOR = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
+
+    // Silver Grate
+    public static final RegistryObject<Item> SILVER_GRATE = registerBlock(ModBlocks.SILVER_GRATE);
+    public static final RegistryObject<Item> EXPOSED_SILVER_GRATE = registerBlock(ModBlocks.EXPOSED_SILVER_GRATE);
+    public static final RegistryObject<Item> WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WEATHERED_SILVER_GRATE);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.OXIDIZED_SILVER_GRATE);
+    public static final RegistryObject<Item> WAXED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_SILVER_GRATE);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_GRATE);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_GRATE = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE);
+
+    // Silver Bulb
+    public static final RegistryObject<Item> SILVER_BULB = registerBlock(ModBlocks.SILVER_BULB);
+    public static final RegistryObject<Item> EXPOSED_SILVER_BULB = registerBlock(ModBlocks.EXPOSED_SILVER_BULB);
+    public static final RegistryObject<Item> WEATHERED_SILVER_BULB = registerBlock(ModBlocks.WEATHERED_SILVER_BULB);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_BULB = registerBlock(ModBlocks.OXIDIZED_SILVER_BULB);
+    public static final RegistryObject<Item> WAXED_SILVER_BULB = registerBlock(ModBlocks.WAXED_SILVER_BULB);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_BULB = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_BULB);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_BULB = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_BULB);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_BULB = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_BULB);
 
     // Helper functions
     public static Item.Properties baseItem() {

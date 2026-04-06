@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import org.jetbrains.annotations.NotNull;
 
 
 public class WeatheringSilverTrapDoorBlock extends TrapDoorBlock implements WeatheringCopper {
@@ -17,18 +18,20 @@ public class WeatheringSilverTrapDoorBlock extends TrapDoorBlock implements Weat
         this.weatherState = weatherState;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(@NotNull BlockState state) {
         return WeatheringCopper.getNext(state.getBlock()).isPresent();
     }
 
     @Override
-    public WeatherState getAge() {
+    public @NotNull WeatherState getAge() {
         return this.weatherState;
     }
 }

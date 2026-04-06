@@ -56,6 +56,18 @@ public class ModWaxables {
         builder.put(ModBlocks.WEATHERED_SILVER_DOOR.get(), ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get());
         builder.put(ModBlocks.OXIDIZED_SILVER_DOOR.get(), ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
 
+        // Silver Grate
+        builder.put(ModBlocks.SILVER_GRATE.get(), ModBlocks.WAXED_SILVER_GRATE.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_GRATE.get(), ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_GRATE.get(), ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_GRATE.get(), ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get());
+
+        // Silver Bulb
+        builder.put(ModBlocks.SILVER_BULB.get(), ModBlocks.WAXED_SILVER_BULB.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_BULB.get(), ModBlocks.WAXED_EXPOSED_SILVER_BULB.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_BULB.get(), ModBlocks.WAXED_WEATHERED_SILVER_BULB.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_BULB.get(), ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get());
+
         BiMap<Block, Block> map = builder.build();
 
         // HoneycombItem fields are in a class but still final. Use reflection with Unsafe

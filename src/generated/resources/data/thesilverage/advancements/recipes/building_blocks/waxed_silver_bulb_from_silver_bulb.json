@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_silver_bulb": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thesilverage:silver_bulb"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_silver_bulb_from_silver_bulb"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_silver_bulb",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_silver_bulb_from_silver_bulb"
+    ]
+  },
+  "sends_telemetry_event": false
+}

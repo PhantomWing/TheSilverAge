@@ -3,8 +3,13 @@ package com.phantomwing.thesilverage.block;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
+import com.phantomwing.thesilverage.block.custom.SilverBulbBlock;
+import com.phantomwing.thesilverage.block.custom.SilverGrateBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacingBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverBulbBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverDoorBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverGrateBlock;
+import com.phantomwing.thesilverage.block.custom.WaxedSilverDoorBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverTrapDoorBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -116,6 +121,28 @@ public class ModBlocks {
     public static final RegistryObject<DoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerSilverDoor("waxed_weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistryObject<DoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerSilverDoor("waxed_oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
+    // Silver Grate
+    public static final RegistryObject<Block> SILVER_GRATE = registerWeatheringSilverGrate("silver_grate", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistryObject<Block> EXPOSED_SILVER_GRATE = registerWeatheringSilverGrate("exposed_silver_grate", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistryObject<Block> WEATHERED_SILVER_GRATE = registerWeatheringSilverGrate("weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistryObject<Block> OXIDIZED_SILVER_GRATE = registerWeatheringSilverGrate("oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistryObject<Block> WAXED_SILVER_GRATE = registerSilverGrate("waxed_silver_grate", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistryObject<Block> WAXED_EXPOSED_SILVER_GRATE = registerSilverGrate("waxed_exposed_silver_grate", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistryObject<Block> WAXED_WEATHERED_SILVER_GRATE = registerSilverGrate("waxed_weathered_silver_grate", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistryObject<Block> WAXED_OXIDIZED_SILVER_GRATE = registerSilverGrate("waxed_oxidized_silver_grate", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Bulb
+    public static final RegistryObject<Block> SILVER_BULB = registerWeatheringSilverBulb("silver_bulb", WeatheringCopper.WeatherState.UNAFFECTED, 15);
+    public static final RegistryObject<Block> EXPOSED_SILVER_BULB = registerWeatheringSilverBulb("exposed_silver_bulb", WeatheringCopper.WeatherState.EXPOSED, 12);
+    public static final RegistryObject<Block> WEATHERED_SILVER_BULB = registerWeatheringSilverBulb("weathered_silver_bulb", WeatheringCopper.WeatherState.WEATHERED, 8);
+    public static final RegistryObject<Block> OXIDIZED_SILVER_BULB = registerWeatheringSilverBulb("oxidized_silver_bulb", WeatheringCopper.WeatherState.OXIDIZED, 4);
+
+    public static final RegistryObject<Block> WAXED_SILVER_BULB = registerSilverBulb("waxed_silver_bulb", WeatheringCopper.WeatherState.UNAFFECTED, 15);
+    public static final RegistryObject<Block> WAXED_EXPOSED_SILVER_BULB = registerSilverBulb("waxed_exposed_silver_bulb", WeatheringCopper.WeatherState.EXPOSED, 12);
+    public static final RegistryObject<Block> WAXED_WEATHERED_SILVER_BULB = registerSilverBulb("waxed_weathered_silver_bulb", WeatheringCopper.WeatherState.WEATHERED, 8);
+    public static final RegistryObject<Block> WAXED_OXIDIZED_SILVER_BULB = registerSilverBulb("waxed_oxidized_silver_bulb", WeatheringCopper.WeatherState.OXIDIZED, 4);
+
     private static RegistryObject<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
         return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperFullBlock(weatherState, props));
     }
@@ -167,7 +194,27 @@ public class ModBlocks {
 
     private static RegistryObject<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_DOOR));
-        return registerSilverBlock(name, baseProps, (props) -> new DoorBlock(props, ModBlockSetTypes.SILVER));
+        return registerSilverBlock(name, baseProps, (props) -> new WaxedSilverDoorBlock(props, ModBlockSetTypes.SILVER));
+    }
+
+    private static RegistryObject<Block> registerWeatheringSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties props = getSilverGrateProps(weatherState);
+        return registerSilverBlock(name, props, (p) -> new WeatheringSilverGrateBlock(weatherState, p));
+    }
+
+    private static RegistryObject<Block> registerSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties props = getSilverGrateProps(weatherState);
+        return registerSilverBlock(name, props, SilverGrateBlock::new);
+    }
+
+    private static RegistryObject<Block> registerWeatheringSilverBulb(String name, WeatheringCopper.WeatherState weatherState, int litLightLevel) {
+        BlockBehaviour.Properties props = getSilverBulbProps(weatherState, litLightLevel);
+        return registerSilverBlock(name, props, (p) -> new WeatheringSilverBulbBlock(weatherState, p));
+    }
+
+    private static RegistryObject<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState, int litLightLevel) {
+        BlockBehaviour.Properties props = getSilverBulbProps(weatherState, litLightLevel);
+        return registerSilverBlock(name, props, SilverBulbBlock::new);
     }
 
     private static RegistryObject<Block> registerSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
@@ -212,6 +259,45 @@ public class ModBlocks {
 
     private static BlockBehaviour.Properties getSilverProps() {
         return getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED);
+    }
+
+    private static BlockBehaviour.Properties getSilverGrateProps(WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
+                .strength(3.0F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.SILVER_GRATE)
+                .noOcclusion()
+                .isSuffocating((state, level, pos) -> false)
+                .isValidSpawn((state, level, pos, type) -> false)
+                .isRedstoneConductor((state, level, pos) -> false)
+                .instrument(NoteBlockInstrument.BELL);
+
+        switch (weatherState) {
+            case UNAFFECTED -> props = props.mapColor(MapColor.METAL);
+            case EXPOSED -> props = props.mapColor(MapColor.TERRACOTTA_LIGHT_GRAY);
+            case WEATHERED -> props = props.mapColor(MapColor.TERRACOTTA_GRAY);
+            case OXIDIZED -> props = props.mapColor(MapColor.TERRACOTTA_BLACK);
+        }
+
+        return props;
+    }
+
+    private static BlockBehaviour.Properties getSilverBulbProps(WeatheringCopper.WeatherState weatherState, int litLightLevel) {
+        BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
+                .strength(3.0F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.SILVER_BULB)
+                .instrument(NoteBlockInstrument.BELL)
+                .lightLevel((state) -> state.getValue(SilverBulbBlock.LIT) ? litLightLevel : 0);
+
+        switch (weatherState) {
+            case UNAFFECTED -> props = props.mapColor(MapColor.METAL);
+            case EXPOSED -> props = props.mapColor(MapColor.TERRACOTTA_LIGHT_GRAY);
+            case WEATHERED -> props = props.mapColor(MapColor.TERRACOTTA_GRAY);
+            case OXIDIZED -> props = props.mapColor(MapColor.TERRACOTTA_BLACK);
+        }
+
+        return props;
     }
 
     public static void register(IEventBus eventBus) {

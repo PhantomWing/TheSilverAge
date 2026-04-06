@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_exposed_silver_grate_from_waxed_exposed_silver"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_exposed_silver": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thesilverage:waxed_exposed_silver"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_waxed_exposed_silver",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_exposed_silver_grate_from_waxed_exposed_silver"
+    ]
+  },
+  "sends_telemetry_event": false
+}

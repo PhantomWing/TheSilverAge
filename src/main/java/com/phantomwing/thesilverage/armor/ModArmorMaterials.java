@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
-    SILVER("thesilverage:silver", 10, new int[]{2, 6, 7, 3}, 12,
+    SILVER(TheSilverAge.MOD_ID + ":silver", 10, new int[]{2, 6, 7, 3}, 12,
             SoundEvents.ARMOR_EQUIP_GOLD, 0.0F, 0.0F,
             () -> Ingredient.of(CommonTags.Items.INGOTS_SILVER));
 

@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
+import com.phantomwing.thesilverage.block.custom.SilverBulbBlock;
 import com.phantomwing.thesilverage.utils.BlockUtils;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -99,6 +100,26 @@ public class ModBlockStateProvider extends BlockStateProvider {
         doorWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
         doorWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
         doorWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
+
+        // Silver Grate
+        translucentBlock(ModBlocks.SILVER_GRATE);
+        translucentBlock(ModBlocks.EXPOSED_SILVER_GRATE);
+        translucentBlock(ModBlocks.WEATHERED_SILVER_GRATE);
+        translucentBlock(ModBlocks.OXIDIZED_SILVER_GRATE);
+        translucentBlock(ModBlocks.WAXED_SILVER_GRATE, ModBlocks.SILVER_GRATE);
+        translucentBlock(ModBlocks.WAXED_EXPOSED_SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE);
+        translucentBlock(ModBlocks.WAXED_WEATHERED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE);
+        translucentBlock(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE);
+
+        // Silver Bulb
+        bulb(ModBlocks.SILVER_BULB);
+        bulb(ModBlocks.EXPOSED_SILVER_BULB);
+        bulb(ModBlocks.WEATHERED_SILVER_BULB);
+        bulb(ModBlocks.OXIDIZED_SILVER_BULB);
+        bulb(ModBlocks.WAXED_SILVER_BULB, ModBlocks.SILVER_BULB);
+        bulb(ModBlocks.WAXED_EXPOSED_SILVER_BULB, ModBlocks.EXPOSED_SILVER_BULB);
+        bulb(ModBlocks.WAXED_WEATHERED_SILVER_BULB, ModBlocks.WEATHERED_SILVER_BULB);
+        bulb(ModBlocks.WAXED_OXIDIZED_SILVER_BULB, ModBlocks.OXIDIZED_SILVER_BULB);
     }
 
     private void stairs(RegistryObject<? extends StairBlock> stairs, RegistryObject<Block> parentBlock) {
@@ -180,6 +201,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(model).build();
             }
         });
+    }
+
+    private void bulb(RegistryObject<Block> block) {
+        this.bulb(block, block);
+    }
+
+    private void bulb(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {
+        Block b = block.get();
+        Block tb = textureBlock.get();
+        String name = BlockUtils.getName(b);
+        String texName = BlockUtils.getName(tb);
+
+        getVariantBuilder(b)
+                .partialState().with(SilverBulbBlock.LIT, false).with(SilverBulbBlock.POWERED, false)
+                .modelForState().modelFile(models().cubeAll(name, new ResourceLocation(TheSilverAge.MOD_ID, "block/" + texName))).addModel()
+                .partialState().with(SilverBulbBlock.LIT, false).with(SilverBulbBlock.POWERED, true)
+                .modelForState().modelFile(models().cubeAll(name + "_powered", new ResourceLocation(TheSilverAge.MOD_ID, "block/" + texName + "_powered"))).addModel()
+                .partialState().with(SilverBulbBlock.LIT, true).with(SilverBulbBlock.POWERED, false)
+                .modelForState().modelFile(models().cubeAll(name + "_lit", new ResourceLocation(TheSilverAge.MOD_ID, "block/" + texName + "_lit"))).addModel()
+                .partialState().with(SilverBulbBlock.LIT, true).with(SilverBulbBlock.POWERED, true)
+                .modelForState().modelFile(models().cubeAll(name + "_lit_powered", new ResourceLocation(TheSilverAge.MOD_ID, "block/" + texName + "_lit_powered"))).addModel();
     }
 
     private void blockItem(RegistryObject<?> deferredBlock, String appendix) {

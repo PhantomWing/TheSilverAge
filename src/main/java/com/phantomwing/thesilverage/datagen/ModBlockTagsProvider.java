@@ -107,7 +107,27 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get())
+
+                // Silver Grate
+                .add(ModBlocks.SILVER_GRATE.get())
+                .add(ModBlocks.EXPOSED_SILVER_GRATE.get())
+                .add(ModBlocks.WEATHERED_SILVER_GRATE.get())
+                .add(ModBlocks.OXIDIZED_SILVER_GRATE.get())
+                .add(ModBlocks.WAXED_SILVER_GRATE.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get())
+
+                // Silver Bulb
+                .add(ModBlocks.SILVER_BULB.get())
+                .add(ModBlocks.EXPOSED_SILVER_BULB.get())
+                .add(ModBlocks.WEATHERED_SILVER_BULB.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BULB.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get());
     }
 
     private void addCommonTags(HolderLookup.@NotNull Provider provider) {

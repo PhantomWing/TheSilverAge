@@ -45,7 +45,7 @@ public class ItemUtils {
     }
 
     public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
-        String itemName = item.toString();
+        String itemName = getName(item);
         String trimName = trimMaterial.location().getPath();
 
         if (itemName.contains(trimName)) {
@@ -56,7 +56,7 @@ public class ItemUtils {
     }
 
     public static String getArmorTrimModelName(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
-        return item.toString() + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
+        return getName(item) + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
     }
 
     /** Change the item type of an ItemStack while preserving the count, durability, and enchantments (if applicable). */

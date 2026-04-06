@@ -11,4 +11,22 @@ public class ModSoundTypes {
             SoundType.METAL.getHitSound(),
             SoundType.METAL.getFallSound()
     );
+
+    public static final SoundType SILVER_GRATE = new SoundType(
+            1.0f, 0.8f,
+            SoundType.METAL.getBreakSound(),
+            SoundType.METAL.getStepSound(),
+            SoundType.METAL.getPlaceSound(),
+            SoundType.METAL.getHitSound(),
+            SoundType.METAL.getFallSound()
+    );
+
+    public static final SoundType SILVER_BULB = new SoundType(
+            1.0f, 0.8f,
+            SoundType.METAL.getBreakSound(),
+            SoundType.METAL.getStepSound(),
+            SoundType.METAL.getPlaceSound(),
+            SoundType.METAL.getHitSound(),
+            SoundType.METAL.getFallSound()
+    );
 }
