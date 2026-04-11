@@ -129,7 +129,10 @@ dependencies {
         localRuntime("mezz.jei:jei-1.21.1-neoforge:${jei_version}")
     }
 
-    // EMI (runtime-only, toggled by -Precipe_viewer=emi|both)
+    // EMI
+    //   compileOnly: always, so our EmiPlugin (compat/emi/ModEmiPlugin) can compile
+    //   localRuntime: only when toggled in, so the plugin class is never loaded when EMI is absent
+    compileOnly("dev.emi:emi-neoforge:${emi_version}")
     if (loadEmi) {
         localRuntime("dev.emi:emi-neoforge:${emi_version}")
     }
