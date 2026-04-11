@@ -24,7 +24,7 @@ public class CommonTags {
     public static class Items {
         public static final TagKey<Item> STORAGE_BLOCKS_SILVER = tag("storage_blocks/silver");
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_SILVER = tag("storage_blocks/raw_silver");
-        public static final TagKey<Item> ORES_SILVER = tag("ores_silver");
+        public static final TagKey<Item> ORES_SILVER = tag("ores/silver");
         public static final TagKey<Item> RAW_MATERIALS_SILVER = tag("raw_materials/silver");
         public static final TagKey<Item> NUGGETS_SILVER = tag("nuggets/silver");
         public static final TagKey<Item> INGOTS_SILVER = tag("ingots/silver");
