@@ -9,6 +9,7 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -33,6 +34,8 @@ public class ModRecipeProvider extends RecipeProvider {
 
     private void buildCraftingRecipes(@NotNull RecipeOutput output) {
         oreSmeltingRecipes(output, ModItems.RAW_SILVER, ModItems.SILVER_INGOT, XP_MEDIUM);
+        oreSmeltingRecipes(output, ModItems.SILVER_ORE, ModItems.SILVER_INGOT, XP_MEDIUM);
+        oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE, ModItems.SILVER_INGOT, XP_MEDIUM);
 
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET, ModItems.SILVER_INGOT);
@@ -62,6 +65,20 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_LEGGINGS, ModItems.SILVER_NUGGET, XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_BOOTS, ModItems.SILVER_NUGGET, XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR, ModItems.SILVER_NUGGET, XP_TINY);
+
+        // Silver Bulb
+        bulb(output, ModItems.SILVER_BLOCK, ModItems.SILVER_BULB);
+        bulb(output, ModItems.EXPOSED_SILVER, ModItems.EXPOSED_SILVER_BULB);
+        bulb(output, ModItems.WEATHERED_SILVER, ModItems.WEATHERED_SILVER_BULB);
+        bulb(output, ModItems.OXIDIZED_SILVER, ModItems.OXIDIZED_SILVER_BULB);
+        bulb(output, ModItems.WAXED_SILVER_BLOCK, ModItems.WAXED_SILVER_BULB);
+        bulb(output, ModItems.WAXED_EXPOSED_SILVER, ModItems.WAXED_EXPOSED_SILVER_BULB);
+        bulb(output, ModItems.WAXED_WEATHERED_SILVER, ModItems.WAXED_WEATHERED_SILVER_BULB);
+        bulb(output, ModItems.WAXED_OXIDIZED_SILVER, ModItems.WAXED_OXIDIZED_SILVER_BULB);
+        waxable(output, ModItems.SILVER_BULB, ModItems.WAXED_SILVER_BULB);
+        waxable(output, ModItems.EXPOSED_SILVER_BULB, ModItems.WAXED_EXPOSED_SILVER_BULB);
+        waxable(output, ModItems.WEATHERED_SILVER_BULB, ModItems.WAXED_WEATHERED_SILVER_BULB);
+        waxable(output, ModItems.OXIDIZED_SILVER_BULB, ModItems.WAXED_OXIDIZED_SILVER_BULB);
 
         // Moon Dial
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_DIAL, 1)
@@ -415,6 +432,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(material, result));
 
         stoneCutting(recipeOutput, result, material, 4);
+    }
+
+    private static void bulb(RecipeOutput output, ItemLike block, ItemLike result) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 1)
+                .pattern(" S ")
+                .pattern("SBS")
+                .pattern(" R ")
+                .define('R', Items.REDSTONE)
+                .define('S', block)
+                .define('B', Items.BLAZE_ROD)
+                .unlockedBy(getHasName(block), has(block))
+                .save(output);
     }
 
     private static void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
