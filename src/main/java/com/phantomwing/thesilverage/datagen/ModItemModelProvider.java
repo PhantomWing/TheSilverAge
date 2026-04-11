@@ -33,6 +33,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Items
         simpleItem(ModItems.SILVER_NUGGET);
         simpleItem(ModItems.SILVER_INGOT);
+        simpleItem(ModItems.SILVER_SHEET);
         simpleItem(ModItems.RAW_SILVER);
 
         // Silver tools

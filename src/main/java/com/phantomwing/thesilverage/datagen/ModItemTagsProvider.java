@@ -34,6 +34,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GLISTERING_NUGGETS)
                 .add(Items.GOLD_NUGGET)
                 .add(ModItems.SILVER_NUGGET.get());
+
+        // Redstone silver components — all silver forms accepted as the "S" ingredient in the
+        // Redstone Repeater / Comparator override recipes. Silver sheet is Create-only: it
+        // exists as an item either way, but is only obtainable with Create installed.
+        tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
+                .add(ModItems.SILVER_INGOT.get())
+                .add(ModItems.SILVER_SHEET.get());
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -58,6 +65,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Ingots
         tag(CommonTags.Items.INGOTS_SILVER).add(ModItems.SILVER_INGOT.get());
         tag(Tags.Items.INGOTS).addTag(CommonTags.Items.INGOTS_SILVER);
+
+        // Plates (Create compat — matches com.simibubi.create.foundation.data.recipe.CommonMetal.SILVER.plates)
+        tag(CommonTags.Items.PLATES_SILVER).add(ModItems.SILVER_SHEET.get());
+        tag(CommonTags.Items.PLATES).addTag(CommonTags.Items.PLATES_SILVER);
 
         // Ores
         tag(CommonTags.Items.ORES_SILVER).add(ModItems.SILVER_ORE.get(), ModItems.DEEPSLATE_SILVER_ORE.get());

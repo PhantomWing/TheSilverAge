@@ -24,6 +24,7 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_SILVER = register("raw_silver");
     public static final DeferredItem<Item> SILVER_INGOT = register("silver_ingot");
     public static final DeferredItem<Item> SILVER_NUGGET = register("silver_nugget");
+    public static final DeferredItem<Item> SILVER_SHEET = register("silver_sheet");
 
     // Silver tools
     public static final DeferredItem<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);

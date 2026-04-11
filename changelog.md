@@ -3,6 +3,9 @@
 - Added compatibility with Create
   - Deployer (deploying) recipes for waxing/scraping silver blocks
   - Spout (filling) recipes for oxidizing silver blocks (Similar to Create: Oxidized)
+  - Support for Crushed Raw Silver (obtain by crushing silver with Create's Crushing Wheel)
+  - Added Silver Sheet (obtain by pressing silver ingots with Create's Mechanical Press)
+    - Can be used in recipes by Create add-on mods through tags (`c:plates/silver`).
 - Added compatibility with EMI
   - World Interaction recipes for waxing/scraping silver blocks
 

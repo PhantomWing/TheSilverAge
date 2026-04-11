@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +37,13 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.RAW_SILVER, ModItems.SILVER_INGOT, XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.SILVER_ORE, ModItems.SILVER_INGOT, XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE, ModItems.SILVER_INGOT, XP_MEDIUM);
+
+        // Create compat: smelt Create's crushed_raw_silver into our silver ingot.
+        // Create ships this bridge for IC2 / IE / Galosphere / Iceandfire / Oreganized / Thermal
+        // but not for The Silver Age — see com.simibubi.create.foundation.data.recipe.CreateMixingRecipeGen.
+        // Wrapping the output via withConditions gates every recipe emitted through `createGated` on Create being present.
+        var createGated = output.withConditions(new ModLoadedCondition("create"));
+        oreSmeltingRecipes(createGated, com.simibubi.create.AllItems.CRUSHED_SILVER.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET, ModItems.SILVER_INGOT);
@@ -313,13 +321,16 @@ public class ModRecipeProvider extends RecipeProvider {
         // TODO: Tweak Name Tag recipe when it is added in later Minecraft version
 
         // Redstone Comparator
+        // The S slot accepts any item in the #thesilverage:redstone_silver_components tag.
+        // Currently populated with silver_ingot + silver_sheet (sheet is Create-only, but the
+        // ingot path always works). Addons may contribute extra silver forms to the tag.
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
                 .pattern("SSS")
                 .define('T', Items.REDSTONE_TORCH)
                 .define('Q', Items.QUARTZ)
-                .define('S', ModItems.SILVER_INGOT)
+                .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .unlockedBy(getHasName(Items.REDSTONE_TORCH), has(Items.REDSTONE_TORCH))
                 .save(conditionalOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
@@ -333,12 +344,13 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.COMPARATOR) + "_fallback");  // Original recipe if override is disabled
 
         // Redstone Repeater
+        // Same tag-based S slot as the Comparator override — see above.
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
                 .define('R', Items.REDSTONE)
                 .define('T', Items.REDSTONE_TORCH)
-                .define('S', ModItems.SILVER_INGOT)
+                .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(conditionalOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)

@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.datagen;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.compat.create.ModDeployingRecipeGen;
 import com.phantomwing.thesilverage.compat.create.ModFillingRecipeGen;
+import com.phantomwing.thesilverage.compat.create.ModPressingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -71,5 +72,9 @@ public class DataGenerators {
         // Create: Oxidized addon, advancing silver blocks through their weathering chain
         // when splashed with water via a Spout.
         generator.addProvider(event.includeServer(), new ModFillingRecipeGen(output, lookupProvider));
+
+        // Create mod compat: generate create:pressing recipe for silver_ingot -> silver_sheet,
+        // matching the pattern Create uses for its own iron/gold/copper/brass sheets.
+        generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output, lookupProvider));
     }
 }

@@ -45,6 +45,13 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> GLISTERING_NUGGETS = tag("glistering_nuggets");
 
+        /**
+         * Items accepted as the silver component in the Redstone Repeater and Redstone Comparator
+         * override recipes. Populated with silver ingot (always) and silver sheet (Create-only).
+         * Addons may contribute extra silver forms to this tag.
+         */
+        public static final TagKey<Item> REDSTONE_SILVER_COMPONENTS = tag("redstone_silver_components");
+
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
         }

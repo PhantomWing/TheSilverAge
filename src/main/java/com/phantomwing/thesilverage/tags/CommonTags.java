@@ -29,6 +29,8 @@ public class CommonTags {
         public static final TagKey<Item> NUGGETS_SILVER = tag("nuggets/silver");
         public static final TagKey<Item> INGOTS_SILVER = tag("ingots/silver");
         public static final TagKey<Item> TOOL_MATERIALS_SILVER = tag("tool_materials/silver");
+        public static final TagKey<Item> PLATES = tag("plates");
+        public static final TagKey<Item> PLATES_SILVER = tag("plates/silver");
 
         // TOOLS
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife");

@@ -12,7 +12,7 @@
       "item": "minecraft:redstone"
     },
     "S": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "thesilverage:redstone_silver_components"
     },
     "T": {
       "item": "minecraft:redstone_torch"
