@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.compat.create.ModDeployingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -60,5 +61,9 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output, lookupProvider));
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+
+        // Create mod compat: generate create:deploying recipes for silver waxing/deoxidising
+        // so JEI displays them in the Deployer category.
+        generator.addProvider(event.includeServer(), new ModDeployingRecipeGen(output, lookupProvider));
     }
 }

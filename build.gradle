@@ -29,6 +29,18 @@ repositories {
         url = "https://modmaven.dev"
     }
 
+    // EMI
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+
+    // Create, Ponder, Flywheel
+    maven { url = "https://maven.createmod.net" }
+
+    // Registrate (transitive dep of Create)
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+
     exclusiveContent {
         forRepository {
             maven {
@@ -98,15 +110,43 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+// Recipe viewer selection — toggle at the command line with:
+//   ./gradlew runClient -Precipe_viewer=jei
+//   ./gradlew runClient -Precipe_viewer=emi
+//   ./gradlew runClient -Precipe_viewer=both
+// Default is set in gradle.properties.
+def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: 'jei').toString().toLowerCase()
+if (!['jei', 'emi', 'both'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both")
+}
+def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
+def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
+logger.lifecycle("[TheSilverAge] Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
+
 dependencies {
-    // JEI
-    localRuntime("mezz.jei:jei-1.21.1-neoforge:${jei_version}")
+    // JEI (runtime-only, toggled by -Precipe_viewer=jei|both)
+    if (loadJei) {
+        localRuntime("mezz.jei:jei-1.21.1-neoforge:${jei_version}")
+    }
+
+    // EMI (runtime-only, toggled by -Precipe_viewer=emi|both)
+    if (loadEmi) {
+        localRuntime("dev.emi:emi-neoforge:${emi_version}")
+    }
 
     // Appleskin
     localRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${appleskin_version}")
 
     // Jade
     localRuntime "curse.maven:jade-324717:7428884"
+
+    // Create — compile-against for datagen compat (uses Create's DeployingRecipeGen API)
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    compileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    localRuntime("com.tterrag.registrate:Registrate:${registrate_version}")
 }
 
 tasks.withType(ProcessResources).configureEach {

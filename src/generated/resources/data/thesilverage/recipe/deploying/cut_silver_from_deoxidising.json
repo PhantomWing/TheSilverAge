@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:exposed_cut_silver"
+    },
+    {
+      "tag": "minecraft:axes"
+    }
+  ],
+  "keep_held_item": true,
+  "results": [
+    {
+      "id": "thesilverage:cut_silver"
+    }
+  ]
+}
