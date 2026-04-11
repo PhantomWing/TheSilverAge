@@ -1,4 +1,4 @@
-# 1.1.1
+# 1.2.0
 ### Additions
 - Added compatibility with Create
   - Deployer (deploying) recipes for waxing/scraping silver blocks
@@ -8,11 +8,13 @@
     - Can be used in recipes by Create add-on mods through tags (`c:plates/silver`).
 - Added compatibility with EMI
   - World Interaction recipes for waxing/scraping silver blocks
+- Added Dutch and German language support
 
 ### Fixes
 - Added missing crafting recipes for Silver Bulb and its variants.
 - Added missing smelting recipes for Silver Ore and Deepslate Silver Ore blocks
 - Fix incorrect tag `ores_silver`. Changed to `ores/silver` to ensure compatibility with other mods.
+
 
 # 1.1.0
 ### Additions
