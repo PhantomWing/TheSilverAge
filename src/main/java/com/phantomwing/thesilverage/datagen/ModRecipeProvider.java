@@ -10,7 +10,6 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -90,7 +89,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.OXIDIZED_SILVER_BULB, ModItems.WAXED_OXIDIZED_SILVER_BULB);
 
         // Moon Dial
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_DIAL, 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.MOON_DIAL, 1)
                 .pattern(" S ")
                 .pattern("SRS")
                 .pattern(" S ")
@@ -496,7 +495,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void pickaxe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("###")
             .pattern(" S ")
             .pattern(" S ")
@@ -506,7 +505,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
     protected static void axe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern("#S")
             .pattern(" S")
@@ -517,7 +516,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void hoe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern(" S")
             .pattern(" S")
@@ -528,7 +527,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void shovel(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("#")
             .pattern("S")
             .pattern("S")

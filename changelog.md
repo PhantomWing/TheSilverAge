@@ -14,6 +14,7 @@
 - Added missing crafting recipes for Silver Bulb and its variants.
 - Added missing smelting recipes for Silver Ore and Deepslate Silver Ore blocks
 - Fix incorrect tag `ores_silver`. Changed to `ores/silver` to ensure compatibility with other mods.
+- Fix incorrect recipe categories for some items
 
 
 # 1.1.0

@@ -13,7 +13,7 @@ public class CommonTags {
     public static class Blocks {
         public static final TagKey<Block> STORAGE_BLOCKS_SILVER = tag("storage_blocks/silver");
         public static final TagKey<Block> STORAGE_BLOCKS_RAW_SILVER = tag("storage_blocks/raw_silver");
-        public static final TagKey<Block> ORES_SILVER = tag("ores_silver");
+        public static final TagKey<Block> ORES_SILVER = tag("ores/silver");
 
         private static TagKey<Block> tag(String path) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
@@ -33,7 +33,7 @@ public class CommonTags {
         public static final TagKey<Item> PLATES_SILVER = tag("plates/silver");
 
         // TOOLS
-        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife");
+        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
 
         private static TagKey<Item> tag(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));

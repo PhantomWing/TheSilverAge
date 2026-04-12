@@ -11,6 +11,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -37,7 +38,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class ModEmiPlugin implements EmiPlugin {
 
     @Override
-    public void register(EmiRegistry registry) {
+    public void register(@NotNull EmiRegistry registry) {
         final EmiIngredient honeycomb = EmiStack.of(Items.HONEYCOMB);
         final EmiIngredient axes = EmiIngredient.of(ItemTags.AXES);
 
@@ -81,7 +82,7 @@ public class ModEmiPlugin implements EmiPlugin {
     }
 
     private static ResourceLocation syntheticId(String kind, ResourceLocation blockId) {
-        return TheSilverAge.resourceLocation("/world/" + kind + "/" + blockId.getNamespace() + "/" + blockId.getPath());
+        return TheSilverAge.resourceLocation("world/" + kind + "/" + blockId.getNamespace() + "/" + blockId.getPath());
     }
 
     /** Defensive wrapper mirroring EMI's own {@code addRecipeSafe}. */
