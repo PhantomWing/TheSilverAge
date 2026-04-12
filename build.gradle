@@ -114,14 +114,21 @@ configurations {
 //   ./gradlew runClient -Precipe_viewer=jei
 //   ./gradlew runClient -Precipe_viewer=emi
 //   ./gradlew runClient -Precipe_viewer=both
+//   ./gradlew runClient -Precipe_viewer=none
 // Default is set in gradle.properties.
 def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: 'jei').toString().toLowerCase()
-if (!['jei', 'emi', 'both'].contains(selectedRecipeViewer)) {
-    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both")
+if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
 }
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
-logger.lifecycle("[TheSilverAge] Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
+
+// Create toggle — disable at the command line with:
+//   ./gradlew runClient -Penable_create=false
+// Default is set in gradle.properties.
+def loadCreate = (project.findProperty('enable_create') ?: 'true').toString().toBoolean()
+
+logger.lifecycle("[TheSilverAge] Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}")
 
 dependencies {
     // JEI (runtime-only, toggled by -Precipe_viewer=jei|both)
@@ -143,13 +150,16 @@ dependencies {
     // Jade
     localRuntime "curse.maven:jade-324717:7428884"
 
-    // Create — compile-against for datagen compat (uses Create's DeployingRecipeGen API)
+    // Create — compileOnly always (so datagen compat classes compile),
+    // localRuntime only when toggled on (so the classes are never loaded when Create is absent)
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
-    localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     compileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
-    localRuntime("com.tterrag.registrate:Registrate:${registrate_version}")
+    if (loadCreate) {
+        localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+        localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+        localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+        localRuntime("com.tterrag.registrate:Registrate:${registrate_version}")
+    }
 }
 
 tasks.withType(ProcessResources).configureEach {

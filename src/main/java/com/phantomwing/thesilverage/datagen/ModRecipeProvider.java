@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.Configuration;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
@@ -42,7 +43,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // Create ships this bridge for IC2 / IE / Galosphere / Iceandfire / Oreganized / Thermal
         // but not for The Silver Age — see com.simibubi.create.foundation.data.recipe.CreateMixingRecipeGen.
         // Wrapping the output via withConditions gates every recipe emitted through `createGated` on Create being present.
-        var createGated = output.withConditions(new ModLoadedCondition("create"));
+        var createGated = output.withConditions(new ModLoadedCondition(ModIds.CREATE));
         oreSmeltingRecipes(createGated, com.simibubi.create.AllItems.CRUSHED_SILVER.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
         // Storage item recipes

@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.compat.create;
 import java.util.concurrent.CompletableFuture;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.simibubi.create.api.data.recipe.PressingRecipeGen;
@@ -44,6 +45,6 @@ public class ModPressingRecipeGen extends PressingRecipeGen {
      */
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
-        super.buildRecipes(recipeOutput.withConditions(new ModLoadedCondition("create")));
+        super.buildRecipes(recipeOutput.withConditions(new ModLoadedCondition(ModIds.CREATE)));
     }
 }

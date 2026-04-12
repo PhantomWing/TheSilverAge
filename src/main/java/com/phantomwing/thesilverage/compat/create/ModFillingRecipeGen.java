@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.simibubi.create.api.data.recipe.FillingRecipeGen;
 
 import net.minecraft.core.HolderLookup;
@@ -91,7 +92,7 @@ public class ModFillingRecipeGen extends FillingRecipeGen {
      */
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
-        super.buildRecipes(recipeOutput.withConditions(new ModLoadedCondition("create")));
+        super.buildRecipes(recipeOutput.withConditions(new ModLoadedCondition(ModIds.CREATE)));
     }
 
     /** Short alias for converting a {@code Supplier<? extends ItemLike>} into an {@code ItemLike} supplier. */
