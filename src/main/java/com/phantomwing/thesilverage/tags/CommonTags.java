@@ -35,7 +35,7 @@ public class CommonTags {
         public static final TagKey<Item> PLATES_SILVER = tag("plates/silver");
 
         // TOOLS
-        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife");
+        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
 
         private static TagKey<Item> tag(String path) {
             return TagKey.create(Registries.ITEM, new ResourceLocation(COMMON_MOD_ID, path));

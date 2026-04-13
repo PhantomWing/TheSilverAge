@@ -51,7 +51,8 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
 
-        // Create mod compat recipe generators
+        // Create mod compat recipe generators.
+        // These extend Create's API classes, which requires Create on the compile classpath (modCompileOnly).
         generator.addProvider(event.includeServer(), new ModDeployingRecipeGen(output));
         generator.addProvider(event.includeServer(), new ModFillingRecipeGen(output));
         generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output));
