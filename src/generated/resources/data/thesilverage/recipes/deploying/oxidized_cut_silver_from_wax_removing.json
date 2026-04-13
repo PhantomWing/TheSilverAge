@@ -1,0 +1,17 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:waxed_oxidized_cut_silver"
+    },
+    {
+      "tag": "minecraft:axes"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:oxidized_cut_silver"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:oxidized_silver_door"
+    },
+    {
+      "tag": "minecraft:axes"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:weathered_silver_door"
+    }
+  ]
+}

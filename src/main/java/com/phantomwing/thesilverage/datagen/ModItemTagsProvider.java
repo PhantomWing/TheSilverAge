@@ -59,6 +59,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(CommonTags.Items.INGOTS_SILVER).add(ModItems.SILVER_INGOT.get());
         tag(Tags.Items.INGOTS).addTag(CommonTags.Items.INGOTS_SILVER);
 
+        // Plates (Create compat)
+        tag(CommonTags.Items.PLATES_SILVER).add(ModItems.SILVER_SHEET.get());
+        tag(CommonTags.Items.PLATES).addTag(CommonTags.Items.PLATES_SILVER);
+
+        // Redstone silver components (silver ingot + silver sheet for comparator/repeater overrides)
+        tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
+                .add(ModItems.SILVER_INGOT.get())
+                .add(ModItems.SILVER_SHEET.get());
+
         // Ores
         tag(CommonTags.Items.ORES_SILVER).add(ModItems.SILVER_ORE.get(), ModItems.DEEPSLATE_SILVER_ORE.get());
         tag(Tags.Items.ORES).addTag(CommonTags.Items.ORES_SILVER);

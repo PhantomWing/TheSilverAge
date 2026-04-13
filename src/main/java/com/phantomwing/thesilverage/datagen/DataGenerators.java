@@ -1,6 +1,9 @@
 package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.compat.create.ModDeployingRecipeGen;
+import com.phantomwing.thesilverage.compat.create.ModFillingRecipeGen;
+import com.phantomwing.thesilverage.compat.create.ModPressingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -47,5 +50,10 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output));
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+
+        // Create mod compat recipe generators
+        generator.addProvider(event.includeServer(), new ModDeployingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new ModFillingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output));
     }
 }

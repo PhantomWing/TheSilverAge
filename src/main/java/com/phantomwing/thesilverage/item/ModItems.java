@@ -3,12 +3,14 @@ package com.phantomwing.thesilverage.item;
 import com.google.common.collect.Sets;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -24,6 +26,10 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_SILVER = register("raw_silver");
     public static final RegistryObject<Item> SILVER_INGOT = register("silver_ingot");
     public static final RegistryObject<Item> SILVER_NUGGET = register("silver_nugget");
+
+    // Silver sheet is a Create-compat item (obtained via Mechanical Press).
+    // Only appears in the creative tab when Create is loaded.
+    public static final RegistryObject<Item> SILVER_SHEET = registerWithModCompat("silver_sheet", ModIds.CREATE);
 
     // Silver tools
     public static final RegistryObject<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);
@@ -185,6 +191,15 @@ public class ModItems {
 
     private static RegistryObject<Item> register(String name, Item.Properties props) {
         return register(name, Item::new, props);
+    }
+
+    /** Register an item that only appears in the creative tab when the given mod is loaded. */
+    private static RegistryObject<Item> registerWithModCompat(String name, String modId) {
+        RegistryObject<Item> item = ITEMS.register(name, () -> new Item(baseItem()));
+        if (ModList.get().isLoaded(modId)) {
+            CREATIVE_TAB_ITEMS.add(item);
+        }
+        return item;
     }
 
     private static RegistryObject<Item> register(String name, Function<Item.Properties, Item> function, Item.Properties props) {

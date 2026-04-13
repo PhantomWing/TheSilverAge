@@ -1,0 +1,17 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:exposed_cut_silver"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:waxed_exposed_cut_silver"
+    }
+  ]
+}

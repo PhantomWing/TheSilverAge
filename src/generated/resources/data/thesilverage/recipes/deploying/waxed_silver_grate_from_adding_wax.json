@@ -1,0 +1,17 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:silver_grate"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:waxed_silver_grate"
+    }
+  ]
+}

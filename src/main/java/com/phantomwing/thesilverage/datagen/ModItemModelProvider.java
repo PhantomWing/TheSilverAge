@@ -34,6 +34,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.SILVER_INGOT);
         simpleItem(ModItems.RAW_SILVER);
 
+        // Silver sheet: texture may not exist yet. trackGenerated prevents ExistingFileHelper from crashing.
+        existingFileHelper.trackGenerated(ItemUtils.getItemResourceLocation(ModItems.SILVER_SHEET.get()),
+                PackType.CLIENT_RESOURCES, ".png", "textures");
+        simpleItem(ModItems.SILVER_SHEET);
+
         // Silver tools
         handheldItem(ModItems.SILVER_SWORD);
         handheldItem(ModItems.SILVER_SHOVEL);

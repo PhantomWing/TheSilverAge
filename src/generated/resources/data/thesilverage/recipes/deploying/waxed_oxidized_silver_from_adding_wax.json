@@ -1,0 +1,17 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "thesilverage:oxidized_silver"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:waxed_oxidized_silver"
+    }
+  ]
+}

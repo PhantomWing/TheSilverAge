@@ -30,3 +30,11 @@ configBackground = "thesilverage:textures/block/exposed_silver.png"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+# Optional: load after Create so our resource pack overrides take priority.
+[[dependencies.${mod_id}]]
+    modId="create"
+    mandatory=false
+    versionRange="[0.5,)"
+    ordering="AFTER"
+    side="BOTH"

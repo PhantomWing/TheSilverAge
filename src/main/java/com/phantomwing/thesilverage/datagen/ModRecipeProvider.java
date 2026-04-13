@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.datagen;
 
 import com.phantomwing.thesilverage.Configuration;
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.ModTags;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +32,7 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> output) {
         buildCraftingRecipes(output);
         buildRecipeOverrides(output);
+        buildCreateCompatRecipes(output);
     }
 
     private void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> output) {
@@ -65,7 +68,7 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
         // Moon Dial
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_DIAL.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MOON_DIAL.get(), 1)
                 .pattern(" S ")
                 .pattern("SRS")
                 .pattern(" S ")
@@ -315,7 +318,7 @@ public class ModRecipeProvider extends RecipeProvider {
                         .pattern("SSS")
                         .define('T', Items.REDSTONE_TORCH)
                         .define('Q', Items.QUARTZ)
-                        .define('S', ModItems.SILVER_INGOT.get())
+                        .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                         .unlockedBy(getHasName(Items.REDSTONE_TORCH), has(Items.REDSTONE_TORCH))
                         .save(consumer))
                 .build(output, new ResourceLocation(TheSilverAge.MOD_ID, ItemUtils.getName(Items.COMPARATOR)));
@@ -340,7 +343,7 @@ public class ModRecipeProvider extends RecipeProvider {
                         .pattern("SSS")
                         .define('R', Items.REDSTONE)
                         .define('T', Items.REDSTONE_TORCH)
-                        .define('S', ModItems.SILVER_INGOT.get())
+                        .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                         .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                         .save(consumer))
                 .build(output, new ResourceLocation(TheSilverAge.MOD_ID, ItemUtils.getName(Items.REPEATER)));
@@ -355,6 +358,23 @@ public class ModRecipeProvider extends RecipeProvider {
                         .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                         .save(consumer))
                 .build(output, new ResourceLocation("minecraft", ItemUtils.getName(Items.REPEATER) + "_fallback"));
+    }
+
+    /** Create compat: smelt/blast Create's crushed_raw_silver into our silver ingot. */
+    private void buildCreateCompatRecipes(@NotNull Consumer<FinishedRecipe> output) {
+        ModLoadedCondition createLoaded = new ModLoadedCondition(ModIds.CREATE);
+
+        ConditionalRecipe.builder()
+                .addCondition(createLoaded)
+                .addRecipe(consumer -> smelting(consumer, RecipeCategory.MISC,
+                        com.simibubi.create.AllItems.CRUSHED_SILVER.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM, 200))
+                .build(output, new ResourceLocation(TheSilverAge.MOD_ID, "silver_ingot_from_crushed_raw_silver_smelting"));
+
+        ConditionalRecipe.builder()
+                .addCondition(createLoaded)
+                .addRecipe(consumer -> blasting(consumer, RecipeCategory.MISC,
+                        com.simibubi.create.AllItems.CRUSHED_SILVER.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM, 100))
+                .build(output, new ResourceLocation(TheSilverAge.MOD_ID, "silver_ingot_from_crushed_raw_silver_blasting"));
     }
 
     private static void grateWithCutting(Consumer<FinishedRecipe> recipeOutput, ItemLike item, ItemLike material) {
@@ -488,7 +508,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void pickaxe(Consumer<FinishedRecipe> recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("###")
             .pattern(" S ")
             .pattern(" S ")
@@ -498,7 +518,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
     protected static void axe(Consumer<FinishedRecipe> recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern("#S")
             .pattern(" S")
@@ -509,7 +529,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void hoe(Consumer<FinishedRecipe> recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern(" S")
             .pattern(" S")
@@ -520,7 +540,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected static void shovel(Consumer<FinishedRecipe> recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("#")
             .pattern("S")
             .pattern("S")

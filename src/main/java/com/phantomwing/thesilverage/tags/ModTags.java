@@ -43,6 +43,7 @@ public class ModTags {
     // Item tags
     public static class Items {
         public static final TagKey<Item> GLISTERING_NUGGETS = tag("glistering_nuggets");
+        public static final TagKey<Item> REDSTONE_SILVER_COMPONENTS = tag("redstone_silver_components");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, new ResourceLocation(TheSilverAge.MOD_ID, name));

@@ -1,9 +1,7 @@
 plugins {
-    id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.neoforged.moddev.legacyforge' version '2.0.74'
 }
 
 version = mod_version
@@ -15,68 +13,57 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
 
-    copyIdeResources = true
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
+
+    validateAccessTransformers = false
+    accessTransformers.from 'src/main/resources/META-INF/accesstransformer.cfg'
+
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
 
     runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty 'forge.logging.console.level', 'debug'
+        }
+
         client {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            client()
+            gameDirectory = project.file('run')
         }
 
         server {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            server()
+            gameDirectory = project.file('run/server')
         }
 
         gameTestServer {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            type = 'gameTestServer'
+            gameDirectory = project.file('run')
         }
 
         data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            data()
+            gameDirectory = project.file('run')
+            programArguments.addAll '--mod', mod_id, '--all',
+                    '--output', file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
 }
@@ -87,64 +74,104 @@ repositories {
     mavenLocal()
 
     // AppleSkin
-    maven {
-        url "https://maven.ryanliptak.com/"
-    }
+    maven { url = 'https://maven.ryanliptak.com/' }
 
     // JEI
     maven {
-        name = "Jared's maven"
-        url = "https://maven.blamejared.com/"
+        name = 'Jared\'s maven'
+        url = 'https://maven.blamejared.com/'
     }
     maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
+        name = 'ModMaven'
+        url = 'https://modmaven.dev'
     }
 
-    exclusiveContent {
-        forRepository {
-            maven {
-                url "https://cursemaven.com"
-            }
-        }
-        filter {
-            includeGroup "curse.maven"
-        }
+    // EMI
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/'
     }
+
+    // Create and its dependencies (Ponder, Flywheel, Registrate)
+    maven { url = 'https://maven.createmod.net' }
+    maven { url = 'https://maven.tterrag.com/' }
 }
+
+// Recipe viewer selection — toggle at the command line with:
+//   ./gradlew runClient -Precipe_viewer=jei
+//   ./gradlew runClient -Precipe_viewer=emi
+//   ./gradlew runClient -Precipe_viewer=both
+//   ./gradlew runClient -Precipe_viewer=none
+// Default is set in gradle.properties.
+def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: 'jei').toString().toLowerCase()
+if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
+}
+def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
+def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
+
+// Create toggle — disable at the command line with:
+//   ./gradlew runClient -Penable_create=false
+// Default is set in gradle.properties.
+def loadCreate = (project.findProperty('enable_create') ?: 'true').toString().toBoolean()
+
+logger.lifecycle("[TheSilverAge] Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}")
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    // JEI (toggled by -Precipe_viewer=jei|both)
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    if (loadJei) {
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    }
 
-    // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    // EMI — compileOnly always (for future EmiPlugin if needed), runtime toggled
+    modCompileOnly("dev.emi:emi-forge:${emi_version}")
+    if (loadEmi) {
+        modRuntimeOnly("dev.emi:emi-forge:${emi_version}")
+    }
 
     // Appleskin
-    compileOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
-    runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
+    modCompileOnly("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
+    modRuntimeOnly("squeek.appleskin:appleskin-forge:${appleskin_version}")
+
+    // Create 6.0.x — compileOnly always (datagen uses Create's recipe gen API),
+    // runtime toggled for in-game testing.
+    modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}:slim") { transitive = false }
+    modCompileOnly("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
+    modCompileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
+
+    // JetBrains annotations (@NotNull etc.)
+    compileOnly("org.jetbrains:annotations:24.0.0")
+    if (loadCreate) {
+        modRuntimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}:slim") { transitive = false }
+        modRuntimeOnly("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+        modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+        modRuntimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    }
 }
 
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
-def replaceProperties = [
-        minecraft_version      : minecraft_version,
-        minecraft_version_range: minecraft_version_range,
-        forge_version          : forge_version,
-        forge_version_range    : forge_version_range,
-        loader_version_range   : loader_version_range,
-        mod_id                 : mod_id,
-        mod_name               : mod_name,
-        mod_license            : mod_license,
-        mod_version            : mod_version,
-        mod_authors            : mod_authors,
-        mod_description        : mod_description
-]
-processResources {
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            forge_version          : forge_version,
+            forge_version_range    : forge_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
 
-    filesMatching(resourceTargets) {
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties
     }
 }
@@ -163,8 +190,6 @@ jar {
     }
 }
 
-jar.finalizedBy('reobfJar')
-
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
@@ -180,11 +205,4 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
 }
