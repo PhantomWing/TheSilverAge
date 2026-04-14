@@ -63,11 +63,12 @@ public class ModOxidizables {
         BiMap<Block, Block> map = builder.build();
 
         // WeatheringCopper fields are interface constants (implicitly final) and cannot be
-        // modified via access transformers. Use reflection with Unsafe to replace them.
+        // modified via access transformers. Use Unsafe to replace them.
+        // Dev uses Parchment names, production uses SRG — try both.
         try {
-            setStaticFinalField(WeatheringCopper.class, "NEXT_BY_BLOCK",
+            setStaticFinalField(WeatheringCopper.class, "NEXT_BY_BLOCK", "f_154886_",
                     com.google.common.base.Suppliers.memoize(() -> map));
-            setStaticFinalField(WeatheringCopper.class, "PREVIOUS_BY_BLOCK",
+            setStaticFinalField(WeatheringCopper.class, "PREVIOUS_BY_BLOCK", "f_154887_",
                     com.google.common.base.Suppliers.memoize(() -> map.inverse()));
         } catch (Exception e) {
             throw new RuntimeException("Failed to register silver oxidizable mappings", e);
@@ -75,12 +76,17 @@ public class ModOxidizables {
     }
 
     @SuppressWarnings("removal")
-    private static void setStaticFinalField(Class<?> clazz, String fieldName, Object value) throws Exception {
+    private static void setStaticFinalField(Class<?> clazz, String mappedName, String srgName, Object value) throws Exception {
         Field unsafeField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
         unsafeField.setAccessible(true);
         sun.misc.Unsafe unsafe = (sun.misc.Unsafe) unsafeField.get(null);
 
-        Field field = clazz.getDeclaredField(fieldName);
+        Field field;
+        try {
+            field = clazz.getDeclaredField(mappedName);
+        } catch (NoSuchFieldException e) {
+            field = clazz.getDeclaredField(srgName);
+        }
         Object base = unsafe.staticFieldBase(field);
         long offset = unsafe.staticFieldOffset(field);
         unsafe.putObject(base, offset, value);

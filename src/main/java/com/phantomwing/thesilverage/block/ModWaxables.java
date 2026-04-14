@@ -70,12 +70,12 @@ public class ModWaxables {
 
         BiMap<Block, Block> map = builder.build();
 
-        // HoneycombItem fields are in a class but still final. Use reflection with Unsafe
-        // to replace them since access transformers may not work for interface-sourced patterns.
+        // HoneycombItem fields are final. Use Unsafe to replace them.
+        // Dev uses Parchment names, production uses SRG — try both.
         try {
-            setStaticFinalField(HoneycombItem.class, "WAXABLES",
+            setStaticFinalField(HoneycombItem.class, "WAXABLES", "f_150863_",
                     com.google.common.base.Suppliers.memoize(() -> map));
-            setStaticFinalField(HoneycombItem.class, "WAX_OFF_BY_BLOCK",
+            setStaticFinalField(HoneycombItem.class, "WAX_OFF_BY_BLOCK", "f_150864_",
                     com.google.common.base.Suppliers.memoize(() -> map.inverse()));
         } catch (Exception e) {
             throw new RuntimeException("Failed to register silver waxable mappings", e);
@@ -83,12 +83,17 @@ public class ModWaxables {
     }
 
     @SuppressWarnings("removal")
-    private static void setStaticFinalField(Class<?> clazz, String fieldName, Object value) throws Exception {
+    private static void setStaticFinalField(Class<?> clazz, String mappedName, String srgName, Object value) throws Exception {
         Field unsafeField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
         unsafeField.setAccessible(true);
         sun.misc.Unsafe unsafe = (sun.misc.Unsafe) unsafeField.get(null);
 
-        Field field = clazz.getDeclaredField(fieldName);
+        Field field;
+        try {
+            field = clazz.getDeclaredField(mappedName);
+        } catch (NoSuchFieldException e) {
+            field = clazz.getDeclaredField(srgName);
+        }
         Object base = unsafe.staticFieldBase(field);
         long offset = unsafe.staticFieldOffset(field);
         unsafe.putObject(base, offset, value);
