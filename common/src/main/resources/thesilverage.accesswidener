@@ -1,0 +1,6 @@
+accessWidener	v2	named
+
+# Silver door/trapdoor/pressure-plate behaviour needs the BlockSetType to be
+# registered in the vanilla static registry (ModBlockSetTypes). BlockSetType.register
+# is private in vanilla; the old NeoForge build relied on this being public.
+accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	register	(Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;

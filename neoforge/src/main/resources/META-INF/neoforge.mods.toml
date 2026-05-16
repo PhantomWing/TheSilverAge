@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+issueTrackerURL = "https://github.com/PhantomWing/TheSilverAge/issues"
+license = "MIT License"
+
+[[mods]]
+modId = "thesilverage"
+version = "${version}"
+displayName = "The Silver Age"
+displayURL = "https://github.com/PhantomWing/TheSilverAge"
+authors = "PhantomWing"
+description = '''
+A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.
+'''
+
+[[dependencies.thesilverage]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.218,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"

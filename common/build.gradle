@@ -1,0 +1,45 @@
+architectury {
+    common(rootProject.enabled_platforms.split(','))
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/thesilverage.accesswidener')
+}
+
+// Datagen output is committed and shared across loaders. The NeoForge data
+// generator (see :neoforge) writes to src/generated/resources; wire that as an
+// additional resource source directory so the generated assets/data ship in the
+// common jar (and therefore in every loader's mod jar).
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+        }
+    }
+}
+
+processResources {
+    // The data generator's hash cache is not a runtime resource.
+    exclude '.cache/**'
+}
+
+dependencies {
+    // We depend on Fabric Loader here to use the Fabric @Environment annotations and
+    // get the mixin dependencies. Do NOT use other classes from Fabric Loader.
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    // Architectury API (common).
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = "${rootProject.mod_id}-common"
+            from components.java
+        }
+    }
+
+    repositories {
+        // Add repositories to publish to here.
+    }
+}
