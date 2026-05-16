@@ -4,8 +4,8 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phantomwing.thesilverage.neoforge.Configuration;
-import com.phantomwing.thesilverage.utils.ItemUtils;
+import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
@@ -78,39 +77,13 @@ public class ReplaceItemModifier extends LootModifier
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext lootContext) {
         // Check if the modifier is enabled in the config. If not, return the generated loot as is.
-        if (!Configuration.GENERATE_STRUCTURE_LOOT.get()) {
+        if (!CommonConfig.generateStructureLoot()) {
             return generatedLoot;
         }
 
-        // Determine how many stacks to replace. If no max amount is set, replace all.
-        // If a min and max amount is set, replace a random number of stacks between the two.
-        ObjectArrayList<ItemStack> lootArray = new ObjectArrayList<>();
-        int numberOfStacksToAdd = this.maxStacks > 0 ? UniformGenerator.between(this.minStacks, this.maxStacks).getInt(lootContext) : Integer.MAX_VALUE;
-        final int[] stacksToAdd = {numberOfStacksToAdd};
-
-        // Check if there are any items to replace. If not, return the generated loot as is.
-        // Keep the replaced item's count, but cap it at the max stack size of the added item.
-        if (numberOfStacksToAdd > 0) {
-            generatedLoot.forEach((item) -> {
-                if (removedItems.stream().anyMatch(item::is) && stacksToAdd[0] > 0) {
-                    try {
-                        ItemStack toAdd = ItemUtils.tryTransmuteStack(item, this.item);
-
-                        generatedLoot.remove(item);
-                        lootArray.add(toAdd);
-                    } catch (Exception ignored) {
-                        // If something goes wrong with the item replacement (e.g. invalid item), just skip it and keep the original item in the loot.
-                    }
-
-                    stacksToAdd[0] = stacksToAdd[0] - 1;
-                }
-            });
-        }
-
-        // Add the new items to the generated loot.
-        if (!lootArray.isEmpty()) {
-            generatedLoot.addAll(lootArray);
-        }
+        // Delegate to the shared, loader-agnostic algorithm (single source of truth).
+        SilverLootAlgorithms.applyReplaceItem(generatedLoot, lootContext, this.item, this.removedItems,
+                this.minStacks, this.maxStacks);
 
         return generatedLoot;
     }

@@ -3,14 +3,14 @@ package com.phantomwing.thesilverage.neoforge.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
@@ -48,28 +48,12 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context) {
         // Check if the modifier is enabled in the config. If not, return the generated loot as is.
-        if (!Configuration.GENERATE_STRUCTURE_LOOT.get()) {
+        if (!CommonConfig.generateStructureLoot()) {
             return generatedLoot;
         }
 
-        int count = UniformGenerator.between(min, max).getInt(context);
-        if (count > 0) {
-            ItemStack addedStack = new ItemStack(this.item, count);
-
-            if (addedStack.getCount() < addedStack.getMaxStackSize()) {
-                generatedLoot.add(addedStack);
-            } else {
-                int i = addedStack.getCount();
-
-                while (i > 0) {
-                    ItemStack subStack = addedStack.copy();
-                    subStack.setCount(Math.min(addedStack.getMaxStackSize(), i));
-                    i -= subStack.getCount();
-                    generatedLoot.add(subStack);
-                }
-            }
-
-        }
+        // Delegate to the shared, loader-agnostic algorithm (single source of truth).
+        SilverLootAlgorithms.applyAddItem(generatedLoot, context, this.item, this.min, this.max);
 
         return generatedLoot;
     }

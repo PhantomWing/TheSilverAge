@@ -19,6 +19,9 @@
       "com.phantomwing.thesilverage.fabric.TheSilverAgeFabric"
     ]
   },
+  "mixins": [
+    "thesilverage.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.16.14",
     "fabric-api": "*",

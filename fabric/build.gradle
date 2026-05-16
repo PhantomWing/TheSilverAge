@@ -9,6 +9,13 @@ architectury {
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
+
+    // Silver loot parity mixin (Fabric equivalent of the NeoForge GLMs). The
+    // refmap name must match "refmap" in thesilverage.mixins.json so the mixin
+    // annotation processor remaps the named targets at build time.
+    mixin {
+        defaultRefmapName = 'thesilverage.refmap.json'
+    }
 }
 
 configurations {

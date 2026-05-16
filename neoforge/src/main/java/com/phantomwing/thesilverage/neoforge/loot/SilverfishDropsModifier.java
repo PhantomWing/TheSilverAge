@@ -3,14 +3,14 @@ package com.phantomwing.thesilverage.neoforge.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class SilverfishDropsModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context) {
-        if (!Configuration.SILVERFISH_DROP_SILVER.get()) {
+        if (!CommonConfig.silverfishDropSilver()) {
             return generatedLoot;
         }
 
@@ -50,10 +50,8 @@ public class SilverfishDropsModifier extends LootModifier {
             }
         }
 
-        int count = UniformGenerator.between(minAmount, maxAmount).getInt(context);
-        if (count > 0) {
-            generatedLoot.add(new ItemStack(this.item, count));
-        }
+        // Delegate the count roll + add to the shared, loader-agnostic algorithm.
+        SilverLootAlgorithms.applySilverfishDrops(generatedLoot, context, this.item, this.minAmount, this.maxAmount);
 
         return generatedLoot;
     }
