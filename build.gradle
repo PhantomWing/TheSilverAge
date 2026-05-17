@@ -69,6 +69,19 @@ allprojects {
             url = "https://maven.terraformersmc.com/"
         }
 
+        // Cloth Config — DEV-RUNTIME ONLY. AppleSkin Fabric JiJ-bundles
+        // cloth-config-fabric (me.shedaniel.autoconfig.*); Loom/Architectury
+        // does not auto-extract nested JiJ jars for a `modLocalRuntime` dep, so
+        // the dev Fabric client needs Cloth Config on the classpath explicitly
+        // (it is never compiled against and never shipped — see
+        // fabric/build.gradle). Scoped to the Cloth Config group so this
+        // canonical maven does not broaden resolution for anything else.
+        maven {
+            name = "shedaniel"
+            url = "https://maven.shedaniel.me/"
+            content { includeGroup "me.shedaniel.cloth" }
+        }
+
         // Create, Ponder, Flywheel
         maven { url = "https://maven.createmod.net" }
 

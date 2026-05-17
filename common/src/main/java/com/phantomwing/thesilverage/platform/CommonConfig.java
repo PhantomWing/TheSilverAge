@@ -39,4 +39,22 @@ public final class CommonConfig {
     public static boolean silverfishDropSilver() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
+
+    /**
+     * Gate for the vanilla-recipe overrides (lodestone / brewing stand /
+     * comparator / repeater silver crafts, with the original recipe kept as a
+     * {@code _fallback} when this is off). NeoForge:
+     * {@code Configuration.OVERRIDE_VANILLA_RECIPES.get()}. Fabric: {@code true}
+     * until the Phase 5 Fabric config exists — matches the NeoForge default
+     * ({@code OVERRIDE_VANILLA_RECIPES = true}).
+     *
+     * <p>Read at datapack-load time by the Fabric {@code thesilverage:config_boolean}
+     * resource condition (the parity twin of the NeoForge
+     * {@code ConfigBooleanCondition}), so the same conditional/fallback recipe
+     * pair resolves identically on both loaders.</p>
+     */
+    @ExpectPlatform
+    public static boolean overrideVanillaRecipes() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
 }

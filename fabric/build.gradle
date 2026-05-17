@@ -26,6 +26,19 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
+// Recipe-viewer toggle, mirroring the NeoForge subproject so Fabric honours the
+// same `-Precipe_viewer=jei|emi|both|none` / project property. EMI is the
+// cross-loader default (the project already has a NeoForge EMI plugin); JEI
+// Fabric is offered for parity with the NeoForge toggle.
+//   ./gradlew :fabric:runClient -Precipe_viewer=emi|jei|both|none
+def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
+if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
+}
+def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
+def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
+logger.lifecycle("[TheSilverAge] (fabric) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
@@ -34,6 +47,50 @@ dependencies {
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionFabric')) { transitive false }
+
+    // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
+    //      never shipped, never a hard dependency; mirrors the NeoForge intent). ----
+
+    // Recipe viewer. EMI (dev.emi:emi-fabric) is the cross-loader choice and
+    // reuses the same `emi_version` property as the NeoForge `emi-neoforge`
+    // dep. NOTE: unlike NeoForge there is NO Fabric-side `modCompileOnly` for
+    // EMI — NeoForge needs it so `compat/emi/ModEmiPlugin` compiles, but no
+    // Fabric EMI plugin source exists (and none is needed: Fabric API's
+    // OxidizableBlocksRegistry writes the vanilla HoneycombItem.WAXABLES /
+    // WeatheringCopper.NEXT_BY_BLOCK BiMaps that EMI's built-in VanillaPlugin
+    // already iterates, so silver weathering/waxing recipes show automatically
+    // on Fabric — see report). So a compileOnly here would have no consumer.
+    if (loadJei) {
+        modLocalRuntime("mezz.jei:jei-1.21.1-fabric:${rootProject.jei_version}")
+    }
+    if (loadEmi) {
+        modLocalRuntime("dev.emi:emi-fabric:${rootProject.emi_version}")
+    }
+
+    // AppleSkin (Fabric). The `appleskin_version=3.0.7` property cannot be
+    // reused: the Fabric build of AppleSkin for the MC 1.21 line tops out at
+    // mc1.21-3.0.6 (3.0.7 Fabric only ships for mc1.21.9+, not 1.21.1), whereas
+    // the NeoForge build does have mc1.21-3.0.7. mc1.21-3.0.6 is the newest
+    // Fabric AppleSkin compatible with MC 1.21.1; the minor delta is immaterial
+    // for a dev-only food/saturation HUD overlay.
+    modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
+    // AppleSkin Fabric JiJ-bundles Cloth Config (me.shedaniel.autoconfig.*).
+    // Production Fabric Loader auto-extracts nested JiJ jars, but Loom does NOT
+    // for a dev `modLocalRuntime` dep, so the bundled Cloth Config never loads
+    // and AppleSkin's client entrypoint NoClassDefFoundErrors on
+    // me.shedaniel.autoconfig.ConfigData. Provide it explicitly (dev-runtime
+    // only, never shipped). Version + `fabric` classifier match the exact jar
+    // AppleSkin bundles (cloth-config-fabric-15.0.127-fabric).
+    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:15.0.127:fabric") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+
+    // Jade (Fabric): intentionally NOT added. The NeoForge side pins a specific
+    // CurseForge file id (curse.maven:jade-324717:7428884); no Fabric 1.21.1
+    // Jade file id was confirmed available on an already-declared repo at the
+    // time of writing, and the spec marks Jade optional/nice-to-have. Add a
+    // verified `curse.maven:jade-324717:<fabric-1.21.1-file-id>` here if/when
+    // one is confirmed. (TODO: optional Jade Fabric dev dep — fabric/build.gradle)
 }
 
 processResources {

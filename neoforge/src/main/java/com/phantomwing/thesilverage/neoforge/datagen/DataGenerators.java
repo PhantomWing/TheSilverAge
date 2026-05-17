@@ -76,5 +76,15 @@ public class DataGenerators {
         // Create mod compat: generate create:pressing recipe for silver_ingot -> silver_sheet,
         // matching the pattern Create uses for its own iron/gold/copper/brass sheets.
         generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output, lookupProvider));
+
+        // MUST be registered LAST. NeoForge's DataGenerator.run() executes
+        // providers sequentially in registration order (each future .join()-ed
+        // before the next), so by the time this runs every conditional recipe /
+        // advancement / Create-compat JSON above has been written to disk. It
+        // post-processes the shared generated tree, adding a translated
+        // `fabric:load_conditions` block beside every NeoForge-only
+        // `neoforge:conditions` block so the single shared data gates
+        // identically on both loaders. See FabricConditionsProvider.
+        generator.addProvider(event.includeServer(), new FabricConditionsProvider(output));
     }
 }

@@ -7,6 +7,12 @@
   ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
   "key": {
     "R": {
       "item": "minecraft:redstone"

@@ -20,4 +20,8 @@ public final class CommonConfigImpl {
     public static boolean silverfishDropSilver() {
         return Configuration.SILVERFISH_DROP_SILVER.get();
     }
+
+    public static boolean overrideVanillaRecipes() {
+        return Configuration.OVERRIDE_VANILLA_RECIPES.get();
+    }
 }

@@ -4,7 +4,8 @@
   "package": "com.phantomwing.thesilverage.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LootTableMixin"
+    "LootTableMixin",
+    "PersistentEntitySectionManagerMixin"
   ],
   "client": [],
   "injectors": {

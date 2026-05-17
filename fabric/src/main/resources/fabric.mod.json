@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "com.phantomwing.thesilverage.fabric.TheSilverAgeFabric"
+    ],
+    "client": [
+      "com.phantomwing.thesilverage.fabric.client.TheSilverAgeFabricClient"
     ]
   },
   "mixins": [

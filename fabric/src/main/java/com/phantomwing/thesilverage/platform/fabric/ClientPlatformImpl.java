@@ -1,17 +1,21 @@
 package com.phantomwing.thesilverage.platform.fabric;
 
 /**
- * Fabric implementation of {@link ClientPlatform}.
+ * Fabric implementation of {@link com.phantomwing.thesilverage.platform.ClientPlatform}
+ * (resolved by Architectury's {@code @ExpectPlatform} transformer).
  *
- * <p>Phase 1 shell: Moon Dial item-property override registration on Fabric is
- * TODO(phase 4). No-op for now (and never invoked yet — the Fabric entrypoint
- * does not call client setup in Phase 1).</p>
+ * <p>Delegates to the shared, loader-agnostic
+ * {@link com.phantomwing.thesilverage.client.ModItemProperties} (pure vanilla
+ * {@code ItemProperties.register}) — identical id/predicate to NeoForge.
+ * Invoked from the Fabric client entrypoint
+ * ({@code com.phantomwing.thesilverage.fabric.client.TheSilverAgeFabricClient},
+ * registered as the {@code "client"} entrypoint in {@code fabric.mod.json}).</p>
  */
 public final class ClientPlatformImpl {
     private ClientPlatformImpl() {
     }
 
     public static void registerItemProperties() {
-        // TODO(phase 4): Fabric ModelPredicateProviderRegistry equivalent.
+        com.phantomwing.thesilverage.client.ModItemProperties.register();
     }
 }

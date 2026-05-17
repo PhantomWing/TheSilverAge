@@ -9,6 +9,14 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 1.0,
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
   "ingredient": {
     "item": "create:crushed_raw_silver"
   },

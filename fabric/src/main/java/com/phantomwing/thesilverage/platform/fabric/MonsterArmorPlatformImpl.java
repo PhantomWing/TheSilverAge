@@ -1,29 +1,32 @@
 package com.phantomwing.thesilverage.platform.fabric;
 
-import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
-
 /**
- * Fabric implementation of {@link MonsterArmorPlatform}.
+ * Fabric implementation of {@link com.phantomwing.thesilverage.platform.MonsterArmorPlatform}
+ * (resolved by Architectury's {@code @ExpectPlatform} transformer).
  *
- * <p>Phase 1 shell using the Architectury {@code EntityEvent.ADD} event. Note
- * Architectury exposes no loaded-from-disk distinction, so {@code loadedFromDisk}
- * is passed as {@code false}. Refining this to full NeoForge behavioural parity
- * on Fabric is TODO(phase 4).</p>
+ * <p>The monster-armor hook on Fabric is now a mixin
+ * ({@code com.phantomwing.thesilverage.fabric.mixin.PersistentEntitySectionManagerMixin},
+ * registered in {@code thesilverage.mixins.json}). The mixin hooks the vanilla
+ * {@code PersistentEntitySectionManager#addEntity(EntityAccess, boolean)} and
+ * forwards the authoritative "loaded from storage" boolean to
+ * {@code MonsterArmorHandler.tryEquipSilverArmor(...)} — giving Fabric the exact
+ * same {@code loadedFromDisk} semantics NeoForge gets from
+ * {@code EntityJoinLevelEvent.loadedFromDisk()}.</p>
+ *
+ * <p>That mixin self-registers via the Fabric mixin config, so this
+ * {@code @ExpectPlatform} site has nothing to wire at runtime — it intentionally
+ * no-ops (replacing the former Architectury {@code EntityEvent.ADD} shell, which
+ * hardcoded {@code loadedFromDisk = false} and re-rolled armor on every chunk
+ * load). The method is kept so the {@code @ExpectPlatform} contract still
+ * resolves on Fabric.</p>
  */
 public final class MonsterArmorPlatformImpl {
     private MonsterArmorPlatformImpl() {
     }
 
     public static void registerMobSpawnHandler() {
-        EntityEvent.ADD.register((entity, level) -> {
-            // TODO(phase 4): Fabric has no direct loadedFromDisk signal here; the
-            // server-side / natural-spawn gating inside tryEquipSilverArmor still
-            // applies (level.isClientSide() check), but disk-loaded entities are
-            // not yet excluded. Acceptable for the Phase 1 Fabric shell.
-            MonsterArmorHandler.tryEquipSilverArmor(entity, level, false);
-            return EventResult.pass();
-        });
+        // No-op: the equip hook is the PersistentEntitySectionManagerMixin
+        // (registered via thesilverage.mixins.json), which carries the real
+        // loaded-from-storage flag. Nothing to register here at runtime.
     }
 }

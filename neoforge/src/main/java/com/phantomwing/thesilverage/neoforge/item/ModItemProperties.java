@@ -1,18 +1,28 @@
 package com.phantomwing.thesilverage.neoforge.item;
 
-import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.utils.LevelUtils;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModItemProperties {
-    public static final ResourceLocation MOON_PHASE = ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
+/**
+ * NeoForge-side delegate for the Moon Dial item-property override.
+ *
+ * <p>The registration logic is now shared in
+ * {@link com.phantomwing.thesilverage.client.ModItemProperties} (pure vanilla
+ * {@code ItemProperties.register} — see that class). This delegate is retained
+ * so the existing call site
+ * ({@code platform.neoforge.ClientPlatformImpl#registerItemProperties()},
+ * invoked from {@code FMLClientSetupEvent}) keeps compiling and the NeoForge
+ * lifecycle/behaviour is byte-identical: same {@code thesilverage:moon_phase}
+ * id, same predicate.</p>
+ */
+public final class ModItemProperties {
+    /** Re-exported for source compatibility; identical value to the shared class. */
+    public static final ResourceLocation MOON_PHASE =
+            com.phantomwing.thesilverage.client.ModItemProperties.MOON_PHASE;
+
+    private ModItemProperties() {
+    }
 
     public static void register() {
-        ItemProperties.register(ModItems.MOON_DIAL.get(), MOON_PHASE, (stack, world, entity, seed) -> {
-            int moonPhaseSignal = LevelUtils.getMoonPhaseSignal(world);
-            return moonPhaseSignal / 100f; // Normalize between [0, 1] for texture selection
-        });
+        com.phantomwing.thesilverage.client.ModItemProperties.register();
     }
 }

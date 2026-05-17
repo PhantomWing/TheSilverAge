@@ -35,7 +35,9 @@ public final class TheSilverAgeNeoForge {
         TheSilverAgeCommon.init();
 
         // NeoForge-only deferred registries (GLM serializers + recipe condition
-        // codecs). These stay NeoForge-specific until Phase 2/4.
+        // codecs). Permanently NeoForge-side by design: loot uses the "shared
+        // spec, per-loader apply" model — the common SilverLootSpec /
+        // SilverLootAlgorithms drive these GLMs here and a loot mixin on Fabric.
         ModConditions.register(modEventBus);
         ModLootModifiers.register(modEventBus);
 
