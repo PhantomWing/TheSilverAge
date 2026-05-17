@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.fabric;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
 import com.phantomwing.thesilverage.fabric.compat.create.CreateFabricCompat;
 import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondition;
+import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -22,6 +23,11 @@ import net.minecraft.world.level.storage.loot.LootTable;
 public final class TheSilverAgeFabric implements ModInitializer {
     @Override
     public void onInitialize() {
+        // MUST be first: the loot mixin and the thesilverage:config_boolean
+        // resource condition read config very early (datapack load), so the
+        // AutoConfig holder must be registered before anything else runs.
+        TheSilverAgeFabricConfig.register();
+
         TheSilverAgeCommon.init();
 
         // Parity twin of the NeoForge `thesilverage:config_boolean` recipe

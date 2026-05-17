@@ -1,31 +1,32 @@
 package com.phantomwing.thesilverage.platform.fabric;
 
+import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
+
 /**
  * Fabric implementation of {@link com.phantomwing.thesilverage.platform.CommonConfig}
  * (resolved by Architectury's {@code @ExpectPlatform} transformer).
  *
- * <p>Phase 2/4 shell: the full Fabric config system is Phase 5. All gates return
- * {@code true} here, which matches the NeoForge config defaults
- * ({@code GENERATE_STRUCTURE_LOOT = true}, {@code SILVERFISH_DROP_SILVER = true},
- * {@code OVERRIDE_VANILLA_RECIPES = true}), so out-of-the-box loot and
- * recipe-override behaviour is the same on both loaders.</p>
+ * <p>Delegates to the Cloth/AutoConfig-backed {@link TheSilverAgeFabricConfig}
+ * (Phase 5) — the parity twin of NeoForge's {@code ModConfigSpec}. The three
+ * gates resolve from the same option ids and {@code true} defaults on both
+ * loaders, so loot and recipe-override behaviour stays identical.</p>
  */
 public final class CommonConfigImpl {
     private CommonConfigImpl() {
     }
 
-    /** TODO(phase 5): read the Fabric config. NeoForge default is {@code true}. */
     public static boolean generateStructureLoot() {
-        return true;
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.GENERATE_STRUCTURE_LOOT_ID);
     }
 
-    /** TODO(phase 5): read the Fabric config. NeoForge default is {@code true}. */
     public static boolean silverfishDropSilver() {
-        return true;
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.SILVERFISH_DROP_SILVER_ID);
     }
 
-    /** TODO(phase 5): read the Fabric config. NeoForge default is {@code true}. */
     public static boolean overrideVanillaRecipes() {
-        return true;
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.OVERRIDE_VANILLA_RECIPES_ID);
     }
 }

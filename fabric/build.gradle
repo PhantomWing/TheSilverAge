@@ -74,14 +74,14 @@ dependencies {
     // Fabric AppleSkin compatible with MC 1.21.1; the minor delta is immaterial
     // for a dev-only food/saturation HUD overlay.
     modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
-    // AppleSkin Fabric JiJ-bundles Cloth Config (me.shedaniel.autoconfig.*).
-    // Production Fabric Loader auto-extracts nested JiJ jars, but Loom does NOT
-    // for a dev `modLocalRuntime` dep, so the bundled Cloth Config never loads
-    // and AppleSkin's client entrypoint NoClassDefFoundErrors on
-    // me.shedaniel.autoconfig.ConfigData. Provide it explicitly (dev-runtime
-    // only, never shipped). Version + `fabric` classifier match the exact jar
-    // AppleSkin bundles (cloth-config-fabric-15.0.127-fabric).
-    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:15.0.127:fabric") {
+
+    // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the
+    // Fabric AutoConfig config (TheSilverAgeFabricConfig), mirroring how
+    // RusticDelight-Fabric does its config. Being a first-class modImplementation
+    // (runtime classpath, JiJ'd at build) it ALSO satisfies AppleSkin's bundled
+    // Cloth Config need in dev, so the prior dev-only modLocalRuntime workaround
+    // is no longer required. fabric-api excluded to avoid a transitive downgrade.
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
 
