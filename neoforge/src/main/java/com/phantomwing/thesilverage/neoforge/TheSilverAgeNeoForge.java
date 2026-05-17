@@ -3,7 +3,7 @@ package com.phantomwing.thesilverage.neoforge;
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
-import com.phantomwing.thesilverage.neoforge.firework.ModFireworks;
+import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
 import net.neoforged.bus.api.IEventBus;

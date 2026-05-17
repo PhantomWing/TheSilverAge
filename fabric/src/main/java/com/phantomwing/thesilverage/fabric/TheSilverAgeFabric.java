@@ -5,6 +5,8 @@ import com.phantomwing.thesilverage.fabric.compat.create.CreateFabricCompat;
 import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondition;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
+import com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades;
+import com.phantomwing.thesilverage.firework.ModFireworks;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
@@ -29,6 +31,20 @@ public final class TheSilverAgeFabric implements ModInitializer {
         TheSilverAgeFabricConfig.register();
 
         TheSilverAgeCommon.init();
+
+        // Silver Nugget firework-star parity. NeoForge mutates the vanilla
+        // FireworkStarRecipe static fields in FMLCommonSetupEvent; Fabric has no
+        // equivalent staged setup, so do it here — registries are populated by
+        // the time the ModInitializer runs (after TheSilverAgeCommon.init()),
+        // and the shared loader-agnostic ModFireworks rebuilds SHAPE_INGREDIENT
+        // from the merged key set (no loader-specific CompoundIngredient).
+        ModFireworks.register();
+
+        // Silver villager-trade parity. NeoForge adds the Cleric trade from
+        // VillagerTradesEvent; Fabric registers it once here via
+        // TradeOfferHelper (the ENABLE_VILLAGER_TRADES gate is evaluated live
+        // inside the listing so runtime config toggles still take effect).
+        ModVillagerTrades.register();
 
         // Parity twin of the NeoForge `thesilverage:config_boolean` recipe
         // condition. The shared generated data carries BOTH dialects in each

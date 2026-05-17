@@ -2,14 +2,10 @@ package com.phantomwing.thesilverage.neoforge.villager;
 
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.villager.SilverVillagerTrades;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
@@ -17,9 +13,17 @@ import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
 import java.util.List;
 
+/**
+ * NeoForge trade registrant. The trade content is defined once in the shared
+ * {@link SilverVillagerTrades} (mirroring the loot "shared spec, per-loader
+ * apply" model); this class only applies it through the NeoForge village
+ * events, re-checking the config every rebuild. The Fabric twin lives at
+ * {@code com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades}.
+ */
 @EventBusSubscriber(modid = TheSilverAge.MOD_ID)
 public class ModVillagerTrades {
-    public static float PRICE_MULTIPLIER = 0.05f;
+    /** Kept for source compatibility; the value is owned by the shared spec. */
+    public static final float PRICE_MULTIPLIER = SilverVillagerTrades.PRICE_MULTIPLIER;
 
     @SubscribeEvent
     public static void addVillagerTrades(VillagerTradesEvent event) {
@@ -31,23 +35,11 @@ public class ModVillagerTrades {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
         if (event.getType() == VillagerProfession.CLERIC) {
-            trades.get(2).add((trader, random) -> new MerchantOffer(
-                    new ItemCost(ModItems.SILVER_INGOT.get(), 3),
-                    new ItemStack(Items.EMERALD, 1),
-                    12,
-                    10,
-                    PRICE_MULTIPLIER
-            ));
+            trades.get(2).add(SilverVillagerTrades.clericSilverIngotForEmerald());
         }
         else if (event.getType() == VillagerProfession.LIBRARIAN) {
-            // TODO: Add trade for moon clock
-            /* trades.get(4).add((trader, random) -> new MerchantOffer(
-                    new ItemCost(Items.EMERALD, 5),
-                    new ItemStack(ModItems.MOON_CLOCK, 1),
-                    12,
-                    15,
-                    PRICE_MULTIPLIER
-            )); */
+            // TODO: Add trade for moon clock (define it in the shared
+            //       SilverVillagerTrades, then add it here + on Fabric).
         }
     }
 
@@ -60,14 +52,8 @@ public class ModVillagerTrades {
 
         List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
 
-        // TODO: Add trades for wandering trader
-
-        /* genericTrades.add((trader, random) -> new MerchantOffer(
-                new ItemCost(Items.EMERALD, 24),
-                new ItemStack(ModItems.SILVER_HORSE_ARMOR.get(), 1),
-                1,
-                2,
-                PRICE_MULTIPLIER
-        )); */
+        // TODO: Add trades for wandering trader (e.g. Silver Horse Armor for 24
+        //       emeralds). Define it in the shared SilverVillagerTrades, then
+        //       add it here and via TradeOfferHelper on the Fabric side.
     }
 }

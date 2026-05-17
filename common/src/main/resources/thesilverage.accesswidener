@@ -12,3 +12,14 @@ accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	
 # client item-property registration needs and keeps the registered id/predicate
 # byte-identical across both loaders.
 accessible	method	net/minecraft/client/renderer/item/ItemProperties	register	(Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
+
+# Silver Nugget firework-star parity (common ModFireworks). Vanilla
+# FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) and SHAPE_INGREDIENT
+# (== keySet) as private static final; the loader-agnostic patch reads and
+# reassigns both, so widen them accessible + mutable. NeoForge production
+# mirrors these with `public-f` entries in accesstransformer.cfg (the AW is not
+# converted to an AT in remapJar).
+accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
+mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
+accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
+mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
