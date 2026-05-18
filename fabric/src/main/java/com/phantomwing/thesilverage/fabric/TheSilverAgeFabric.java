@@ -6,6 +6,7 @@ import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondit
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
 import com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades;
+import com.phantomwing.thesilverage.fabric.world.ModWorldGen;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -45,6 +46,12 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // TradeOfferHelper (the ENABLE_VILLAGER_TRADES gate is evaluated live
         // inside the listing so runtime config toggles still take effect).
         ModVillagerTrades.register();
+
+        // Silver ore world-gen parity. NeoForge attaches the placed features to
+        // biomes via neoforge:add_features biome-modifier JSON (which Fabric
+        // ignores); this re-creates those three injections through the Fabric
+        // BiomeModifications API so silver ore actually generates on Fabric.
+        ModWorldGen.register();
 
         // Parity twin of the NeoForge `thesilverage:config_boolean` recipe
         // condition. The shared generated data carries BOTH dialects in each
