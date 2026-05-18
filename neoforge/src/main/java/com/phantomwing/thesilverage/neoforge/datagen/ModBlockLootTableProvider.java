@@ -3,13 +3,21 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import dev.architectury.registry.registries.RegistrySupplier;
 import org.jetbrains.annotations.NotNull;
 
@@ -149,6 +157,26 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     }
 
     private void dropOre(RegistrySupplier<Block> block, RegistrySupplier<Item> item) {
-        add(block.get(), (b) -> createOreDrop(b, item.get()));
+        add(block.get(), (b) -> createSilverOreDrop(b, item.get()));
+    }
+
+    /**
+     * Like vanilla {@code createOreDrop} but with a 1-4 count range instead of a
+     * flat 1, so silver is plentiful enough to be a viable building/crafting
+     * material (player feedback). Modelled 1:1 on Mojang's own
+     * {@code createCopperOreDrops}: silk-touch still drops the ore block, the
+     * Fortune ore bonus still applies on top of the range, and explosion decay
+     * is preserved. Datagen output is loader-neutral
+     * ({@code data/thesilverage/loot_table/blocks/*.json}), so both NeoForge
+     * and Fabric pick up the new drops identically.
+     */
+    private LootTable.Builder createSilverOreDrop(Block block, Item item) {
+        HolderLookup.RegistryLookup<Enchantment> enchantments =
+                this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        return this.createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
+                LootItem.lootTableItem(item)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
+                        .apply(ApplyBonusCount.addOreBonusCount(
+                                enchantments.getOrThrow(Enchantments.FORTUNE)))));
     }
 }
