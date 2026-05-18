@@ -1,155 +1,138 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '1.0.14'
+    id 'architectury-plugin' version "${architectury_plugin_version}"
+    id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version
-group = mod_group_id
+architectury {
+    minecraft = rootProject.minecraft_version
+}
 
-repositories {
-    mavenLocal()
+subprojects {
+    apply plugin: 'dev.architectury.loom'
 
-    // AppleSkin
-    maven {
-        url "https://maven.ryanliptak.com/"
+    loom {
+        silentMojangMappingsLicense()
     }
 
-    // JEI
-    maven {
-        name = "Jared's maven"
-        url = "https://maven.blamejared.com/"
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // Mojang official mappings, layered with Parchment (kept consistent with the
+        // existing NeoForge ModDev setup which used Parchment ${parchment_mappings_version}).
+        mappings loom.layered {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_mappings_version}@zip")
+        }
     }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+
+    base {
+        archivesName = "${mod_id}-${project.name}-${minecraft_version}"
     }
 
-    exclusiveContent {
-        forRepository {
-            maven {
-                url "https://cursemaven.com"
+    version = mod_version
+    group = mod_group_id
+
+    repositories {
+        mavenLocal()
+
+        maven { url = 'https://maven.neoforged.net/releases' }
+        maven { url = 'https://maven.parchmentmc.org' }
+
+        // AppleSkin
+        maven {
+            url = "https://maven.ryanliptak.com/"
+        }
+
+        // JEI
+        maven {
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            name = "ModMaven"
+            url = "https://modmaven.dev"
+        }
+
+        // EMI
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
+        }
+
+        // Cloth Config — DEV-RUNTIME ONLY. AppleSkin Fabric JiJ-bundles
+        // cloth-config-fabric (me.shedaniel.autoconfig.*); Loom/Architectury
+        // does not auto-extract nested JiJ jars for a `modLocalRuntime` dep, so
+        // the dev Fabric client needs Cloth Config on the classpath explicitly
+        // (it is never compiled against and never shipped — see
+        // fabric/build.gradle). Scoped to the Cloth Config group so this
+        // canonical maven does not broaden resolution for anything else.
+        maven {
+            name = "shedaniel"
+            url = "https://maven.shedaniel.me/"
+            content { includeGroup "me.shedaniel.cloth" }
+        }
+
+        // Create, Ponder, Flywheel
+        maven { url = "https://maven.createmod.net" }
+
+        // Registrate (transitive dep of Create)
+        maven { url = "https://maven.ithundxr.dev/snapshots" }
+
+        exclusiveContent {
+            forRepository {
+                maven {
+                    url = "https://cursemaven.com"
+                }
+            }
+            filter {
+                includeGroup "curse.maven"
             }
         }
-        filter {
-            includeGroup "curse.maven"
+    }
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
         }
     }
 }
 
-base {
-    archivesName =  "${mod_id}-neoforge-${minecraft_version}"
-}
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-    version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
-
-    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+// The repository root is now a pure Architectury orchestration project. The legacy
+// single-loader NeoForge sources still physically live under the root `src/` (they
+// will be relocated to `common/` in Phase 1). Until then, point the root project's
+// source sets at empty, non-existent directories so the root — which has no Minecraft
+// dependencies — never attempts to compile that code. The files on disk are untouched.
+project(':') {
+    sourceSets {
+        main {
+            java { setSrcDirs([]) }
+            resources { setSrcDirs([]) }
         }
-
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        test {
+            java { setSrcDirs([]) }
+            resources { setSrcDirs([]) }
         }
-
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        data {
-            data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
-}
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-dependencies {
-    // JEI
-    localRuntime("mezz.jei:jei-1.21.1-neoforge:${jei_version}")
-
-    // Appleskin
-    localRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${appleskin_version}")
-
-    // Jade
-    localRuntime "curse.maven:jade-324717:7428884"
-}
-
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
-}
-
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/repo"
-        }
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
-
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
     }
 }

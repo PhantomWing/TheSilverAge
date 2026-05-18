@@ -17,11 +17,15 @@ out
 build
 .gradle
 
+# architectury / arch-loom build artifacts
+.architectury-transformer
+
 # claude
 .claude
 
 # cache
 src/generated/resources/.cache
+common/src/generated/resources/.cache
 
 # other
 eclipse

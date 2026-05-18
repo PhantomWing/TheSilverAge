@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "thesilverage",
+  "version": "${version}",
+  "name": "The Silver Age",
+  "description": "A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.",
+  "authors": [
+    "PhantomWing"
+  ],
+  "contact": {
+    "homepage": "https://github.com/PhantomWing/TheSilverAge",
+    "sources": "https://github.com/PhantomWing/TheSilverAge",
+    "issues": "https://github.com/PhantomWing/TheSilverAge/issues"
+  },
+  "license": "MIT License",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.phantomwing.thesilverage.fabric.TheSilverAgeFabric"
+    ],
+    "client": [
+      "com.phantomwing.thesilverage.fabric.client.TheSilverAgeFabricClient"
+    ]
+  },
+  "mixins": [
+    "thesilverage.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "fabric-api": "*",
+    "minecraft": ">=1.21.1",
+    "architectury": ">=13.0.8",
+    "cloth-config": "*"
+  }
+}
