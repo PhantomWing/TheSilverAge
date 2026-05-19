@@ -51,6 +51,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithTexture(ModBlocks.WAXED_WEATHERED_CUT_SILVER, ModBlocks.WEATHERED_CUT_SILVER);
         blockWithTexture(ModBlocks.WAXED_OXIDIZED_CUT_SILVER, ModBlocks.OXIDIZED_CUT_SILVER);
 
+        // Silver Bricks
+        simpleBlock(ModBlocks.SILVER_BRICKS);
+        simpleBlock(ModBlocks.EXPOSED_SILVER_BRICKS);
+        simpleBlock(ModBlocks.WEATHERED_SILVER_BRICKS);
+        simpleBlock(ModBlocks.OXIDIZED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_SILVER_BRICKS, ModBlocks.SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
         // Cut Silver Stairs
         stairs(ModBlocks.CUT_SILVER_STAIRS, ModBlocks.CUT_SILVER);
         stairs(ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.EXPOSED_CUT_SILVER);

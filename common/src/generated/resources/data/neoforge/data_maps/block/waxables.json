@@ -27,6 +27,9 @@
     "thesilverage:exposed_silver": {
       "waxed": "thesilverage:waxed_exposed_silver"
     },
+    "thesilverage:exposed_silver_bricks": {
+      "waxed": "thesilverage:waxed_exposed_silver_bricks"
+    },
     "thesilverage:exposed_silver_bulb": {
       "waxed": "thesilverage:waxed_exposed_silver_bulb"
     },
@@ -54,6 +57,9 @@
     "thesilverage:oxidized_silver": {
       "waxed": "thesilverage:waxed_oxidized_silver"
     },
+    "thesilverage:oxidized_silver_bricks": {
+      "waxed": "thesilverage:waxed_oxidized_silver_bricks"
+    },
     "thesilverage:oxidized_silver_bulb": {
       "waxed": "thesilverage:waxed_oxidized_silver_bulb"
     },
@@ -68,6 +74,9 @@
     },
     "thesilverage:silver_block": {
       "waxed": "thesilverage:waxed_silver_block"
+    },
+    "thesilverage:silver_bricks": {
+      "waxed": "thesilverage:waxed_silver_bricks"
     },
     "thesilverage:silver_bulb": {
       "waxed": "thesilverage:waxed_silver_bulb"
@@ -95,6 +104,9 @@
     },
     "thesilverage:weathered_silver": {
       "waxed": "thesilverage:waxed_weathered_silver"
+    },
+    "thesilverage:weathered_silver_bricks": {
+      "waxed": "thesilverage:waxed_weathered_silver_bricks"
     },
     "thesilverage:weathered_silver_bulb": {
       "waxed": "thesilverage:waxed_weathered_silver_bulb"

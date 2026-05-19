@@ -5,6 +5,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
+import com.phantomwing.thesilverage.item.custom.MoonDialItem;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -44,7 +45,7 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
 
     // Utility items
-    public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial");
+    public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());
     public static final RegistrySupplier<Item> MOON_PHASE_DETECTOR = registerBlock("moon_phase_detector", ModBlocks.MOON_PHASE_DETECTOR);
 
     // Silver blocks
@@ -71,6 +72,16 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_EXPOSED_CUT_SILVER = registerBlock("waxed_exposed_cut_silver", ModBlocks.WAXED_EXPOSED_CUT_SILVER);
     public static final RegistrySupplier<Item> WAXED_WEATHERED_CUT_SILVER = registerBlock("waxed_weathered_cut_silver", ModBlocks.WAXED_WEATHERED_CUT_SILVER);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_CUT_SILVER = registerBlock("waxed_oxidized_cut_silver", ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
+    // Silver Bricks
+    public static final RegistrySupplier<Item> SILVER_BRICKS = registerBlock("silver_bricks", ModBlocks.SILVER_BRICKS);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_BRICKS = registerBlock("exposed_silver_bricks", ModBlocks.EXPOSED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_BRICKS = registerBlock("weathered_silver_bricks", ModBlocks.WEATHERED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_BRICKS = registerBlock("oxidized_silver_bricks", ModBlocks.OXIDIZED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> WAXED_SILVER_BRICKS = registerBlock("waxed_silver_bricks", ModBlocks.WAXED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_BRICKS = registerBlock("waxed_exposed_silver_bricks", ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BRICKS = registerBlock("waxed_weathered_silver_bricks", ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BRICKS = registerBlock("waxed_oxidized_silver_bricks", ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
 
     // Cut Silver Slab
     public static final RegistrySupplier<Item> CUT_SILVER_SLAB = registerBlock("cut_silver_slab", ModBlocks.CUT_SILVER_SLAB);

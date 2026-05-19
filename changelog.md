@@ -1,3 +1,12 @@
+# 1.3.0
+### Additions
+- Added Silver Bricks
+
+### Changes
+- Silver Ore and Deepslate Silver Ore now drop between 1-4 Raw Silver (instead of just 1)
+- Added tooltip to Moon Dial showing the current moon phase.
+
+
 # 1.2.0
 ### Additions
 - Added compatibility with Create

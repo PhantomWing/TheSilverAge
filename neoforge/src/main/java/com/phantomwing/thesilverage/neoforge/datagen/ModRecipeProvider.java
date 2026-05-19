@@ -142,6 +142,18 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
         waxable(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
+        // Silver Bricks. Crafted from 2x2 Silver Ingots (4 -> 4). Silver Ingot
+        // has no weather states, so only the base block has a recipe: the
+        // exposed/weathered/tarnished variants form by natural oxidation of
+        // placed Silver Bricks (vanilla copper behaviour), and the waxed
+        // variants are made by applying Honeycomb to the matching unwaxed one.
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 4);
+
+        waxable(output, ModItems.SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        waxable(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        waxable(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
         // Cut Silver Stairs
         stairsWithCutting(output, ModItems.CUT_SILVER_STAIRS.get(), ModItems.CUT_SILVER.get());
         stairsWithCutting(output, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.EXPOSED_CUT_SILVER.get());

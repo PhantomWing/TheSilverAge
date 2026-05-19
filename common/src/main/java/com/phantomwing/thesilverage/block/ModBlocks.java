@@ -63,6 +63,17 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> WAXED_WEATHERED_CUT_SILVER = registerSilverBlock("waxed_weathered_cut_silver", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<Block> WAXED_OXIDIZED_CUT_SILVER = registerSilverBlock("waxed_oxidized_cut_silver", WeatheringCopper.WeatherState.OXIDIZED);
 
+    // Silver Bricks
+    public static final RegistrySupplier<Block> SILVER_BRICKS = registerWeatheringSilverBlock("silver_bricks", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<Block> EXPOSED_SILVER_BRICKS = registerWeatheringSilverBlock("exposed_silver_bricks", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<Block> WEATHERED_SILVER_BRICKS = registerWeatheringSilverBlock("weathered_silver_bricks", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<Block> OXIDIZED_SILVER_BRICKS = registerWeatheringSilverBlock("oxidized_silver_bricks", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<Block> WAXED_SILVER_BRICKS = registerSilverBlock("waxed_silver_bricks", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<Block> WAXED_EXPOSED_SILVER_BRICKS = registerSilverBlock("waxed_exposed_silver_bricks", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<Block> WAXED_WEATHERED_SILVER_BRICKS = registerSilverBlock("waxed_weathered_silver_bricks", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<Block> WAXED_OXIDIZED_SILVER_BRICKS = registerSilverBlock("waxed_oxidized_silver_bricks", WeatheringCopper.WeatherState.OXIDIZED);
+
     public static final RegistrySupplier<SlabBlock> CUT_SILVER_SLAB = registerWeatheringSilverSlab("cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
     public static final RegistrySupplier<SlabBlock> EXPOSED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
     public static final RegistrySupplier<SlabBlock> WEATHERED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("weathered_cut_silver_slab", WeatheringCopper.WeatherState.WEATHERED);

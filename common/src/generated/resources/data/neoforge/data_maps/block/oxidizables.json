@@ -27,6 +27,9 @@
     "thesilverage:exposed_silver": {
       "next_oxidation_stage": "thesilverage:weathered_silver"
     },
+    "thesilverage:exposed_silver_bricks": {
+      "next_oxidation_stage": "thesilverage:weathered_silver_bricks"
+    },
     "thesilverage:exposed_silver_bulb": {
       "next_oxidation_stage": "thesilverage:weathered_silver_bulb"
     },
@@ -41,6 +44,9 @@
     },
     "thesilverage:silver_block": {
       "next_oxidation_stage": "thesilverage:exposed_silver"
+    },
+    "thesilverage:silver_bricks": {
+      "next_oxidation_stage": "thesilverage:exposed_silver_bricks"
     },
     "thesilverage:silver_bulb": {
       "next_oxidation_stage": "thesilverage:exposed_silver_bulb"
@@ -68,6 +74,9 @@
     },
     "thesilverage:weathered_silver": {
       "next_oxidation_stage": "thesilverage:oxidized_silver"
+    },
+    "thesilverage:weathered_silver_bricks": {
+      "next_oxidation_stage": "thesilverage:oxidized_silver_bricks"
     },
     "thesilverage:weathered_silver_bulb": {
       "next_oxidation_stage": "thesilverage:oxidized_silver_bulb"

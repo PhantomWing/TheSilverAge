@@ -60,6 +60,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get())
 
+                // Silver Bricks
+                .add(ModBlocks.SILVER_BRICKS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICKS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICKS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICKS.get())
+                .add(ModBlocks.WAXED_SILVER_BRICKS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get())
+
                 // Cut Silver Slab
                 .add(ModBlocks.CUT_SILVER_SLAB.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
