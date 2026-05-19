@@ -71,6 +71,26 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
         dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
 
+        // Silver Brick Slab
+        dropSlab(ModBlocks.SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+        // Silver Brick Stairs
+        dropSelf(ModBlocks.SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
+
         // Cut Silver Slab
         dropSlab(ModBlocks.CUT_SILVER_SLAB);
         dropSlab(ModBlocks.EXPOSED_CUT_SILVER_SLAB);

@@ -27,6 +27,12 @@
     "thesilverage:exposed_silver": {
       "next_oxidation_stage": "thesilverage:weathered_silver"
     },
+    "thesilverage:exposed_silver_brick_slab": {
+      "next_oxidation_stage": "thesilverage:weathered_silver_brick_slab"
+    },
+    "thesilverage:exposed_silver_brick_stairs": {
+      "next_oxidation_stage": "thesilverage:weathered_silver_brick_stairs"
+    },
     "thesilverage:exposed_silver_bricks": {
       "next_oxidation_stage": "thesilverage:weathered_silver_bricks"
     },
@@ -44,6 +50,12 @@
     },
     "thesilverage:silver_block": {
       "next_oxidation_stage": "thesilverage:exposed_silver"
+    },
+    "thesilverage:silver_brick_slab": {
+      "next_oxidation_stage": "thesilverage:exposed_silver_brick_slab"
+    },
+    "thesilverage:silver_brick_stairs": {
+      "next_oxidation_stage": "thesilverage:exposed_silver_brick_stairs"
     },
     "thesilverage:silver_bricks": {
       "next_oxidation_stage": "thesilverage:exposed_silver_bricks"
@@ -74,6 +86,12 @@
     },
     "thesilverage:weathered_silver": {
       "next_oxidation_stage": "thesilverage:oxidized_silver"
+    },
+    "thesilverage:weathered_silver_brick_slab": {
+      "next_oxidation_stage": "thesilverage:oxidized_silver_brick_slab"
+    },
+    "thesilverage:weathered_silver_brick_stairs": {
+      "next_oxidation_stage": "thesilverage:oxidized_silver_brick_stairs"
     },
     "thesilverage:weathered_silver_bricks": {
       "next_oxidation_stage": "thesilverage:oxidized_silver_bricks"

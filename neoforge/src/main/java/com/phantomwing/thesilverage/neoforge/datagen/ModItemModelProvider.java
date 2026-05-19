@@ -116,6 +116,26 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
         blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
 
+        // Silver Brick Slab
+        blockItem(ModBlocks.SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+        // Silver Brick Stairs
+        blockItem(ModBlocks.SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
+
         // Cut Silver Slab
         blockItem(ModBlocks.CUT_SILVER_SLAB);
         blockItem(ModBlocks.EXPOSED_CUT_SILVER_SLAB);

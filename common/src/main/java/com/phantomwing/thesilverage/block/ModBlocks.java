@@ -74,6 +74,28 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> WAXED_WEATHERED_SILVER_BRICKS = registerSilverBlock("waxed_weathered_silver_bricks", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<Block> WAXED_OXIDIZED_SILVER_BRICKS = registerSilverBlock("waxed_oxidized_silver_bricks", WeatheringCopper.WeatherState.OXIDIZED);
 
+    // Silver Brick Slab
+    public static final RegistrySupplier<SlabBlock> SILVER_BRICK_SLAB = registerWeatheringSilverSlab("silver_brick_slab", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<SlabBlock> EXPOSED_SILVER_BRICK_SLAB = registerWeatheringSilverSlab("exposed_silver_brick_slab", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<SlabBlock> WEATHERED_SILVER_BRICK_SLAB = registerWeatheringSilverSlab("weathered_silver_brick_slab", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<SlabBlock> OXIDIZED_SILVER_BRICK_SLAB = registerWeatheringSilverSlab("oxidized_silver_brick_slab", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<SlabBlock> WAXED_SILVER_BRICK_SLAB = registerSilverSlab("waxed_silver_brick_slab", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<SlabBlock> WAXED_EXPOSED_SILVER_BRICK_SLAB = registerSilverSlab("waxed_exposed_silver_brick_slab", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<SlabBlock> WAXED_WEATHERED_SILVER_BRICK_SLAB = registerSilverSlab("waxed_weathered_silver_brick_slab", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<SlabBlock> WAXED_OXIDIZED_SILVER_BRICK_SLAB = registerSilverSlab("waxed_oxidized_silver_brick_slab", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Brick Stairs
+    public static final RegistrySupplier<StairBlock> SILVER_BRICK_STAIRS = registerWeatheringSilverStairs("silver_brick_stairs", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<StairBlock> EXPOSED_SILVER_BRICK_STAIRS = registerWeatheringSilverStairs("exposed_silver_brick_stairs", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<StairBlock> WEATHERED_SILVER_BRICK_STAIRS = registerWeatheringSilverStairs("weathered_silver_brick_stairs", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<StairBlock> OXIDIZED_SILVER_BRICK_STAIRS = registerWeatheringSilverStairs("oxidized_silver_brick_stairs", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<StairBlock> WAXED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_silver_brick_stairs", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<StairBlock> WAXED_EXPOSED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_exposed_silver_brick_stairs", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<StairBlock> WAXED_WEATHERED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_weathered_silver_brick_stairs", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<StairBlock> WAXED_OXIDIZED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_oxidized_silver_brick_stairs", WeatheringCopper.WeatherState.OXIDIZED);
+
     public static final RegistrySupplier<SlabBlock> CUT_SILVER_SLAB = registerWeatheringSilverSlab("cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
     public static final RegistrySupplier<SlabBlock> EXPOSED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
     public static final RegistrySupplier<SlabBlock> WEATHERED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("weathered_cut_silver_slab", WeatheringCopper.WeatherState.WEATHERED);

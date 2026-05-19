@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "thesilverage:block/silver_bricks",
+    "side": "thesilverage:block/silver_bricks",
+    "top": "thesilverage:block/silver_bricks"
+  }
+}

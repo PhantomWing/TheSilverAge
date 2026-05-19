@@ -106,6 +106,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         // Slabs
         tag(ItemTags.SLABS)
+                .add(ModItems.SILVER_BRICK_SLAB.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get())
                 .add(ModItems.CUT_SILVER_SLAB.get())
                 .add(ModItems.EXPOSED_CUT_SILVER_SLAB.get())
                 .add(ModItems.WEATHERED_CUT_SILVER_SLAB.get())
@@ -117,6 +125,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         // Stairs
         tag(ItemTags.STAIRS)
+                .add(ModItems.SILVER_BRICK_STAIRS.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get())
                 .add(ModItems.CUT_SILVER_STAIRS.get())
                 .add(ModItems.EXPOSED_CUT_SILVER_STAIRS.get())
                 .add(ModItems.WEATHERED_CUT_SILVER_STAIRS.get())

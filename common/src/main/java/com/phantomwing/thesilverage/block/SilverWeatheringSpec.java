@@ -62,6 +62,16 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BRICKS::get, ModBlocks.WEATHERED_SILVER_BRICKS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BRICKS::get, ModBlocks.OXIDIZED_SILVER_BRICKS::get);
 
+        // Silver Brick Slab
+        ox(p, ModBlocks.SILVER_BRICK_SLAB::get, ModBlocks.EXPOSED_SILVER_BRICK_SLAB::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_SLAB::get, ModBlocks.WEATHERED_SILVER_BRICK_SLAB::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_SLAB::get, ModBlocks.OXIDIZED_SILVER_BRICK_SLAB::get);
+
+        // Silver Brick Stairs
+        ox(p, ModBlocks.SILVER_BRICK_STAIRS::get, ModBlocks.EXPOSED_SILVER_BRICK_STAIRS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_STAIRS::get, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get, ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS::get);
+
         // Cut Silver Slab
         ox(p, ModBlocks.CUT_SILVER_SLAB::get, ModBlocks.EXPOSED_CUT_SILVER_SLAB::get);
         ox(p, ModBlocks.EXPOSED_CUT_SILVER_SLAB::get, ModBlocks.WEATHERED_CUT_SILVER_SLAB::get);
@@ -124,6 +134,18 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BRICKS::get, ModBlocks.WAXED_EXPOSED_SILVER_BRICKS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BRICKS::get, ModBlocks.WAXED_WEATHERED_SILVER_BRICKS::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_BRICKS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS::get);
+
+        // Silver Brick Slab
+        ox(p, ModBlocks.SILVER_BRICK_SLAB::get, ModBlocks.WAXED_SILVER_BRICK_SLAB::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_SLAB::get, ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_SLAB::get, ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_BRICK_SLAB::get, ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB::get);
+
+        // Silver Brick Stairs
+        ox(p, ModBlocks.SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_SILVER_BRICK_STAIRS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS::get);
 
         // Cut Silver Slab
         ox(p, ModBlocks.CUT_SILVER_SLAB::get, ModBlocks.WAXED_CUT_SILVER_SLAB::get);

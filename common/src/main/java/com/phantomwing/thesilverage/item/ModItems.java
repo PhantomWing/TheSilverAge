@@ -83,6 +83,26 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BRICKS = registerBlock("waxed_weathered_silver_bricks", ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BRICKS = registerBlock("waxed_oxidized_silver_bricks", ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
 
+    // Silver Brick Slab
+    public static final RegistrySupplier<Item> SILVER_BRICK_SLAB = registerBlock("silver_brick_slab", ModBlocks.SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_BRICK_SLAB = registerBlock("exposed_silver_brick_slab", ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_BRICK_SLAB = registerBlock("weathered_silver_brick_slab", ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_BRICK_SLAB = registerBlock("oxidized_silver_brick_slab", ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> WAXED_SILVER_BRICK_SLAB = registerBlock("waxed_silver_brick_slab", ModBlocks.WAXED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_BRICK_SLAB = registerBlock("waxed_exposed_silver_brick_slab", ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BRICK_SLAB = registerBlock("waxed_weathered_silver_brick_slab", ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BRICK_SLAB = registerBlock("waxed_oxidized_silver_brick_slab", ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+    // Silver Brick Stairs
+    public static final RegistrySupplier<Item> SILVER_BRICK_STAIRS = registerBlock("silver_brick_stairs", ModBlocks.SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_BRICK_STAIRS = registerBlock("exposed_silver_brick_stairs", ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_BRICK_STAIRS = registerBlock("weathered_silver_brick_stairs", ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_BRICK_STAIRS = registerBlock("oxidized_silver_brick_stairs", ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> WAXED_SILVER_BRICK_STAIRS = registerBlock("waxed_silver_brick_stairs", ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_BRICK_STAIRS = registerBlock("waxed_exposed_silver_brick_stairs", ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BRICK_STAIRS = registerBlock("waxed_weathered_silver_brick_stairs", ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BRICK_STAIRS = registerBlock("waxed_oxidized_silver_brick_stairs", ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
+
     // Cut Silver Slab
     public static final RegistrySupplier<Item> CUT_SILVER_SLAB = registerBlock("cut_silver_slab", ModBlocks.CUT_SILVER_SLAB);
     public static final RegistrySupplier<Item> EXPOSED_CUT_SILVER_SLAB = registerBlock("exposed_cut_silver_slab", ModBlocks.EXPOSED_CUT_SILVER_SLAB);

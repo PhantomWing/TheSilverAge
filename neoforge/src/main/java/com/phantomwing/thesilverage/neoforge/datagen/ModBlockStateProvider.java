@@ -61,6 +61,26 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS, ModBlocks.WEATHERED_SILVER_BRICKS);
         blockWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS, ModBlocks.OXIDIZED_SILVER_BRICKS);
 
+        // Silver Brick Slab
+        slab(ModBlocks.SILVER_BRICK_SLAB, ModBlocks.SILVER_BRICKS);
+        slab(ModBlocks.EXPOSED_SILVER_BRICK_SLAB, ModBlocks.EXPOSED_SILVER_BRICKS);
+        slab(ModBlocks.WEATHERED_SILVER_BRICK_SLAB, ModBlocks.WEATHERED_SILVER_BRICKS);
+        slab(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_SILVER_BRICK_SLAB, ModBlocks.SILVER_BRICKS);
+        slab(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB, ModBlocks.EXPOSED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB, ModBlocks.WEATHERED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Stairs
+        stairs(ModBlocks.SILVER_BRICK_STAIRS, ModBlocks.SILVER_BRICKS);
+        stairs(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        stairs(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        stairs(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_SILVER_BRICK_STAIRS, ModBlocks.SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
         // Cut Silver Stairs
         stairs(ModBlocks.CUT_SILVER_STAIRS, ModBlocks.CUT_SILVER);
         stairs(ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.EXPOSED_CUT_SILVER);

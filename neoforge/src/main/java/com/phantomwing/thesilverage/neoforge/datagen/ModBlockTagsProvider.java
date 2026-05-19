@@ -70,6 +70,26 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get())
 
+                // Silver Brick Slab
+                .add(ModBlocks.SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get())
+
+                // Silver Brick Stairs
+                .add(ModBlocks.SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get())
+
                 // Cut Silver Slab
                 .add(ModBlocks.CUT_SILVER_SLAB.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
@@ -175,6 +195,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Slabs
         tag(BlockTags.SLABS)
+                .add(ModBlocks.SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get())
                 .add(ModBlocks.CUT_SILVER_SLAB.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
                 .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get())
@@ -186,6 +214,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Stairs
         tag(BlockTags.STAIRS)
+                .add(ModBlocks.SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get())
                 .add(ModBlocks.CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get())
                 .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get())

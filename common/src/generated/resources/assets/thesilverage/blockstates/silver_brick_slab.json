@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "thesilverage:block/silver_brick_slab"
+    },
+    "type=double": {
+      "model": "thesilverage:block/silver_bricks"
+    },
+    "type=top": {
+      "model": "thesilverage:block/silver_brick_slab_top"
+    }
+  }
+}
