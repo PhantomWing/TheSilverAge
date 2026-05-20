@@ -142,19 +142,40 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
         waxable(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
-        // Silver Bricks. Crafted from 2x2 Silver Ingots (4 -> 4). Silver Ingot
-        // has no weather states, so only the base block has a recipe: the
-        // exposed/weathered/tarnished variants form by natural oxidation of
-        // placed Silver Bricks (vanilla copper behaviour), and the waxed
-        // variants are made by applying Honeycomb to the matching unwaxed one.
+        // Silver Bricks. Two crafting paths to the base block:
+        //   - Crafting table: 2x2 Silver Ingots -> 4 Silver Bricks. Silver
+        //     Ingot has no weather states, so this only produces the base
+        //     SILVER_BRICKS variant.
+        //   - Stonecutter: 1 Silver Block (any weather/waxed variant) -> 4
+        //     of the matching brick variant. Mirrors the Cut Silver pattern
+        //     and gives players a direct path to every brick variant without
+        //     waiting on natural oxidation.
+        // Waxed brick variants are additionally obtainable via Honeycomb on
+        // the matching unwaxed one (the waxable() chain below); placed
+        // silver_bricks also still oxidize naturally over time.
         twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 4);
+
+        stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
+        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+
+        stoneCutting(output, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
         waxable(output, ModItems.SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BRICKS.get());
         waxable(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
         waxable(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
         waxable(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
 
-        // Silver Brick Stairs (crafting shape + stonecutting from the matching Silver Bricks block)
+        // Silver Brick Stairs — three paths per variant:
+        //   1) Crafting-table stair shape from the matching Silver Bricks (4)
+        //   2) Stonecutter from the matching Silver Bricks (1 -> 1)
+        //   3) Stonecutter from the matching Silver Block (1 -> 4)
+        // Paths 1+2 come from stairsWithCutting; path 3 is the extra
+        // stoneCutting block below. Mirrors the Cut Silver Stairs pattern.
         stairsWithCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BRICKS.get());
         stairsWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
         stairsWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
@@ -165,12 +186,27 @@ public class ModRecipeProvider extends RecipeProvider {
         stairsWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
         stairsWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
 
+        stoneCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BLOCK.get(), 4);
+        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+
+        stoneCutting(output, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+
         waxable(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BRICK_STAIRS.get());
         waxable(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get());
         waxable(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get());
         waxable(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
 
-        // Silver Brick Slab (crafting shape + stonecutting from the matching Silver Bricks block)
+        // Silver Brick Slab — three paths per variant:
+        //   1) Crafting-table slab shape from the matching Silver Bricks (6)
+        //   2) Stonecutter from the matching Silver Bricks (1 -> 2)
+        //   3) Stonecutter from the matching Silver Block (1 -> 8)
+        // Paths 1+2 come from slabWithCutting; path 3 is the extra
+        // stoneCutting block below. Mirrors the Cut Silver Slab pattern.
         slabWithCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
@@ -180,6 +216,16 @@ public class ModRecipeProvider extends RecipeProvider {
         slabWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        stoneCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.SILVER_BLOCK.get(), 8);
+        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER.get(), 8);
+        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER.get(), 8);
+        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_SILVER.get(), 8);
+
+        stoneCutting(output, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BLOCK.get(), 8);
+        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 8);
+        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 8);
+        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 8);
 
         waxable(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BRICK_SLAB.get());
         waxable(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get());

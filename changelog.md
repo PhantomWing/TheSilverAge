@@ -1,9 +1,13 @@
 # 1.3.0
+First version released for Fabric.
+
 ### Additions
-- Added Silver Bricks
+- Added Silver Bricks, Silver Brick Stairs and Silver Brick Slabs
 - Added integration with Sable (Create Aeronautics)
+- Added Chinese, French, Italian, Japanese, Korean, Romanian, Russian, Spanish and Ukrainian language support (auto-translated, might need adjustments)
 
 ### Changes
+- Now requires Architectury as a dependency to support both Forge and Fabric platforms.
 - Silver Ore and Deepslate Silver Ore now drop between 1-4 Raw Silver (instead of just 1)
 - Added tooltip to Moon Dial showing the current moon phase.
 

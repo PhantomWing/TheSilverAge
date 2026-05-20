@@ -59,8 +59,7 @@ public class MoonDialItem extends Item {
                 () -> () -> null);
 
         int phase = LevelUtils.getMoonPhase(level);
-        tooltip.add(Component.translatable("thesilverage.tooltip.moon_dial",
-                        Component.translatable(PHASE_KEYS[phase]))
+        tooltip.add(Component.translatable(PHASE_KEYS[phase])
                 .withStyle(ChatFormatting.GRAY));
 
         super.appendHoverText(stack, context, tooltip, flag);
