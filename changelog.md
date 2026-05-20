@@ -1,6 +1,7 @@
 # 1.3.0
 ### Additions
 - Added Silver Bricks
+- Added integration with Sable (Create Aeronautics)
 
 ### Changes
 - Silver Ore and Deepslate Silver Ore now drop between 1-4 Raw Silver (instead of just 1)

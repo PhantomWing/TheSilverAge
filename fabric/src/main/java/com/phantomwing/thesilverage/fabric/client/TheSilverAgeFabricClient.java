@@ -19,6 +19,14 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientPlatform.registerItemProperties();
-        TheSilverAge.LOGGER.info("Fabric client init: Moon Dial item-property override registered.");
+
+        // Map doors / trapdoors / grates to their cutout/translucent render
+        // layers. NeoForge bakes this into the generated block-model JSON via
+        // its "render_type" field; Fabric ignores that field, so without this
+        // call any pixel marked transparent in those textures renders as
+        // opaque black on Fabric.
+        ModRenderLayers.register();
+
+        TheSilverAge.LOGGER.info("Fabric client init: Moon Dial item-property override + render layers registered.");
     }
 }
