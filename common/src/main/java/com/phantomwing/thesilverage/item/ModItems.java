@@ -133,6 +133,16 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_WEATHERED_CHISELED_SILVER = registerBlock("waxed_weathered_chiseled_silver", ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_CHISELED_SILVER = registerBlock("waxed_oxidized_chiseled_silver", ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
+    // Silver Pillar
+    public static final RegistrySupplier<Item> SILVER_PILLAR = registerBlock("silver_pillar", ModBlocks.SILVER_PILLAR);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_PILLAR = registerBlock("exposed_silver_pillar", ModBlocks.EXPOSED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_PILLAR = registerBlock("weathered_silver_pillar", ModBlocks.WEATHERED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_PILLAR = registerBlock("oxidized_silver_pillar", ModBlocks.OXIDIZED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> WAXED_SILVER_PILLAR = registerBlock("waxed_silver_pillar", ModBlocks.WAXED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_PILLAR = registerBlock("waxed_exposed_silver_pillar", ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_PILLAR = registerBlock("waxed_weathered_silver_pillar", ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_PILLAR = registerBlock("waxed_oxidized_silver_pillar", ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
+
     // Silver Grate
     public static final RegistrySupplier<Item> SILVER_GRATE = registerBlock("silver_grate", ModBlocks.SILVER_GRATE);
     public static final RegistrySupplier<Item> EXPOSED_SILVER_GRATE = registerBlock("exposed_silver_grate", ModBlocks.EXPOSED_SILVER_GRATE);

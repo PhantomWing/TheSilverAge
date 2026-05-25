@@ -50,6 +50,7 @@ public class ModTags {
         public static final TagKey<Block> CHISELED_SILVER_BLOCKS = tag("chiseled_silver_blocks");
         public static final TagKey<Block> SILVER_BRICK_BLOCKS = tag("silver_brick_blocks");
         public static final TagKey<Block> SILVER_GRATES = tag("silver_grates");
+        public static final TagKey<Block> SILVER_PILLARS = tag("silver_pillars");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));

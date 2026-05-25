@@ -166,6 +166,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
 
+        // Silver Pillar
+        blockItem(ModBlocks.SILVER_PILLAR);
+        blockItem(ModBlocks.EXPOSED_SILVER_PILLAR);
+        blockItem(ModBlocks.WEATHERED_SILVER_PILLAR);
+        blockItem(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
+
         // Silver Grate
         blockItem(ModBlocks.SILVER_GRATE);
         blockItem(ModBlocks.EXPOSED_SILVER_GRATE);

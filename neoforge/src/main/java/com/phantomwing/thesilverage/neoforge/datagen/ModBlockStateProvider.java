@@ -111,6 +111,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
         horizontalBlockWithTexture(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER, ModBlocks.WEATHERED_CHISELED_SILVER);
         horizontalBlockWithTexture(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER, ModBlocks.OXIDIZED_CHISELED_SILVER);
 
+        // Silver Pillar — RotatedPillarBlock axis-aware (vertical + horizontal column models).
+        // Waxed variants reuse their unwaxed counterpart's textures (matches vanilla copper).
+        pillar(ModBlocks.SILVER_PILLAR);
+        pillar(ModBlocks.EXPOSED_SILVER_PILLAR);
+        pillar(ModBlocks.WEATHERED_SILVER_PILLAR);
+        pillar(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        pillarWithTexture(ModBlocks.WAXED_SILVER_PILLAR, ModBlocks.SILVER_PILLAR);
+        pillarWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR, ModBlocks.EXPOSED_SILVER_PILLAR);
+        pillarWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR, ModBlocks.WEATHERED_SILVER_PILLAR);
+        pillarWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR, ModBlocks.OXIDIZED_SILVER_PILLAR);
+
         // Silver Grate
         translucentBlock(ModBlocks.SILVER_GRATE);
         translucentBlock(ModBlocks.EXPOSED_SILVER_GRATE);
@@ -218,16 +229,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         horizontalBlock(block.get(), cubeAll);
     }
 
-    private void pillarBlock(RegistrySupplier<Block> block) {
+    private void pillar(RegistrySupplier<RotatedPillarBlock> block) {
         ResourceLocation side = BlockUtils.getBlockResourceLocation(block.get());
         ResourceLocation end = BlockUtils.getBlockResourceLocation(block.get(), "top");
-        simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
+        axisBlock(block.get(), side, end);
     }
 
-    private void pillarBlockWithTexture(RegistrySupplier<Block> block, RegistrySupplier<Block> textureBlock) {
+    private void pillarWithTexture(RegistrySupplier<RotatedPillarBlock> block, RegistrySupplier<RotatedPillarBlock> textureBlock) {
         ResourceLocation side = BlockUtils.getBlockResourceLocation(textureBlock.get());
         ResourceLocation end = BlockUtils.getBlockResourceLocation(textureBlock.get(), "top");
-        simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
+        axisBlock(block.get(), side, end);
     }
 
     private void blockWithTexture(RegistrySupplier<Block> block, RegistrySupplier<Block> textureBlock) {

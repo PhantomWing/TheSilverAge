@@ -87,6 +87,11 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_CHISELED_SILVER::get, ModBlocks.WEATHERED_CHISELED_SILVER::get);
         ox(p, ModBlocks.WEATHERED_CHISELED_SILVER::get, ModBlocks.OXIDIZED_CHISELED_SILVER::get);
 
+        // Silver Pillar
+        ox(p, ModBlocks.SILVER_PILLAR::get, ModBlocks.EXPOSED_SILVER_PILLAR::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PILLAR::get, ModBlocks.WEATHERED_SILVER_PILLAR::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PILLAR::get, ModBlocks.OXIDIZED_SILVER_PILLAR::get);
+
         // Silver Grate
         ox(p, ModBlocks.SILVER_GRATE::get, ModBlocks.EXPOSED_SILVER_GRATE::get);
         ox(p, ModBlocks.EXPOSED_SILVER_GRATE::get, ModBlocks.WEATHERED_SILVER_GRATE::get);
@@ -164,6 +169,12 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_CHISELED_SILVER::get, ModBlocks.WAXED_EXPOSED_CHISELED_SILVER::get);
         ox(p, ModBlocks.WEATHERED_CHISELED_SILVER::get, ModBlocks.WAXED_WEATHERED_CHISELED_SILVER::get);
         ox(p, ModBlocks.OXIDIZED_CHISELED_SILVER::get, ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER::get);
+
+        // Silver Pillar
+        ox(p, ModBlocks.SILVER_PILLAR::get, ModBlocks.WAXED_SILVER_PILLAR::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PILLAR::get, ModBlocks.WAXED_EXPOSED_SILVER_PILLAR::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PILLAR::get, ModBlocks.WAXED_WEATHERED_SILVER_PILLAR::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_PILLAR::get, ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR::get);
 
         // Silver Grate
         ox(p, ModBlocks.SILVER_GRATE::get, ModBlocks.WAXED_SILVER_GRATE::get);

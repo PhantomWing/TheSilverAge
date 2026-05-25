@@ -136,6 +136,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get())
 
+                // Silver Pillar
+                .add(ModBlocks.SILVER_PILLAR.get())
+                .add(ModBlocks.EXPOSED_SILVER_PILLAR.get())
+                .add(ModBlocks.WEATHERED_SILVER_PILLAR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR.get())
+
                 // Silver Grate
                 .add(ModBlocks.SILVER_GRATE.get())
                 .add(ModBlocks.EXPOSED_SILVER_GRATE.get())
@@ -226,6 +236,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        // Silver Pillar family — all 8.
+        tag(ModTags.Blocks.SILVER_PILLARS)
+                .add(ModBlocks.SILVER_PILLAR.get())
+                .add(ModBlocks.EXPOSED_SILVER_PILLAR.get())
+                .add(ModBlocks.WEATHERED_SILVER_PILLAR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR.get());
 
         // Silver Grate family — all 8.
         tag(ModTags.Blocks.SILVER_GRATES)
@@ -359,7 +380,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.WEATHERED_SILVER_BLOCKS)
                 .addTag(ModTags.Blocks.CUT_SILVER_BLOCKS)
                 .addTag(ModTags.Blocks.CHISELED_SILVER_BLOCKS)
-                .addTag(ModTags.Blocks.SILVER_BRICK_BLOCKS);
+                .addTag(ModTags.Blocks.SILVER_BRICK_BLOCKS)
+                .addTag(ModTags.Blocks.SILVER_PILLARS);
 
         tag(SABLE_SUPER_LIGHT)
                 .addTag(ModTags.Blocks.SILVER_GRATES);

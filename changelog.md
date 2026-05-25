@@ -2,7 +2,7 @@
 First version released for Fabric.
 
 ### Additions
-- Added Silver Bricks, Silver Brick Stairs and Silver Brick Slabs
+- Added new Silver Pillar, Silver Bricks, Silver Brick Stairs and Silver Brick Slab blocks
 - Added integration with Sable (Create Aeronautics)
 - Added Chinese, French, Italian, Japanese, Korean, Romanian, Russian, Spanish and Ukrainian language support (auto-translated, might need adjustments)
 
