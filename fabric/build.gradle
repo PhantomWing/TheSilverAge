@@ -16,6 +16,19 @@ loom {
     mixin {
         defaultRefmapName = 'thesilverage.refmap.json'
     }
+
+    // Give the dev server its own working directory so it has a SEPARATE
+    // config/thesilverage.json from the client (which uses run/). Without this
+    // both share run/config/thesilverage.json, making it impossible to set the
+    // client and server to different override_vanilla_recipes values — the exact
+    // mismatch the join-sync packet exists to resolve. With this split:
+    //   client config → fabric/run/config/thesilverage.json
+    //   server config → fabric/run/server/config/thesilverage.json
+    runs {
+        server {
+            runDir "run/server"
+        }
+    }
 }
 
 configurations {
@@ -98,6 +111,28 @@ processResources {
 
     filesMatching('fabric.mod.json') {
         expand 'version': project.version
+    }
+
+    // Copy the built-in resource pack from common into the Fabric mod's
+    // resource output. Background: `ResourceManagerHelper.registerBuiltinResourcePack`
+    // resolves the pack root via `ModContainer.findPath(...)`, which queries
+    // the mod container's `getRootPaths()` — NOT the runtime classpath. In
+    // Architectury-Fabric dev the only roots are `fabric/build/{classes,resources}/main`;
+    // common's source set is on the classpath (which is why normal asset loading
+    // sees it) but NOT a root path. Without this copy, `findPath` returns empty
+    // for `resourcepacks/silver_recipe_overrides`, `registerBuiltinResourcePack`
+    // silently returns false, and the pack never appears in Options → Resource Packs.
+    //
+    // Production unaffected: shadowJar already physically merges common into
+    // the Fabric jar root, so the pack ends up at the correct path in the shipped jar.
+    // This block is a dev-runtime catch-up only.
+    //
+    // Loom's `mods { register("thesilverage") { sourceSet project(":common").sourceSets.main } }`
+    // is the architecturally cleaner answer but does not take effect under
+    // architectury-loom 1.7.435 + architectury-plugin 3.4.164 for this project
+    // (verified via a diagnostic log: container roots stayed Fabric-only).
+    from(project(':common').file('src/main/resources/resourcepacks')) {
+        into 'resourcepacks'
     }
 }
 

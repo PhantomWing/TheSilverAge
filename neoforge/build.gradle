@@ -27,6 +27,18 @@ loom {
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
         }
+
+        // Give the dev server its own working directory so its COMMON config
+        // (config/thesilverage-common.toml) is SEPARATE from the client's. Without
+        // this, runClient and runServer share run/config/, making it impossible to
+        // set different override_vanilla_recipes values — the mismatch the
+        // join-sync packet resolves. Mirrors the Fabric :fabric runDir split.
+        // `server` is a Loom-default run config, so we only override its runDir.
+        //   client config → neoforge/run/config/thesilverage-common.toml
+        //   server config → neoforge/run/server/config/thesilverage-common.toml
+        server {
+            runDir "run/server"
+        }
     }
 }
 
@@ -94,6 +106,18 @@ processResources {
 
     filesMatching('META-INF/neoforge.mods.toml') {
         expand 'version': project.version
+    }
+
+    // Copy the built-in resource pack from common into the NeoForge mod's
+    // resource output so RecipeOverridePackHandler's
+    // ModFile.findResource("resourcepacks/silver_recipe_overrides") resolves in
+    // dev. As on Fabric, common's resources are on the dev classpath but are NOT
+    // part of this mod file's resource roots, so without this copy
+    // Pack.readMetaAndCreate finds no pack.mcmeta, returns null, and the handler
+    // would feed a null pack into the repository (startup NPE). Production is
+    // unaffected: shadowCommon already merges common into the NeoForge jar root.
+    from(project(':common').file('src/main/resources/resourcepacks')) {
+        into 'resourcepacks'
     }
 }
 

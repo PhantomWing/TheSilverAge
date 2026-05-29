@@ -1,8 +1,11 @@
 package com.phantomwing.thesilverage.fabric.client;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 /**
  * Fabric client entrypoint for The Silver Age.
@@ -27,6 +30,24 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // opaque black on Fabric.
         ModRenderLayers.register();
 
-        TheSilverAge.LOGGER.info("Fabric client init: Moon Dial item-property override + render layers registered.");
+        // Built-in resource pack carrying the silver brewing-stand / comparator
+        // / repeater texture + model overrides. Auto-toggled by the
+        // override_vanilla_recipes config value via an AutoConfig save listener
+        // — mirrors the NeoForge AddPackFindersEvent re-evaluation pattern so
+        // disabling the recipe-override config also drops the visual overrides.
+        RecipeOverridePack.register();
+
+        // Match the recipe-override texture pack to the server on join, and
+        // revert to the local config value on disconnect. The server sends its
+        // override_vanilla_recipes value via ModNetworking; the receiver caches
+        // it in ServerOverrideState and re-applies the pack. (Single-player
+        // flows through the same path via the integrated server.)
+        ModNetworking.registerClientReceiver(RecipeOverridePack::refresh);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            ServerOverrideState.clear();
+            client.execute(RecipeOverridePack::refresh);
+        });
+
+        TheSilverAge.LOGGER.info("Fabric client init: Moon Dial item-property override + render layers + recipe-override pack + server-sync registered.");
     }
 }

@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 34,
+    "description": "Silver-themed brewing stand, comparator and repeater textures + models. Auto-toggled by The Silver Age's 'override_vanilla_recipes' config setting."
+  }
+}

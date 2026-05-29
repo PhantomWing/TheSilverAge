@@ -6,6 +6,7 @@ import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.WeatheringPlatform;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
@@ -46,6 +47,13 @@ public final class TheSilverAgeCommon {
 
         // Loader-agnostic gameplay events.
         MonsterArmorHandler.register();
+
+        // Server→client sync of override_vanilla_recipes on join, so each
+        // client's recipe-override texture pack matches the server it joins
+        // (the recipes themselves are already server-driven). Registers the
+        // server-side payload type + join hook on both sides; the client-side
+        // receiver is wired separately from each loader's client entrypoint.
+        ModNetworking.register();
 
         // Silver oxidation / waxing relationships (single common spec). NeoForge
         // keeps these in its committed data maps (impl is a no-op; its datagen
