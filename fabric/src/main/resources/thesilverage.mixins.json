@@ -7,7 +7,9 @@
     "LootTableMixin",
     "PersistentEntitySectionManagerMixin"
   ],
-  "client": [],
+  "client": [
+    "client.PackSelectionModelMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

@@ -13,6 +13,12 @@ description = '''
 A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.
 '''
 
+# Client-only mixin that hides the mod-managed recipe-override resource pack
+# from Options → Resource Packs (the pack stays in the repository and is toggled
+# by config / server-sync; it just isn't a user-facing entry).
+[[mixins]]
+config = "thesilverage.neoforge.mixins.json"
+
 [[dependencies.thesilverage]]
 modId = "neoforge"
 type = "required"
