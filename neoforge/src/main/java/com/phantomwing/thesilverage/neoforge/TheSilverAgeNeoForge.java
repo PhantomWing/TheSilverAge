@@ -9,7 +9,6 @@ import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
-import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -18,6 +17,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -68,9 +68,11 @@ public final class TheSilverAgeNeoForge {
             ModNetworking.registerClientReceiver(RecipeOverridePackHandler::syncFromState);
             NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut e) -> {
                 ServerOverrideState.clear();
-                Minecraft mc = Minecraft.getInstance();
-                if (mc != null) mc.execute(RecipeOverridePackHandler::syncFromState);
+                RecipeOverridePackHandler.syncFromState();
             });
+            // The sync above is deferred; this tick applies it once it's safe to
+            // reload (never during the world-join loading screen — that hangs).
+            NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> RecipeOverridePackHandler.clientTick());
         }
 
         modEventBus.addListener(this::commonSetup);
