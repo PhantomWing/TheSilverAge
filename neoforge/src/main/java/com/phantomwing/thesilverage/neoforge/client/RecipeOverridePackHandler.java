@@ -138,7 +138,6 @@ public final class RecipeOverridePackHandler {
         boolean isSelected = repo.getSelectedIds().contains(packId);
         if (enabled == isSelected) return; // already in the desired state — no reload
 
-        TheSilverAge.LOGGER.info("[recipe-sync] {} recipe-override pack '{}' + reloading.", enabled ? "selecting" : "deselecting", packId);
         ArrayList<String> next = new ArrayList<>(repo.getSelectedIds());
         if (enabled) {
             if (!next.contains(packId)) next.add(packId);

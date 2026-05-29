@@ -2,15 +2,18 @@
 First version released for Fabric.
 
 ### Additions
-- Added new Silver Pillar, Silver Bricks, Silver Brick Stairs and Silver Brick Slab blocks
-- Added integration with Sable (Create Aeronautics)
+- Added new Silver Pillar, Silver Bricks, Silver Brick Stairs and Silver Brick Slab decorative blocks (including oxidized and waxed variants)
+- Added tag integration with Sable (Create Aeronautics)
 - Added Chinese, French, Italian, Japanese, Korean, Romanian, Russian, Spanish and Ukrainian language support (auto-translated, might need adjustments)
 
 ### Changes
-- Now requires Architectury as a dependency to support both Forge and Fabric platforms.
-- Silver Ore and Deepslate Silver Ore now drop between 1-4 Raw Silver (instead of just 1)
+- Important! Now requires `Architectury API` as a dependency to support both NeoForge and Fabric platforms.
+- Silver Ore and Deepslate Silver Ore now drop between 1-3 Raw Silver (instead of just 1). This makes building with silver a lot easier.
 - Added tooltip to Moon Dial showing the current moon phase.
 - Improved some textures
+
+### Fixes
+- Setting `override_vanilla_recipes` to `false` now also keeps the original vanilla textures, instead of my overrides. 
 
 
 # 1.2.0

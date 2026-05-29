@@ -201,7 +201,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     }
 
     /**
-     * Like vanilla {@code createOreDrop} but with a 1-4 count range instead of a
+     * Like vanilla {@code createOreDrop} but with a 1-3 count range instead of a
      * flat 1, so silver is plentiful enough to be a viable building/crafting
      * material (player feedback). Modelled 1:1 on Mojang's own
      * {@code createCopperOreDrops}: silk-touch still drops the ore block, the
@@ -215,7 +215,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                 this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return this.createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
                 LootItem.lootTableItem(item)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
                         .apply(ApplyBonusCount.addOreBonusCount(
                                 enchantments.getOrThrow(Enchantments.FORTUNE)))));
     }

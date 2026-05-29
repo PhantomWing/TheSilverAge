@@ -48,13 +48,8 @@ public final class ModNetworking {
         // Skip clients that can't decode the packet (no mod / older version):
         // sending anyway would be silently dropped, but guarding is explicit and
         // avoids log noise on mixed setups.
-        if (!NetworkManager.canPlayerReceive(player, RecipeOverrideSyncPayload.TYPE)) {
-            TheSilverAge.LOGGER.info("[recipe-sync] {} can't receive the override packet (no mod / older version); skipping.", player.getGameProfile().getName());
-            return;
-        }
-        boolean value = CommonConfig.overrideVanillaRecipes();
-        TheSilverAge.LOGGER.info("[recipe-sync] server sending override_vanilla_recipes={} to {}", value, player.getGameProfile().getName());
-        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(value));
+        if (!NetworkManager.canPlayerReceive(player, RecipeOverrideSyncPayload.TYPE)) return;
+        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(CommonConfig.overrideVanillaRecipes()));
     }
 
     /**
@@ -69,7 +64,7 @@ public final class ModNetworking {
                 RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.queue(() -> {
                     ServerOverrideState.setFromServer(payload.enabled());
-                    TheSilverAge.LOGGER.info("[recipe-sync] client received override_vanilla_recipes={}; syncing texture pack.", payload.enabled());
+                    TheSilverAge.LOGGER.debug("Server override_vanilla_recipes={}; syncing recipe-override texture pack.", payload.enabled());
                     refresh.run();
                 }));
     }
