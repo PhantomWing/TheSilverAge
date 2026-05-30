@@ -7,6 +7,7 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
+import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -36,6 +37,10 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_AXE = registerAxe("silver_axe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
+    // Farmer's Delight compat: a real FD KnifeItem when FD is present, a plain
+    // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
+    // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
+    public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
 
     // Silver armor
     public static final RegistrySupplier<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 10); // Iron is 15, Gold is 7, Leather is 5, Diamond is 33, Netherite is 37
@@ -198,6 +203,24 @@ public class ModItems {
     private static RegistrySupplier<Item> registerSword(String name, Tier tier) {
         Item.Properties baseProps = baseItem().attributes(SwordItem.createAttributes(tier, 3, -2.4f));
         return register(name, (props) -> new SwordItem(tier, props), baseProps);
+    }
+
+    /**
+     * Register the Silver Knife. The concrete class is chosen per loader by
+     * {@link com.phantomwing.thesilverage.platform.KnifePlatform} (FD's KnifeItem
+     * when present, SwordItem fallback otherwise), so the item is always
+     * registered but the FD-referencing class only loads when FD is installed.
+     * Attack attributes ({@code 0.5}, {@code -2.0}) match FD's own knives, set
+     * here via the vanilla {@link DiggerItem#createAttributes}. The item only
+     * joins the creative tab when {@code modId} is loaded.
+     */
+    private static RegistrySupplier<Item> registerKnife(String name, Tier tier, String modId) {
+        Item.Properties props = baseItem().attributes(DiggerItem.createAttributes(tier, 0.5f, -2.0f));
+        RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(props, tier));
+        if (CommonPlatform.isModLoaded(modId)) {
+            CREATIVE_TAB_ITEMS.add(item);
+        }
+        return item;
     }
 
     private static RegistrySupplier<Item> registerShovel(String name, Tier tier) {

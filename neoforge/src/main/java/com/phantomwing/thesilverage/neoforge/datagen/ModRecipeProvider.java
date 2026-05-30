@@ -56,6 +56,18 @@ public class ModRecipeProvider extends RecipeProvider {
         hoe(output, ModItems.SILVER_HOE.get(), ModItems.SILVER_INGOT.get());
         shovel(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_INGOT.get());
 
+        // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
+        // Gated on FD being present — without FD the item is a hidden fallback,
+        // so it has no recipe.
+        var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
+                .pattern("X")
+                .pattern("I")
+                .define('X', ModItems.SILVER_INGOT.get())
+                .define('I', Items.STICK)
+                .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
+                .save(fdGated);
+
         // Armor
         helmet(output, ModItems.SILVER_HELMET.get(), ModItems.SILVER_INGOT.get());
         chestplate(output, ModItems.SILVER_CHESTPLATE.get(), ModItems.SILVER_INGOT.get());

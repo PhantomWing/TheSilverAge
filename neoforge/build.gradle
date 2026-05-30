@@ -13,6 +13,10 @@ architectury {
 def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
+// Whether Farmer's Delight loads at dev runtime + datagen (see gradle.properties).
+// Defined here (before the loom { runs { data } } block) so the datagen
+// `--existing-mod farmersdelight` arg can be gated on it too.
+def loadFD = (project.findProperty('loadFD') ?: rootProject.loadFD).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -26,6 +30,9 @@ loom {
             data()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
+            // FD's existing resources are only available when FD is on the run
+            // classpath (loadFD); requesting them otherwise fails datagen.
+            if (loadFD) programArgs('--existing-mod', 'farmersdelight')
         }
 
         // Give the dev server its own working directory so its COMMON config
@@ -61,7 +68,7 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
 def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
-logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}")
+logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, FD: ${loadFD}")
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -88,6 +95,15 @@ dependencies {
     // AppleSkin / Jade — dev-runtime niceties (runtime-only).
     modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
     modLocalRuntime "curse.maven:jade-324717:7428884"
+
+    // Farmer's Delight (optional compat — the Silver Knife). compileOnly ALWAYS so
+    // the FD KnifeItem subclass compiles; localRuntime only when -PloadFD (default
+    // true) so FD is present for dev testing + datagen (--existing-mod farmersdelight).
+    // The mod never hard-depends on FD (conditional class), so it is never shipped.
+    modCompileOnly "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
+    if (loadFD) {
+        modLocalRuntime "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
+    }
 
     // Create — compileOnly always (so the datagen compat classes compile),
     // localRuntime only when toggled on (so the classes are never loaded when Create is absent).

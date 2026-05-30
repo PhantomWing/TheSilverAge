@@ -88,6 +88,7 @@ dependencies {
     // for a dev-only food/saturation HUD overlay.
     modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
 
+
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the
     // Fabric AutoConfig config (TheSilverAgeFabricConfig), mirroring how
     // RusticDelight-Fabric does its config. Being a first-class modImplementation
@@ -138,6 +139,16 @@ processResources {
 
 shadowJar {
     exclude 'architectury.common.json'
+
+    // Drop the compile-only Farmer's Delight Refabricated KnifeItem stub from the
+    // shipped jar. The stub (src/main/java/vectorwing/farmersdelight/common/item/KnifeItem)
+    // exists ONLY so SilverKnifeItem can `extend` FDR's KnifeItem at compile time —
+    // architectury-loom 1.7.435 can't consume the real FDR jar (newer-Loom +
+    // ClassTweaker). It must NOT ship: at runtime the real FDR class (same FQN)
+    // is what SilverKnifeItem binds to, and a shipped stub would shadow/conflict
+    // with it. (Harmless in TSA dev: FDR is absent there, so the guarded
+    // SilverKnifeItem never loads and the stub is never touched.)
+    exclude 'vectorwing/**'
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = 'dev-shadow'

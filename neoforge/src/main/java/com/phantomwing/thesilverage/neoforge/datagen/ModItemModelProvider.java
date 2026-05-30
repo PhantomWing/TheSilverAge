@@ -41,6 +41,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.SILVER_PICKAXE);
         handheldItem(ModItems.SILVER_AXE);
         handheldItem(ModItems.SILVER_HOE);
+        handheldItem(ModItems.SILVER_KNIFE); // Farmer's Delight compat
 
         // Silver armor
         armorItem(ModItems.SILVER_HELMET);

@@ -82,6 +82,12 @@ allprojects {
             content { includeGroup "me.shedaniel.cloth" }
         }
 
+        // Modrinth Maven — Farmer's Delight (NeoForge optional compat).
+        maven {
+            url = "https://api.modrinth.com/maven"
+            content { includeGroup "maven.modrinth" }
+        }
+
         // Create, Ponder, Flywheel
         maven { url = "https://maven.createmod.net" }
 

@@ -3,6 +3,7 @@ First version released for Fabric.
 
 ### Additions
 - Added new Silver Pillar, Silver Bricks, Silver Brick Stairs and Silver Brick Slab decorative blocks (including oxidized and waxed variants)
+- Added compatibility with Farmer's Delight (Silver Knife, available when Farmer's Delight is installed)
 - Added tag integration with Sable (Create Aeronautics)
 - Added Chinese, French, Italian, Japanese, Korean, Romanian, Russian, Spanish and Ukrainian language support (auto-translated, might need adjustments)
 

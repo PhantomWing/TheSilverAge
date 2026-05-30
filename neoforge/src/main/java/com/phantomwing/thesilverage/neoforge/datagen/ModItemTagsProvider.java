@@ -5,9 +5,13 @@ import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -18,6 +22,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
+    /** Farmer's Delight's knife tag — the Cutting Board's accepted tool. Adding to it is
+     *  harmless when FD is absent (the tag is simply never consulted). */
+    private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("farmersdelight", "tools/knives"));
+
+
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID, existingFileHelper);
     }
@@ -85,6 +95,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
+
+        // Farmer's Delight compat — the Silver Knife. Added to FD's knife tag (the
+        // Cutting Board's accepted tool) and the reserved c: convention tag. Both
+        // are unconditional: ignored when FD isn't installed.
+        tag(FARMERS_DELIGHT_KNIVES).add(ModItems.SILVER_KNIFE.get());
+        tag(CommonTags.Items.TOOLS_KNIFE).add(ModItems.SILVER_KNIFE.get());
 
         // Armor
         tag(ItemTags.HEAD_ARMOR).add(ModItems.SILVER_HELMET.get());
