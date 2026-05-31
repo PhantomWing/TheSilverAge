@@ -11,9 +11,11 @@ import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
 
 import java.util.LinkedHashSet;
@@ -43,11 +45,11 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
 
     // Silver armor
-    public static final RegistrySupplier<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 10); // Iron is 15, Gold is 7, Leather is 5, Diamond is 33, Netherite is 37
-    public static final RegistrySupplier<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 10);
-    public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 10);
-    public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 10);
-    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
+    public static final RegistrySupplier<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.HELMET); // durability factor 10 (Iron is 15, Gold is 7) — set on the ArmorMaterial in ModArmorMaterials
+    public static final RegistrySupplier<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.CHESTPLATE);
+    public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.LEGGINGS);
+    public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.BOOTS);
+    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, props), baseItem().stacksTo(1));
 
     // Utility items
     public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());
@@ -194,15 +196,18 @@ public class ModItems {
     }
 
     // Registry functions
-    private static RegistrySupplier<Item> registerArmor(String name, Holder<ArmorMaterial> material, ArmorItem.Type armorItemType, int durabilityFactor) {
-        Item.Properties baseProps = baseItem().durability(armorItemType.getDurability(durabilityFactor));
-        return register(name, (props) -> new ArmorItem(material, armorItemType, props), baseProps);
+    private static RegistrySupplier<Item> registerArmor(String name, ArmorMaterial material, ArmorType armorType) {
+        // 1.21.2: ArmorItem's ctor applies material.humanoidProperties(props, type),
+        // which sets durability (material.durability() × ArmorType#getDurability),
+        // defense, toughness, knockback resistance and the equip sound — so neither
+        // the durability nor the attributes need to be set on the Properties here.
+        return register(name, (props) -> new ArmorItem(material, armorType, props), baseItem());
     }
 
 
-    private static RegistrySupplier<Item> registerSword(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(SwordItem.createAttributes(tier, 3, -2.4f));
-        return register(name, (props) -> new SwordItem(tier, props), baseProps);
+    private static RegistrySupplier<Item> registerSword(String name, ToolMaterial material) {
+        // 1.21.2: attack damage/speed are ctor args (applied via material.applySwordProperties).
+        return register(name, (props) -> new SwordItem(material, 3, -2.4f, props), baseItem());
     }
 
     /**
@@ -214,33 +219,31 @@ public class ModItems {
      * here via the vanilla {@link DiggerItem#createAttributes}. The item only
      * joins the creative tab when {@code modId} is loaded.
      */
-    private static RegistrySupplier<Item> registerKnife(String name, Tier tier, String modId) {
-        Item.Properties props = baseItem().attributes(DiggerItem.createAttributes(tier, 0.5f, -2.0f));
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(props, tier));
+    private static RegistrySupplier<Item> registerKnife(String name, ToolMaterial material, String modId) {
+        // Knife attack stats are applied per loader inside KnifePlatform/its
+        // SwordItem fallback (1.21.2 moved them out of Item.Properties#attributes).
+        Item.Properties props = baseItem().setId(itemKey(name));
+        RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(props, material));
         if (CommonPlatform.isModLoaded(modId)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
         return item;
     }
 
-    private static RegistrySupplier<Item> registerShovel(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(ShovelItem.createAttributes(tier, 1.5f, -3.0f));
-        return register(name, (props) -> new ShovelItem(tier, props), baseProps);
+    private static RegistrySupplier<Item> registerShovel(String name, ToolMaterial material) {
+        return register(name, (props) -> new ShovelItem(material, 1.5f, -3.0f, props), baseItem());
     }
 
-    private static RegistrySupplier<Item> registerPickaxe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(PickaxeItem.createAttributes(tier, 1.0f, -2.8f));
-        return register(name, (props) -> new PickaxeItem(tier, props), baseProps);
+    private static RegistrySupplier<Item> registerPickaxe(String name, ToolMaterial material) {
+        return register(name, (props) -> new PickaxeItem(material, 1.0f, -2.8f, props), baseItem());
     }
 
-    private static RegistrySupplier<Item> registerAxe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 4.5f, -3.0f));
-        return register(name, (props) -> new AxeItem(tier, props), baseProps);
+    private static RegistrySupplier<Item> registerAxe(String name, ToolMaterial material) {
+        return register(name, (props) -> new AxeItem(material, 4.5f, -3.0f, props), baseItem());
     }
 
-    private static RegistrySupplier<Item> registerHoe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(HoeItem.createAttributes(tier, -2.5f, -0.5f));
-        return register(name, (props) -> new HoeItem(tier, props), baseProps);
+    private static RegistrySupplier<Item> registerHoe(String name, ToolMaterial material) {
+        return register(name, (props) -> new HoeItem(material, -2.5f, -0.5f, props), baseItem());
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlock(String name, RegistrySupplier<T> block) {
@@ -248,7 +251,10 @@ public class ModItems {
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlock(String name, RegistrySupplier<T> block, Item.Properties properties) {
-        return register(name, (props) -> new BlockItem(block.get(), props), properties);
+        // 1.21.2: BlockItem no longer overrides getDescriptionId() to use the
+        // block's "block.*" key — the translation prefix now comes from the
+        // Item.Properties. Without this, block items get an "item.*" key.
+        return register(name, (props) -> new BlockItem(block.get(), props), properties.useBlockDescriptionPrefix());
     }
 
     private static RegistrySupplier<Item> register(String name) {
@@ -257,7 +263,7 @@ public class ModItems {
 
     /** Register an item that only appears in the creative tab when the given mod is loaded. */
     private static RegistrySupplier<Item> registerWithModCompat(String name, String modId) {
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> new Item(baseItem()));
+        RegistrySupplier<Item> item = ITEMS.register(name, () -> new Item(baseItem().setId(itemKey(name))));
         if (CommonPlatform.isModLoaded(modId)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
@@ -270,10 +276,19 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> register(String name, Function<Item.Properties, Item> function, Item.Properties props) {
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> function.apply(props));
+        RegistrySupplier<Item> item = ITEMS.register(name, () -> function.apply(props.setId(itemKey(name))));
         CREATIVE_TAB_ITEMS.add(item);
 
         return item;
+    }
+
+    /**
+     * 1.21.2 requires the registry id to be set on the {@link Item.Properties}
+     * before the item is constructed (Architectury's DeferredRegister doesn't do
+     * this for us). All register helpers route their Properties through this key.
+     */
+    private static ResourceKey<Item> itemKey(String name) {
+        return ResourceKey.create(Registries.ITEM, TheSilverAge.resourceLocation(name));
     }
 
     public static void register() {

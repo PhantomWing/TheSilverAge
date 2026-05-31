@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": {
-      "item": "minecraft:blaze_rod"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "S": {
-      "item": "thesilverage:waxed_exposed_silver"
-    }
+    "B": "minecraft:blaze_rod",
+    "R": "minecraft:redstone",
+    "S": "thesilverage:waxed_exposed_silver"
   },
   "pattern": [
     " S ",

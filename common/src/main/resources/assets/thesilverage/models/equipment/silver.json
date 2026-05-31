@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "horse_body": [
+      {
+        "texture": "thesilverage:silver"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "thesilverage:silver"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "thesilverage:silver"
+      }
+    ]
+  }
+}

@@ -7,9 +7,8 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Fabric parity twin of the NeoForge
@@ -51,7 +50,7 @@ public record ConfigBooleanResourceCondition(String settingId) implements Resour
     }
 
     @Override
-    public boolean test(@Nullable HolderLookup.Provider registryLookup) {
+    public boolean test(RegistryOps.RegistryInfoLookup registryLookup) {
         // Mirrors NeoForge Configuration.getBooleanConfigurationValue(settingId):
         // the only settingId emitted into the shared generated data is
         // override_vanilla_recipes (the conditional/fallback recipe pairs).

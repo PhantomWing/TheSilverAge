@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "A": {
-      "item": "minecraft:amethyst_shard"
-    },
-    "G": {
-      "item": "minecraft:glass"
-    },
-    "S": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:glass",
+    "S": "thesilverage:silver_ingot"
   },
   "pattern": [
     "GGG",

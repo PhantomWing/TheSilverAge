@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "S": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "R": "minecraft:redstone",
+    "S": "thesilverage:silver_ingot"
   },
   "pattern": [
     " S ",

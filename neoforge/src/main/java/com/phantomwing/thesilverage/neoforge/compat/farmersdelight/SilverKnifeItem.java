@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage.neoforge.compat.farmersdelight;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
 /**
@@ -14,8 +14,8 @@ import vectorwing.farmersdelight.common.item.KnifeItem;
  * {@code isModLoaded("farmersdelight")} and otherwise builds a plain SwordItem.</p>
  */
 public class SilverKnifeItem extends KnifeItem {
-    public SilverKnifeItem(Tier tier, Item.Properties properties) {
-        super(tier, properties);
+    public SilverKnifeItem(ToolMaterial material, Item.Properties properties) {
+        super(material, properties);
     }
 
     /**
@@ -29,7 +29,7 @@ public class SilverKnifeItem extends KnifeItem {
      * the call actually executes (i.e. FD is present). Returns {@link Item} so the
      * caller's descriptor never names this class either.
      */
-    public static Item create(Tier tier, Item.Properties properties) {
-        return new SilverKnifeItem(tier, properties);
+    public static Item create(ToolMaterial material, Item.Properties properties) {
+        return new SilverKnifeItem(material, properties);
     }
 }

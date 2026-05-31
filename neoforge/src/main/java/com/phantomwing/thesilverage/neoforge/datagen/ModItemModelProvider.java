@@ -11,10 +11,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -307,7 +310,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private void generateTrimArmorModel(ItemLike item, ResourceKey<TrimMaterial> trimMaterial, boolean hasOverlay) {
         if (item.asItem() instanceof ArmorItem armorItem) {
-            String armorType = switch (armorItem.getEquipmentSlot()) {
+            // 1.21.2: ArmorItem#getEquipmentSlot() is gone and NeoForge's
+            // getEquipmentSlot(ItemStack) returns null at datagen time, so read the
+            // slot straight from the item's Equippable data component instead.
+            Equippable equippable = armorItem.components().get(DataComponents.EQUIPPABLE);
+            EquipmentSlot slot = equippable != null ? equippable.slot() : null;
+            String armorType = switch (slot) {
                 case HEAD -> "helmet";
                 case CHEST -> "chestplate";
                 case LEGS -> "leggings";

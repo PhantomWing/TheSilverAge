@@ -1,7 +1,6 @@
 package com.phantomwing.thesilverage.fabric;
 
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
-import com.phantomwing.thesilverage.fabric.compat.create.CreateFabricCompat;
 import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondition;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
@@ -63,11 +62,10 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // registration here.
         ResourceConditions.register(ConfigBooleanResourceCondition.TYPE);
 
-        // Future-proof Create hook. No-ops today (no Create build exists for
-        // Fabric 1.21.1 — external blocker). Recipe parity is already handled by
-        // the shared condition-gated generated data; this is the live, guarded
-        // home for any future runtime Create-Fabric integration.
-        CreateFabricCompat.init();
+        // NOTE: Create is not yet available past MC 1.21.1, so the Fabric Create
+        // hook is dropped on this branch. Recipe parity remains handled by the
+        // shared condition-gated generated data; re-add a runtime Create-Fabric
+        // integration here once Create ships for 1.21.3.
 
         // Vanilla LootTable carries no id of its own. Once all loot tables are
         // loaded, stamp each instance with its registry id (read back by the

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "thesilverage:exposed_silver_bricks"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "thesilverage:exposed_silver_bricks",
+    "minecraft:honeycomb"
   ],
   "result": {
     "count": 1,

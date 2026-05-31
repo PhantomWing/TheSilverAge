@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:exposed_silver"
-  },
+  "ingredient": "thesilverage:exposed_silver",
   "result": {
     "count": 4,
     "id": "thesilverage:exposed_silver_brick_stairs"

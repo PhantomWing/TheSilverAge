@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:oxidized_cut_silver"
-  },
+  "ingredient": "thesilverage:oxidized_cut_silver",
   "result": {
     "count": 1,
     "id": "thesilverage:oxidized_cut_silver_stairs"

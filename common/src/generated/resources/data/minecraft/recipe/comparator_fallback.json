@@ -20,15 +20,9 @@
     }
   ],
   "key": {
-    "Q": {
-      "item": "minecraft:quartz"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "Q": "minecraft:quartz",
+    "S": "minecraft:stone",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     " T ",

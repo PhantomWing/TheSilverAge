@@ -14,12 +14,16 @@ accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	
 accessible	method	net/minecraft/client/renderer/item/ItemProperties	register	(Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
 
 # Silver Nugget firework-star parity (common ModFireworks). Vanilla
-# FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) and SHAPE_INGREDIENT
-# (== keySet) as private static final; the loader-agnostic patch reads and
-# reassigns both, so widen them accessible + mutable. NeoForge production
-# mirrors these with `public-f` entries in accesstransformer.cfg (the AW is not
-# converted to an AT in remapJar).
+# FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) as private static final;
+# the loader-agnostic patch reads and reassigns it, so widen it accessible +
+# mutable. NeoForge production mirrors this with a `public-f` entry in
+# accesstransformer.cfg (the AW is not converted to an AT in remapJar).
+# (1.21.2 removed the cached SHAPE_INGREDIENT field — matches() reads the map.)
 accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
 mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
-accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
-mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
+
+# 1.21.2 removed BlockEntityType.Builder; widen the (private) BlockEntityType
+# constructor so the shared ModBlockEntityTypes can build the Moon Phase Detector
+# type via `new BlockEntityType<>(factory, Set.of(block))`. Mirrored by a
+# `public` <init> entry in the NeoForge accesstransformer.cfg.
+accessible	method	net/minecraft/world/level/block/entity/BlockEntityType	<init>	(Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V

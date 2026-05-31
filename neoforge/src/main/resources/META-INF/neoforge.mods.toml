@@ -22,20 +22,20 @@ config = "thesilverage.neoforge.mixins.json"
 [[dependencies.thesilverage]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.1.218,)"
+versionRange = "[21.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.thesilverage]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,1.21.2)"
+versionRange = "[1.21.2,1.21.4)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.thesilverage]]
 modId = "architectury"
 type = "required"
-versionRange = "[13.0.8,)"
+versionRange = "[14.0,)"
 ordering = "AFTER"
 side = "BOTH"

@@ -1,9 +1,6 @@
 package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.neoforge.compat.create.ModDeployingRecipeGen;
-import com.phantomwing.thesilverage.neoforge.compat.create.ModFillingRecipeGen;
-import com.phantomwing.thesilverage.neoforge.compat.create.ModPressingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -19,7 +16,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
+// GatherDataEvent fires on the MOD bus. NeoForge's @EventBusSubscriber now
+// defaults to the GAME bus, so the bus must be set explicitly (1.21.2+ change —
+// the old default registered this on the wrong bus and crashed mod construction).
+@EventBusSubscriber(modid = TheSilverAge.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -28,7 +28,7 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         
-        generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModRecipeProvider.Runner(output, lookupProvider));
 
         generator.addProvider(event.includeServer(), new LootTableProvider(
             output,
@@ -64,23 +64,10 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
 
-        // Create mod compat: generate create:deploying recipes for silver waxing/deoxidising
-        // so JEI displays them in the Deployer category.
-        generator.addProvider(event.includeServer(), new ModDeployingRecipeGen(output, lookupProvider));
-
-        // Create mod compat: generate create:filling (spout) recipes that mirror the
-        // Create: Oxidized addon, advancing silver blocks through their weathering chain
-        // when splashed with water via a Spout.
-        generator.addProvider(event.includeServer(), new ModFillingRecipeGen(output, lookupProvider));
-
-        // Create mod compat: generate create:pressing recipe for silver_ingot -> silver_sheet,
-        // matching the pattern Create uses for its own iron/gold/copper/brass sheets.
-        generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output, lookupProvider));
-
         // MUST be registered LAST. NeoForge's DataGenerator.run() executes
         // providers sequentially in registration order (each future .join()-ed
         // before the next), so by the time this runs every conditional recipe /
-        // advancement / Create-compat JSON above has been written to disk. It
+        // advancement JSON above has been written to disk. It
         // post-processes the shared generated tree, adding a translated
         // `fabric:load_conditions` block beside every NeoForge-only
         // `neoforge:conditions` block so the single shared data gates

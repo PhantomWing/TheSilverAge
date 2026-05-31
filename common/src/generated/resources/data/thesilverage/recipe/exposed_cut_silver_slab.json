@@ -3,9 +3,7 @@
   "category": "building",
   "group": "exposed_cut_silver",
   "key": {
-    "#": {
-      "item": "thesilverage:exposed_cut_silver"
-    }
+    "#": "thesilverage:exposed_cut_silver"
   },
   "pattern": [
     "###"

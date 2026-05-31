@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage.fabric.compat.farmersdelight;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
 /**
@@ -14,8 +14,8 @@ import vectorwing.farmersdelight.common.item.KnifeItem;
  * construction behind {@code isModLoaded("farmersdelight")}.</p>
  */
 public class SilverKnifeItem extends KnifeItem {
-    public SilverKnifeItem(Tier tier, Item.Properties properties) {
-        super(tier, properties);
+    public SilverKnifeItem(ToolMaterial material, Item.Properties properties) {
+        super(material, properties);
     }
 
     /**
@@ -27,7 +27,7 @@ public class SilverKnifeItem extends KnifeItem {
      * absent (standalone — the compile-time stub is stripped from the jar).
      * Reached via {@code invokestatic}, this loads only when FDR is present.
      */
-    public static Item create(Tier tier, Item.Properties properties) {
-        return new SilverKnifeItem(tier, properties);
+    public static Item create(ToolMaterial material, Item.Properties properties) {
+        return new SilverKnifeItem(material, properties);
     }
 }

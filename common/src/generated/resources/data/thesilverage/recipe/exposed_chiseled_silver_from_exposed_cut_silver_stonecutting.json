@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:exposed_cut_silver"
-  },
+  "ingredient": "thesilverage:exposed_cut_silver",
   "result": {
     "count": 1,
     "id": "thesilverage:exposed_chiseled_silver"

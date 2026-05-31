@@ -23,14 +23,44 @@ public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
     private static final float XP_MEDIUM = 1f;
 
-    public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider);
+    // 1.21.2 reworked RecipeProvider: the recipe-building helpers (shaped,
+    // shapeless, has, stairBuilder, ...) are now INSTANCE methods that inject the
+    // provider's item HolderGetter, and buildRecipes() takes no args. We keep a
+    // reference to the RecipeOutput so the conditional vanilla-override recipes
+    // can still wrap it via output.withConditions(...).
+    private final RecipeOutput output;
+
+    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
+        this.output = output;
     }
 
     @Override
-    protected void buildRecipes(@NotNull RecipeOutput output) {
-        buildCraftingRecipes(output);
-        buildRecipeOverrides(output);
+    protected void buildRecipes() {
+        buildCraftingRecipes(this.output);
+        buildRecipeOverrides(this.output);
+    }
+
+    /**
+     * DataProvider runner. 1.21.2 split RecipeProvider into the builder (above)
+     * and a {@link RecipeProvider.Runner} that the {@link net.minecraft.data.DataGenerator}
+     * actually registers; the runner instantiates the provider once the registries
+     * future resolves.
+     */
+    public static final class Runner extends RecipeProvider.Runner {
+        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+            super(packOutput, registries);
+        }
+
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+            return new ModRecipeProvider(registries, output);
+        }
+
+        @Override
+        public String getName() {
+            return "The Silver Age Recipes";
+        }
     }
 
     private void buildCraftingRecipes(@NotNull RecipeOutput output) {
@@ -38,12 +68,9 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
-        // Create compat: smelt Create's crushed_raw_silver into our silver ingot.
-        // Create ships this bridge for IC2 / IE / Galosphere / Iceandfire / Oreganized / Thermal
-        // but not for The Silver Age — see com.simibubi.create.foundation.data.recipe.CreateMixingRecipeGen.
-        // Wrapping the output via withConditions gates every recipe emitted through `createGated` on Create being present.
-        var createGated = output.withConditions(new ModLoadedCondition(ModIds.CREATE));
-        oreSmeltingRecipes(createGated, com.simibubi.create.AllItems.CRUSHED_SILVER.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
+        // NOTE: Create is not yet available past MC 1.21.1, so the crushed_raw_silver
+        // -> silver_ingot smelting bridge is dropped on this branch. Re-add it (gated
+        // on ModIds.CREATE via withConditions) once Create ships for 1.21.3.
 
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET.get(), ModItems.SILVER_INGOT.get());
@@ -60,7 +87,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // Gated on FD being present — without FD the item is a hidden fallback,
         // so it has no recipe.
         var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT));
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
+        shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
                 .define('X', ModItems.SILVER_INGOT.get())
@@ -101,7 +128,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
 
         // Moon Dial
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.MOON_DIAL.get(), 1)
+        shaped(RecipeCategory.TOOLS, ModItems.MOON_DIAL.get(), 1)
                 .pattern(" S ")
                 .pattern("SRS")
                 .pattern(" S ")
@@ -111,7 +138,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(output);
 
         // Moon Phase Detector
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModItems.MOON_PHASE_DETECTOR.get(), 1)
+        shaped(RecipeCategory.REDSTONE, ModItems.MOON_PHASE_DETECTOR.get(), 1)
                 .pattern("GGG")
                 .pattern("AAA")
                 .pattern("SSS")
@@ -395,7 +422,7 @@ public class ModRecipeProvider extends RecipeProvider {
     /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */
     private void buildRecipeOverrides(@NotNull RecipeOutput output) {
         // Glistering Melon Slice
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
+        shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
                 .pattern("###")
                 .pattern("#M#")
                 .pattern("###")
@@ -410,7 +437,7 @@ public class ModRecipeProvider extends RecipeProvider {
         RecipeOutput fallbackOutput = output.withConditions(new NotCondition(condition));
 
         // Lodestone
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
+        shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
                 .pattern("#S#")
                 .pattern("###")
@@ -418,7 +445,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', ModItems.SILVER_INGOT.get())
                 .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
                 .save(conditionalOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
+        shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
                 .pattern("#S#")
                 .pattern("###")
@@ -428,14 +455,14 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
 
         // Brewing Stand
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
+        shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
                 .define('S', ModItems.SILVER_INGOT.get())
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(conditionalOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
+        shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
@@ -444,7 +471,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");  // Original recipe if override is disabled
 
         // Name Tag
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.NAME_TAG, 1)
+//        shapeless(RecipeCategory.MISC, Items.NAME_TAG, 1)
 //                .requires(Items.PAPER)
 //                .requires(ModItems.SILVER_NUGGET.get())
 //                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
@@ -455,7 +482,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // The S slot accepts any item in the #thesilverage:redstone_silver_components tag.
         // Currently populated with silver_ingot + silver_sheet (sheet is Create-only, but the
         // ingot path always works). Addons may contribute extra silver forms to the tag.
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
+        shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
                 .pattern("SSS")
@@ -464,7 +491,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .unlockedBy(getHasName(Items.REDSTONE_TORCH), has(Items.REDSTONE_TORCH))
                 .save(conditionalOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
+        shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
                 .pattern("SSS")
@@ -476,7 +503,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
         // Redstone Repeater
         // Same tag-based S slot as the Comparator override — see above.
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
+        shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
                 .define('R', Items.REDSTONE)
@@ -484,7 +511,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(conditionalOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
+        shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
                 .define('R', Items.REDSTONE)
@@ -494,61 +521,61 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");  // Original recipe if override is disabled
     }
 
-    private static void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stoneCutting(recipeOutput, item, material, 1);
         stairs(recipeOutput, item, material);
     }
 
-    private static void stairs(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void stairs(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stairBuilder(item, Ingredient.of(material))
                 .group(ItemUtils.getName(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    private static void slabWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void slabWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stoneCutting(recipeOutput, item, material, 2);
         slab(recipeOutput, item, material);
     }
 
-    private static void slab(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void slab(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         slabBuilder(RecipeCategory.BUILDING_BLOCKS, item, Ingredient.of(material))
                 .group(ItemUtils.getName(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    private static void door(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void door(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         doorBuilder(item, Ingredient.of(material))
                 .group(ItemUtils.getName(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    private static void trapdoor(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private void trapdoor(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         trapdoorBuilder(item, Ingredient.of(material))
                 .group(ItemUtils.getName(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    protected static void oneToOne(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
-        ShapelessRecipeBuilder.shapeless(category, result, count)
+    protected void oneToOne(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        shapeless(category, result, count)
                 .requires(material)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, getRecipeName(material, result));
     }
 
-    protected static void horizontalRecipe(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
-        ShapedRecipeBuilder.shaped(category, result, count)
+    protected void horizontalRecipe(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        shaped(category, result, count)
                 .pattern("###")
                 .define('#', material)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, getRecipeName(material, result));
     }
 
-    private static void twoBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
-        ShapedRecipeBuilder.shaped(category, result, count)
+    private void twoBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        shaped(category, result, count)
                 .pattern("##")
                 .pattern("##")
                 .define('#', material)
@@ -556,8 +583,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(material, result));
     }
 
-    private static void oneBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
-        ShapedRecipeBuilder.shaped(category, result, count)
+    private void oneBytwo(RecipeOutput recipeOutput, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        shaped(category, result, count)
                 .pattern("#")
                 .pattern("#")
                 .define('#', material)
@@ -565,8 +592,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(material, result));
     }
 
-    private static void grateWithCutting(RecipeOutput recipeOutput, ItemLike result, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
+    private void grateWithCutting(RecipeOutput recipeOutput, ItemLike result, ItemLike material) {
+        shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
                 .pattern(" # ")
                 .pattern("# #")
                 .pattern(" # ")
@@ -577,8 +604,8 @@ public class ModRecipeProvider extends RecipeProvider {
         stoneCutting(recipeOutput, result, material, 4);
     }
 
-    private static void bulb(RecipeOutput output, ItemLike block, ItemLike result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 1)
+    private void bulb(RecipeOutput output, ItemLike block, ItemLike result) {
+        shaped(RecipeCategory.REDSTONE, result, 1)
                 .pattern(" S ")
                 .pattern("SBS")
                 .pattern(" R ")
@@ -589,9 +616,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(output);
     }
 
-    private static void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
+    private void storageItemRecipes(RecipeOutput recipeOutput, RecipeCategory category, ItemLike item, ItemLike storageItem) {
         // From item to storageItem
-        ShapedRecipeBuilder.shaped(category, storageItem)
+        shaped(category, storageItem)
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
@@ -600,22 +627,22 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(item, storageItem));
 
         // From storageItem to item
-        ShapelessRecipeBuilder.shapeless(category, item, 9)
+        shapeless(category, item, 9)
                 .requires(storageItem)
                 .unlockedBy(getHasName(storageItem), has(storageItem))
                 .save(recipeOutput, getRecipeName(storageItem, item));
     }
 
-    protected static void waxable(RecipeOutput recipeOutput, ItemLike item, ItemLike result) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 1)
+    protected void waxable(RecipeOutput recipeOutput, ItemLike item, ItemLike result) {
+        shapeless(RecipeCategory.BUILDING_BLOCKS, result, 1)
                 .requires(item)
                 .requires(Items.HONEYCOMB)
                 .unlockedBy(getHasName(item), has(item))
                 .save(recipeOutput, getRecipeName(item, result));
     }
 
-    protected static void sword(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
+    protected void sword(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        shaped(RecipeCategory.COMBAT, tool)
             .pattern("#")
             .pattern("#")
             .pattern("S")
@@ -625,8 +652,8 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void pickaxe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
+    protected void pickaxe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        shaped(RecipeCategory.TOOLS, tool)
             .pattern("###")
             .pattern(" S ")
             .pattern(" S ")
@@ -635,8 +662,8 @@ public class ModRecipeProvider extends RecipeProvider {
             .unlockedBy(getHasName(material), has(material))
             .save(recipeOutput);
     }
-    protected static void axe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
+    protected void axe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern("#S")
             .pattern(" S")
@@ -646,8 +673,8 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void hoe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
+    protected void hoe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern(" S")
             .pattern(" S")
@@ -657,8 +684,8 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void shovel(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
+    protected void shovel(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        shaped(RecipeCategory.TOOLS, tool)
             .pattern("#")
             .pattern("S")
             .pattern("S")
@@ -668,8 +695,8 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void helmet(RecipeOutput recipeOutput, ItemLike helmet, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet)
+    protected void helmet(RecipeOutput recipeOutput, ItemLike helmet, ItemLike material) {
+        shaped(RecipeCategory.COMBAT, helmet)
                 .pattern("###")
                 .pattern("# #")
                 .define('#', material)
@@ -677,8 +704,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chestplate)
+    protected void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, ItemLike material) {
+        shaped(RecipeCategory.COMBAT, chestplate)
                 .pattern("# #")
                 .pattern("###")
                 .pattern("###")
@@ -687,8 +714,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void leggings(RecipeOutput recipeOutput, ItemLike leggings, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, leggings)
+    protected void leggings(RecipeOutput recipeOutput, ItemLike leggings, ItemLike material) {
+        shaped(RecipeCategory.COMBAT, leggings)
                 .pattern("###")
                 .pattern("# #")
                 .pattern("# #")
@@ -697,8 +724,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void boots(RecipeOutput recipeOutput, ItemLike boots, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots)
+    protected void boots(RecipeOutput recipeOutput, ItemLike boots, ItemLike material) {
+        shaped(RecipeCategory.COMBAT, boots)
                 .pattern("# #")
                 .pattern("# #")
                 .define('#', material)
@@ -706,52 +733,52 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void oreSmeltingRecipes(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike material, @NotNull ItemLike result, float experience) {
+    protected void oreSmeltingRecipes(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike material, @NotNull ItemLike result, float experience) {
         smelting(recipeOutput, RecipeCategory.MISC, material, result, experience, 200);
         blasting(recipeOutput, RecipeCategory.MISC, material, result, experience, 100); // Smoking is twice as fast
     }
 
-    protected static void foodCookingRecipes(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike material, @NotNull ItemLike result, float experience) {
+    protected void foodCookingRecipes(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike material, @NotNull ItemLike result, float experience) {
         smelting(recipeOutput, RecipeCategory.FOOD, material, result, experience, 200);
         smoking(recipeOutput, RecipeCategory.FOOD, material, result, experience, 100); // Smoking is twice as fast
         campfireCooking(recipeOutput, RecipeCategory.FOOD, material, result, experience, 600); // Campfire cooking takes three times longer
     }
 
-    protected static void smelting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
+    protected void smelting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
                 .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_smelting");
     }
 
-    protected static void blasting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
+    protected void blasting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
                 .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_blasting");
     }
 
-    protected static void smoking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
+    protected void smoking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
                 .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_smoking");
     }
 
-    protected static void stoneCutting(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike result, @NotNull ItemLike material, int count) {
+    protected void stoneCutting(@NotNull RecipeOutput recipeOutput, @NotNull ItemLike result, @NotNull ItemLike material, int count) {
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), RecipeCategory.BUILDING_BLOCKS, result, count)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_stonecutting");
     }
 
-    protected static void campfireCooking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
+    protected void campfireCooking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
                 .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.CAMPFIRE_COOKING_RECIPE, CampfireCookingRecipe::new)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_campfire_cooking");
     }
 
-    protected static String getRecipeName(ItemLike item, ItemLike result) {
+    protected String getRecipeName(ItemLike item, ItemLike result) {
         return TheSilverAge.MOD_ID + ":" + getConversionRecipeName(result, item);
     }
 }

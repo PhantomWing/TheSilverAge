@@ -20,15 +20,9 @@
     }
   ],
   "key": {
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "R": "minecraft:redstone",
+    "S": "minecraft:stone",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     "TRT",

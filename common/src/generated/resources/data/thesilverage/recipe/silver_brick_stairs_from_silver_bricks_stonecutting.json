@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:silver_bricks"
-  },
+  "ingredient": "thesilverage:silver_bricks",
   "result": {
     "count": 1,
     "id": "thesilverage:silver_brick_stairs"

@@ -9,6 +9,7 @@ import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -269,7 +270,10 @@ public class ModBlocks {
     }
 
     private static <T extends Block> RegistrySupplier<T> registerSilverBlock(String name, BlockBehaviour.Properties baseProps, Function<Block.Properties, T> function) {
-        return BLOCKS.register(name, () ->  function.apply(baseProps));
+        // 1.21.2 requires the registry id to be set on the block Properties before
+        // construction (Architectury's DeferredRegister doesn't do this for us).
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, TheSilverAge.resourceLocation(name));
+        return BLOCKS.register(name, () -> function.apply(baseProps.setId(key)));
     }
 
     private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps) {

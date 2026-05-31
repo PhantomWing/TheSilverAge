@@ -2,59 +2,65 @@ package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.tags.CommonTags;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.Map;
 
+/**
+ * Silver armor material.
+ *
+ * <p>1.21.2 removed the {@code Registries.ARMOR_MATERIAL} registry: {@link ArmorMaterial}
+ * is now a plain record passed directly to {@link net.minecraft.world.item.ArmorItem}
+ * (which internally applies {@link ArmorMaterial#humanoidProperties}), so there is no
+ * {@code DeferredRegister}/{@code Holder} indirection anymore. The {@code List<Layer>}
+ * was also replaced by a single {@code modelId} {@link ResourceLocation} that points at
+ * the {@code assets/<ns>/models/equipment/<modelId>.json} equipment model.</p>
+ */
 public class ModArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS =
-            DeferredRegister.create(TheSilverAge.MOD_ID, Registries.ARMOR_MATERIAL);
-
-    public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIAL = register("silver",
-            2,
-            6,
-            7,
-            3,
-            8,
-            0,
-            0,
-            12,
-            Ingredient.of(CommonTags.Items.INGOTS_SILVER)
+    public static final ArmorMaterial SILVER_ARMOR_MATERIAL = create(
+            "silver",
+            10, // Durability factor (Iron is 15, Gold is 7) — multiplied per-slot by ArmorType#getDurability
+            2,  // Boots defense
+            6,  // Leggings defense
+            7,  // Chestplate defense
+            3,  // Helmet defense
+            8,  // Body defense (horse/wolf armor)
+            0f, // Toughness
+            0f, // Knockback resistance
+            12  // Enchantability
     );
 
-    private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantmentValue, Ingredient repairIngredient) {
-        EnumMap<ArmorItem.Type, Integer> typeProtection = Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
-            attribute.put(ArmorItem.Type.BOOTS, bootsProtection);
-            attribute.put(ArmorItem.Type.LEGGINGS, legsProtection);
-            attribute.put(ArmorItem.Type.CHESTPLATE, chestProtection);
-            attribute.put(ArmorItem.Type.HELMET, headProtection);
-            attribute.put(ArmorItem.Type.BODY, bodyProtection); // Body is for Horse/Wolf armor
-        });
-
-        ResourceLocation location = TheSilverAge.resourceLocation(name);
+    private static ArmorMaterial create(String name, int durability,
+                                        int bootsDefense, int legsDefense, int chestDefense,
+                                        int headDefense, int bodyDefense,
+                                        float toughness, float knockbackResistance, int enchantmentValue) {
+        Map<ArmorType, Integer> defense = Map.of(
+                ArmorType.BOOTS, bootsDefense,
+                ArmorType.LEGGINGS, legsDefense,
+                ArmorType.CHESTPLATE, chestDefense,
+                ArmorType.HELMET, headDefense,
+                ArmorType.BODY, bodyDefense
+        );
         Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
-        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));
+        ResourceLocation modelId = TheSilverAge.resourceLocation(name);
 
-        RegistrySupplier<ArmorMaterial> supplier = ARMOR_MATERIALS.register(name, () ->
-                new ArmorMaterial(typeProtection, enchantmentValue, equipSound, () -> repairIngredient, layers, toughness, knockbackResistance));
-        // RegistrySupplier implements Holder<ArmorMaterial>; expose it as a Holder so
-        // ArmorItem / AnimalArmorItem constructors keep their original signatures.
-        return supplier;
+        // ArmorMaterial(int durability, Map<ArmorType,Integer> defense, int enchantmentValue,
+        //   Holder<SoundEvent> equipSound, float toughness, float knockbackResistance,
+        //   TagKey<Item> repairIngredient, ResourceLocation modelId)
+        return new ArmorMaterial(durability, defense, enchantmentValue, equipSound,
+                toughness, knockbackResistance, CommonTags.Items.INGOTS_SILVER, modelId);
     }
 
+    /**
+     * No-op since 1.21.2: armor materials are no longer registry objects, so there is
+     * nothing to register. Retained so {@code TheSilverAgeCommon#init()} keeps its
+     * existing call site unchanged.
+     */
     public static void register() {
-        ARMOR_MATERIALS.register();
     }
-
 }

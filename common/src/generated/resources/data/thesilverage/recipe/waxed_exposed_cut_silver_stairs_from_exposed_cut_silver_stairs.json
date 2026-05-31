@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "thesilverage:exposed_cut_silver_stairs"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "thesilverage:exposed_cut_silver_stairs",
+    "minecraft:honeycomb"
   ],
   "result": {
     "count": 1,

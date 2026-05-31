@@ -3,9 +3,7 @@
   "category": "building",
   "group": "weathered_silver_bricks",
   "key": {
-    "#": {
-      "item": "thesilverage:weathered_silver_bricks"
-    }
+    "#": "thesilverage:weathered_silver_bricks"
   },
   "pattern": [
     "###"

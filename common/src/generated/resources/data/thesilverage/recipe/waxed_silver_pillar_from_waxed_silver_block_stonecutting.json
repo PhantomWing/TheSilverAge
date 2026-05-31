@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:waxed_silver_block"
-  },
+  "ingredient": "thesilverage:waxed_silver_block",
   "result": {
     "count": 1,
     "id": "thesilverage:waxed_silver_pillar"

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "thesilverage:oxidized_silver_trapdoor"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "thesilverage:oxidized_silver_trapdoor",
+    "minecraft:honeycomb"
   ],
   "result": {
     "count": 1,

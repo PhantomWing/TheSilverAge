@@ -13,10 +13,6 @@ architectury {
 def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
-// Whether Farmer's Delight loads at dev runtime + datagen (see gradle.properties).
-// Defined here (before the loom { runs { data } } block) so the datagen
-// `--existing-mod farmersdelight` arg can be gated on it too.
-def loadFD = (project.findProperty('loadFD') ?: rootProject.loadFD).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -30,9 +26,10 @@ loom {
             data()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
-            // FD's existing resources are only available when FD is on the run
-            // classpath (loadFD); requesting them otherwise fails datagen.
-            if (loadFD) programArgs('--existing-mod', 'farmersdelight')
+            // NOTE: no `--existing-mod farmersdelight` — FD is not yet published
+            // past MC 1.21.1, so it is absent from the datagen classpath on this
+            // branch. The FD-gated Silver Knife recipe is still emitted (gated via
+            // ModLoadedCondition, written to disk regardless of FD's presence).
         }
 
         // Give the dev server its own working directory so its COMMON config
@@ -57,18 +54,10 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// Recipe viewer / Create toggles, ported verbatim from the pre-Architectury
-// single-loader build so NeoForge keeps identical dev-runtime behaviour.
-//   ./gradlew :neoforge:runClient -Precipe_viewer=jei|emi|both|none
-//   ./gradlew :neoforge:runClient -Penable_create=false
-def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
-if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
-    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
-}
-def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
-def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
-def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
-logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, FD: ${loadFD}")
+// NOTE (1.21.3 branch): the recipe-viewer (JEI/EMI) and Create toggles were
+// dropped during the 1.21.3 port — none of those mods have a confirmed 1.21.3
+// build yet. Re-add the `-Precipe_viewer=...` / Create toggles (and their deps
+// below) once JEI/EMI/Create ship for 1.21.3. See gradle.properties PORT NOTES.
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -78,43 +67,21 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 
-    // ---- Optional integrations (compile against these; load at runtime only when toggled) ----
-
-    // JEI (runtime-only, toggled by -Precipe_viewer=jei|both).
-    if (loadJei) {
-        modLocalRuntime("mezz.jei:jei-1.21.1-neoforge:${rootProject.jei_version}")
-    }
-
-    // EMI: compileOnly always so compat/emi/ModEmiPlugin compiles; localRuntime
-    // only when toggled in so the plugin class is never loaded when EMI is absent.
-    modCompileOnly("dev.emi:emi-neoforge:${rootProject.emi_version}")
-    if (loadEmi) {
-        modLocalRuntime("dev.emi:emi-neoforge:${rootProject.emi_version}")
-    }
+    // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
+    //      never shipped, never a hard dependency). ----
 
     // AppleSkin / Jade — dev-runtime niceties (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
-    modLocalRuntime "curse.maven:jade-324717:7428884"
+    modLocalRuntime("squeek.appleskin:appleskin-neoforge:${rootProject.appleskin_neoforge_version}")
+    modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
 
-    // Farmer's Delight (optional compat — the Silver Knife). compileOnly ALWAYS so
-    // the FD KnifeItem subclass compiles; localRuntime only when -PloadFD (default
-    // true) so FD is present for dev testing + datagen (--existing-mod farmersdelight).
-    // The mod never hard-depends on FD (conditional class), so it is never shipped.
-    modCompileOnly "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
-    if (loadFD) {
-        modLocalRuntime "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
-    }
-
-    // Create — compileOnly always (so the datagen compat classes compile),
-    // localRuntime only when toggled on (so the classes are never loaded when Create is absent).
-    modCompileOnly("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
-    modCompileOnly("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    if (loadCreate) {
-        modLocalRuntime("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
-        modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")
-        modLocalRuntime("dev.engine-room.flywheel:flywheel-neoforge-${rootProject.minecraft_version}:${rootProject.flywheel_version}")
-        modLocalRuntime("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    }
+    // NOTE (1.21.3 branch): JEI/EMI, Create + Registrate, and Farmer's Delight
+    // are NOT yet published past MC 1.21.1, so their dev-runtime / compileOnly
+    // deps are dropped here. The Silver Knife now compiles against the local
+    // compile-only FD KnifeItem stub (src/main/java/vectorwing/farmersdelight/
+    // common/item/KnifeItem.java), mirroring the Fabric FDR approach — that stub
+    // is excluded from the shipped jar (see shadowJar { exclude 'vectorwing/**' }).
+    // Re-add the real JEI/EMI/Create/FD deps (and their toggles) once they ship
+    // for 1.21.3. See gradle.properties PORT NOTES.
 }
 
 processResources {
@@ -140,6 +107,14 @@ processResources {
 shadowJar {
     exclude 'fabric.mod.json'
     exclude 'architectury.common.json'
+
+    // Drop the compile-only Farmer's Delight KnifeItem stub from the shipped jar.
+    // The stub (src/main/java/vectorwing/farmersdelight/common/item/KnifeItem)
+    // exists ONLY so SilverKnifeItem can `extend` FD's KnifeItem at compile time
+    // (no FD jar is available past MC 1.21.1). It must NOT ship: once FD ships for
+    // 1.21.3 the real class (same FQN) is what SilverKnifeItem binds to, and a
+    // shipped stub would shadow/conflict with it. Mirrors the Fabric FDR stub.
+    exclude 'vectorwing/**'
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = 'dev-shadow'

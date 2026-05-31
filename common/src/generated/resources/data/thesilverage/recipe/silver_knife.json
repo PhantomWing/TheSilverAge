@@ -16,12 +16,8 @@
     }
   ],
   "key": {
-    "I": {
-      "item": "minecraft:stick"
-    },
-    "X": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "I": "minecraft:stick",
+    "X": "thesilverage:silver_ingot"
   },
   "pattern": [
     "X",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "thesilverage:oxidized_silver"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "thesilverage:oxidized_silver",
+    "minecraft:honeycomb"
   ],
   "result": {
     "count": 1,

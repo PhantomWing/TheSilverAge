@@ -3,9 +3,7 @@
   "category": "building",
   "group": "exposed_silver_bricks",
   "key": {
-    "#": {
-      "item": "thesilverage:exposed_silver_bricks"
-    }
+    "#": "thesilverage:exposed_silver_bricks"
   },
   "pattern": [
     "#  ",

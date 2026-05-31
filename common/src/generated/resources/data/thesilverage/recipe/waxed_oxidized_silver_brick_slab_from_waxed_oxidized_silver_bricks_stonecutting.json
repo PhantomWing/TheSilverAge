@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "thesilverage:waxed_oxidized_silver_bricks"
-  },
+  "ingredient": "thesilverage:waxed_oxidized_silver_bricks",
   "result": {
     "count": 2,
     "id": "thesilverage:waxed_oxidized_silver_brick_slab"

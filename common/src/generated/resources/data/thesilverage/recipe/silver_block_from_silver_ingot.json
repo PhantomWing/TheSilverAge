@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "#": "thesilverage:silver_ingot"
   },
   "pattern": [
     "###",

@@ -3,9 +3,7 @@
   "category": "building",
   "group": "waxed_silver_bricks",
   "key": {
-    "#": {
-      "item": "thesilverage:waxed_silver_bricks"
-    }
+    "#": "thesilverage:waxed_silver_bricks"
   },
   "pattern": [
     "###"

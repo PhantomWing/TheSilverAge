@@ -39,18 +39,10 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
-// Recipe-viewer toggle, mirroring the NeoForge subproject so Fabric honours the
-// same `-Precipe_viewer=jei|emi|both|none` / project property. EMI is the
-// cross-loader default (the project already has a NeoForge EMI plugin); JEI
-// Fabric is offered for parity with the NeoForge toggle.
-//   ./gradlew :fabric:runClient -Precipe_viewer=emi|jei|both|none
-def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
-if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
-    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
-}
-def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
-def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
-logger.lifecycle("[TheSilverAge] (fabric) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
+// NOTE (1.21.3 branch): the recipe-viewer (JEI/EMI) toggle was dropped during
+// the 1.21.3 port — neither has a confirmed 1.21.3 build yet. Re-add the
+// `-Precipe_viewer=...` toggle (and the JEI/EMI deps below) once they ship for
+// 1.21.3. See gradle.properties PORT NOTES.
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
@@ -64,29 +56,13 @@ dependencies {
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency; mirrors the NeoForge intent). ----
 
-    // Recipe viewer. EMI (dev.emi:emi-fabric) is the cross-loader choice and
-    // reuses the same `emi_version` property as the NeoForge `emi-neoforge`
-    // dep. NOTE: unlike NeoForge there is NO Fabric-side `modCompileOnly` for
-    // EMI — NeoForge needs it so `compat/emi/ModEmiPlugin` compiles, but no
-    // Fabric EMI plugin source exists (and none is needed: Fabric API's
-    // OxidizableBlocksRegistry writes the vanilla HoneycombItem.WAXABLES /
-    // WeatheringCopper.NEXT_BY_BLOCK BiMaps that EMI's built-in VanillaPlugin
-    // already iterates, so silver weathering/waxing recipes show automatically
-    // on Fabric — see report). So a compileOnly here would have no consumer.
-    if (loadJei) {
-        modLocalRuntime("mezz.jei:jei-1.21.1-fabric:${rootProject.jei_version}")
-    }
-    if (loadEmi) {
-        modLocalRuntime("dev.emi:emi-fabric:${rootProject.emi_version}")
-    }
+    // NOTE (1.21.3 branch): JEI/EMI are NOT yet published past MC 1.21.1, so the
+    // recipe-viewer dev-runtime deps are dropped here. Re-add them (and the
+    // `-Precipe_viewer=...` toggle above) once they ship for 1.21.3. See
+    // gradle.properties PORT NOTES.
 
-    // AppleSkin (Fabric). The `appleskin_version=3.0.7` property cannot be
-    // reused: the Fabric build of AppleSkin for the MC 1.21 line tops out at
-    // mc1.21-3.0.6 (3.0.7 Fabric only ships for mc1.21.9+, not 1.21.1), whereas
-    // the NeoForge build does have mc1.21-3.0.7. mc1.21-3.0.6 is the newest
-    // Fabric AppleSkin compatible with MC 1.21.1; the minor delta is immaterial
-    // for a dev-only food/saturation HUD overlay.
-    modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
+    // AppleSkin (Fabric) — dev-only food/saturation HUD overlay (runtime-only).
+    modLocalRuntime("squeek.appleskin:appleskin-fabric:${rootProject.appleskin_fabric_version}")
 
 
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the

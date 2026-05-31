@@ -14,15 +14,9 @@
     }
   ],
   "key": {
-    "Q": {
-      "item": "minecraft:quartz"
-    },
-    "S": {
-      "tag": "thesilverage:redstone_silver_components"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "Q": "minecraft:quartz",
+    "S": "#thesilverage:redstone_silver_components",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     " T ",

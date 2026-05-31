@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.platform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 
 /**
  * {@code @ExpectPlatform} bridge that builds the Silver Knife item.
@@ -32,7 +32,7 @@ public final class KnifePlatform {
     }
 
     @ExpectPlatform
-    public static Item createSilverKnife(Item.Properties properties, Tier tier) {
+    public static Item createSilverKnife(Item.Properties properties, ToolMaterial material) {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 }

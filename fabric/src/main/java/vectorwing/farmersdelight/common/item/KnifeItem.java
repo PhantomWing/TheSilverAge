@@ -3,7 +3,7 @@ package vectorwing.farmersdelight.common.item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 
 /**
  * COMPILE-TIME STUB of Farmer's Delight Refabricated's {@code KnifeItem} — NOT
@@ -28,7 +28,11 @@ import net.minecraft.world.item.Tier;
  * never instantiated. The constructor body below never runs.</p>
  */
 public class KnifeItem extends DiggerItem {
-    public KnifeItem(Tier tier, Item.Properties properties) {
-        super(tier, BlockTags.MINEABLE_WITH_AXE, properties);
+    public KnifeItem(ToolMaterial material, Item.Properties properties) {
+        // 1.21.2: DiggerItem's ctor now takes attack damage/speed directly
+        // (Tier → ToolMaterial). The exact values are irrelevant here — the stub
+        // is never instantiated (FD absent on this branch) and is stripped from
+        // the jar; the signature just has to satisfy SilverKnifeItem's super call.
+        super(material, BlockTags.MINEABLE_WITH_AXE, 0.5F, -2.0F, properties);
     }
 }

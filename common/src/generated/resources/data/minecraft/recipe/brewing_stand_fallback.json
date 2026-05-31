@@ -20,12 +20,8 @@
     }
   ],
   "key": {
-    "B": {
-      "item": "minecraft:blaze_rod"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    }
+    "B": "minecraft:blaze_rod",
+    "S": "minecraft:stone"
   },
   "pattern": [
     " B ",

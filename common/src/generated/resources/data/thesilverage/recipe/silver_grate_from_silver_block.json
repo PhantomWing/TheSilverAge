@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "thesilverage:silver_block"
-    }
+    "#": "thesilverage:silver_block"
   },
   "pattern": [
     " # ",

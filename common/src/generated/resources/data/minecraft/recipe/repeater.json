@@ -14,15 +14,9 @@
     }
   ],
   "key": {
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "S": {
-      "tag": "thesilverage:redstone_silver_components"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "R": "minecraft:redstone",
+    "S": "#thesilverage:redstone_silver_components",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     "TRT",
