@@ -11,6 +11,7 @@ First version released for Fabric.
 - Important! Now requires `Architectury API` as a dependency to support both NeoForge and Fabric platforms.
 - Silver Ore and Deepslate Silver Ore now drop between 1-3 Raw Silver (instead of just 1). This makes building with silver a lot easier.
 - Added tooltip to Moon Dial showing the current moon phase.
+- Improved NeoForge config screen
 - Improved some textures
 
 ### Fixes

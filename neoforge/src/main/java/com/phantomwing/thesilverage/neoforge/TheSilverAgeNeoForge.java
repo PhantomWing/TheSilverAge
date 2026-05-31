@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.neoforge.client.RecipeOverridePackHandler;
+import com.phantomwing.thesilverage.neoforge.client.StyledConfigSectionScreen;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
@@ -50,9 +51,13 @@ public final class TheSilverAgeNeoForge {
         // Config (kept on NeoForge for now; common reaches values via @ExpectPlatform).
         container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
 
-        // This will use NeoForge's ConfigurationScreen to display this mod's configs (client only).
+        // NeoForge's ConfigurationScreen for this mod's configs (client only), with
+        // a custom section screen so booleans render as a coloured Yes/No instead
+        // of ON/OFF. The 3-arg ConfigurationScreen ctor takes a section-screen
+        // factory, scoping the styling to this mod only.
         if (FMLEnvironment.dist.isClient()) {
-            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+            container.registerExtensionPoint(IConfigScreenFactory.class,
+                    (mc, parent) -> new ConfigurationScreen(mc, parent, StyledConfigSectionScreen::new));
             modEventBus.addListener(this::clientSetup);
 
             // Recipe-override server-sync client receiver. MUST be registered
