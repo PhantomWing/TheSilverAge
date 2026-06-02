@@ -3,8 +3,6 @@ package com.phantomwing.thesilverage.neoforge.utils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import java.util.Objects;
 
@@ -46,9 +44,5 @@ public class BlockUtils {
 
     public static ResourceLocation getBlockResourceLocation(Block block, String suffix) {
         return getPrefixedResourceLocationWithSuffix(block, "block", suffix);
-    }
-
-    public static ModelFile getModel(BlockModelProvider provider, Block block) {
-        return new ModelFile.ExistingModelFile(getBlockResourceLocation(block), provider.existingFileHelper);
     }
 }

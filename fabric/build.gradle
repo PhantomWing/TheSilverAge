@@ -56,13 +56,11 @@ dependencies {
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency; mirrors the NeoForge intent). ----
 
-    // NOTE (1.21.3 branch): JEI/EMI are NOT yet published past MC 1.21.1, so the
-    // recipe-viewer dev-runtime deps are dropped here. Re-add them (and the
-    // `-Precipe_viewer=...` toggle above) once they ship for 1.21.3. See
-    // gradle.properties PORT NOTES.
-
-    // AppleSkin (Fabric) — dev-only food/saturation HUD overlay (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-fabric:${rootProject.appleskin_fabric_version}")
+    // NOTE (1.21.4 branch): no Fabric dev-runtime niceties.
+    //  * AppleSkin: dropped — no 1.21.4 build (it skipped 1.21.3 → 1.21.5).
+    //  * JEI/EMI: no Fabric 1.21.4 recipe-viewer build surfaced, so still deferred.
+    // Re-add a Fabric recipe viewer / AppleSkin here once 1.21.4 builds exist.
+    // See gradle.properties PORT NOTES.
 
 
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the

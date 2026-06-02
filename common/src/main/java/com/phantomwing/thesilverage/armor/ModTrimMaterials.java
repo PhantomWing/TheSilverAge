@@ -54,8 +54,13 @@ public class ModTrimMaterials {
     }
 
     private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
-        TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item, itemModelIndex,
-                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style), Map.of());
+        // 1.21.4: TrimMaterial.create dropped the itemModelIndex float (item models are
+        // data-driven now) and its override map is keyed by ResourceKey<EquipmentAsset>.
+        // itemModelIndex is retained on this method's signature only as documentation of
+        // the legacy ordering; it is no longer passed to create(). Map.of() = no overrides.
+        TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item,
+                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style),
+                Map.of());
         context.register(trimKey, trimMaterial);
     }
 }

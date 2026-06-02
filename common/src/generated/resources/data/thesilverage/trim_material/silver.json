@@ -4,6 +4,5 @@
     "color": "#7C9EB7",
     "translate": "trim_material.thesilverage.silver"
   },
-  "ingredient": "thesilverage:silver_ingot",
-  "item_model_index": 0.0039207
+  "ingredient": "thesilverage:silver_ingot"
 }

@@ -1,39 +1,45 @@
 package com.phantomwing.thesilverage.client;
 
+import com.mojang.serialization.MapCodec;
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.utils.LevelUtils;
+import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Stream;
 
 /**
- * Loader-agnostic client item-property registration.
+ * Loader-agnostic client registration of the Moon Dial's {@code thesilverage:moon_phase}
+ * range-select item-model property.
  *
- * <p>The Moon Dial {@code moon_phase} override is pure vanilla client API
- * ({@link net.minecraft.client.renderer.item.ItemProperties#register}), so the
- * registration logic is shared here instead of being duplicated per loader. Both
- * loaders' {@code ClientPlatform.registerItemProperties()} implementations
- * delegate to {@link #register()}:</p>
+ * <p>1.21.4 removed {@code ItemProperties.register} and the whole item-{@code overrides}
+ * system, replacing them with data-driven <b>item model definitions</b>
+ * ({@code assets/<ns>/items/<id>.json}). A {@code range_dispatch} definition selects the
+ * Moon Dial frame from a numeric property; this class registers that property's type.</p>
  *
- * <ul>
- *   <li><b>NeoForge</b>: {@code platform.neoforge.ClientPlatformImpl} →
- *       {@code neoforge.item.ModItemProperties.register()} → here, invoked from
- *       {@code FMLClientSetupEvent} (unchanged lifecycle/behaviour).</li>
- *   <li><b>Fabric</b>: {@code platform.fabric.ClientPlatformImpl} → here,
- *       invoked from the {@code ClientModInitializer}
- *       ({@code fabric.client.TheSilverAgeFabricClient}).</li>
- * </ul>
+ * <p>Custom range-select properties live in the vanilla (private) late-bound
+ * {@link RangeSelectItemModelProperties#ID_MAPPER}; we widen it via the shared access
+ * widener (+ NeoForge access-transformer mirror) and {@code put} our property in, so the
+ * registration is byte-identical on both loaders — no loader-specific event needed.
+ * Both {@code ClientPlatform.registerItemProperties()} impls delegate to {@link #register()}.</p>
  *
- * <p>This class is {@code @Environment(CLIENT)} — fabric-loader's
- * {@code @Environment} is the one Fabric annotation explicitly allowed in
- * {@code common} (see {@code common/build.gradle}). It is only ever referenced
- * from client-only call sites, so it is never loaded on a dedicated server.</p>
+ * <p>{@code @Environment(CLIENT)} — only referenced from client-only call sites, never
+ * loaded on a dedicated server.</p>
  */
 @Environment(EnvType.CLIENT)
 public final class ModItemProperties {
-    /** {@code thesilverage:moon_phase} — identical id to the original NeoForge registration. */
+    /** {@code thesilverage:moon_phase} — id of the custom range-select property + the items/ range_dispatch. */
     public static final ResourceLocation MOON_PHASE =
             ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
 
@@ -41,16 +47,51 @@ public final class ModItemProperties {
     }
 
     /**
-     * Registers the {@code moon_phase} item-property override on the Moon Dial.
-     *
-     * <p>Predicate is byte-for-byte the original NeoForge one: read the moon
-     * phase signal for the holder's level and normalise to {@code [0, 1]} by
-     * dividing by {@code 100f} for texture selection.</p>
+     * Client-setup registrations shared by both loaders: the {@code thesilverage:moon_phase}
+     * range-select property type, plus the transparent-block render layers. 1.21.4 no longer
+     * carries render type in the model JSON, so doors/trapdoors (cutout) and grates
+     * (translucent) register their layer here via Architectury's cross-loader RenderTypeRegistry.
      */
     public static void register() {
-        ItemProperties.register(ModItems.MOON_DIAL.get(), MOON_PHASE, (stack, world, entity, seed) -> {
-            int moonPhaseSignal = LevelUtils.getMoonPhaseSignal(world);
-            return moonPhaseSignal / 100f; // Normalize between [0, 1] for texture selection
-        });
+        RangeSelectItemModelProperties.ID_MAPPER.put(MOON_PHASE, MoonPhaseProperty.MAP_CODEC);
+
+        RenderTypeRegistry.register(RenderType.cutout(), CUTOUT_BLOCKS);
+        RenderTypeRegistry.register(RenderType.translucent(), TRANSLUCENT_BLOCKS);
+    }
+
+    /** Doors + trapdoors (all weather/waxed states) — cutout render layer. */
+    private static final Block[] CUTOUT_BLOCKS = Stream.of(
+            ModBlocks.SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR,
+            ModBlocks.WAXED_SILVER_DOOR, ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR,
+            ModBlocks.SILVER_TRAPDOOR, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR,
+            ModBlocks.WAXED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR
+    ).map(s -> (Block) s.get()).toArray(Block[]::new);
+
+    /** Grates (all weather/waxed states) — translucent render layer. */
+    private static final Block[] TRANSLUCENT_BLOCKS = Stream.of(
+            ModBlocks.SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE,
+            ModBlocks.WAXED_SILVER_GRATE, ModBlocks.WAXED_EXPOSED_SILVER_GRATE, ModBlocks.WAXED_WEATHERED_SILVER_GRATE, ModBlocks.WAXED_OXIDIZED_SILVER_GRATE
+    ).map(s -> (Block) s.get()).toArray(Block[]::new);
+
+    /**
+     * 16-state moon-phase property: the settled phase at night plus a transition
+     * frame during the day (see {@link LevelUtils#getMoonPhaseSignal}). Stateless,
+     * so its codec is a {@code MapCodec.unit}.
+     */
+    public record MoonPhaseProperty() implements RangeSelectItemModelProperty {
+        public static final MapCodec<MoonPhaseProperty> MAP_CODEC = MapCodec.unit(new MoonPhaseProperty());
+
+        @Override
+        public float get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+            // 0..15 → 0..0.9375 in exact 1/16 steps. Powers-of-two denominators are
+            // exactly representable as floats, so the range_dispatch thresholds match
+            // the returned value precisely (no float/double rounding ambiguity).
+            return LevelUtils.getMoonPhaseSignal(level) / 16f;
+        }
+
+        @Override
+        public MapCodec<? extends RangeSelectItemModelProperty> type() {
+            return MAP_CODEC;
+        }
     }
 }

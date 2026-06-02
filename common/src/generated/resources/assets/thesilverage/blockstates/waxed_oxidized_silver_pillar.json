@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "thesilverage:block/waxed_oxidized_silver_pillar_horizontal",
+      "model": "thesilverage:block/waxed_oxidized_silver_pillar",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "thesilverage:block/waxed_oxidized_silver_pillar"
     },
     "axis=z": {
-      "model": "thesilverage:block/waxed_oxidized_silver_pillar_horizontal",
+      "model": "thesilverage:block/waxed_oxidized_silver_pillar",
       "x": 90
     }
   }

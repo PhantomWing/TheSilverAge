@@ -4,7 +4,7 @@
       "model": "thesilverage:block/waxed_weathered_cut_silver_slab"
     },
     "type=double": {
-      "model": "thesilverage:block/weathered_cut_silver"
+      "model": "thesilverage:block/waxed_weathered_cut_silver"
     },
     "type=top": {
       "model": "thesilverage:block/waxed_weathered_cut_silver_slab_top"

@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.neoforge.client;
 
+import com.phantomwing.thesilverage.client.ModItemProperties;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
@@ -8,6 +9,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -41,6 +43,13 @@ public final class TheSilverAgeNeoForgeClient {
                 (mc, parent) -> new ConfigurationScreen(mc, parent, StyledConfigSectionScreen::new));
 
         modEventBus.addListener(TheSilverAgeNeoForgeClient::clientSetup);
+
+        // Register the Moon Dial's custom thesilverage:moon_phase range-select property.
+        // MUST use this event (fires before item models are parsed) — registering it at
+        // FMLClientSetupEvent is too late and the moon_dial range_dispatch fails to parse
+        // with "Unknown element id: thesilverage:moon_phase".
+        modEventBus.addListener((RegisterRangeSelectItemModelPropertyEvent e) ->
+                e.register(ModItemProperties.MOON_PHASE, ModItemProperties.MoonPhaseProperty.MAP_CODEC));
 
         // Recipe-override server-sync client receiver. MUST be registered during
         // mod construction, NOT in clientSetup: Architectury's NeoForge adaptor

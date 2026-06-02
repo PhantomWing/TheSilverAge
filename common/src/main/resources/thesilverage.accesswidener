@@ -5,13 +5,13 @@ accessWidener	v2	named
 # is private in vanilla; the old NeoForge build relied on this being public.
 accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	register	(Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
 
-# Moon Dial `moon_phase` item-property override (client). ItemProperties.register
-# is private in vanilla Mojmap; NeoForge's patched jar exposes it (the original
-# single-loader NeoForge build called it directly), so widen it here for the
-# shared common client.ModItemProperties. This is the only entry the common
-# client item-property registration needs and keeps the registered id/predicate
-# byte-identical across both loaders.
-accessible	method	net/minecraft/client/renderer/item/ItemProperties	register	(Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
+# Moon Dial `moon_phase` (client). 1.21.4 removed ItemProperties.register and the
+# whole item-`overrides` system, replacing it with data-driven item model
+# definitions. Custom range-select properties are registered into the vanilla
+# (private) RangeSelectItemModelProperties.ID_MAPPER late-bound mapper; widen it
+# so the shared common client.ModItemProperties can `.put(thesilverage:moon_phase,
+# codec)` on both loaders. Mirrored by a `public` field entry in the NeoForge AT.
+accessible	field	net/minecraft/client/renderer/item/properties/numeric/RangeSelectItemModelProperties	ID_MAPPER	Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
 
 # Silver Nugget firework-star parity (common ModFireworks). Vanilla
 # FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) as private static final;

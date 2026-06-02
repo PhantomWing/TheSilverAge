@@ -4,7 +4,7 @@
       "model": "thesilverage:block/waxed_exposed_silver_brick_slab"
     },
     "type=double": {
-      "model": "thesilverage:block/exposed_silver_bricks"
+      "model": "thesilverage:block/waxed_exposed_silver_bricks"
     },
     "type=top": {
       "model": "thesilverage:block/waxed_exposed_silver_brick_slab_top"

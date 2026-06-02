@@ -22,8 +22,13 @@ loom {
         // `runs.data` block. Output + existing-resource paths now point at the
         // relocated common source set (datagen output is shared across loaders).
         //   ./gradlew :neoforge:runData
+        // NeoForge 21.4 split the old single `data` run template into `clientData`
+        // + `serverData` (loom 1.10's data() maps to the now-removed `data` template
+        // → "Could not find Forge run template" error). We use clientData(): its
+        // environment is a superset (full client) so a single run with --all emits
+        // BOTH the client model/asset providers and the server data providers.
         data {
-            data()
+            clientData()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
             // NOTE: no `--existing-mod farmersdelight` — FD is not yet published
@@ -54,10 +59,9 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// NOTE (1.21.3 branch): the recipe-viewer (JEI/EMI) and Create toggles were
-// dropped during the 1.21.3 port — none of those mods have a confirmed 1.21.3
-// build yet. Re-add the `-Precipe_viewer=...` / Create toggles (and their deps
-// below) once JEI/EMI/Create ship for 1.21.3. See gradle.properties PORT NOTES.
+// NOTE (1.21.4 branch): Create is still unavailable, so its toggle stays dropped.
+// JEI is re-added (NeoForge 1.21.4 build exists) as a plain runtime-only dep — no
+// -Precipe_viewer toggle is reintroduced since EMI/JEI-Fabric have no 1.21.4 build.
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -70,18 +74,17 @@ dependencies {
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency). ----
 
-    // AppleSkin / Jade — dev-runtime niceties (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-neoforge:${rootProject.appleskin_neoforge_version}")
+    // Jade — dev-runtime nicety (runtime-only).
     modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    // JEI — recipe viewer, dev-runtime only (re-added on the 1.21.4 branch).
+    modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_neoforge_version}")
 
-    // NOTE (1.21.3 branch): JEI/EMI, Create + Registrate, and Farmer's Delight
-    // are NOT yet published past MC 1.21.1, so their dev-runtime / compileOnly
-    // deps are dropped here. The Silver Knife now compiles against the local
-    // compile-only FD KnifeItem stub (src/main/java/vectorwing/farmersdelight/
-    // common/item/KnifeItem.java), mirroring the Fabric FDR approach — that stub
-    // is excluded from the shipped jar (see shadowJar { exclude 'vectorwing/**' }).
-    // Re-add the real JEI/EMI/Create/FD deps (and their toggles) once they ship
-    // for 1.21.3. See gradle.properties PORT NOTES.
+    // NOTE (1.21.4 branch): AppleSkin is dropped (no 1.21.4 build). Create + Farmer's
+    // Delight are still unpublished for 1.21.4 — the Silver Knife compiles against the
+    // local compile-only FD KnifeItem stub (src/main/java/vectorwing/farmersdelight/
+    // common/item/KnifeItem.java), excluded from the shipped jar via
+    // shadowJar { exclude 'vectorwing/**' }. Re-add those deps once they ship.
+    // See gradle.properties PORT NOTES.
 }
 
 processResources {
