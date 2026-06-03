@@ -20,8 +20,9 @@ import java.util.Map;
  * is now a plain record passed directly to {@link net.minecraft.world.item.ArmorItem}
  * (which internally applies {@link ArmorMaterial#humanoidProperties}), so there is no
  * {@code DeferredRegister}/{@code Holder} indirection anymore. The {@code List<Layer>}
- * was also replaced by a single {@code modelId} {@link ResourceLocation} that points at
- * the {@code assets/<ns>/models/equipment/<modelId>.json} equipment model.</p>
+ * was also replaced by a single asset id that points at the equipment definition. In
+ * 1.21.4 that lookup is {@code assets/<ns>/equipment/<path>.json} (1.21.2's
+ * {@code models/equipment/} segment was dropped).</p>
  */
 public class ModArmorMaterials {
     public static final ArmorMaterial SILVER_ARMOR_MATERIAL = create(
