@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.item;
 import com.google.common.collect.Sets;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
+import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
@@ -11,9 +12,11 @@ import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ProvidesTrimMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
@@ -27,7 +30,12 @@ public class ModItems {
 
     // Silver items
     public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver");
-    public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot");
+    // 1.21.5: the ingredient->trim-material link moved off TrimMaterial (which dropped
+    // its `ingredient` field) onto the ingredient item, via the PROVIDES_TRIM_MATERIAL
+    // data component. Without this, a smithing table can't apply the silver trim with a
+    // silver ingot. The ResourceKey is resolved against the registry lazily at craft time.
+    public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", Item::new,
+            baseItem().component(DataComponents.PROVIDES_TRIM_MATERIAL, new ProvidesTrimMaterial(ModTrimMaterials.SILVER)));
     public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget");
     // Silver sheet is a Create-compat item (obtained via Mechanical Press).
     // Only appears in the creative tab when Create is loaded.
@@ -49,7 +57,10 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.CHESTPLATE);
     public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.LEGGINGS);
     public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.BOOTS);
-    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, props), baseItem().stacksTo(1));
+    // 1.21.5: AnimalArmorItem removed — horse armor is now a plain Item whose
+    // Item.Properties#horseArmor(material) sets the ARMOR/equipment components and
+    // binds the EQUESTRIAN body slot to the material's equipment asset.
+    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new Item(props.horseArmor(ModArmorMaterials.SILVER_ARMOR_MATERIAL)), baseItem().stacksTo(1));
 
     // Utility items
     public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());
@@ -197,17 +208,18 @@ public class ModItems {
 
     // Registry functions
     private static RegistrySupplier<Item> registerArmor(String name, ArmorMaterial material, ArmorType armorType) {
-        // 1.21.2: ArmorItem's ctor applies material.humanoidProperties(props, type),
-        // which sets durability (material.durability() × ArmorType#getDurability),
-        // defense, toughness, knockback resistance and the equip sound — so neither
-        // the durability nor the attributes need to be set on the Properties here.
-        return register(name, (props) -> new ArmorItem(material, armorType, props), baseItem());
+        // 1.21.5: ArmorItem removed — armor is a plain Item whose Item.Properties#humanoidArmor
+        // (material, type) sets durability (material.durability() × ArmorType#getDurability),
+        // defense, toughness, knockback resistance and the equip sound. (Replaces the old
+        // ArmorItem ctor, which applied material.humanoidProperties(props, type).)
+        return register(name, (props) -> new Item(props.humanoidArmor(material, armorType)), baseItem());
     }
 
 
     private static RegistrySupplier<Item> registerSword(String name, ToolMaterial material) {
-        // 1.21.2: attack damage/speed are ctor args (applied via material.applySwordProperties).
-        return register(name, (props) -> new SwordItem(material, 3, -2.4f, props), baseItem());
+        // 1.21.5: SwordItem removed — sword is a plain Item; Item.Properties#sword sets the
+        // WEAPON/TOOL/attribute components (attack damage 3, speed -2.4 preserved).
+        return register(name, (props) -> new Item(props.sword(material, 3, -2.4f)), baseItem());
     }
 
     /**
@@ -235,7 +247,8 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerPickaxe(String name, ToolMaterial material) {
-        return register(name, (props) -> new PickaxeItem(material, 1.0f, -2.8f, props), baseItem());
+        // 1.21.5: PickaxeItem removed — plain Item + Item.Properties#pickaxe (damage 1.0, speed -2.8).
+        return register(name, (props) -> new Item(props.pickaxe(material, 1.0f, -2.8f)), baseItem());
     }
 
     private static RegistrySupplier<Item> registerAxe(String name, ToolMaterial material) {

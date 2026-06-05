@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 
@@ -54,13 +55,17 @@ public class ModTrimMaterials {
     }
 
     private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
-        // 1.21.4: TrimMaterial.create dropped the itemModelIndex float (item models are
-        // data-driven now) and its override map is keyed by ResourceKey<EquipmentAsset>.
-        // itemModelIndex is retained on this method's signature only as documentation of
-        // the legacy ordering; it is no longer passed to create(). Map.of() = no overrides.
-        TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item,
-                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style),
-                Map.of());
+        // 1.21.5: TrimMaterial is now a record(MaterialAssetGroup assets, Component description).
+        // The ingredient Item and the legacy itemModelIndex float are no longer part of
+        // TrimMaterial — the ingredient->material association is driven by the smithing trim
+        // recipe, and trim item models are fully data-driven. MaterialAssetGroup.create(path)
+        // builds the asset group whose name is the trim-texture suffix (here "silver"); the
+        // overload with a Map<ResourceKey<EquipmentAsset>, String> would add per-asset overrides
+        // (none needed). `item` / `itemModelIndex` are retained on this signature as
+        // documentation of the legacy ordering.
+        TrimMaterial trimMaterial = new TrimMaterial(
+                MaterialAssetGroup.create(trimKey.location().getPath()),
+                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style));
         context.register(trimKey, trimMaterial);
     }
 }

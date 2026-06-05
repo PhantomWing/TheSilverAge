@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.client.ModItemProperties;
@@ -11,8 +12,6 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
@@ -21,12 +20,16 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
+import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
@@ -155,10 +158,13 @@ public class ModModelProvider extends ModelProvider {
         flat(img, ModItems.SILVER_SHEET);
         // Trimmable armor item models (show applied trims in the inventory), keyed to
         // the silver equipment asset. Mirrors how vanilla armor items are generated.
-        img.generateTrimmableItem(ModItems.SILVER_HELMET.get(), SILVER_EQUIPMENT_ASSET, ItemModelGenerators.SLOT_HELMET, false);
-        img.generateTrimmableItem(ModItems.SILVER_CHESTPLATE.get(), SILVER_EQUIPMENT_ASSET, ItemModelGenerators.SLOT_CHESTPLATE, false);
-        img.generateTrimmableItem(ModItems.SILVER_LEGGINGS.get(), SILVER_EQUIPMENT_ASSET, ItemModelGenerators.SLOT_LEGGINS, false);
-        img.generateTrimmableItem(ModItems.SILVER_BOOTS.get(), SILVER_EQUIPMENT_ASSET, ItemModelGenerators.SLOT_BOOTS, false);
+        // Custom trimmable generator (see trimmableArmor): vanilla generateTrimmableItem
+        // only emits the 11 hardcoded vanilla materials, so the mod's own silver trim
+        // material would never get an inventory overlay. This adds the silver case.
+        trimmableArmor(img, ModItems.SILVER_HELMET.get(), "helmet");
+        trimmableArmor(img, ModItems.SILVER_CHESTPLATE.get(), "chestplate");
+        trimmableArmor(img, ModItems.SILVER_LEGGINGS.get(), "leggings");
+        trimmableArmor(img, ModItems.SILVER_BOOTS.get(), "boots");
         flat(img, ModItems.SILVER_HORSE_ARMOR);
         moonDial(img);
 
@@ -180,7 +186,8 @@ public class ModModelProvider extends ModelProvider {
     private static void cubeReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
         Block b = block.get();
         ResourceLocation model = ModelTemplates.CUBE_ALL.create(b, TextureMapping.cube(textureSource.get()), bmg.modelOutput);
-        bmg.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, model));
+        // 1.21.5: the create* helpers take MultiVariant, not ResourceLocation — wrap via plainVariant.
+        bmg.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
         bmg.registerSimpleItemModel(b, model);
     }
 
@@ -214,7 +221,7 @@ public class ModModelProvider extends ModelProvider {
                 .put(TextureSlot.END, TextureMapping.getBlockTexture(textureSource.get(), "_top"));
         ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(
                 block.get(), mapping, bmg.modelOutput);
-        bmg.createAxisAlignedPillarBlockCustomModel(block.get(), model);
+        bmg.createAxisAlignedPillarBlockCustomModel(block.get(), BlockModelGenerators.plainVariant(model));
         bmg.registerSimpleItemModel(block.get(), model);
     }
 
@@ -225,11 +232,11 @@ public class ModModelProvider extends ModelProvider {
     /** Waxed bulb: reuse the unwaxed bulb's 4 state models (unlit/lit/powered/lit+powered). */
     private static void bulbReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> source) {
         Block s = source.get();
-        bmg.blockStateOutput.accept(bmg.createCopperBulb(block.get(),
-                ModelLocationUtils.getModelLocation(s),
-                ModelLocationUtils.getModelLocation(s, "_lit"),
-                ModelLocationUtils.getModelLocation(s, "_powered"),
-                ModelLocationUtils.getModelLocation(s, "_lit_powered")));
+        bmg.blockStateOutput.accept(BlockModelGenerators.createCopperBulb(block.get(),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s)),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_lit")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_powered")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_lit_powered"))));
         bmg.registerSimpleItemModel(block.get(), ModelLocationUtils.getModelLocation(s));
     }
 
@@ -241,9 +248,9 @@ public class ModModelProvider extends ModelProvider {
     private static void trapdoorReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> source) {
         Block s = source.get();
         bmg.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block.get(),
-                ModelLocationUtils.getModelLocation(s, "_top"),
-                ModelLocationUtils.getModelLocation(s, "_bottom"),
-                ModelLocationUtils.getModelLocation(s, "_open")));
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_top")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_bottom")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_open"))));
         bmg.registerSimpleItemModel(block.get(), ModelLocationUtils.getModelLocation(s, "_bottom"));
     }
 
@@ -255,14 +262,14 @@ public class ModModelProvider extends ModelProvider {
     private static void doorReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> source) {
         Block s = source.get();
         bmg.blockStateOutput.accept(BlockModelGenerators.createDoor(block.get(),
-                ModelLocationUtils.getModelLocation(s, "_bottom_left"),
-                ModelLocationUtils.getModelLocation(s, "_bottom_left_open"),
-                ModelLocationUtils.getModelLocation(s, "_bottom_right"),
-                ModelLocationUtils.getModelLocation(s, "_bottom_right_open"),
-                ModelLocationUtils.getModelLocation(s, "_top_left"),
-                ModelLocationUtils.getModelLocation(s, "_top_left_open"),
-                ModelLocationUtils.getModelLocation(s, "_top_right"),
-                ModelLocationUtils.getModelLocation(s, "_top_right_open")));
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_bottom_left")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_bottom_left_open")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_bottom_right")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_bottom_right_open")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_top_left")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_top_left_open")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_top_right")),
+                BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(s, "_top_right_open"))));
         bmg.itemModelOutput.copy(s.asItem(), block.get().asItem());
     }
 
@@ -282,10 +289,13 @@ public class ModModelProvider extends ModelProvider {
                 .put(TextureSlot.SIDE, side);
         ResourceLocation normalModel = ModelTemplates.DAYLIGHT_DETECTOR.create(block, normalMap, bmg.modelOutput);
         ResourceLocation invertedModel = ModelTemplates.DAYLIGHT_DETECTOR.createWithSuffix(block, "_inverted", invertedMap, bmg.modelOutput);
-        bmg.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-                .with(PropertyDispatch.property(MoonPhaseDetectorBlock.INVERTED)
-                        .select(false, Variant.variant().with(VariantProperties.MODEL, normalModel))
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, invertedModel))));
+        // 1.21.5: blockstate-gen overhaul — Variant/VariantProperties removed.
+        // MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(prop)
+        //   .select(value, BlockModelGenerators.plainVariant(modelLocation))).
+        bmg.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(MoonPhaseDetectorBlock.INVERTED)
+                        .select(false, BlockModelGenerators.plainVariant(normalModel))
+                        .select(true, BlockModelGenerators.plainVariant(invertedModel))));
         bmg.registerSimpleItemModel(block, normalModel);
     }
 
@@ -293,6 +303,42 @@ public class ModModelProvider extends ModelProvider {
 
     private static void flat(ItemModelGenerators img, RegistrySupplier<Item> item) {
         img.generateFlatItem(item.get(), ModelTemplates.FLAT_ITEM);
+    }
+
+    /**
+     * Trimmable armor item model. Mirrors vanilla {@code ItemModelGenerators#generateTrimmableItem}
+     * but appends the mod's own {@code thesilverage:silver} trim material: the vanilla method
+     * iterates only the hardcoded {@code TRIM_MATERIAL_MODELS} (the 11 vanilla materials), so a
+     * custom material would never get an inventory trim overlay (the symptom: applying a silver
+     * trim shows no layer on the item). Emits a {@code minecraft:trim_material} select whose cases
+     * are TWO_LAYERED_ITEM models (layer0 = armor texture, layer1 = the
+     * {@code trims/items/<slot>_trim_<material>} paletted permutation built by the blocks atlas),
+     * with the plain (untrimmed) armor model as the fallback.
+     */
+    private static void trimmableArmor(ItemModelGenerators img, Item item, String slot) {
+        ResourceLocation itemTexture = TextureMapping.getItemTexture(item);
+        ResourceLocation slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
+        // Base (no-trim) flat MODEL file — also the select fallback. Use the template
+        // directly (not generateFlatItem, which would ALSO register an item-model
+        // definition and collide with the select definition we accept() below).
+        ResourceLocation baseModel = ModelTemplates.FLAT_ITEM.create(
+                ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture), img.modelOutput);
+
+        List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
+        materials.add(new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("silver"), ModTrimMaterials.SILVER));
+
+        List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
+        for (ItemModelGenerators.TrimMaterialData data : materials) {
+            // base().suffix() is the bare material name ("quartz", "silver"); vanilla
+            // prepends "_" before joining (so layer1 = helmet_trim_quartz, the atlas
+            // permutation sprite, and the model = silver_helmet_quartz_trim).
+            String suffix = "_" + data.assets().base().suffix();
+            ResourceLocation trimModel = baseModel.withSuffix(suffix + "_trim");
+            img.generateLayeredItem(trimModel, itemTexture, slotPrefix.withSuffix(suffix));
+            cases.add(ItemModelUtils.when(data.materialKey(), ItemModelUtils.plainModel(trimModel)));
+        }
+        img.itemModelOutput.accept(item,
+                ItemModelUtils.select(new TrimMaterialProperty(), ItemModelUtils.plainModel(baseModel), cases));
     }
 
     private static void handheld(ItemModelGenerators img, RegistrySupplier<Item> item) {

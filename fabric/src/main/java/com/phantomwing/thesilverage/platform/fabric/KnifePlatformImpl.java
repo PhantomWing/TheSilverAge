@@ -4,7 +4,6 @@ import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.fabric.compat.farmersdelight.SilverKnifeItem;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.ToolMaterial;
 
 /**
@@ -24,8 +23,8 @@ public final class KnifePlatformImpl {
         if (CommonPlatform.isModLoaded(ModIds.FARMERS_DELIGHT)) {
             return SilverKnifeItem.create(material, properties);
         }
-        // Knife attack stats (0.5 damage, -2.0 speed) match FD's own knives;
-        // 1.21.2 moved these from Item.Properties#attributes into the ctor.
-        return new SwordItem(material, 0.5F, -2.0F, properties);
+        // Knife attack stats (0.5 damage, -2.0 speed) match FD's own knives.
+        // 1.21.5: SwordItem removed — plain Item + Item.Properties#sword.
+        return new Item(properties.sword(material, 0.5F, -2.0F));
     }
 }

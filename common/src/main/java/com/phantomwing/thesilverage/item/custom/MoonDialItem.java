@@ -7,9 +7,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * The Moon Dial item. Adds a hover tooltip naming the moon phase the dial is
@@ -53,15 +54,17 @@ public class MoonDialItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context,
-                                List<Component> tooltip, TooltipFlag flag) {
+                                TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+        // 1.21.5: appendHoverText now takes a TooltipDisplay + a Consumer<Component>
+        // line-adder instead of a List<Component>.
         Level level = EnvExecutor.getEnvSpecific(
                 () -> () -> net.minecraft.client.Minecraft.getInstance().level,
                 () -> () -> null);
 
         int phase = LevelUtils.getMoonPhase(level);
-        tooltip.add(Component.translatable(PHASE_KEYS[phase])
+        tooltipAdder.accept(Component.translatable(PHASE_KEYS[phase])
                 .withStyle(ChatFormatting.GRAY));
 
-        super.appendHoverText(stack, context, tooltip, flag);
+        super.appendHoverText(stack, context, display, tooltipAdder, flag);
     }
 }

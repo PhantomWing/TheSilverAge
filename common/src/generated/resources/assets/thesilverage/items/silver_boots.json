@@ -78,6 +78,13 @@
           "model": "thesilverage:item/silver_boots_resin_trim"
         },
         "when": "minecraft:resin"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "thesilverage:item/silver_boots_silver_trim"
+        },
+        "when": "thesilverage:silver"
       }
     ],
     "fallback": {
