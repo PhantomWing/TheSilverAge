@@ -26,9 +26,6 @@ import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.equipment.EquipmentAsset;
-import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 
@@ -273,10 +270,6 @@ public class ModModelProvider extends ModelProvider {
         bmg.itemModelOutput.copy(s.asItem(), block.get().asItem());
     }
 
-    /** The silver armor equipment-asset key (matches ModArmorMaterials.SILVER_ARMOR_MATERIAL). */
-    private static final ResourceKey<EquipmentAsset> SILVER_EQUIPMENT_ASSET =
-            ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation("silver"));
-
     /** Moon Phase Detector: daylight-detector-style model; INVERTED swaps the top texture. */
     private static void moonPhaseDetector(BlockModelGenerators bmg) {
         Block block = ModBlocks.MOON_PHASE_DETECTOR.get();
@@ -325,14 +318,18 @@ public class ModModelProvider extends ModelProvider {
                 ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture), img.modelOutput);
 
         List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
-        materials.add(new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("silver"), ModTrimMaterials.SILVER));
+        // Silver uses the shared asset group (carries the silver->silver_darker override
+        // for silver armor), so the item icon matches the worn rendering.
+        materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
         for (ItemModelGenerators.TrimMaterialData data : materials) {
-            // base().suffix() is the bare material name ("quartz", "silver"); vanilla
-            // prepends "_" before joining (so layer1 = helmet_trim_quartz, the atlas
-            // permutation sprite, and the model = silver_helmet_quartz_trim).
-            String suffix = "_" + data.assets().base().suffix();
+            // assetId(equipmentAsset) resolves the per-armor override: for silver armor it
+            // yields "silver_darker" on the silver material (and the plain base suffix —
+            // "quartz", "iron", … — for every other material). suffix() is the bare name;
+            // vanilla prepends "_" before joining, giving layer1 = the atlas permutation
+            // sprite (e.g. helmet_trim_silver_darker) and model = silver_helmet_<x>_trim.
+            String suffix = "_" + data.assets().assetId(ModTrimMaterials.SILVER_EQUIPMENT_ASSET).suffix();
             ResourceLocation trimModel = baseModel.withSuffix(suffix + "_trim");
             img.generateLayeredItem(trimModel, itemTexture, slotPrefix.withSuffix(suffix));
             cases.add(ItemModelUtils.when(data.materialKey(), ItemModelUtils.plainModel(trimModel)));

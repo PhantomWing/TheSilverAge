@@ -2,6 +2,6 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "thesilverage:item/silver_chestplate",
-    "layer1": "minecraft:trims/items/chestplate_trim_silver"
+    "layer1": "minecraft:trims/items/chestplate_trim_silver_darker"
   }
 }

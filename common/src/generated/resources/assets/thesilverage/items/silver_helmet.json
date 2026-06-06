@@ -82,7 +82,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/silver_helmet_silver_trim"
+          "model": "thesilverage:item/silver_helmet_silver_darker_trim"
         },
         "when": "thesilverage:silver"
       }

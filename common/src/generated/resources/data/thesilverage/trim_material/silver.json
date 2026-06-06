@@ -3,5 +3,8 @@
   "description": {
     "color": "#7C9EB7",
     "translate": "trim_material.thesilverage.silver"
+  },
+  "override_armor_assets": {
+    "thesilverage:silver": "silver_darker"
   }
 }
