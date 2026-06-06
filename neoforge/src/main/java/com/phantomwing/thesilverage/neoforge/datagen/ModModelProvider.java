@@ -18,19 +18,23 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Unified block + item model datagen for 1.21.4 (vanilla {@link ModelProvider}).
@@ -162,6 +166,19 @@ public class ModModelProvider extends ModelProvider {
         trimmableArmor(img, ModItems.SILVER_CHESTPLATE.get(), "chestplate");
         trimmableArmor(img, ModItems.SILVER_LEGGINGS.get(), "leggings");
         trimmableArmor(img, ModItems.SILVER_BOOTS.get(), "boots");
+
+        // Vanilla-armor trim overrides: make the SILVER trim material show on vanilla armor
+        // inventory icons too (feature parity with 1.21.1/1.21.3 — the old trim_type-predicate
+        // overrides were dropped in the 1.21.4 datagen rewrite). We override each vanilla armor's
+        // item-model definition with a select that references vanilla's own per-material trim
+        // models (darker handling already baked in) + a generated silver case. See VANILLA_TRIMMED_ARMOR.
+        for (Item[] set : VANILLA_TRIMMED_ARMOR) {
+            boolean dyeable = set[0] == Items.LEATHER_HELMET;
+            vanillaArmorTrimOverride(img, set[0], "helmet", dyeable);
+            vanillaArmorTrimOverride(img, set[1], "chestplate", dyeable);
+            vanillaArmorTrimOverride(img, set[2], "leggings", dyeable);
+            vanillaArmorTrimOverride(img, set[3], "boots", dyeable);
+        }
         flat(img, ModItems.SILVER_HORSE_ARMOR);
         moonDial(img);
 
@@ -336,6 +353,82 @@ public class ModModelProvider extends ModelProvider {
         }
         img.itemModelOutput.accept(item,
                 ItemModelUtils.select(new TrimMaterialProperty(), ItemModelUtils.plainModel(baseModel), cases));
+    }
+
+    /** Vanilla leather-dye default tint (0xFFA06540) — must be carried on leather trim cases + fallback. */
+    private static final int LEATHER_DEFAULT_COLOR = -6265536;
+
+    /** Vanilla armor sets we override to add the silver trim: {helmet, chestplate, leggings, boots}. */
+    private static final Item[][] VANILLA_TRIMMED_ARMOR = {
+            {Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS},
+            {Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS},
+            {Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS},
+            {Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS},
+            {Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS},
+            {Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS},
+    };
+
+    /**
+     * The default {@link ModelProvider#getKnownItems()} is filtered to the mod's namespace, and it
+     * drives the item-model completeness validator + saver. Since we also emit overrides for vanilla
+     * (minecraft-namespace) armor, we must declare those items as "known" or datagen would reject /
+     * skip them. Concatenate the mod items with the vanilla armor we override.
+     */
+    @Override
+    protected Stream<? extends Holder<Item>> getKnownItems() {
+        Stream<Holder<Item>> vanillaArmor = java.util.Arrays.stream(VANILLA_TRIMMED_ARMOR)
+                .flatMap(java.util.Arrays::stream)
+                .map(Item::builtInRegistryHolder);
+        return Stream.concat(super.getKnownItems(), vanillaArmor);
+    }
+
+    /**
+     * Override a VANILLA armor piece's item-model definition so the silver trim material shows on its
+     * inventory icon (parity with 1.21.1/1.21.3). We rebuild vanilla's {@code minecraft:trim_material}
+     * select: for the 11 vanilla materials we reference vanilla's own shipped trim models (which already
+     * bake in the darker-on-matching sprite), and for silver we generate the layered model + reference
+     * it. Leather pieces are 3-layer (base + dye overlay + trim) and carry the dye tint on every case +
+     * the fallback, mirroring vanilla's leather item definition.
+     */
+    private static void vanillaArmorTrimOverride(ItemModelGenerators img, Item item, String slot, boolean dyeable) {
+        ResourceLocation baseModel = ModelLocationUtils.getModelLocation(item);
+        ResourceLocation itemTexture = TextureMapping.getItemTexture(item);
+        ResourceLocation overlayTexture = dyeable ? TextureMapping.getItemTexture(item, "_overlay") : null;
+        ResourceLocation slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
+
+        List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
+        materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
+
+        List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
+        for (ItemModelGenerators.TrimMaterialData data : materials) {
+            // Model name uses the BASE material suffix (vanilla's convention: iron_helmet_iron_trim),
+            // matching the names vanilla ships — so referencing it for vanilla materials hits the
+            // existing (darker-baked-in) model.
+            ResourceLocation trimModel = baseModel.withSuffix("_" + data.assets().base().suffix() + "_trim");
+            if (data.materialKey() == ModTrimMaterials.SILVER) {
+                // Vanilla doesn't ship a silver trim model for its armor — generate it. Silver is
+                // never the matching material for vanilla armor, so always the plain silver sprite.
+                ResourceLocation silverSprite = slotPrefix.withSuffix("_silver");
+                if (dyeable) {
+                    TextureMapping tm = new TextureMapping()
+                            .put(TextureSlot.LAYER0, itemTexture)
+                            .put(TextureSlot.LAYER1, overlayTexture)
+                            .put(TextureSlot.LAYER2, silverSprite);
+                    ModelTemplates.THREE_LAYERED_ITEM.create(trimModel, tm, img.modelOutput);
+                } else {
+                    img.generateLayeredItem(trimModel, itemTexture, silverSprite);
+                }
+            }
+            // (vanilla materials: reference vanilla's shipped model, do not regenerate.)
+            ItemModel.Unbaked caseModel = dyeable
+                    ? ItemModelUtils.tintedModel(trimModel, new Dye(LEATHER_DEFAULT_COLOR))
+                    : ItemModelUtils.plainModel(trimModel);
+            cases.add(ItemModelUtils.when(data.materialKey(), caseModel));
+        }
+        ItemModel.Unbaked fallback = dyeable
+                ? ItemModelUtils.tintedModel(baseModel, new Dye(LEATHER_DEFAULT_COLOR))
+                : ItemModelUtils.plainModel(baseModel);
+        img.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), fallback, cases));
     }
 
     private static void handheld(ItemModelGenerators img, RegistrySupplier<Item> item) {
