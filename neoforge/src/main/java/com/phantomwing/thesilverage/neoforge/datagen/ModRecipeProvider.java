@@ -82,6 +82,7 @@ public class ModRecipeProvider extends RecipeProvider {
         axe(output, ModItems.SILVER_AXE.get(), ModItems.SILVER_INGOT.get());
         hoe(output, ModItems.SILVER_HOE.get(), ModItems.SILVER_INGOT.get());
         shovel(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_INGOT.get());
+        spear(output, ModItems.SILVER_SPEAR.get(), ModItems.SILVER_INGOT.get());
 
         // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
         // Gated on FD being present — without FD the item is a hidden fallback,
@@ -107,11 +108,13 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_AXE.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HOE.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
+        oreSmeltingRecipes(output, ModItems.SILVER_SPEAR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HELMET.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_CHESTPLATE.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_LEGGINGS.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_BOOTS.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
+        oreSmeltingRecipes(output, ModItems.SILVER_NAUTILUS_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
         // Silver Bulb
         bulb(output, ModItems.SILVER_BLOCK.get(), ModItems.SILVER_BULB.get());
@@ -646,6 +649,18 @@ public class ModRecipeProvider extends RecipeProvider {
             .pattern("#")
             .pattern("#")
             .pattern("S")
+            .define('#', material)
+            .define('S', Items.STICK)
+            .unlockedBy(getHasName(material), has(material))
+            .save(recipeOutput);
+    }
+
+    protected void spear(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+        // Diagonal: one material at top-right + two sticks (mirrors vanilla copper_spear).
+        shaped(RecipeCategory.COMBAT, tool)
+            .pattern("  #")
+            .pattern(" S ")
+            .pattern("S  ")
             .define('#', material)
             .define('S', Items.STICK)
             .unlockedBy(getHasName(material), has(material))

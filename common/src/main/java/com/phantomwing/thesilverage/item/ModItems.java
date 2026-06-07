@@ -47,6 +47,8 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_AXE = registerAxe("silver_axe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
+    // 1.21.11 ("The Copper Age") added the Spear — a charge-attack weapon. Mirrors copper_spear.
+    public static final RegistrySupplier<Item> SILVER_SPEAR = registerSpear("silver_spear", ModTiers.SILVER);
     // Farmer's Delight compat: a real FD KnifeItem when FD is present, a plain
     // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
@@ -61,6 +63,9 @@ public class ModItems {
     // Item.Properties#horseArmor(material) sets the ARMOR/equipment components and
     // binds the EQUESTRIAN body slot to the material's equipment asset.
     public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new Item(props.horseArmor(ModArmorMaterials.SILVER_ARMOR_MATERIAL)), baseItem().stacksTo(1));
+    // 1.21.11 ("The Copper Age") added Nautilus Armor — BODY-slot animal armor for the Nautilus
+    // mob. Mirrors copper_nautilus_armor. Loot-only (ocean structures); not craftable.
+    public static final RegistrySupplier<Item> SILVER_NAUTILUS_ARMOR = register("silver_nautilus_armor", (props) -> new Item(props.nautilusArmor(ModArmorMaterials.SILVER_ARMOR_MATERIAL)), baseItem().stacksTo(1));
 
     // Utility items
     public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());
@@ -220,6 +225,16 @@ public class ModItems {
         // 1.21.5: SwordItem removed — sword is a plain Item; Item.Properties#sword sets the
         // WEAPON/TOOL/attribute components (attack damage 3, speed -2.4 preserved).
         return register(name, (props) -> new Item(props.sword(material, 3, -2.4f)), baseItem());
+    }
+
+    private static RegistrySupplier<Item> registerSpear(String name, ToolMaterial material) {
+        // 1.21.11: Spear is a plain Item; Item.Properties#spear sets the WEAPON/TOOL components
+        // plus the charge-attack parameters. The attack DAMAGE comes from the material's
+        // attackDamageBonus (silver 2.5 → 3.5 displayed). The first float is the attack-SPEED
+        // factor: displayed attack speed = 1.0 / factor, so 1.0f → 1.0 attack speed. The
+        // remaining params are the charge curve, mirroring vanilla copper_spear.
+        return register(name, (props) -> new Item(
+                props.spear(material, 1.0f, 0.82f, 0.65f, 4.0f, 9.0f, 8.25f, 5.1f, 12.5f, 4.6f)), baseItem());
     }
 
     /**

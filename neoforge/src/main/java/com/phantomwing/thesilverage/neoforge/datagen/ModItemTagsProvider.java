@@ -96,6 +96,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
+        tag(ItemTags.SPEARS).add(ModItems.SILVER_SPEAR.get());
 
         // Farmer's Delight compat — the Silver Knife. Added to FD's knife tag (the
         // Cutting Board's accepted tool) and the reserved c: convention tag. Both
@@ -114,6 +115,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.SILVER_LEGGINGS.get(),
                 ModItems.SILVER_BOOTS.get()
         );
+        // 1.21.11 Nautilus Armor (BODY-slot animal armor) — the c: convention tag.
+        tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get());
 
         // Armor trims
         tag(ItemTags.TRIM_MATERIALS).add(ModItems.SILVER_INGOT.get());

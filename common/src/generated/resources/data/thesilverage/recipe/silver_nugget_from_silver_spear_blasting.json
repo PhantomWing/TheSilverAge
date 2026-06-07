@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": "thesilverage:silver_spear",
+  "result": {
+    "count": 1,
+    "id": "thesilverage:silver_nugget"
+  }
+}

@@ -180,6 +180,7 @@ public class ModModelProvider extends ModelProvider {
             vanillaArmorTrimOverride(img, set[3], "boots", dyeable);
         }
         flat(img, ModItems.SILVER_HORSE_ARMOR);
+        flat(img, ModItems.SILVER_NAUTILUS_ARMOR);
         moonDial(img);
 
         handheld(img, ModItems.SILVER_SHOVEL);
@@ -188,6 +189,9 @@ public class ModModelProvider extends ModelProvider {
         handheld(img, ModItems.SILVER_HOE);
         handheld(img, ModItems.SILVER_SWORD);
         handheld(img, ModItems.SILVER_KNIFE);
+        // 1.21.11 Spear: two-model setup (inventory + in_hand) via the display_context
+        // select. vanilla's generateSpear emits both models + the items/ definition.
+        img.generateSpear(ModItems.SILVER_SPEAR.get());
     }
 
     // ---------------- block helpers ----------------

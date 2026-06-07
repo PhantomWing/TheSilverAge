@@ -76,6 +76,7 @@ public final class SilverLootSpec {
     private static final Identifier JUNGLE_TEMPLE = mc("chests/jungle_temple");
     private static final Identifier SHIPWRECK_TREASURE = mc("chests/shipwreck_treasure");
     private static final Identifier SHIPWRECK_MAP = mc("chests/shipwreck_map");
+    private static final Identifier SHIPWRECK_SUPPLY = mc("chests/shipwreck_supply");
     private static final Identifier BURIED_TREASURE = mc("chests/buried_treasure");
     private static final Identifier VILLAGE_ARMORER = mc("chests/village/village_armorer");
     private static final Identifier VILLAGE_TEMPLE = mc("chests/village/village_temple");
@@ -268,6 +269,22 @@ public final class SilverLootSpec {
                         ModItems.SILVER_AXE::get, 0, 0, List.of(vanilla(Items.STONE_AXE))),
                 new Entry("silver_chestplate_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL, 0.1f, Op.REPLACE,
                         ModItems.SILVER_CHESTPLATE::get, 0, 0, List.of(vanilla(Items.LEATHER_CHESTPLATE))),
+
+                // Nautilus Armor (1.21.11) — replace vanilla Copper Nautilus Armor in the ocean
+                // structure chests that carry it with the silver tier (1/4 chance), mirroring the
+                // Silver Horse Armor loot approach (loot-only, not craftable).
+                new Entry("silver_nautilus_armor_from_buried_treasure", BURIED_TREASURE, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_treasure", SHIPWRECK_TREASURE, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_supply", SHIPWRECK_SUPPLY, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_map", SHIPWRECK_MAP, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_underwater_ruin_big", UNDERWATER_RUIN_BIG, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
 
                 // Ocean Ruins
                 new Entry("silver_nugget_from_ocean_ruin_warm_archaeology", OCEAN_RUIN_WARM_ARCHAEOLOGY, 0.5f, Op.REPLACE,
