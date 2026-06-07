@@ -63,6 +63,10 @@ public class DataGenerators {
 
         event.addProvider(new ModDatapackProvider(output, lookupProvider));
 
+        // GameTest arena structure (data/thesilverage/structure/silver_test_arena.nbt) —
+        // the shared empty platform every SilverGameTests instance runs in.
+        event.addProvider(new GameTestStructureProvider(output));
+
         // MUST be registered LAST — post-processes the shared generated tree,
         // mirroring each neoforge:conditions block with a fabric:load_conditions
         // one so the single shared data gates identically on both loaders.

@@ -186,7 +186,9 @@ publishMods {
         // Token: env var MODRINTH_TOKEN (CI/GitHub secret) OR a `modrinth_token` gradle
         // property — put that in your USER ~/.gradle/gradle.properties (never the repo).
         accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
-        minecraftVersions.add(rootProject.minecraft_version)
+        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
+        // build target — one jar, listed under both MC versions. See gradle.properties.
+        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         requires("architectury-api")
         requires("fabric-api")
         requires("cloth-config")
@@ -194,7 +196,9 @@ publishMods {
     curseforge {
         projectId = providers.gradleProperty("curseforge_project_id")
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
-        minecraftVersions.add(rootProject.minecraft_version)
+        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
+        // build target — one jar, listed under both MC versions. See gradle.properties.
+        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // CurseForge requires explicit side flags (Modrinth infers them from the jar).
         client = true
         server = true

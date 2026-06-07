@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAgeCommon;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
+import com.phantomwing.thesilverage.neoforge.gametest.SilverGameTests;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -42,6 +43,12 @@ public final class TheSilverAgeNeoForge {
         // SilverLootAlgorithms drive these GLMs here and a loot mixin on Fabric.
         ModConditions.register(modEventBus);
         ModLootModifiers.register(modEventBus);
+
+        // Automated GameTest functions (Registries.TEST_FUNCTION). Registered
+        // unconditionally — the test_instance datapack entries reference these ids, so they
+        // must always resolve; the tests only EXECUTE under the dedicated gametest server
+        // (:neoforge:runGameTest). GameTestHelper is a server-safe type, so this is dist-safe.
+        SilverGameTests.register(modEventBus);
 
         // Config (kept on NeoForge for now; common reaches values via @ExpectPlatform).
         container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);

@@ -35,12 +35,16 @@ ext.latestChangelog = {
 // ranges (in each loader's required FORMAT) from the canonical versions in gradle.properties,
 // so fabric.mod.json + neoforge.mods.toml never hold a hardcoded range that can drift on a
 // port. Expanded into both manifests by their processResources blocks.
-//   Fabric  predicate format: ">=1.21.6 <1.21.7", ">=17.0"   (space = AND)
-//   NeoForge maven range:     "[1.21.6,1.21.7)",  "[17.0,)"
+//   Fabric  predicate format: ">=1.21.7 <1.21.9", ">=17.0"   (space = AND)
+//   NeoForge maven range:     "[1.21.7,1.21.9)",  "[17.0,)"
 ext.manifestProps = { ->
-    def mc = rootProject.minecraft_version
+    def mc = rootProject.minecraft_version                          // build target = highest supported
     def p = mc.tokenize('.')
-    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()   // 1.21.6 -> 1.21.7
+    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()   // 1.21.8 -> 1.21.9 (exclusive upper)
+    // Lower bound = LOWEST supported game version. When the mod spans a compatible MC
+    // pair (e.g. 1.21.7 + 1.21.8) the floor differs from the build target, so it is taken
+    // from supported_minecraft_versions (space/comma-separated) rather than minecraft_version.
+    def mcFloor = rootProject.supported_minecraft_versions.tokenize(' ,').first()
     // major.minor of a version, ignoring any +build / -qualifier suffix.
     def mm = { String v -> def q = v.replaceAll(/[+\-].*$/, '').tokenize('.'); "${q[0]}.${q[1]}".toString() }
     def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')   // 0.128.2+1.21.6 -> 0.128.2
@@ -55,7 +59,7 @@ ext.manifestProps = { ->
             mod_homepage             : homepage,
             mod_issues               : "${homepage}/issues".toString(),
             // fabric.mod.json (predicate format)
-            dep_minecraft_fabric     : ">=${mc} <${mcNext}".toString(),
+            dep_minecraft_fabric     : ">=${mcFloor} <${mcNext}".toString(),
             dep_fabricloader         : ">=${rootProject.fabric_loader_version}".toString(),
             dep_fabric_api           : ">=${fabricApiFloor}".toString(),
             dep_architectury_fabric  : ">=${mm(rootProject.architectury_version)}".toString(),
@@ -63,7 +67,7 @@ ext.manifestProps = { ->
             // neoforge.mods.toml (maven range format)
             dep_loader_neoforge      : rootProject.loader_version_range,
             dep_neoforge             : rootProject.neo_version_range,
-            dep_minecraft_neoforge   : "[${mc},${mcNext})".toString(),
+            dep_minecraft_neoforge   : "[${mcFloor},${mcNext})".toString(),
             dep_architectury_neoforge: "[${mm(rootProject.architectury_version)},)".toString(),
     ]
 }
