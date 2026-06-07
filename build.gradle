@@ -1,10 +1,71 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
     id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
+    // Modrinth + CurseForge publishing — applied per loader subproject (fabric/neoforge).
+    id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
+}
+
+// Extract the most recent version's notes from changelog.md (everything under the first
+// "# X.Y.Z" header, up to the next "# " header) — used as the per-release changelog on
+// Modrinth/CurseForge so each upload shows only its own changes. The changelog file is
+// user-managed; this only READS it.
+ext.latestChangelog = {
+    def f = rootProject.file('changelog.md')
+    if (!f.exists()) return "See changelog.md"
+    def body = new StringBuilder()
+    boolean started = false, done = false
+    f.eachLine { line ->
+        if (done) return
+        if (line.startsWith('# ')) {
+            if (started) { done = true; return }   // reached the next version → stop
+            started = true                          // first version header → start
+            return                                  // skip the header line itself
+        }
+        if (started) body.append(line).append('\n')
+    }
+    def out = body.toString().trim()
+    return out.isEmpty() ? "See changelog.md" : out
+}
+
+// Single source of truth for the manifest substitutions. Derives the dependency version
+// ranges (in each loader's required FORMAT) from the canonical versions in gradle.properties,
+// so fabric.mod.json + neoforge.mods.toml never hold a hardcoded range that can drift on a
+// port. Expanded into both manifests by their processResources blocks.
+//   Fabric  predicate format: ">=1.21.6 <1.21.7", ">=17.0"   (space = AND)
+//   NeoForge maven range:     "[1.21.6,1.21.7)",  "[17.0,)"
+ext.manifestProps = { ->
+    def mc = rootProject.minecraft_version
+    def p = mc.tokenize('.')
+    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()   // 1.21.6 -> 1.21.7
+    // major.minor of a version, ignoring any +build / -qualifier suffix.
+    def mm = { String v -> def q = v.replaceAll(/[+\-].*$/, '').tokenize('.'); "${q[0]}.${q[1]}".toString() }
+    def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')   // 0.128.2+1.21.6 -> 0.128.2
+    def homepage = rootProject.mod_homepage
+    return [
+            version                  : rootProject.mod_version,
+            mod_id                   : rootProject.mod_id,
+            mod_name                 : rootProject.mod_name,
+            mod_description          : rootProject.mod_description,
+            mod_author               : rootProject.mod_author,
+            mod_license              : rootProject.mod_license,
+            mod_homepage             : homepage,
+            mod_issues               : "${homepage}/issues".toString(),
+            // fabric.mod.json (predicate format)
+            dep_minecraft_fabric     : ">=${mc} <${mcNext}".toString(),
+            dep_fabricloader         : ">=${rootProject.fabric_loader_version}".toString(),
+            dep_fabric_api           : ">=${fabricApiFloor}".toString(),
+            dep_architectury_fabric  : ">=${mm(rootProject.architectury_version)}".toString(),
+            dep_cloth                : ">=${mm(rootProject.cloth_config_version)}".toString(),
+            // neoforge.mods.toml (maven range format)
+            dep_loader_neoforge      : rootProject.loader_version_range,
+            dep_neoforge             : rootProject.neo_version_range,
+            dep_minecraft_neoforge   : "[${mc},${mcNext})".toString(),
+            dep_architectury_neoforge: "[${mm(rootProject.architectury_version)},)".toString(),
+    ]
 }
 
 architectury {

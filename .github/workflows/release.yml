@@ -1,0 +1,68 @@
+name: Release (Modrinth + CurseForge)
+
+# Publishes the Fabric + NeoForge jars for whichever VERSION BRANCH this runs on
+# (each branch targets one Minecraft version; metadata comes from that branch's
+# gradle.properties + fabric.mod.json / neoforge.mods.toml).
+#
+# How to use:
+#   • Manual  — Actions tab → "Release (Modrinth + CurseForge)" → Run workflow →
+#               pick the branch (e.g. version/1.21.6). Leave "dry_run" CHECKED to test
+#               (builds + stages, uploads nothing); UNCHECK to actually publish.
+#   • Tag     — push a tag matching v* (e.g. v1.3.1) on the branch you want to release.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   MODRINTH_TOKEN, CURSEFORGE_TOKEN
+# Project IDs are PUBLIC and read from gradle.properties (modrinth_project_id /
+# curseforge_project_id) — fill those in before a real (non-dry) run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (build + stage only, no upload)"
+        type: boolean
+        default: true
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      # The committed gradle.properties pins org.gradle.java.home to a local Windows JDK
+      # path (the maintainer's machine defaults to java 17, and Loom needs the daemon on
+      # 21). That absolute path doesn't exist on the Linux runner and would break the
+      # build, so remove it here — CI uses the runner's JDK 21 (from setup-java) instead.
+      - name: Drop machine-specific JDK pin
+        run: sed -i '/^org\.gradle\.java\.home/d' gradle.properties
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew build --stacktrace
+
+      - name: Publish to Modrinth + CurseForge
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          # Dry-run only for a manually-dispatched run with the box left checked;
+          # tag pushes always publish for real.
+          DRY: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '-PpublishDryRun' || '' }}
+        run: ./gradlew :fabric:publishMods :neoforge:publishMods $DRY --stacktrace

@@ -48,7 +48,8 @@ import java.util.Optional;
  * deferred by {@link #clientTick()} until it is safe — never during the
  * world-join loading screen, which would freeze the client.</p>
  */
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+// 1.21.6: buses unified — @EventBusSubscriber dropped the `bus` element (Bus enum removed).
+@EventBusSubscriber(modid = TheSilverAge.MOD_ID, value = Dist.CLIENT)
 public final class RecipeOverridePackHandler {
     private static final String PACK_ID = "builtin/" + TheSilverAge.MOD_ID + "/recipe_overrides";
     private static final String PACK_RESOURCE_ROOT = "resourcepacks/silver_recipe_overrides";

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "thesilverage",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "The Silver Age",
-  "description": "A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "PhantomWing"
+    "${mod_author}"
   ],
   "contact": {
-    "homepage": "https://github.com/PhantomWing/TheSilverAge",
-    "sources": "https://github.com/PhantomWing/TheSilverAge",
-    "issues": "https://github.com/PhantomWing/TheSilverAge/issues"
+    "homepage": "${mod_homepage}",
+    "sources": "${mod_homepage}",
+    "issues": "${mod_issues}"
   },
-  "license": "MIT License",
+  "license": "${mod_license}",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -26,10 +26,10 @@
     "thesilverage.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.14",
-    "fabric-api": "*",
-    "minecraft": ">=1.21.5 <1.21.6",
-    "architectury": ">=16.0",
-    "cloth-config": "*"
+    "fabricloader": "${dep_fabricloader}",
+    "fabric-api": "${dep_fabric_api}",
+    "minecraft": "${dep_minecraft_fabric}",
+    "architectury": "${dep_architectury_fabric}",
+    "cloth-config": "${dep_cloth}"
   }
 }

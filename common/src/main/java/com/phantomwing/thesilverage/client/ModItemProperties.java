@@ -8,7 +8,7 @@ import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
 import net.minecraft.resources.ResourceLocation;
@@ -51,12 +51,16 @@ public final class ModItemProperties {
      * range-select property type, plus the transparent-block render layers. 1.21.4 no longer
      * carries render type in the model JSON, so doors/trapdoors (cutout) and grates
      * (translucent) register their layer here via Architectury's cross-loader RenderTypeRegistry.
+     *
+     * <p>1.21.6: block render layers moved from {@code RenderType} (cutout()/translucent())
+     * to the {@link ChunkSectionLayer} enum; Architectury's RenderTypeRegistry.register now
+     * takes a {@code ChunkSectionLayer}.</p>
      */
     public static void register() {
         RangeSelectItemModelProperties.ID_MAPPER.put(MOON_PHASE, MoonPhaseProperty.MAP_CODEC);
 
-        RenderTypeRegistry.register(RenderType.cutout(), CUTOUT_BLOCKS);
-        RenderTypeRegistry.register(RenderType.translucent(), TRANSLUCENT_BLOCKS);
+        RenderTypeRegistry.register(ChunkSectionLayer.CUTOUT, CUTOUT_BLOCKS);
+        RenderTypeRegistry.register(ChunkSectionLayer.TRANSLUCENT, TRANSLUCENT_BLOCKS);
     }
 
     /** Doors + trapdoors (all weather/waxed states) — cutout render layer. */

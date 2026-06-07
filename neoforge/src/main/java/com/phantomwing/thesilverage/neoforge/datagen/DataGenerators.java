@@ -19,7 +19,10 @@ import java.util.concurrent.CompletableFuture;
 // more includeServer()/includeClient() gating or getExistingFileHelper() — you
 // just event.addProvider(provider) and the run args (--all/--client/--server)
 // decide what actually emits.
-@EventBusSubscriber(modid = TheSilverAge.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+// 1.21.6: NeoForge unified the mod + game event buses into one — @EventBusSubscriber
+// no longer has a `bus` element (the Bus enum was removed). GatherDataEvent still fires
+// on the single bus, so just modid is needed.
+@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
 public class DataGenerators {
     // 1.21.4: GatherDataEvent is abstract — you must subscribe to a concrete
     // subclass (Client/Server). We use the Client event (fired by the clientData
@@ -49,8 +52,10 @@ public class DataGenerators {
         // ModelProvider (registerModels(BlockModelGenerators, ItemModelGenerators)).
         event.addProvider(new ModModelProvider(output));
 
-        ModBlockTagsProvider blockTagsProvider = event.addProvider(new ModBlockTagsProvider(output, lookupProvider));
-        event.addProvider(new ModItemTagsProvider(output, lookupProvider, blockTagsProvider.contentsGetter()));
+        event.addProvider(new ModBlockTagsProvider(output, lookupProvider));
+        // 1.21.6: ModItemTagsProvider no longer takes the block-tag contentsGetter (NeoForge's
+        // ItemTagsProvider dropped that ctor param — it only adds item tags directly).
+        event.addProvider(new ModItemTagsProvider(output, lookupProvider));
         event.addProvider(new ModBiomeTagsProvider(output, lookupProvider));
         event.addProvider(new ModEntityTypeTagsProvider(output, lookupProvider));
 

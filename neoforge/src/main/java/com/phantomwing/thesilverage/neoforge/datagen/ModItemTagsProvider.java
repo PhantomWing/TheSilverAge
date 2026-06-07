@@ -7,18 +7,21 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
+// 1.21.6: vanilla net.minecraft.data.tags.ItemTagsProvider was removed. NeoForge's
+// net.neoforged.neoforge.common.data.ItemTagsProvider replaces it, and its ctor dropped
+// the block-tag TagLookup param (block->item tag copying is now separate; this provider
+// only adds item tags directly, so it isn't needed).
 public class ModItemTagsProvider extends ItemTagsProvider {
     /** Farmer's Delight's knife tag — the Cutting Board's accepted tool. Adding to it is
      *  harmless when FD is absent (the tag is simply never consulted). */
@@ -26,8 +29,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("farmersdelight", "tools/knives"));
 
 
-    public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags) {
-        super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID);
+    public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, TheSilverAge.MOD_ID);
     }
 
     @Override

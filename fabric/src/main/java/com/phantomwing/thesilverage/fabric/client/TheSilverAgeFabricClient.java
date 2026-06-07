@@ -21,14 +21,11 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 public final class TheSilverAgeFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        // Also registers the doors/trapdoors (cutout) + grates (translucent) block
+        // render layers via the common ModItemProperties (Architectury RenderTypeRegistry,
+        // ChunkSectionLayer). This is the single cross-loader path — the old Fabric-native
+        // ModRenderLayers (BlockRenderLayerMap) was a redundant duplicate and was removed.
         ClientPlatform.registerItemProperties();
-
-        // Map doors / trapdoors / grates to their cutout/translucent render
-        // layers. NeoForge bakes this into the generated block-model JSON via
-        // its "render_type" field; Fabric ignores that field, so without this
-        // call any pixel marked transparent in those textures renders as
-        // opaque black on Fabric.
-        ModRenderLayers.register();
 
         // Built-in resource pack carrying the silver brewing-stand / comparator
         // / repeater texture + model overrides. Auto-toggled by the
