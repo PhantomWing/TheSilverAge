@@ -40,6 +40,27 @@ jobs:
       - name: Build
         run: ./gradlew build --stacktrace
 
+      # Automated regression suite (data-driven GameTests). Runs a headless NeoForge
+      # gametest server — no display needed for the neoforgegametestserverdev target — which
+      # exits non-zero if any test fails, gating the job. Scoped to thesilverage:* by the run
+      # config. The arena structure NBT is a committed resource, so no datagen step is needed.
+      - name: Run GameTests (NeoForge)
+        run: ./gradlew :neoforge:runGameTest --stacktrace
+
+      # On a test failure, surface the per-test breakdown: the JUnit-like XML report plus the
+      # full server logs. (Failures also appear inline via the server's native ::error::
+      # GitHub annotations.)
+      - name: Upload GameTest report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gametest-report
+          path: |
+            neoforge/run/gametest/gametest-report.xml
+            neoforge/run/gametest/logs/
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Upload jars
         uses: actions/upload-artifact@v4
         with:

@@ -58,6 +58,24 @@ jobs:
       - name: Build
         run: ./gradlew build --stacktrace
 
+      # Gate the release on the automated GameTests — a headless NeoForge gametest server
+      # that exits non-zero on any failure, so a broken build is never published.
+      - name: Run GameTests (NeoForge)
+        run: ./gradlew :neoforge:runGameTest --stacktrace
+
+      # If the gate fails, capture the per-test breakdown (JUnit-like XML + server logs) so a
+      # blocked release is easy to diagnose. (Failures also print inline ::error:: annotations.)
+      - name: Upload GameTest report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gametest-report
+          path: |
+            neoforge/run/gametest/gametest-report.xml
+            neoforge/run/gametest/logs/
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Publish to Modrinth + CurseForge
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}

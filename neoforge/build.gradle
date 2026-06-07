@@ -14,6 +14,25 @@ def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
 
+// Dedicated source set for the automated GameTests. Its classes + datapack resources
+// (test_instance JSON, the arena structure NBT) live here, NOT in `main`, so NONE of it
+// ships in the production jar or sits on the runClient/runServer classpath — it is wired
+// onto the `gameTest` run ONLY (see loom.runs.gameTest below). It compiles against main's
+// full classpath (Minecraft, NeoForge, common) plus main's output.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+configurations {
+    // Let the gametest source set resolve the same (loom-remapped) dependencies as main.
+    gametestImplementation.extendsFrom implementation
+    gametestRuntimeOnly.extendsFrom runtimeOnly
+    gametestCompileOnly.extendsFrom compileOnly
+}
+
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
@@ -65,11 +84,27 @@ loom {
             environment "gameTestServer"
             forgeTemplate "gameTestServer"
             name = "Game Test"
-            source sourceSets.main
-            // Select ONLY this mod's tests (a ResourceSelectorArgument glob, like the /test
-            // command). Without it the server runs every registered test_instance — our 4
-            // plus any built-in ones — so a future built-in test couldn't break this run.
-            programArgs '--tests', "${rootProject.mod_id}:*"
+            // The gametest source set (its runtimeClasspath already includes main's output),
+            // so the test classes + datapack resources are present for THIS run only.
+            source sourceSets.gametest
+            // Declare BOTH source sets as the `thesilverage` mod *for this run only*, so
+            // NeoForge treats the gametest output as mod content: it scans TheSilverAgeGameTests'
+            // @EventBusSubscriber (→ registers the TEST_FUNCTION entries) and loads the
+            // test_instance / structure datapack resources. Scoped to this run, so the normal
+            // runClient/runServer/jar are untouched.
+            mods {
+                "${rootProject.mod_id}" {
+                    sourceSet sourceSets.main
+                    sourceSet sourceSets.gametest
+                }
+            }
+            // --tests: select ONLY this mod's tests (a ResourceSelectorArgument glob, like the
+            //   /test command). Without it the server runs every registered test_instance — our
+            //   4 plus any built-in ones — so a future built-in test couldn't break this run.
+            // --report: write a JUnit-like XML breakdown (relative to the run cwd =
+            //   run/gametest) for CI to upload on failure. On GitHub Actions the server ALSO
+            //   prints ::error:: annotations natively, so failures show inline too.
+            programArgs '--tests', "${rootProject.mod_id}:*", '--report', 'gametest-report.xml'
             runDir "run/gametest"
         }
     }

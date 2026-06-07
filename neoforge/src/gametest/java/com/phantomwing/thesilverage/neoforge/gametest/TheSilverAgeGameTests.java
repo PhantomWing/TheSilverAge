@@ -7,6 +7,7 @@ import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Silverfish;
@@ -16,62 +17,61 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Automated regression tests for The Silver Age, on Minecraft 1.21.5+'s data-driven
  * GameTest framework.
  *
- * <p><b>How the new system fits together.</b> 1.21.5 replaced the old annotation-based
- * GameTests ({@code @GameTest}/{@code @GameTestHolder}) with registry objects:
+ * <p><b>This whole package is a dedicated {@code gametest} source set</b> (see
+ * neoforge/build.gradle). Nothing here — neither these classes nor the {@code test_instance}
+ * JSON / arena structure under {@code src/gametest/resources} — is part of {@code main}, so it
+ * never ships in the production jar and never sits on the runClient/runServer classpath. It is
+ * wired onto the {@code :neoforge:runGameTest} run ONLY.</p>
+ *
+ * <p><b>How the new system fits together.</b> 1.21.5 replaced annotation-based GameTests with
+ * registry objects:
  * <ul>
  *   <li>The Java assertion logic lives here as {@link Consumer}&lt;{@link GameTestHelper}&gt;
- *       entries in the {@link Registries#TEST_FUNCTION} registry (registered below).</li>
- *   <li>Each is bound to a runnable test by a {@code test_instance} datapack JSON
+ *       entries in the {@link Registries#TEST_FUNCTION} registry. They are registered via
+ *       {@link RegisterEvent} below — fired because this class is an {@link EventBusSubscriber}
+ *       and the source set is on the gametest run's (mod) classpath.</li>
+ *   <li>Each function is bound to a runnable test by a {@code test_instance} datapack JSON
  *       (type {@code minecraft:function}) under
- *       {@code neoforge/src/main/resources/data/thesilverage/test_instance/}, which also
- *       names the {@code test_environment} and the {@code structure} the test runs in.</li>
- *   <li>The shared empty 7x5x7 stone-floored arena is generated as an NBT structure by
- *       {@code GameTestStructureProvider} (datagen) at
- *       {@code data/thesilverage/structure/silver_test_arena.nbt}.</li>
+ *       {@code src/gametest/resources/data/thesilverage/test_instance/}, which also names the
+ *       built-in {@code minecraft:default} environment and the shared arena structure.</li>
+ *   <li>The arena ({@code silver_test_arena.nbt}, a 7x5x7 stone-floored box) is a committed
+ *       static resource under {@code src/gametest/resources/data/thesilverage/structure/}.</li>
  * </ul>
- *
- * <p><b>Why this ships in the main jar.</b> The {@code test_instance} entries reference
- * these function ids, so the functions are registered <em>unconditionally</em> — that way
- * the datapack registry always resolves cleanly on any server (the tests simply never run
- * outside the dedicated gametest server). The footprint is a handful of tiny JSON files,
- * one small structure NBT and these lambdas. Run them with the {@code :neoforge:runGameTest}
- * Gradle task (see neoforge/build.gradle).
  */
-public final class SilverGameTests {
+@EventBusSubscriber(modid = TheSilverAge.MOD_ID)
+public final class TheSilverAgeGameTests {
     /** All assertions run inside the shared arena; the floor sits at relative y=0. */
     private static final BlockPos CENTER = new BlockPos(3, 1, 3);
 
-    public static final DeferredRegister<Consumer<GameTestHelper>> TEST_FUNCTIONS =
-            DeferredRegister.create(Registries.TEST_FUNCTION, TheSilverAge.MOD_ID);
-
-    public static final Supplier<Consumer<GameTestHelper>> MOON_PHASE_DETECTOR_FULL_MOON =
-            TEST_FUNCTIONS.register("moon_phase_detector_full_moon",
-                    () -> (Consumer<GameTestHelper>) SilverGameTests::moonPhaseDetectorFullMoon);
-    public static final Supplier<Consumer<GameTestHelper>> WAXING_SILVER_BLOCK =
-            TEST_FUNCTIONS.register("waxing_silver_block",
-                    () -> (Consumer<GameTestHelper>) SilverGameTests::waxingSilverBlock);
-    public static final Supplier<Consumer<GameTestHelper>> SILVER_BULB_LIGHTING =
-            TEST_FUNCTIONS.register("silver_bulb_lighting",
-                    () -> (Consumer<GameTestHelper>) SilverGameTests::silverBulbLighting);
-    public static final Supplier<Consumer<GameTestHelper>> SILVERFISH_DROPS_SILVER =
-            TEST_FUNCTIONS.register("silverfish_drops_silver",
-                    () -> (Consumer<GameTestHelper>) SilverGameTests::silverfishDropsSilver);
-
-    private SilverGameTests() {
+    private TheSilverAgeGameTests() {
     }
 
-    public static void register(IEventBus modEventBus) {
-        TEST_FUNCTIONS.register(modEventBus);
+    @SubscribeEvent
+    static void registerTestFunctions(RegisterEvent event) {
+        event.register(Registries.TEST_FUNCTION, helper -> {
+            helper.register(id("moon_phase_detector_full_moon"),
+                    (Consumer<GameTestHelper>) TheSilverAgeGameTests::moonPhaseDetectorFullMoon);
+            helper.register(id("waxing_silver_block"),
+                    (Consumer<GameTestHelper>) TheSilverAgeGameTests::waxingSilverBlock);
+            helper.register(id("silver_bulb_lighting"),
+                    (Consumer<GameTestHelper>) TheSilverAgeGameTests::silverBulbLighting);
+            helper.register(id("silverfish_drops_silver"),
+                    (Consumer<GameTestHelper>) TheSilverAgeGameTests::silverfishDropsSilver);
+        });
+    }
+
+    private static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, path);
     }
 
     // ------------------------------------------------------------------------
