@@ -5,8 +5,6 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
@@ -34,10 +32,15 @@ import java.util.stream.Stream;
  * registration is byte-identical on both loaders — no loader-specific event needed.
  * Both {@code ClientPlatform.registerItemProperties()} impls delegate to {@link #register()}.</p>
  *
- * <p>{@code @Environment(CLIENT)} — only referenced from client-only call sites, never
- * loaded on a dedicated server.</p>
+ * <p><b>Client-only by call-site isolation</b> — only referenced from client-only call
+ * sites (each loader's {@code ClientPlatformImpl} + the dist-guarded client bootstrap),
+ * never from server-reachable code, so it is never loaded on a dedicated server. It is
+ * deliberately <em>not</em> marked {@code @Environment(CLIENT)}: Architectury rewrites that
+ * to NeoForge's {@code @OnlyIn(Dist.CLIENT)} in the production jar, and NeoForge (1.21.x)
+ * dropped {@code @OnlyIn}'s runtime member-stripping — so the annotation no longer does
+ * anything except emit an ERROR-level warning in every user's log. Call-site isolation is
+ * the actual safety mechanism, so the annotation is pure noise and is omitted.</p>
  */
-@Environment(EnvType.CLIENT)
 public final class ModItemProperties {
     /** {@code thesilverage:moon_phase} — id of the custom range-select property + the items/ range_dispatch. */
     public static final ResourceLocation MOON_PHASE =
