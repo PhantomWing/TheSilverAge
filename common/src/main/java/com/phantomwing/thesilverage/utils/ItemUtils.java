@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.ItemLike;
 import java.util.Objects;
 
 public class ItemUtils {
-    public static ResourceLocation getResourceLocation(ItemLike item) {
+    public static Identifier getResourceLocation(ItemLike item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
     }
 
@@ -25,26 +25,26 @@ public class ItemUtils {
     }
 
     public static String getNameWithNamespace(ItemLike item) {
-        ResourceLocation rl = getResourceLocation(item);
+        Identifier rl = getResourceLocation(item);
         return rl.getNamespace() + ":" + rl.getPath();
     }
 
-    public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
+    public static Identifier getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
         String namespace = getNamespace(item);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
+        return Identifier.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
-    public static ResourceLocation getItemResourceLocation(ItemLike item) {
+    public static Identifier getItemResourceLocation(ItemLike item) {
         return getPrefixedResourceLocation(item, "item", "");
     }
 
-    public static ResourceLocation getItemResourceLocation(ItemLike item, String suffix) {
+    public static Identifier getItemResourceLocation(ItemLike item, String suffix) {
         return getPrefixedResourceLocation(item, "item", suffix);
     }
 
     public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
         String itemName = item.toString();
-        String trimName = trimMaterial.location().getPath();
+        String trimName = trimMaterial.identifier().getPath();
 
         if (itemName.contains(trimName)) {
             return trimName + "_darker";

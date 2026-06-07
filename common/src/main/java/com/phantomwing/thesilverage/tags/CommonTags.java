@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage.tags;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +16,7 @@ public class CommonTags {
         public static final TagKey<Block> ORES_SILVER = tag("ores/silver");
 
         private static TagKey<Block> tag(String path) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(COMMON_MOD_ID, path));
         }
     }
 
@@ -36,7 +36,7 @@ public class CommonTags {
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
 
         private static TagKey<Item> tag(String path) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(COMMON_MOD_ID, path));
         }
     }
 }

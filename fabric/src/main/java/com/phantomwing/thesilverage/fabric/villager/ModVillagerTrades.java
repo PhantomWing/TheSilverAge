@@ -3,8 +3,8 @@ package com.phantomwing.thesilverage.fabric.villager;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.villager.SilverVillagerTrades;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 
 /**
  * Fabric parity for the NeoForge {@code ModVillagerTrades} village-event
@@ -31,10 +31,10 @@ public final class ModVillagerTrades {
         // Cleric, profession level 2 — parity with the NeoForge
         // VillagerProfession.CLERIC / trades.get(2) branch.
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 2, factories ->
-                factories.add((trader, random) ->
+                factories.add((level, trader, random) ->
                         TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                                 TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
-                                ? clericTrade.getOffer(trader, random)
+                                ? clericTrade.getOffer(level, trader, random)
                                 : null));
 
         // Wandering trader: parity with NeoForge ModVillagerTrades —

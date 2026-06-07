@@ -51,7 +51,7 @@ public class ModArmorMaterials {
         );
         Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
         // 1.21.4: the equipment model id is now a typed ResourceKey<EquipmentAsset>
-        // (the EquipmentAssets registry), not a plain ResourceLocation. Resolves to
+        // (the EquipmentAssets registry), not a plain Identifier. Resolves to
         // the equipment asset at assets/<ns>/equipment/<path>.json.
         ResourceKey<EquipmentAsset> assetId =
                 ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation(name));

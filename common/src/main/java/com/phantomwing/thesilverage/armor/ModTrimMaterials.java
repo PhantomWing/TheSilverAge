@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
@@ -78,7 +78,7 @@ public class ModTrimMaterials {
         // armor. `item` / `itemModelIndex` are retained on this signature as documentation
         // of the legacy ordering.
         TrimMaterial trimMaterial = new TrimMaterial(SILVER_ASSETS,
-                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style));
+                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.identifier())).withStyle(style));
         context.register(trimKey, trimMaterial);
     }
 }

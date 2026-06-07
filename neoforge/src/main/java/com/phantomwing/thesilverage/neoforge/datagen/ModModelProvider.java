@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemMode
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
@@ -199,8 +199,8 @@ public class ModModelProvider extends ModelProvider {
     /** Cube whose all-faces texture is taken from another block (waxed → unwaxed reuse). */
     private static void cubeReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
         Block b = block.get();
-        ResourceLocation model = ModelTemplates.CUBE_ALL.create(b, TextureMapping.cube(textureSource.get()), bmg.modelOutput);
-        // 1.21.5: the create* helpers take MultiVariant, not ResourceLocation — wrap via plainVariant.
+        Identifier model = ModelTemplates.CUBE_ALL.create(b, TextureMapping.cube(textureSource.get()), bmg.modelOutput);
+        // 1.21.5: the create* helpers take MultiVariant, not Identifier — wrap via plainVariant.
         bmg.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
         bmg.registerSimpleItemModel(b, model);
     }
@@ -233,7 +233,7 @@ public class ModModelProvider extends ModelProvider {
         TextureMapping mapping = new TextureMapping()
                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(textureSource.get()))
                 .put(TextureSlot.END, TextureMapping.getBlockTexture(textureSource.get(), "_top"));
-        ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(
+        Identifier model = ModelTemplates.CUBE_COLUMN.create(
                 block.get(), mapping, bmg.modelOutput);
         bmg.createAxisAlignedPillarBlockCustomModel(block.get(), BlockModelGenerators.plainVariant(model));
         bmg.registerSimpleItemModel(block.get(), model);
@@ -290,15 +290,15 @@ public class ModModelProvider extends ModelProvider {
     /** Moon Phase Detector: daylight-detector-style model; INVERTED swaps the top texture. */
     private static void moonPhaseDetector(BlockModelGenerators bmg) {
         Block block = ModBlocks.MOON_PHASE_DETECTOR.get();
-        ResourceLocation side = TextureMapping.getBlockTexture(block, "_side");
+        Identifier side = TextureMapping.getBlockTexture(block, "_side");
         TextureMapping normalMap = new TextureMapping()
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
                 .put(TextureSlot.SIDE, side);
         TextureMapping invertedMap = new TextureMapping()
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_inverted_top"))
                 .put(TextureSlot.SIDE, side);
-        ResourceLocation normalModel = ModelTemplates.DAYLIGHT_DETECTOR.create(block, normalMap, bmg.modelOutput);
-        ResourceLocation invertedModel = ModelTemplates.DAYLIGHT_DETECTOR.createWithSuffix(block, "_inverted", invertedMap, bmg.modelOutput);
+        Identifier normalModel = ModelTemplates.DAYLIGHT_DETECTOR.create(block, normalMap, bmg.modelOutput);
+        Identifier invertedModel = ModelTemplates.DAYLIGHT_DETECTOR.createWithSuffix(block, "_inverted", invertedMap, bmg.modelOutput);
         // 1.21.5: blockstate-gen overhaul — Variant/VariantProperties removed.
         // MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(prop)
         //   .select(value, BlockModelGenerators.plainVariant(modelLocation))).
@@ -326,12 +326,12 @@ public class ModModelProvider extends ModelProvider {
      * with the plain (untrimmed) armor model as the fallback.
      */
     private static void trimmableArmor(ItemModelGenerators img, Item item, String slot) {
-        ResourceLocation itemTexture = TextureMapping.getItemTexture(item);
-        ResourceLocation slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
+        Identifier itemTexture = TextureMapping.getItemTexture(item);
+        Identifier slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
         // Base (no-trim) flat MODEL file — also the select fallback. Use the template
         // directly (not generateFlatItem, which would ALSO register an item-model
         // definition and collide with the select definition we accept() below).
-        ResourceLocation baseModel = ModelTemplates.FLAT_ITEM.create(
+        Identifier baseModel = ModelTemplates.FLAT_ITEM.create(
                 ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture), img.modelOutput);
 
         List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
@@ -347,7 +347,7 @@ public class ModModelProvider extends ModelProvider {
             // vanilla prepends "_" before joining, giving layer1 = the atlas permutation
             // sprite (e.g. helmet_trim_silver_darker) and model = silver_helmet_<x>_trim.
             String suffix = "_" + data.assets().assetId(ModTrimMaterials.SILVER_EQUIPMENT_ASSET).suffix();
-            ResourceLocation trimModel = baseModel.withSuffix(suffix + "_trim");
+            Identifier trimModel = baseModel.withSuffix(suffix + "_trim");
             img.generateLayeredItem(trimModel, itemTexture, slotPrefix.withSuffix(suffix));
             cases.add(ItemModelUtils.when(data.materialKey(), ItemModelUtils.plainModel(trimModel)));
         }
@@ -391,10 +391,10 @@ public class ModModelProvider extends ModelProvider {
      * the fallback, mirroring vanilla's leather item definition.
      */
     private static void vanillaArmorTrimOverride(ItemModelGenerators img, Item item, String slot, boolean dyeable) {
-        ResourceLocation baseModel = ModelLocationUtils.getModelLocation(item);
-        ResourceLocation itemTexture = TextureMapping.getItemTexture(item);
-        ResourceLocation overlayTexture = dyeable ? TextureMapping.getItemTexture(item, "_overlay") : null;
-        ResourceLocation slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
+        Identifier baseModel = ModelLocationUtils.getModelLocation(item);
+        Identifier itemTexture = TextureMapping.getItemTexture(item);
+        Identifier overlayTexture = dyeable ? TextureMapping.getItemTexture(item, "_overlay") : null;
+        Identifier slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
 
         List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
         materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
@@ -404,11 +404,11 @@ public class ModModelProvider extends ModelProvider {
             // Model name uses the BASE material suffix (vanilla's convention: iron_helmet_iron_trim),
             // matching the names vanilla ships — so referencing it for vanilla materials hits the
             // existing (darker-baked-in) model.
-            ResourceLocation trimModel = baseModel.withSuffix("_" + data.assets().base().suffix() + "_trim");
+            Identifier trimModel = baseModel.withSuffix("_" + data.assets().base().suffix() + "_trim");
             if (data.materialKey() == ModTrimMaterials.SILVER) {
                 // Vanilla doesn't ship a silver trim model for its armor — generate it. Silver is
                 // never the matching material for vanilla armor, so always the plain silver sprite.
-                ResourceLocation silverSprite = slotPrefix.withSuffix("_silver");
+                Identifier silverSprite = slotPrefix.withSuffix("_silver");
                 if (dyeable) {
                     TextureMapping tm = new TextureMapping()
                             .put(TextureSlot.LAYER0, itemTexture)
@@ -456,8 +456,8 @@ public class ModModelProvider extends ModelProvider {
 
     /** Flat model {@code item/moon_dial_<i>} from texture {@code item/moon_dial_<i>}. */
     private static ItemModel.Unbaked frameModel(ItemModelGenerators img, int i) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "item/moon_dial_" + i);
-        ResourceLocation model = ModelTemplates.FLAT_ITEM.create(id, TextureMapping.layer0(id), img.modelOutput);
+        Identifier id = Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, "item/moon_dial_" + i);
+        Identifier model = ModelTemplates.FLAT_ITEM.create(id, TextureMapping.layer0(id), img.modelOutput);
         return ItemModelUtils.plainModel(model);
     }
 }

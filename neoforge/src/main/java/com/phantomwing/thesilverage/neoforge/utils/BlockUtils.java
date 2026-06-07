@@ -1,13 +1,13 @@
 package com.phantomwing.thesilverage.neoforge.utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Objects;
 
 public class BlockUtils {
-    public static ResourceLocation getResourceLocation(Block block) {
+    public static Identifier getResourceLocation(Block block) {
         return Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block));
     }
 
@@ -24,25 +24,25 @@ public class BlockUtils {
     }
 
     public static String getNameWithNamespace(Block block) {
-        ResourceLocation rl = getResourceLocation(block);
+        Identifier rl = getResourceLocation(block);
         return rl.getNamespace() + ":" + rl.getPath();
     }
 
-    public static ResourceLocation getPrefixedResourceLocation(Block block, String prefix) {
+    public static Identifier getPrefixedResourceLocation(Block block, String prefix) {
         String namespace = getNamespace(block);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block));
+        return Identifier.fromNamespaceAndPath(namespace, prefix + "/" + getName(block));
     }
 
-    public static ResourceLocation getPrefixedResourceLocationWithSuffix(Block block, String prefix, String suffix) {
+    public static Identifier getPrefixedResourceLocationWithSuffix(Block block, String prefix, String suffix) {
         String namespace = getNamespace(block);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : ""));
+        return Identifier.fromNamespaceAndPath(namespace, prefix + "/" + getName(block) + (!suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
-    public static ResourceLocation getBlockResourceLocation(Block block) {
+    public static Identifier getBlockResourceLocation(Block block) {
         return getPrefixedResourceLocation(block, "block");
     }
 
-    public static ResourceLocation getBlockResourceLocation(Block block, String suffix) {
+    public static Identifier getBlockResourceLocation(Block block, String suffix) {
         return getPrefixedResourceLocationWithSuffix(block, "block", suffix);
     }
 }

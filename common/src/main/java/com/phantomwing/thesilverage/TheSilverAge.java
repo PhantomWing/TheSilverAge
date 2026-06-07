@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 
 /**
@@ -21,7 +21,7 @@ public final class TheSilverAge {
     private TheSilverAge() {
     }
 
-    public static ResourceLocation resourceLocation(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier resourceLocation(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

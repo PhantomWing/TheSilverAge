@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -43,8 +43,8 @@ import java.util.stream.Stream;
  */
 public final class ModItemProperties {
     /** {@code thesilverage:moon_phase} — id of the custom range-select property + the items/ range_dispatch. */
-    public static final ResourceLocation MOON_PHASE =
-            ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
+    public static final Identifier MOON_PHASE =
+            Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
 
     private ModItemProperties() {
     }

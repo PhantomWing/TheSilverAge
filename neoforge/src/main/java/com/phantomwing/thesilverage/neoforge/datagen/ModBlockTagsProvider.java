@@ -7,7 +7,7 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -23,11 +23,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     // tags are referenced by string id; the generated JSONs are merged with
     // Sable's own at runtime when Sable is installed and are otherwise inert.
     private static final TagKey<Block> SABLE_HEAVY =
-            TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "heavy"));
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "heavy"));
     private static final TagKey<Block> SABLE_SUPER_LIGHT =
-            TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "super_light"));
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "super_light"));
     private static final TagKey<Block> SABLE_QUARTER_VOLUME =
-            TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "quarter_volume"));
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "quarter_volume"));
 
     public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, TheSilverAge.MOD_ID);

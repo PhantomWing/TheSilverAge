@@ -74,7 +74,7 @@ public final class TheSilverAgeFabric implements ModInitializer {
                 lootRegistry.entrySet().forEach(e -> {
                     LootTable table = e.getValue();
                     if (table instanceof SilverLootTableId holder) {
-                        holder.thesilverage$setLootTableId(e.getKey().location());
+                        holder.thesilverage$setLootTableId(e.getKey().identifier());
                     }
                 }));
     }

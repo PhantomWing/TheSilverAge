@@ -5,7 +5,7 @@ import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
 import com.phantomwing.thesilverage.loot.SilverLootSpec;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  *
  * <ul>
  *   <li><b>Id stamping</b> ({@link #thesilverage$getLootTableId()} /
- *       {@link #thesilverage$setLootTableId(ResourceLocation)}): vanilla
+ *       {@link #thesilverage$setLootTableId(Identifier)}): vanilla
  *       {@code LootTable} has no id, so an {@code @Unique} field is stamped once
  *       after all tables load (see {@code TheSilverAgeFabric}, via Fabric Loot
  *       API v2 {@code LootTableEvents.ALL_LOADED}). This is the Fabric
@@ -56,16 +56,16 @@ import java.util.function.Supplier;
 public abstract class LootTableMixin implements SilverLootTableId {
     @Unique
     @Nullable
-    private ResourceLocation thesilverage$lootTableId;
+    private Identifier thesilverage$lootTableId;
 
     @Override
     @Nullable
-    public ResourceLocation thesilverage$getLootTableId() {
+    public Identifier thesilverage$getLootTableId() {
         return this.thesilverage$lootTableId;
     }
 
     @Override
-    public void thesilverage$setLootTableId(ResourceLocation id) {
+    public void thesilverage$setLootTableId(Identifier id) {
         this.thesilverage$lootTableId = id;
     }
 
@@ -82,7 +82,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
     )
     private void thesilverage$applySilverLoot(LootContext context,
                                               CallbackInfoReturnable<ObjectArrayList<ItemStack>> cir) {
-        ResourceLocation tableId = this.thesilverage$lootTableId;
+        Identifier tableId = this.thesilverage$lootTableId;
         ObjectArrayList<ItemStack> generatedLoot = cir.getReturnValue();
         if (tableId == null || generatedLoot == null) {
             return;
@@ -114,7 +114,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
     )
     private void thesilverage$applySilverEntityDrops(LootParams params, long seed,
                                                      Consumer<ItemStack> consumer, CallbackInfo ci) {
-        ResourceLocation tableId = this.thesilverage$lootTableId;
+        Identifier tableId = this.thesilverage$lootTableId;
         if (tableId == null) {
             return;
         }
@@ -141,7 +141,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
      * {@code LootItemRandomChanceCondition}), then the shared algorithm.
      */
     @Unique
-    private void thesilverage$applyMatchingEntries(ResourceLocation tableId,
+    private void thesilverage$applyMatchingEntries(Identifier tableId,
                                                    LootContext context,
                                                    ObjectArrayList<ItemStack> sink) {
         RandomSource random = context.getRandom();

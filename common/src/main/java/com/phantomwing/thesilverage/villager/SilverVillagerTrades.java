@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage.villager;
 
 import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
@@ -39,7 +39,7 @@ public final class SilverVillagerTrades {
      * (maxUses 12, villagerXp 10). The only active Silver villager trade.
      */
     public static VillagerTrades.ItemListing clericSilverIngotForEmerald() {
-        return (trader, random) -> new MerchantOffer(
+        return (level, trader, random) -> new MerchantOffer(
                 new ItemCost(ModItems.SILVER_INGOT.get(), 3),
                 new ItemStack(Items.EMERALD, 1),
                 12,

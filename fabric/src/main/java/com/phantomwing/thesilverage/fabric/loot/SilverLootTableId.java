@@ -1,6 +1,6 @@
 package com.phantomwing.thesilverage.fabric.loot;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 public interface SilverLootTableId {
     /** The registry id of this loot table, or {@code null} if not stamped. */
     @Nullable
-    ResourceLocation thesilverage$getLootTableId();
+    Identifier thesilverage$getLootTableId();
 
     /** Stamps this loot table's registry id (called once at load time). */
-    void thesilverage$setLootTableId(ResourceLocation id);
+    void thesilverage$setLootTableId(Identifier id);
 }

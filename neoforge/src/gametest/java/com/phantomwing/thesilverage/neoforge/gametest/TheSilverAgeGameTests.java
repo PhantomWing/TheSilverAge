@@ -7,7 +7,7 @@ import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Silverfish;
@@ -70,8 +70,8 @@ public final class TheSilverAgeGameTests {
         });
     }
 
-    private static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, path);
+    private static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, path);
     }
 
     // ------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public final class TheSilverAgeGameTests {
     private static void moonPhaseDetectorFullMoon(GameTestHelper helper) {
         // Day 0 -> moon phase 0 (full); 14000 ticks-of-day is night, so the detector reads
         // the current (full) phase rather than a day transition. NORMAL mode: POWER = 15 - 0.
-        helper.setDayTime(14000);
+        helper.getLevel().setDayTime(14000L);
         helper.setBlock(CENTER, ModBlocks.MOON_PHASE_DETECTOR.get());
         helper.startSequence()
                 .thenExecuteAfter(25, () ->

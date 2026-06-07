@@ -7,7 +7,7 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -26,7 +26,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     /** Farmer's Delight's knife tag — the Cutting Board's accepted tool. Adding to it is
      *  harmless when FD is absent (the tag is simply never consulted). */
     private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
-            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("farmersdelight", "tools/knives"));
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("farmersdelight", "tools/knives"));
 
 
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {

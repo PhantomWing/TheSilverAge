@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.InteractionResult;
 
@@ -53,7 +53,7 @@ public final class RecipeOverridePack {
     public static void register() {
         FabricLoader.getInstance().getModContainer(TheSilverAge.MOD_ID).ifPresent(container ->
                 ResourceManagerHelper.registerBuiltinResourcePack(
-                        ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, PACK_PATH),
+                        Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, PACK_PATH),
                         container,
                         Component.literal("The Silver Age: Recipe-Override Textures"),
                         ResourcePackActivationType.DEFAULT_ENABLED));
@@ -97,7 +97,7 @@ public final class RecipeOverridePack {
         PackRepository repo = mc.getResourcePackRepository();
 
         // Resolve the pack's ACTUAL repository id rather than trusting the
-        // hardcoded PACK_ID: Fabric derives the id from the ResourceLocation but
+        // hardcoded PACK_ID: Fabric derives the id from the Identifier but
         // the exact format is an implementation detail. The previous hardcoded
         // comparison never matched, so isSelected was always false and the
         // toggle silently no-op'd (config-off / server-off left the textures on).

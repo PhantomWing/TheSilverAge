@@ -6,11 +6,11 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public class ModAdvancementProvider implements AdvancementSubProvider {
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        ResourceLocation.parse("thesilverage:textures/block/oxidized_cut_silver.png"),
+                        Identifier.parse("thesilverage:textures/block/oxidized_cut_silver.png"),
                         AdvancementType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));

@@ -1,6 +1,6 @@
 package com.phantomwing.thesilverage.neoforge.item;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * NeoForge-side delegate for the Moon Dial item-property override.
@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public final class ModItemProperties {
     /** Re-exported for source compatibility; identical value to the shared class. */
-    public static final ResourceLocation MOON_PHASE =
+    public static final Identifier MOON_PHASE =
             com.phantomwing.thesilverage.client.ModItemProperties.MOON_PHASE;
 
     private ModItemProperties() {
