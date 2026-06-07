@@ -4,7 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -66,8 +66,14 @@ public final class RecipeOverridePackHandler {
     public static void onAddPackFinders(@NotNull AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
+        // 1.21.9: IModFile.findResource(String) was removed; resolve the pack root against
+        // the mod file's content roots (its JarContents) instead.
         Path packRoot = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile()
-                .findResource(PACK_RESOURCE_ROOT);
+                .getContents().getContentRoots().stream()
+                .map(root -> root.resolve(PACK_RESOURCE_ROOT))
+                .filter(Files::exists)
+                .findFirst()
+                .orElse(null);
         if (packRoot == null || !Files.exists(packRoot)) {
             // In a dev environment common's resources may not be on the NeoForge
             // mod file's resource path (see the processResources copy in
@@ -147,7 +153,7 @@ public final class RecipeOverridePackHandler {
         Minecraft mc = Minecraft.getInstance();
         if (mc == null) return;
         if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
-        if (mc.screen instanceof ReceivingLevelScreen) return; // still joining a world — reloading now hangs
+        if (mc.screen instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
         syncPending = false;
         if (appliedOverride != desiredOverride()) {
             mc.reloadResourcePacks();

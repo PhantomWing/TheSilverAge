@@ -80,7 +80,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
 
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull BlockHitResult hitResult) {
         if (player.mayBuild()) {
-            if (level.isClientSide) {
+            if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             } else {
                 // Invert the block.
@@ -113,7 +113,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return !level.isClientSide && level.dimensionType().hasSkyLight() ? createTickerHelper(blockEntityType, ModBlockEntityTypes.MOON_PHASE_DETECTOR.get(), MoonPhaseDetectorBlock::tickEntity) : null;
+        return !level.isClientSide() && level.dimensionType().hasSkyLight() ? createTickerHelper(blockEntityType, ModBlockEntityTypes.MOON_PHASE_DETECTOR.get(), MoonPhaseDetectorBlock::tickEntity) : null;
     }
 
     private static void tickEntity(Level level, BlockPos pos, BlockState state, MoonPhaseDetectorBlockEntity blockEntity) {

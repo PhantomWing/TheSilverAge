@@ -48,7 +48,7 @@ public final class TheSilverAgeNeoForge {
 
         // Client-only wiring, isolated in a separate class so the server class
         // loader never sees the client types it references (see class javadoc).
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             TheSilverAgeNeoForgeClient.init(modEventBus, container);
         }
 
