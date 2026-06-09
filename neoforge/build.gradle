@@ -1,5 +1,7 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    // Maintained Shadow fork (Gradle-9 compatible). With loom-no-remap (26.1) there is no
+    // remapJar — shadowJar becomes the PRIMARY mod artifact (bundles :common into the jar).
+    id 'com.gradleup.shadow' version '9.4.2'
 }
 
 architectury {
@@ -125,17 +127,19 @@ configurations {
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
+    // 26.1/loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
     // Architectury API (NeoForge).
-    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
+    api "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    // `namedElements` no longer exists under loom-no-remap — reference :common directly.
+    common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency). ----
 
-    // Jade — dev-runtime nicety (runtime-only).
-    modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    // Jade — dev-runtime nicety (runtime-only). loom-no-remap: modLocalRuntime -> localRuntime.
+    localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
     // Recipe viewer (JEI/EMI) — NONE for 1.21.6 yet; dependency intentionally omitted.
     // Re-add `modLocalRuntime("mezz.jei:jei-${minecraft_version}-neoforge:<ver>")` and/or
     // the EMI dep + ModEmiPlugin when a 1.21.6 build ships. See gradle.properties.
@@ -171,32 +175,35 @@ processResources {
     }
 }
 
+// 26.1/loom-no-remap: no remapJar. The default `jar` is loom-processed; we mark it `raw` and
+// build shadowJar on top of its output so :common is merged in. shadowJar = primary mod jar.
+//
+// Access transformer: this subproject ships a HAND-MAINTAINED META-INF/accesstransformer.cfg
+// that mirrors every entry in common's thesilverage.accesswidener (the AW does not auto-convert
+// to an AT anymore — there is no remapJar to run atAccessWideners). NeoForge reads the AT from
+// the jar's META-INF and applies it at load. It is in neoforge main resources, so it ships in
+// the jar normally (and is preserved through the jar -> shadowJar pipeline).
+jar {
+    archiveClassifier = 'raw'
+}
+
 shadowJar {
+    dependsOn jar
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
+
     exclude 'fabric.mod.json'
     exclude 'architectury.common.json'
 
-    // Drop the compile-only Farmer's Delight KnifeItem stub from the shipped jar.
-    // The stub (src/main/java/vectorwing/farmersdelight/common/item/KnifeItem)
-    // exists ONLY so SilverKnifeItem can `extend` FD's KnifeItem at compile time
-    // (no FD jar is available past MC 1.21.1). It must NOT ship: once FD ships for
-    // 1.21.3 the real class (same FQN) is what SilverKnifeItem binds to, and a
-    // shipped stub would shadow/conflict with it. Mirrors the Fabric FDR stub.
+    // Drop the compile-only Farmer's Delight KnifeItem stub from the shipped jar (compile-time
+    // only; the real FD class binds at runtime). Mirrors the Fabric FDR stub exclusion.
     exclude 'vectorwing/**'
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = 'dev-shadow'
+    archiveClassifier = null
 }
 
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    // NOTE (Phase 0): the common access widener is currently empty and the NeoForge
-    // subproject ships an (intentionally empty) placeholder accesstransformer.cfg to
-    // preserve the AT concept. Converting the AW into an AT here
-    // (`atAccessWideners.add 'thesilverage.accesswidener'`) conflicts with that
-    // placeholder ("jar already contains an access transformer"), so AW->AT
-    // conversion is deferred until real entries exist in a later phase.
-}
+assemble.dependsOn shadowJar
 
 sourcesJar {
     def commonSources = project(':common').sourcesJar
@@ -204,9 +211,17 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
+// Redirect the java component's outgoing artifacts to shadowJar (the shippable jar), so
+// `from components.java` doesn't publish the classifier='raw' jar. Scaffolding (no maven
+// repositories configured) but must resolve at configuration time.
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
     }
 }
 
@@ -229,7 +244,7 @@ publishing {
 apply plugin: 'me.modmuss50.mod-publish-plugin'
 
 publishMods {
-    file = remapJar.archiveFile
+    file = shadowJar.archiveFile
     // Same scheme as Fabric: version "1.3.1" / title "The Silver Age 1.3.1", distinguished
     // by the game-version + loader tags.
     version = rootProject.mod_version

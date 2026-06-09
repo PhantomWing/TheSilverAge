@@ -26,9 +26,11 @@ processResources {
 dependencies {
     // We depend on Fabric Loader here to use the Fabric @Environment annotations and
     // get the mixin dependencies. Do NOT use other classes from Fabric Loader.
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    // 26.1/loom-no-remap: the `mod`-prefixed configs (modImplementation/modApi) are gone —
+    // there is no remapping, so dependencies are plain implementation/api.
+    implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     // Architectury API (common).
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+    api "dev.architectury:architectury:${rootProject.architectury_version}"
 }
 
 publishing {

@@ -12,5 +12,6 @@
   ],
   "item": "thesilverage:silver_nugget",
   "maxAmount": 2,
-  "minAmount": 0
+  "minAmount": 0,
+  "priority": 0
 }

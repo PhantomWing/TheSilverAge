@@ -1,50 +1,30 @@
 package com.phantomwing.thesilverage.villager;
 
-import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
-
 /**
  * Loader-agnostic source of truth for the Silver villager trades.
  *
- * <p>Mirrors the "shared spec, per-loader apply" model already used for loot:
- * the trade content (items, counts, uses, xp, price multiplier) lives here once,
- * and each loader merely registers it through its own API — NeoForge from
- * {@code VillagerTradesEvent} / {@code WandererTradesEvent}, Fabric via
- * {@code TradeOfferHelper}. Keeping the {@link MerchantOffer} construction in a
- * single place guarantees the two loaders stay byte-identical.</p>
+ * <p><b>26.1: now DATA-DRIVEN.</b> 26.1 rewrote villager trades from code-defined
+ * {@code VillagerTrades.ItemListing} interfaces to a datapack {@code villager_trade} registry
+ * (+ {@code tags/villager_trade/<profession>/level_N} tags), and NeoForge removed its
+ * {@code VillagerTradesEvent}/{@code WandererTradesEvent}. The Silver cleric trade (Cleric L2:
+ * 3 Silver Ingot &rarr; 1 Emerald, maxUses 12, xp 10, reputation_discount 0.05) is therefore
+ * defined as pure data — loader-agnostic, no per-loader code:</p>
+ * <ul>
+ *   <li>{@code data/thesilverage/villager_trade/cleric/2/silver_ingot_emerald.json} — the trade,
+ *       gated behind {@code enable_villager_trades} via {@code neoforge:conditions} +
+ *       {@code fabric:load_conditions} (config parity on both loaders).</li>
+ *   <li>{@code data/minecraft/tags/villager_trade/cleric/level_2.json} — adds the trade to the
+ *       cleric L2 pool (a {@code required:false} entry, so it's skipped when the config gates it out).</li>
+ * </ul>
  *
- * <p><b>Config gating is intentionally NOT done here</b> — it is applied by each
- * loader's registrant at its idiomatic point: NeoForge early-returns from the
- * trade event when the config is off (re-checked every rebuild); Fabric wraps
- * the listing so it returns {@code null} (= no offer, which vanilla skips) while
- * the config is off, because {@code TradeOfferHelper} registers only once at
- * mod-init and must still honour live config toggles.</p>
+ * <p>This class + the per-loader {@code ModVillagerTrades} are now vestigial no-ops (kept only so
+ * their setup call sites need no change); {@code PRICE_MULTIPLIER} is mirrored by the data file's
+ * {@code reputation_discount}.</p>
  */
 public final class SilverVillagerTrades {
-    /**
-     * Carried over verbatim from the original single-loader build so both
-     * loaders price the trade identically.
-     */
+    /** Mirrors the data file's {@code reputation_discount} (Cleric L2 price multiplier). */
     public static final float PRICE_MULTIPLIER = 0.05f;
 
     private SilverVillagerTrades() {
-    }
-
-    /**
-     * Cleric, profession level 2: buy 3 Silver Ingot, sell 1 Emerald
-     * (maxUses 12, villagerXp 10). The only active Silver villager trade.
-     */
-    public static VillagerTrades.ItemListing clericSilverIngotForEmerald() {
-        return (level, trader, random) -> new MerchantOffer(
-                new ItemCost(ModItems.SILVER_INGOT.get(), 3),
-                new ItemStack(Items.EMERALD, 1),
-                12,
-                10,
-                PRICE_MULTIPLIER
-        );
     }
 }

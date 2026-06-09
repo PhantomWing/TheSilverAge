@@ -6,6 +6,8 @@ public class LevelUtils {
     /**
      * Ticks per Minecraft day. 1.21.11 removed the {@code Level.TICKS_PER_DAY} constant (and
      * {@code Level.getMoonPhase()}); the value is stable, so it is reproduced locally.
+     * 26.1 replaced {@code Level.getDayTime()} with the WorldClock system; the overworld day
+     * time is now {@code Level.getOverworldClockTime()} (still in ticks; 24000 = one day).
      */
     private static final long TICKS_PER_DAY = 24000L;
 
@@ -14,14 +16,14 @@ public class LevelUtils {
      * day index ({@code dayTime / 24000}) modulo 8. 0 = Full Moon, 4 = New Moon.
      */
     private static int moonPhaseOf(Level level) {
-        return (int) (level.getDayTime() / TICKS_PER_DAY % 8L);
+        return (int) (level.getOverworldClockTime() / TICKS_PER_DAY % 8L);
     }
 
     public static int getMoonPhaseSignal(Level level) {
         if (level != null && !level.dimensionType().hasFixedTime()) {
             // If it is day, show a "transition" between the current and next moon phase.
             // If it is night, show the current moon phase.
-            double progressionInDay = ((double) level.getDayTime() / TICKS_PER_DAY) % 1;
+            double progressionInDay = ((double) level.getOverworldClockTime() / TICKS_PER_DAY) % 1;
             boolean isDay = progressionInDay < 0.52 || progressionInDay > 0.95; // Consider it day for a short period of time to show the transition.
 
             int moonPhase = moonPhaseOf(level) * 2 - (isDay ? 1 : 0);

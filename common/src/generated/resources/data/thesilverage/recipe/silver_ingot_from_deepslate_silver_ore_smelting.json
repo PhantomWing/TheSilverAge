@@ -5,7 +5,6 @@
   "experience": 1.0,
   "ingredient": "thesilverage:deepslate_silver_ore",
   "result": {
-    "count": 1,
     "id": "thesilverage:silver_ingot"
   }
 }

@@ -48,8 +48,9 @@ public final class MonsterArmorHandler {
             return;
         }
 
-        // Check if we should equip Silver armor.
-        if (entity.getType().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR) && entity instanceof Mob mob) {
+        // Check if we should equip Silver armor. 26.1: EntityType.is(TagKey) was removed; tag
+        // membership is queried via the type's built-in registry holder.
+        if (entity.getType().builtInRegistryHolder().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR) && entity instanceof Mob mob) {
             RandomSource random = mob.getRandom();
 
             ItemStack helmet = mob.getItemBySlot(EquipmentSlot.HEAD);

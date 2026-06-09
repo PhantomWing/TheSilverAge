@@ -25,11 +25,14 @@ public final class WeatheringPlatformImpl {
     private WeatheringPlatformImpl() {
     }
 
+    // 26.1 fabric-api (content-registries v11) renamed these:
+    //   registerOxidizableBlockPair -> registerNextStage  (less-oxidized, more-oxidized)
+    //   registerWaxableBlockPair    -> registerWaxable     (unwaxed, waxed)
     public static void registerOxidation(Supplier<Block> less, Supplier<Block> more) {
-        OxidizableBlocksRegistry.registerOxidizableBlockPair(less.get(), more.get());
+        OxidizableBlocksRegistry.registerNextStage(less.get(), more.get());
     }
 
     public static void registerWaxable(Supplier<Block> unwaxed, Supplier<Block> waxed) {
-        OxidizableBlocksRegistry.registerWaxableBlockPair(unwaxed.get(), waxed.get());
+        OxidizableBlocksRegistry.registerWaxable(unwaxed.get(), waxed.get());
     }
 }

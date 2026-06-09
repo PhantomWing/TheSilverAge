@@ -2,7 +2,6 @@
   "type": "minecraft:stonecutting",
   "ingredient": "thesilverage:oxidized_silver",
   "result": {
-    "count": 1,
     "id": "thesilverage:oxidized_silver_pillar"
   }
 }

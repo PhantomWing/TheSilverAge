@@ -30,15 +30,18 @@ public class AddItemModifier extends LootModifier {
     private final int max;
 
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item, int count) {
-        super(conditionsIn);
-
-        this.item = item;
-        this.min = count;
-        this.max = count;
+        this(conditionsIn, 0, item, count, count);
     }
 
+    /** Code-construction constructor (datagen) — uses the default GLM priority 0. */
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
-        super(conditionsIn);
+        this(conditionsIn, 0, item, minAmount, maxAmount);
+    }
+
+    // 26.1: NeoForge added a `priority` int to LootModifier (codecStart now yields
+    // (conditions[], priority)); the codec's apply() needs the priority as the 2nd parameter.
+    public AddItemModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
+        super(conditionsIn, priority);
 
         this.item = item;
         this.min = minAmount;

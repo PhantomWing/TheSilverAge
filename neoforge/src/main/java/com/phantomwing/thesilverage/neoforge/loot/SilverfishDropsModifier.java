@@ -29,8 +29,16 @@ public class SilverfishDropsModifier extends LootModifier {
     private final int minAmount;
     private final int maxAmount;
 
+    /** Code-construction constructor (datagen) — uses the default GLM priority 0. */
     public SilverfishDropsModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
-        super(conditionsIn);
+        this(conditionsIn, 0, item, minAmount, maxAmount);
+    }
+
+    // 26.1: NeoForge added a `priority` int to LootModifier (codecStart now yields
+    // (conditions[], priority)); the codec's apply() therefore needs a constructor whose 2nd
+    // parameter is the priority.
+    public SilverfishDropsModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
+        super(conditionsIn, priority);
 
         this.item = item;
         this.minAmount = minAmount;

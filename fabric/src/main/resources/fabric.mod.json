@@ -25,6 +25,7 @@
   "mixins": [
     "thesilverage.mixins.json"
   ],
+  "accessWidener": "thesilverage.accesswidener",
   "depends": {
     "fabricloader": "${dep_fabricloader}",
     "fabric-api": "${dep_fabric_api}",

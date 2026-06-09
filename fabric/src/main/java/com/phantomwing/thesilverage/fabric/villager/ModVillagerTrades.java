@@ -1,48 +1,20 @@
 package com.phantomwing.thesilverage.fabric.villager;
 
-import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.villager.SilverVillagerTrades;
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 
 /**
- * Fabric parity for the NeoForge {@code ModVillagerTrades} village-event
- * handlers.
+ * Fabric parity for the NeoForge {@code ModVillagerTrades}.
  *
- * <p>NeoForge adds the Silver trade from {@code VillagerTradesEvent} (re-fired
- * whenever a villager's trades are (re)built, so its
- * {@code Configuration.ENABLE_VILLAGER_TRADES} check is live). Fabric's
- * {@link TradeOfferHelper} instead registers a factory <b>once</b> at mod-init,
- * so the config gate is pushed <em>into</em> the listing: when the option is
- * off the factory returns {@code null}, which vanilla's trade assembly skips —
- * giving the same observable, live-toggleable behaviour as NeoForge.</p>
- *
- * <p>The trade content itself comes from the shared
- * {@link SilverVillagerTrades} so both loaders stay byte-identical.</p>
+ * <p><b>26.1: now DATA-DRIVEN — this class is vestigial.</b> Villager trades moved to a datapack
+ * {@code villager_trade} registry (see {@link SilverVillagerTrades} for the file layout). The
+ * Silver cleric trade is now pure data shared with NeoForge — no Fabric registration code.
+ * {@link #register()} is kept as a no-op so the mod-init call site needs no change.</p>
  */
 public final class ModVillagerTrades {
     private ModVillagerTrades() {
     }
 
+    /** No-op on 26.1 (villager trades temporarily disabled — see class doc + SilverVillagerTrades). */
     public static void register() {
-        VillagerTrades.ItemListing clericTrade = SilverVillagerTrades.clericSilverIngotForEmerald();
-
-        // Cleric, profession level 2 — parity with the NeoForge
-        // VillagerProfession.CLERIC / trades.get(2) branch.
-        TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 2, factories ->
-                factories.add((level, trader, random) ->
-                        TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                                TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
-                                ? clericTrade.getOffer(level, trader, random)
-                                : null));
-
-        // Wandering trader: parity with NeoForge ModVillagerTrades —
-        // addWanderingTraderTrades is gated by ENABLE_WANDERING_TRADER_TRADES
-        // but currently registers no offers (the Silver Horse Armor trade is a
-        // commented-out TODO upstream). Nothing to register here until that
-        // trade is enabled on NeoForge; add the matching
-        // TradeOfferHelper.registerWanderingTraderOffers(...) call in lockstep
-        // when it is.
     }
 }

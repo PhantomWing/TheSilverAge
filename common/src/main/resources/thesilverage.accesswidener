@@ -1,4 +1,4 @@
-accessWidener	v2	named
+accessWidener	v2	official
 
 # Silver door/trapdoor/pressure-plate behaviour needs the BlockSetType to be
 # registered in the vanilla static registry (ModBlockSetTypes). BlockSetType.register
@@ -13,14 +13,9 @@ accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	
 # codec)` on both loaders. Mirrored by a `public` field entry in the NeoForge AT.
 accessible	field	net/minecraft/client/renderer/item/properties/numeric/RangeSelectItemModelProperties	ID_MAPPER	Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
 
-# Silver Nugget firework-star parity (common ModFireworks). Vanilla
-# FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) as private static final;
-# the loader-agnostic patch reads and reassigns it, so widen it accessible +
-# mutable. NeoForge production mirrors this with a `public-f` entry in
-# accesstransformer.cfg (the AW is not converted to an AT in remapJar).
-# (1.21.2 removed the cached SHAPE_INGREDIENT field — matches() reads the map.)
-accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
-mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
+# (26.1 removed FireworkStarRecipe.SHAPE_BY_ITEM — the shape->ingredient mapping is now
+#  per-recipe data. The firework-star parity moved to a recipe override, so the widener
+#  entries for that static field were dropped. See firework.ModFireworks.)
 
 # 1.21.2 removed BlockEntityType.Builder; widen the (private) BlockEntityType
 # constructor so the shared ModBlockEntityTypes can build the Moon Phase Detector

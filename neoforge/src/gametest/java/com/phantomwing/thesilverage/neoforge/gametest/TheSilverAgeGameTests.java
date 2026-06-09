@@ -5,9 +5,13 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.clock.WorldClock;
+import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Silverfish;
@@ -87,7 +91,12 @@ public final class TheSilverAgeGameTests {
     private static void moonPhaseDetectorFullMoon(GameTestHelper helper) {
         // Day 0 -> moon phase 0 (full); 14000 ticks-of-day is night, so the detector reads
         // the current (full) phase rather than a day transition. NORMAL mode: POWER = 15 - 0.
-        helper.getLevel().setDayTime(14000L);
+        // 26.1: ServerLevel.setDayTime(long) was removed by the WorldClock rework. The overworld
+        // day time is now set via the (server) clock manager's setTotalTicks for the OVERWORLD clock.
+        ServerLevel level = helper.getLevel();
+        Holder<WorldClock> overworldClock = level.registryAccess()
+                .lookupOrThrow(Registries.WORLD_CLOCK).getOrThrow(WorldClocks.OVERWORLD);
+        level.clockManager().setTotalTicks(overworldClock, 14000L);
         helper.setBlock(CENTER, ModBlocks.MOON_PHASE_DETECTOR.get());
         helper.startSequence()
                 .thenExecuteAfter(25, () ->

@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_villager_trades"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_villager_trades"
+    }
+  ],
+  "wants": {
+    "id": "thesilverage:silver_ingot",
+    "count": 3
+  },
+  "gives": {
+    "id": "minecraft:emerald"
+  },
+  "max_uses": 12,
+  "xp": 10,
+  "reputation_discount": 0.05
+}

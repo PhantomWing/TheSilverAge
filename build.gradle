@@ -1,6 +1,11 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
-    id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
+    // 26.1 is UNOBFUSCATED — architectury-loom's normal `dev.architectury.loom` still requires
+    // a mappings dependency and a remapJar step, neither of which exists for 26.1 (see arch-loom
+    // issue #328). The `-no-remap` plugin variant is the maintainer-blessed path: it drops the
+    // mappings requirement + the remapJar task; common is bundled into each loader jar via the
+    // Shadow plugin instead (shadowJar becomes the primary artifact). Same loom version (1.17.477).
+    id 'dev.architectury.loom-no-remap' version "${architectury_loom_version}" apply false
     // Modrinth + CurseForge publishing — applied per loader subproject (fabric/neoforge).
     id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
 }
@@ -77,7 +82,7 @@ architectury {
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'dev.architectury.loom-no-remap'
 
     loom {
         silentMojangMappingsLicense()
@@ -85,12 +90,11 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // Mojang official mappings, layered with Parchment (kept consistent with the
-        // existing NeoForge ModDev setup which used Parchment ${parchment_mappings_version}).
-        mappings loom.layered {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_mappings_version}@zip")
-        }
+        // 26.1 is UNOBFUSCATED: official Mojang names ARE the runtime names. Mojang no longer
+        // ships a proguard mappings file (the 26.1.2 version JSON has no client_mappings /
+        // server_mappings download), so there is NOTHING to map — the mappings block is dropped
+        // entirely (loom.officialMojangMappings() would fail trying to download the missing file).
+        // Parchment is likewise obsolete (no obfuscated param names left to improve).
     }
 }
 
@@ -171,11 +175,11 @@ allprojects {
         }
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
-        options.release = 21
+        options.release = 25
     }
 
     java {

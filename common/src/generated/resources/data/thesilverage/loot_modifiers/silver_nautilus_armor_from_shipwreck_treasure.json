@@ -13,6 +13,7 @@
   "in_stacks": 1,
   "item": "thesilverage:silver_nautilus_armor",
   "max_stacks": 1,
+  "priority": 0,
   "removed_item": [
     "minecraft:copper_nautilus_armor"
   ]

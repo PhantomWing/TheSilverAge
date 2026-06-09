@@ -12,11 +12,9 @@ import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ProvidesTrimMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
@@ -30,12 +28,15 @@ public class ModItems {
 
     // Silver items
     public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver");
-    // 1.21.5: the ingredient->trim-material link moved off TrimMaterial (which dropped
-    // its `ingredient` field) onto the ingredient item, via the PROVIDES_TRIM_MATERIAL
-    // data component. Without this, a smithing table can't apply the silver trim with a
-    // silver ingot. The ResourceKey is resolved against the registry lazily at craft time.
+    // 1.21.5: the ingredient->trim-material link moved off TrimMaterial (which dropped its
+    // `ingredient` field) onto the ingredient item, via the PROVIDES_TRIM_MATERIAL component.
+    // Without this, a smithing table can't apply the silver trim with a silver ingot.
+    // 26.1: ProvidesTrimMaterial now takes a Holder<TrimMaterial>, which can't be resolved from
+    // a dynamic-registry ResourceKey at item-registration time. Item.Properties.trimMaterial(key)
+    // is the vanilla helper that wires it as a DELAYED holder component (resolved against the
+    // registry later), replacing the old `.component(PROVIDES_TRIM_MATERIAL, new ...(key))`.
     public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", Item::new,
-            baseItem().component(DataComponents.PROVIDES_TRIM_MATERIAL, new ProvidesTrimMaterial(ModTrimMaterials.SILVER)));
+            baseItem().trimMaterial(ModTrimMaterials.SILVER));
     public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget");
     // Silver sheet is a Create-compat item (obtained via Mechanical Press).
     // Only appears in the creative tab when Create is loaded.

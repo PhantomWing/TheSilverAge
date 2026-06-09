@@ -13,6 +13,7 @@
   "in_stacks": 1,
   "item": "thesilverage:silver_nugget",
   "max_stacks": 3,
+  "priority": 0,
   "removed_item": [
     "minecraft:gold_nugget",
     "minecraft:iron_nugget"

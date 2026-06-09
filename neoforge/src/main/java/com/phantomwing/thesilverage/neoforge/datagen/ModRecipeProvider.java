@@ -7,12 +7,20 @@ import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+
+import java.util.Map;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
@@ -29,10 +37,14 @@ public class ModRecipeProvider extends RecipeProvider {
     // reference to the RecipeOutput so the conditional vanilla-override recipes
     // can still wrap it via output.withConditions(...).
     private final RecipeOutput output;
+    /** Kept so the firework-star override can resolve item tags (#dyes / #skulls) to HolderSets
+     *  for the FireworkStarRecipe ingredients (Ingredient.of has no TagKey overload). */
+    private final HolderLookup.Provider registries;
 
     protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
         this.output = output;
+        this.registries = registries;
     }
 
     @Override
@@ -522,6 +534,55 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");  // Original recipe if override is disabled
+
+        // Firework Star — Silver Nugget parity (silver nugget acts as a STAR shape, like gold).
+        // 26.1 made the firework_star recipe data-driven (a `shapes` map of Shape->Ingredient),
+        // replacing the old static FireworkStarRecipe.SHAPE_BY_ITEM map the mod used to mutate.
+        // We override the vanilla recipe so the STAR shape accepts gold OR silver nugget.
+        fireworkStarOverride(conditionalOutput, fallbackOutput);
+    }
+
+    /**
+     * Emits a {@code minecraft:firework_star} override whose STAR shape accepts gold OR silver
+     * nugget (conditional, gated by OVERRIDE_VANILLA_RECIPES), plus a {@code _fallback} that is the
+     * exact vanilla recipe (STAR = gold nugget only) for when the override is disabled. Mirrors the
+     * comparator/repeater override scheme. Every other field replicates vanilla firework_star.
+     */
+    private void fireworkStarOverride(RecipeOutput conditionalOutput, RecipeOutput fallbackOutput) {
+        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        // Ingredient.of has no TagKey overload — resolve #minecraft:dyes / #minecraft:skulls to HolderSets.
+        Ingredient dye = Ingredient.of(items.getOrThrow(ItemTags.DYES));
+        Ingredient skulls = Ingredient.of(items.getOrThrow(ItemTags.SKULLS));
+        Ingredient fuel = Ingredient.of(Items.GUNPOWDER);
+        Ingredient trail = Ingredient.of(Items.DIAMOND);
+        Ingredient twinkle = Ingredient.of(Items.GLOWSTONE_DUST);
+        ItemStackTemplate result = new ItemStackTemplate(Items.FIREWORK_STAR);
+
+        // NOTE: the FireworkStarRecipe canonical (record) constructor order is
+        // (shapes, trail, twinkle, fuel, dye, result) — NOT (dye, fuel, trail, twinkle).
+        // Verified by diffing the generated _fallback against vanilla firework_star.json.
+
+        // Shared (non-star) shapes — identical to vanilla.
+        Ingredient burst = Ingredient.of(Items.FEATHER);
+        Ingredient largeBall = Ingredient.of(Items.FIRE_CHARGE);
+
+        // Conditional (override ON): STAR accepts gold + silver nugget.
+        Map<FireworkExplosion.Shape, Ingredient> silverShapes = Map.of(
+                FireworkExplosion.Shape.BURST, burst,
+                FireworkExplosion.Shape.CREEPER, skulls,
+                FireworkExplosion.Shape.LARGE_BALL, largeBall,
+                FireworkExplosion.Shape.STAR, Ingredient.of(Items.GOLD_NUGGET, ModItems.SILVER_NUGGET.get()));
+        SpecialRecipeBuilder.special(() -> new FireworkStarRecipe(silverShapes, trail, twinkle, fuel, dye, result))
+                .save(conditionalOutput, "minecraft:" + ItemUtils.getName(Items.FIREWORK_STAR));
+
+        // Fallback (override OFF): exact vanilla recipe — STAR = gold nugget only.
+        Map<FireworkExplosion.Shape, Ingredient> vanillaShapes = Map.of(
+                FireworkExplosion.Shape.BURST, burst,
+                FireworkExplosion.Shape.CREEPER, skulls,
+                FireworkExplosion.Shape.LARGE_BALL, largeBall,
+                FireworkExplosion.Shape.STAR, Ingredient.of(Items.GOLD_NUGGET));
+        SpecialRecipeBuilder.special(() -> new FireworkStarRecipe(vanillaShapes, trail, twinkle, fuel, dye, result))
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.FIREWORK_STAR) + "_fallback");
     }
 
     private void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
@@ -759,23 +820,30 @@ public class ModRecipeProvider extends RecipeProvider {
         campfireCooking(recipeOutput, RecipeCategory.FOOD, material, result, experience, 600); // Campfire cooking takes three times longer
     }
 
+    // 26.1: SimpleCookingRecipeBuilder.generic(... RecipeSerializer, Factory) was removed in favour
+    // of dedicated smelting()/blasting()/smoking()/campfireCooking() builders. smelting/blasting also
+    // take a CookingBookCategory (the recipe-book grouping) derived here from the RecipeCategory.
+    private static CookingBookCategory cookingBookCategory(RecipeCategory category) {
+        return category == RecipeCategory.FOOD ? CookingBookCategory.FOOD : CookingBookCategory.MISC;
+    }
+
     protected void smelting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
-                .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new)
+                .smelting(Ingredient.of(material), category, cookingBookCategory(category), result, experience, cookingTime)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_smelting");
     }
 
     protected void blasting(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
-                .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new)
+                .blasting(Ingredient.of(material), category, cookingBookCategory(category), result, experience, cookingTime)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_" + ItemUtils.getName(material) + "_blasting");
     }
 
     protected void smoking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
-                .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new)
+                .smoking(Ingredient.of(material), category, result, experience, cookingTime)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_smoking");
     }
@@ -788,7 +856,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected void campfireCooking(@NotNull RecipeOutput recipeOutput, RecipeCategory category, @NotNull ItemLike material, @NotNull ItemLike result, float experience, int cookingTime) {
         SimpleCookingRecipeBuilder
-                .generic(Ingredient.of(material), category, result, experience, cookingTime, RecipeSerializer.CAMPFIRE_COOKING_RECIPE, CampfireCookingRecipe::new)
+                .campfireCooking(Ingredient.of(material), category, result, experience, cookingTime)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, ItemUtils.getNameWithNamespace(result) + "_from_campfire_cooking");
     }

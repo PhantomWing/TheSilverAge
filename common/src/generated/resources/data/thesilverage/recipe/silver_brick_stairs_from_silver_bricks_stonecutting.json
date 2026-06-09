@@ -2,7 +2,6 @@
   "type": "minecraft:stonecutting",
   "ingredient": "thesilverage:silver_bricks",
   "result": {
-    "count": 1,
     "id": "thesilverage:silver_brick_stairs"
   }
 }

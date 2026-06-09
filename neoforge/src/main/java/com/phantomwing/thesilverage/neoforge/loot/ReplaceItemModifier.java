@@ -42,31 +42,30 @@ public class ReplaceItemModifier extends LootModifier
      * This loot modifier replaces all stacks of the specified item with another item (keeping the stack size).
      */
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace) {
-        super(conditions);
-
-        this.removedItems = itemToReplace;
-        this.item = itemToAdd.asItem();
-        this.minStacks = 0;
-        this.maxStacks = 0;
+        this(conditions, 0, itemToAdd, itemToReplace, 0, 0);
     }
 
     /**
      * This loot modifier replaces a random number of stacks of the specified item with another item (keeping the stack size).
      */
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int maxStacks) {
-        super(conditions);
-
-        this.removedItems = itemToReplace;
-        this.item = itemToAdd.asItem();
-        this.minStacks = maxStacks;
-        this.maxStacks = maxStacks;
+        this(conditions, 0, itemToAdd, itemToReplace, maxStacks, maxStacks);
     }
 
     /**
      * This loot modifier replaces a number of stacks of the specified item with another item (keeping the stack size).
+     * Code-construction entry point (datagen) — uses the default GLM priority 0.
      */
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
-        super(conditions);
+        this(conditions, 0, itemToAdd, itemToReplace, minStacks, maxStacks);
+    }
+
+    /**
+     * 26.1: NeoForge added a `priority` int to LootModifier (codecStart now yields
+     * (conditions[], priority)); the codec's apply() needs the priority as the 2nd parameter.
+     */
+    public ReplaceItemModifier(LootItemCondition[] conditions, int priority, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
+        super(conditions, priority);
 
         this.removedItems = itemToReplace;
         this.item = itemToAdd.asItem();

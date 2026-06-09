@@ -1,52 +1,30 @@
 package com.phantomwing.thesilverage.firework;
 
-import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.FireworkExplosion;
-import net.minecraft.world.item.crafting.FireworkStarRecipe;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Loader-agnostic firework-star recipe patch: lets the Silver Nugget act as a
- * {@link FireworkExplosion.Shape#STAR} shape ingredient in the vanilla
- * {@link FireworkStarRecipe}, exactly like a Gold Nugget.
+ * Silver Nugget firework-star parity: lets the Silver Nugget act as a
+ * {@link net.minecraft.world.item.component.FireworkExplosion.Shape#STAR} shape ingredient in
+ * the {@code minecraft:firework_star} recipe, exactly like a Gold Nugget.
  *
- * <p>Vanilla's {@code private static final Map<Item, FireworkExplosion.Shape>
- * SHAPE_BY_ITEM} maps shape items to their shape; {@code FireworkStarRecipe#matches}
- * checks {@code SHAPE_BY_ITEM.containsKey(...)} directly. (1.21.2 removed the cached
- * {@code SHAPE_INGREDIENT} field that older versions kept equal to
- * {@code SHAPE_BY_ITEM.keySet()}, so there is nothing extra to rebuild — mutating
- * the map alone is enough.) The original single-loader NeoForge build appended via
- * NeoForge's {@code CompoundIngredient}; that type is loader-specific, so here we
- * just merge into the map — pure vanilla, working on both loaders.</p>
+ * <p><b>26.1 change.</b> Earlier versions kept a {@code private static final Map<Item, Shape>
+ * SHAPE_BY_ITEM} on {@code FireworkStarRecipe} that {@code matches()} consulted directly, so the
+ * mod merged the Silver Nugget into it (widened via the access widener / access transformer).
+ * 26.1 removed that static map: the shape&rarr;ingredient association is now <b>per-recipe data</b>
+ * (the recipe carries a {@code Map<Shape, Ingredient> shapes} built from its JSON). There is no
+ * longer any static field to mutate, so the programmatic patch is gone.</p>
  *
- * <p>{@code SHAPE_BY_ITEM} is exposed (accessible + mutable) via the shared
- * {@code thesilverage.accesswidener}; NeoForge production additionally ships the
- * mirrored {@code public-f} access-transformer entry (the AW is not converted
- * to an AT in {@code remapJar}).</p>
+ * <p>The parity is instead provided by OVERRIDING the vanilla {@code minecraft:firework_star}
+ * recipe to add the Silver Nugget to the STAR shape's ingredient (emitted in datagen, shipped in
+ * the {@code silver_recipe_overrides} built-in pack alongside the other vanilla-recipe overrides).
+ * The obsolete {@code SHAPE_BY_ITEM} access-widener / access-transformer entries were removed.</p>
  *
- * <p>Call once during mod setup, after item registration: NeoForge runs it in
- * {@code FMLCommonSetupEvent} (enqueued onto the main thread); Fabric from the
- * {@code ModInitializer} after the common bootstrap.</p>
+ * <p>{@link #register()} is retained as a no-op so the existing loader setup call sites
+ * (NeoForge {@code FMLCommonSetupEvent}, Fabric {@code ModInitializer}) need no change.</p>
  */
 public final class ModFireworks {
-    private static final Map<Item, FireworkExplosion.Shape> SILVER_SHAPES = Map.of(
-            ModItems.SILVER_NUGGET.get(), FireworkExplosion.Shape.STAR);
-
     private ModFireworks() {
     }
 
+    /** No-op on 26.1+: firework-star parity is now data-driven (see class doc). */
     public static void register() {
-        // Merge the Silver shapes into vanilla's item→shape map. Start from the
-        // Silver entries and putAll vanilla so vanilla wins on the off chance of
-        // an overlap — identical ordering to the original NeoForge doApply.
-        Map<Item, FireworkExplosion.Shape> merged = new HashMap<>(SILVER_SHAPES);
-        merged.putAll(FireworkStarRecipe.SHAPE_BY_ITEM);
-        FireworkStarRecipe.SHAPE_BY_ITEM = merged;
-        // FireworkStarRecipe#matches reads SHAPE_BY_ITEM.containsKey(...) directly,
-        // so adding the Silver Nugget entry above is all that's needed (1.21.2
-        // removed the separate cached SHAPE_INGREDIENT field).
     }
 }

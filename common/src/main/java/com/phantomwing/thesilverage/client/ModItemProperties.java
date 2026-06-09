@@ -2,20 +2,14 @@ package com.phantomwing.thesilverage.client;
 
 import com.mojang.serialization.MapCodec;
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.utils.LevelUtils;
-import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.stream.Stream;
 
 /**
  * Loader-agnostic client registration of the Moon Dial's {@code thesilverage:moon_phase}
@@ -50,35 +44,20 @@ public final class ModItemProperties {
     }
 
     /**
-     * Client-setup registrations shared by both loaders: the {@code thesilverage:moon_phase}
-     * range-select property type, plus the transparent-block render layers. 1.21.4 no longer
-     * carries render type in the model JSON, so doors/trapdoors (cutout) and grates
-     * (translucent) register their layer here via Architectury's cross-loader RenderTypeRegistry.
+     * Client-setup registration shared by both loaders: the {@code thesilverage:moon_phase}
+     * range-select property type.
      *
-     * <p>1.21.6: block render layers moved from {@code RenderType} (cutout()/translucent())
-     * to the {@link ChunkSectionLayer} enum; Architectury's RenderTypeRegistry.register now
-     * takes a {@code ChunkSectionLayer}.</p>
+     * <p>26.1: programmatic block render layers are gone — Architectury removed
+     * {@code RenderTypeRegistry}. 26.1 derives the render layer AUTOMATICALLY: blocks with
+     * binary-alpha textures (doors, trapdoors, grates — all holes-with-opaque-metal, like vanilla
+     * copper_grate / copper_door whose models carry no {@code render_type}) render as cutout
+     * without any declaration. True translucency is the only opt-in, via {@code force_translucent}
+     * on a texture {@code Material}. The mod's transparent blocks are all cutout, so nothing needs
+     * to be registered or emitted — removing the old RenderTypeRegistry calls is sufficient.</p>
      */
     public static void register() {
         RangeSelectItemModelProperties.ID_MAPPER.put(MOON_PHASE, MoonPhaseProperty.MAP_CODEC);
-
-        RenderTypeRegistry.register(ChunkSectionLayer.CUTOUT, CUTOUT_BLOCKS);
-        RenderTypeRegistry.register(ChunkSectionLayer.TRANSLUCENT, TRANSLUCENT_BLOCKS);
     }
-
-    /** Doors + trapdoors (all weather/waxed states) — cutout render layer. */
-    private static final Block[] CUTOUT_BLOCKS = Stream.of(
-            ModBlocks.SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR,
-            ModBlocks.WAXED_SILVER_DOOR, ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR,
-            ModBlocks.SILVER_TRAPDOOR, ModBlocks.EXPOSED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR,
-            ModBlocks.WAXED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR
-    ).map(s -> (Block) s.get()).toArray(Block[]::new);
-
-    /** Grates (all weather/waxed states) — translucent render layer. */
-    private static final Block[] TRANSLUCENT_BLOCKS = Stream.of(
-            ModBlocks.SILVER_GRATE, ModBlocks.EXPOSED_SILVER_GRATE, ModBlocks.WEATHERED_SILVER_GRATE, ModBlocks.OXIDIZED_SILVER_GRATE,
-            ModBlocks.WAXED_SILVER_GRATE, ModBlocks.WAXED_EXPOSED_SILVER_GRATE, ModBlocks.WAXED_WEATHERED_SILVER_GRATE, ModBlocks.WAXED_OXIDIZED_SILVER_GRATE
-    ).map(s -> (Block) s.get()).toArray(Block[]::new);
 
     /**
      * 16-state moon-phase property: the settled phase at night plus a transition

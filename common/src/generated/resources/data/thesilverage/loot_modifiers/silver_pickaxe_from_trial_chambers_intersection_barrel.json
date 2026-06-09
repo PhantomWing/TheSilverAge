@@ -13,6 +13,7 @@
   "in_stacks": 1,
   "item": "thesilverage:silver_pickaxe",
   "max_stacks": 1,
+  "priority": 0,
   "removed_item": [
     "minecraft:golden_pickaxe"
   ]
