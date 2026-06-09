@@ -1,4 +1,10 @@
 # 1.3.1
+### Additions
+- Added Silver Spear and Silver Nautilus Armor
+
+### Changes
+- Improved Silver Horse Armor entity texture
+
 ### Fixes
 - Fixed server crashing on startup when using NeoForge.
 
