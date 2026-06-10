@@ -1,6 +1,5 @@
 plugins {
-    // Maintained Shadow fork (Gradle-9 compatible). With loom-no-remap (26.1) there is no
-    // remapJar — shadowJar becomes the PRIMARY mod artifact (bundles :common into the jar).
+    // loom-no-remap has no remapJar, so shadowJar is the primary mod artifact (bundles :common).
     id 'com.gradleup.shadow' version '9.4.2'
 }
 
@@ -10,17 +9,13 @@ architectury {
     }
 }
 
-// Resolved outside the loom { runs { } } closures: inside the RunConfigSettings
-// delegate, `data()` shadows other resolutions, so these are hoisted here.
+// Hoisted out of the loom runs closures (inside the delegate, `data()` shadows these).
 def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
 
-// Dedicated source set for the automated GameTests. Its classes + datapack resources
-// (test_instance JSON, the arena structure NBT) live here, NOT in `main`, so NONE of it
-// ships in the production jar or sits on the runClient/runServer classpath — it is wired
-// onto the `gameTest` run ONLY (see loom.runs.gameTest below). It compiles against main's
-// full classpath (Minecraft, NeoForge, common) plus main's output.
+// Dedicated source set for GameTests — kept out of `main` so it never ships or sits on the
+// runClient/runServer classpath; wired onto the `gameTest` run only.
 sourceSets {
     gametest {
         compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
@@ -29,7 +24,7 @@ sourceSets {
 }
 
 configurations {
-    // Let the gametest source set resolve the same (loom-remapped) dependencies as main.
+    // Let the gametest source set resolve the same dependencies as main.
     gametestImplementation.extendsFrom implementation
     gametestRuntimeOnly.extendsFrom runtimeOnly
     gametestCompileOnly.extendsFrom compileOnly
@@ -39,73 +34,37 @@ loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
     runs {
-        // NeoForge data generation. Ported from the pre-Architectury single-loader
-        // `runs.data` block. Output + existing-resource paths now point at the
-        // relocated common source set (datagen output is shared across loaders).
-        //   ./gradlew :neoforge:runData
-        // NeoForge 21.4 split the old single `data` run template into `clientData`
-        // + `serverData` (loom 1.10's data() maps to the now-removed `data` template
-        // → "Could not find Forge run template" error). We use clientData(): its
-        // environment is a superset (full client) so a single run with --all emits
-        // BOTH the client model/asset providers and the server data providers.
+        // Data generation: ./gradlew :neoforge:runData. clientData()'s environment is a
+        // superset, so one --all run emits both client and server data providers.
         data {
             clientData()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
-            // NOTE: no `--existing-mod farmersdelight` — FD is not yet published
-            // past MC 1.21.1, so it is absent from the datagen classpath on this
-            // branch. The FD-gated Silver Knife recipe is still emitted (gated via
-            // ModLoadedCondition, written to disk regardless of FD's presence).
         }
 
-        // Give the dev server its own working directory so its COMMON config
-        // (config/thesilverage-common.toml) is SEPARATE from the client's. Without
-        // this, runClient and runServer share run/config/, making it impossible to
-        // set different override_vanilla_recipes values — the mismatch the
-        // join-sync packet resolves. Mirrors the Fabric :fabric runDir split.
-        // `server` is a Loom-default run config, so we only override its runDir.
-        //   client config → neoforge/run/config/thesilverage-common.toml
-        //   server config → neoforge/run/server/config/thesilverage-common.toml
+        // Give the dev server its own runDir so its config is separate from the client's
+        // (lets client/server hold different override_vanilla_recipes values).
         server {
             runDir "run/server"
         }
 
-        // Automated GameTest server: launches a headless dedicated server, runs every
-        // test_instance in the `thesilverage` namespace, and exits with a code equal to the
-        // number of required failures (0 = all green). Task: ./gradlew :neoforge:runGameTest
-        //
-        // architectury-loom has no gameTestServer() helper (only client/server/data variants),
-        // so we bind NeoForge's `gameTestServer` userdev launch template directly via the
-        // public forgeTemplate(...) — the same mechanism server()/clientData() use internally.
-        // That template flips on `neoforge.enableGameTest` and selects the gametest main flow;
-        // we add the enabled-namespaces filter so ONLY this mod's tests run.
+        // Automated GameTest server: ./gradlew :neoforge:runGameTest. loom has no
+        // gameTestServer() helper, so bind NeoForge's template directly via forgeTemplate.
         gameTest {
-            // environment string MUST equal the forge template name — loom derives the
-            // launchTarget from `environment` (every built-in helper sets the two to the
-            // same value, e.g. server() => environment "server" + forgeTemplate "server").
+            // environment must equal the forge template name (loom derives launchTarget from it).
             environment "gameTestServer"
             forgeTemplate "gameTestServer"
             name = "Game Test"
-            // The gametest source set (its runtimeClasspath already includes main's output),
-            // so the test classes + datapack resources are present for THIS run only.
             source sourceSets.gametest
-            // Declare BOTH source sets as the `thesilverage` mod *for this run only*, so
-            // NeoForge treats the gametest output as mod content: it scans TheSilverAgeGameTests'
-            // @EventBusSubscriber (→ registers the TEST_FUNCTION entries) and loads the
-            // test_instance / structure datapack resources. Scoped to this run, so the normal
-            // runClient/runServer/jar are untouched.
+            // Declare both source sets as the mod for this run only, so NeoForge treats the
+            // gametest output as mod content (scans @EventBusSubscriber, loads test datapack).
             mods {
                 "${rootProject.mod_id}" {
                     sourceSet sourceSets.main
                     sourceSet sourceSets.gametest
                 }
             }
-            // --tests: select ONLY this mod's tests (a ResourceSelectorArgument glob, like the
-            //   /test command). Without it the server runs every registered test_instance — our
-            //   4 plus any built-in ones — so a future built-in test couldn't break this run.
-            // --report: write a JUnit-like XML breakdown (relative to the run cwd =
-            //   run/gametest) for CI to upload on failure. On GitHub Actions the server ALSO
-            //   prints ::error:: annotations natively, so failures show inline too.
+            // --tests: run only this mod's tests; --report: JUnit-like XML for CI.
             programArgs '--tests', "${rootProject.mod_id}:*", '--report', 'gametest-report.xml'
             runDir "run/gametest"
         }
@@ -120,41 +79,20 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// NOTE (1.21.6 branch): NO recipe viewer is available — JEI has no 1.21.6 build and EMI
-// is stalled at MC 1.21.1 (see gradle.properties PORT NOTES). Both deferred; the EMI
-// integration (ModEmiPlugin) + the -Precipe_viewer toggle live on the version/1.21 branch
-// and return when a 1.21.6 viewer ships. Create also stays unavailable.
-
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
-    // 26.1/loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
-    // Architectury API (NeoForge).
+    // loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
     api "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
-    // `namedElements` no longer exists under loom-no-remap — reference :common directly.
     common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 
-    // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
-    //      never shipped, never a hard dependency). ----
-
-    // Jade — dev-runtime nicety (runtime-only). loom-no-remap: modLocalRuntime -> localRuntime.
+    // Jade + JEI — dev-runtime only (never compiled against, never shipped).
     localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
-    // Recipe viewer (JEI/EMI) — NONE for 1.21.6 yet; dependency intentionally omitted.
-    // Re-add `modLocalRuntime("mezz.jei:jei-${minecraft_version}-neoforge:<ver>")` and/or
-    // the EMI dep + ModEmiPlugin when a 1.21.6 build ships. See gradle.properties.
-
-    // NOTE (1.21.4 branch): AppleSkin is dropped (no 1.21.4 build). Create + Farmer's
-    // Delight are still unpublished for 1.21.4 — the Silver Knife compiles against the
-    // local compile-only FD KnifeItem stub (src/main/java/vectorwing/farmersdelight/
-    // common/item/KnifeItem.java), excluded from the shipped jar via
-    // shadowJar { exclude 'vectorwing/**' }. Re-add those deps once they ship.
-    // See gradle.properties PORT NOTES.
+    localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
 }
 
 processResources {
-    // Single-sourced manifest values (version, URLs, dependency ranges) derived from
-    // gradle.properties — see rootProject.ext.manifestProps in the root build.gradle.
     def manifest = rootProject.ext.manifestProps()
     inputs.properties(manifest)
 
@@ -162,27 +100,16 @@ processResources {
         expand(manifest)
     }
 
-    // Copy the built-in resource pack from common into the NeoForge mod's
-    // resource output so RecipeOverridePackHandler's
-    // ModFile.findResource("resourcepacks/silver_recipe_overrides") resolves in
-    // dev. As on Fabric, common's resources are on the dev classpath but are NOT
-    // part of this mod file's resource roots, so without this copy
-    // Pack.readMetaAndCreate finds no pack.mcmeta, returns null, and the handler
-    // would feed a null pack into the repository (startup NPE). Production is
-    // unaffected: shadowCommon already merges common into the NeoForge jar root.
+    // Copy common's built-in resource pack into the NeoForge resource output so it resolves in dev
+    // (common is on the classpath but not a mod-file resource root; shadowCommon handles production).
     from(project(':common').file('src/main/resources/resourcepacks')) {
         into 'resourcepacks'
     }
 }
 
-// 26.1/loom-no-remap: no remapJar. The default `jar` is loom-processed; we mark it `raw` and
-// build shadowJar on top of its output so :common is merged in. shadowJar = primary mod jar.
-//
-// Access transformer: this subproject ships a HAND-MAINTAINED META-INF/accesstransformer.cfg
-// that mirrors every entry in common's thesilverage.accesswidener (the AW does not auto-convert
-// to an AT anymore — there is no remapJar to run atAccessWideners). NeoForge reads the AT from
-// the jar's META-INF and applies it at load. It is in neoforge main resources, so it ships in
-// the jar normally (and is preserved through the jar -> shadowJar pipeline).
+// shadowJar is built on top of the Loom-processed `jar` (marked `raw`) so :common is merged in;
+// shadowJar is the primary jar. The hand-maintained META-INF/accesstransformer.cfg (mirrors
+// common's AW, since there's no remapJar to auto-convert) ships via main resources.
 jar {
     archiveClassifier = 'raw'
 }
@@ -195,8 +122,7 @@ shadowJar {
     exclude 'fabric.mod.json'
     exclude 'architectury.common.json'
 
-    // Drop the compile-only Farmer's Delight KnifeItem stub from the shipped jar (compile-time
-    // only; the real FD class binds at runtime). Mirrors the Fabric FDR stub exclusion.
+    // Drop the compile-only Farmer's Delight KnifeItem stub (real FD class binds at runtime).
     exclude 'vectorwing/**'
 
     configurations = [project.configurations.shadowCommon]
@@ -211,9 +137,8 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-// Redirect the java component's outgoing artifacts to shadowJar (the shippable jar), so
-// `from components.java` doesn't publish the classifier='raw' jar. Scaffolding (no maven
-// repositories configured) but must resolve at configuration time.
+// Redirect the java component's outgoing artifacts to shadowJar (the shippable jar) so
+// `from components.java` doesn't publish the classifier='raw' jar.
 configurations {
     apiElements {
         outgoing.artifacts.clear()
@@ -238,15 +163,11 @@ publishing {
     }
 }
 
-// ---- Modrinth + CurseForge release (NeoForge jar) --------------------------------
-// Run:  ./gradlew :neoforge:publishMods          (needs MODRINTH_TOKEN / CURSEFORGE_TOKEN env vars)
-//       ./gradlew :neoforge:publishMods -PpublishDryRun   (dry run — writes to build/, uploads nothing)
+// Publishing (NeoForge jar). ./gradlew :neoforge:publishMods (tokens via MODRINTH_TOKEN / CURSEFORGE_TOKEN env vars).
 apply plugin: 'me.modmuss50.mod-publish-plugin'
 
 publishMods {
     file = shadowJar.archiveFile
-    // Same scheme as Fabric: version "1.3.1" / title "The Silver Age 1.3.1", distinguished
-    // by the game-version + loader tags.
     version = rootProject.mod_version
     displayName = "The Silver Age ${rootProject.mod_version}"
     changelog = rootProject.ext.latestChangelog()
@@ -256,11 +177,8 @@ publishMods {
 
     modrinth {
         projectId = providers.gradleProperty("modrinth_project_id")
-        // Token: env var MODRINTH_TOKEN (CI/GitHub secret) OR a `modrinth_token` gradle
-        // property — put that in your USER ~/.gradle/gradle.properties (never the repo).
         accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
-        // build target — one jar, listed under both MC versions. See gradle.properties.
+        // Tag every supported game version on the upload, not just the build target.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // NeoForge only needs Architectury — fabric-api / cloth-config are Fabric-only.
         requires("architectury-api")
@@ -268,8 +186,6 @@ publishMods {
     curseforge {
         projectId = providers.gradleProperty("curseforge_project_id")
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
-        // build target — one jar, listed under both MC versions. See gradle.properties.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // CurseForge requires explicit side flags (Modrinth infers them from the jar).
         client = true

@@ -31,14 +31,8 @@ public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
     private static final float XP_MEDIUM = 1f;
 
-    // 1.21.2 reworked RecipeProvider: the recipe-building helpers (shaped,
-    // shapeless, has, stairBuilder, ...) are now INSTANCE methods that inject the
-    // provider's item HolderGetter, and buildRecipes() takes no args. We keep a
-    // reference to the RecipeOutput so the conditional vanilla-override recipes
-    // can still wrap it via output.withConditions(...).
+    // Kept so conditional override recipes can wrap it via output.withConditions(...).
     private final RecipeOutput output;
-    /** Kept so the firework-star override can resolve item tags (#dyes / #skulls) to HolderSets
-     *  for the FireworkStarRecipe ingredients (Ingredient.of has no TagKey overload). */
     private final HolderLookup.Provider registries;
 
     protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
@@ -53,12 +47,6 @@ public class ModRecipeProvider extends RecipeProvider {
         buildRecipeOverrides(this.output);
     }
 
-    /**
-     * DataProvider runner. 1.21.2 split RecipeProvider into the builder (above)
-     * and a {@link RecipeProvider.Runner} that the {@link net.minecraft.data.DataGenerator}
-     * actually registers; the runner instantiates the provider once the registries
-     * future resolves.
-     */
     public static final class Runner extends RecipeProvider.Runner {
         public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
             super(packOutput, registries);
@@ -80,10 +68,6 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
-        // NOTE: Create is not yet available past MC 1.21.1, so the crushed_raw_silver
-        // -> silver_ingot smelting bridge is dropped on this branch. Re-add it (gated
-        // on ModIds.CREATE via withConditions) once Create ships for 1.21.3.
-
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET.get(), ModItems.SILVER_INGOT.get());
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
@@ -96,9 +80,7 @@ public class ModRecipeProvider extends RecipeProvider {
         shovel(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_INGOT.get());
         spear(output, ModItems.SILVER_SPEAR.get(), ModItems.SILVER_INGOT.get());
 
-        // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
-        // Gated on FD being present — without FD the item is a hidden fallback,
-        // so it has no recipe.
+        // Silver Knife, gated on Farmer's Delight being present.
         var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT));
         shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
@@ -196,17 +178,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
         waxable(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
-        // Silver Bricks. Two crafting paths to the base block:
-        //   - Crafting table: 2x2 Silver Ingots -> 4 Silver Bricks. Silver
-        //     Ingot has no weather states, so this only produces the base
-        //     SILVER_BRICKS variant.
-        //   - Stonecutter: 1 Silver Block (any weather/waxed variant) -> 4
-        //     of the matching brick variant. Mirrors the Cut Silver pattern
-        //     and gives players a direct path to every brick variant without
-        //     waiting on natural oxidation.
-        // Waxed brick variants are additionally obtainable via Honeycomb on
-        // the matching unwaxed one (the waxable() chain below); placed
-        // silver_bricks also still oxidize naturally over time.
+        // Silver Bricks
         twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 4);
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
@@ -224,12 +196,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
         waxable(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
 
-        // Silver Brick Stairs — three paths per variant:
-        //   1) Crafting-table stair shape from the matching Silver Bricks (4)
-        //   2) Stonecutter from the matching Silver Bricks (1 -> 1)
-        //   3) Stonecutter from the matching Silver Block (1 -> 4)
-        // Paths 1+2 come from stairsWithCutting; path 3 is the extra
-        // stoneCutting block below. Mirrors the Cut Silver Stairs pattern.
+        // Silver Brick Stairs
         stairsWithCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BRICKS.get());
         stairsWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
         stairsWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
@@ -255,12 +222,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get());
         waxable(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
 
-        // Silver Brick Slab — three paths per variant:
-        //   1) Crafting-table slab shape from the matching Silver Bricks (6)
-        //   2) Stonecutter from the matching Silver Bricks (1 -> 2)
-        //   3) Stonecutter from the matching Silver Block (1 -> 8)
-        // Paths 1+2 come from slabWithCutting; path 3 is the extra
-        // stoneCutting block below. Mirrors the Cut Silver Slab pattern.
+        // Silver Brick Slab
         slabWithCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
         slabWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
@@ -374,10 +336,7 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CHISELED_SILVER.get());
         waxable(output, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get());
 
-        // Silver Pillar — three obtainment paths per variant (mirrors vanilla quartz_pillar):
-        //   1) Crafting table 1x2 vertical of Silver Block (2 -> 2)
-        //   2) Stonecutter from Silver Block (1 -> 1)
-        //   3) Honeycomb waxing (unwaxed -> waxed)
+        // Silver Pillar
         oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_PILLAR.get(), ModItems.SILVER_BLOCK.get(), 2);
         oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.EXPOSED_SILVER.get(), 2);
         oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WEATHERED_SILVER.get(), 2);
@@ -466,8 +425,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
                 .define('S', Items.NETHERITE_INGOT)
-                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)) // TODO: Change fallback to IRON_INGOT once updated to later Minecraft version
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
+                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback");
 
         // Brewing Stand
         shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
@@ -483,20 +442,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('B', Items.BLAZE_ROD)
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");  // Original recipe if override is disabled
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");
 
-        // Name Tag
-//        shapeless(RecipeCategory.MISC, Items.NAME_TAG, 1)
-//                .requires(Items.PAPER)
-//                .requires(ModItems.SILVER_NUGGET.get())
-//                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
-//                .save(conditionalOutput);
-        // TODO: Tweak Name Tag recipe when it is added in later Minecraft version
-
-        // Redstone Comparator
-        // The S slot accepts any item in the #thesilverage:redstone_silver_components tag.
-        // Currently populated with silver_ingot + silver_sheet (sheet is Create-only, but the
-        // ingot path always works). Addons may contribute extra silver forms to the tag.
+        // Redstone Comparator (S slot = #thesilverage:redstone_silver_components tag)
         shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
@@ -514,10 +462,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('Q', Items.QUARTZ)
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE_TORCH), has(Items.REDSTONE_TORCH))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.COMPARATOR) + "_fallback");  // Original recipe if override is disabled
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.COMPARATOR) + "_fallback");
 
         // Redstone Repeater
-        // Same tag-based S slot as the Comparator override — see above.
         shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
@@ -533,24 +480,16 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('T', Items.REDSTONE_TORCH)
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");  // Original recipe if override is disabled
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");
 
-        // Firework Star — Silver Nugget parity (silver nugget acts as a STAR shape, like gold).
-        // 26.1 made the firework_star recipe data-driven (a `shapes` map of Shape->Ingredient),
-        // replacing the old static FireworkStarRecipe.SHAPE_BY_ITEM map the mod used to mutate.
-        // We override the vanilla recipe so the STAR shape accepts gold OR silver nugget.
+        // Firework Star override: STAR shape accepts gold OR silver nugget.
         fireworkStarOverride(conditionalOutput, fallbackOutput);
     }
 
-    /**
-     * Emits a {@code minecraft:firework_star} override whose STAR shape accepts gold OR silver
-     * nugget (conditional, gated by OVERRIDE_VANILLA_RECIPES), plus a {@code _fallback} that is the
-     * exact vanilla recipe (STAR = gold nugget only) for when the override is disabled. Mirrors the
-     * comparator/repeater override scheme. Every other field replicates vanilla firework_star.
-     */
+    /** Firework star override: conditional STAR = gold or silver nugget, plus a vanilla _fallback. */
     private void fireworkStarOverride(RecipeOutput conditionalOutput, RecipeOutput fallbackOutput) {
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
-        // Ingredient.of has no TagKey overload — resolve #minecraft:dyes / #minecraft:skulls to HolderSets.
+        // Ingredient.of has no TagKey overload — resolve tags to HolderSets.
         Ingredient dye = Ingredient.of(items.getOrThrow(ItemTags.DYES));
         Ingredient skulls = Ingredient.of(items.getOrThrow(ItemTags.SKULLS));
         Ingredient fuel = Ingredient.of(Items.GUNPOWDER);
@@ -558,15 +497,11 @@ public class ModRecipeProvider extends RecipeProvider {
         Ingredient twinkle = Ingredient.of(Items.GLOWSTONE_DUST);
         ItemStackTemplate result = new ItemStackTemplate(Items.FIREWORK_STAR);
 
-        // NOTE: the FireworkStarRecipe canonical (record) constructor order is
-        // (shapes, trail, twinkle, fuel, dye, result) — NOT (dye, fuel, trail, twinkle).
-        // Verified by diffing the generated _fallback against vanilla firework_star.json.
-
-        // Shared (non-star) shapes — identical to vanilla.
+        // FireworkStarRecipe constructor order is (shapes, trail, twinkle, fuel, dye, result).
         Ingredient burst = Ingredient.of(Items.FEATHER);
         Ingredient largeBall = Ingredient.of(Items.FIRE_CHARGE);
 
-        // Conditional (override ON): STAR accepts gold + silver nugget.
+        // Override ON: STAR accepts gold + silver nugget.
         Map<FireworkExplosion.Shape, Ingredient> silverShapes = Map.of(
                 FireworkExplosion.Shape.BURST, burst,
                 FireworkExplosion.Shape.CREEPER, skulls,
@@ -575,7 +510,7 @@ public class ModRecipeProvider extends RecipeProvider {
         SpecialRecipeBuilder.special(() -> new FireworkStarRecipe(silverShapes, trail, twinkle, fuel, dye, result))
                 .save(conditionalOutput, "minecraft:" + ItemUtils.getName(Items.FIREWORK_STAR));
 
-        // Fallback (override OFF): exact vanilla recipe — STAR = gold nugget only.
+        // Override OFF: vanilla recipe, STAR = gold nugget only.
         Map<FireworkExplosion.Shape, Ingredient> vanillaShapes = Map.of(
                 FireworkExplosion.Shape.BURST, burst,
                 FireworkExplosion.Shape.CREEPER, skulls,
@@ -717,7 +652,6 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected void spear(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
-        // Diagonal: one material at top-right + two sticks (mirrors vanilla copper_spear).
         shaped(RecipeCategory.COMBAT, tool)
             .pattern("  #")
             .pattern(" S ")
@@ -820,9 +754,6 @@ public class ModRecipeProvider extends RecipeProvider {
         campfireCooking(recipeOutput, RecipeCategory.FOOD, material, result, experience, 600); // Campfire cooking takes three times longer
     }
 
-    // 26.1: SimpleCookingRecipeBuilder.generic(... RecipeSerializer, Factory) was removed in favour
-    // of dedicated smelting()/blasting()/smoking()/campfireCooking() builders. smelting/blasting also
-    // take a CookingBookCategory (the recipe-book grouping) derived here from the RecipeCategory.
     private static CookingBookCategory cookingBookCategory(RecipeCategory category) {
         return category == RecipeCategory.FOOD ? CookingBookCategory.FOOD : CookingBookCategory.MISC;
     }

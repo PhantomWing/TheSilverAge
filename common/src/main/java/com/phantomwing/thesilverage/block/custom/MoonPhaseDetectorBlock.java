@@ -66,7 +66,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static void updateSignalStrength(BlockState state, Level level, BlockPos pos) {
         int signalStrength = LevelUtils.getMoonPhaseSignal(level);
 
-        // We want a Full Moon to give a maximum signal strength.
+        // A Full Moon should give maximum signal strength.
         if (!state.getValue(INVERTED)) {
             signalStrength = MAX_POWER - signalStrength;
         }
@@ -83,13 +83,11 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
             if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             } else {
-                // Invert the block.
                 BlockState blockstate = state.cycle(INVERTED);
                 level.setBlock(pos, blockstate, 2);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(player, blockstate));
                 updateSignalStrength(blockstate, level, pos);
 
-                // Play a sound when the block is toggled.
                 level.playSound(null, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.PLAYERS, 0.3f, 0.7f);
 
                 return InteractionResult.CONSUME;

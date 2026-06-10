@@ -1,12 +1,8 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
-    // 26.1 is UNOBFUSCATED — architectury-loom's normal `dev.architectury.loom` still requires
-    // a mappings dependency and a remapJar step, neither of which exists for 26.1 (see arch-loom
-    // issue #328). The `-no-remap` plugin variant is the maintainer-blessed path: it drops the
-    // mappings requirement + the remapJar task; common is bundled into each loader jar via the
-    // Shadow plugin instead (shadowJar becomes the primary artifact). Same loom version (1.17.477).
+    // loom-no-remap: 26.1 is unobfuscated, no mappings/remapJar; common is bundled via Shadow.
     id 'dev.architectury.loom-no-remap' version "${architectury_loom_version}" apply false
-    // Modrinth + CurseForge publishing — applied per loader subproject (fabric/neoforge).
+    // Publishing — applied per loader subproject.
     id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
 }
 
@@ -14,10 +10,7 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-// Extract the most recent version's notes from changelog.md (everything under the first
-// "# X.Y.Z" header, up to the next "# " header) — used as the per-release changelog on
-// Modrinth/CurseForge so each upload shows only its own changes. The changelog file is
-// user-managed; this only READS it.
+// Per-release changelog: notes under the first "# X.Y.Z" header in changelog.md, up to the next "# ".
 ext.latestChangelog = {
     def f = rootProject.file('changelog.md')
     if (!f.exists()) return "See changelog.md"
@@ -26,9 +19,9 @@ ext.latestChangelog = {
     f.eachLine { line ->
         if (done) return
         if (line.startsWith('# ')) {
-            if (started) { done = true; return }   // reached the next version → stop
-            started = true                          // first version header → start
-            return                                  // skip the header line itself
+            if (started) { done = true; return }
+            started = true
+            return
         }
         if (started) body.append(line).append('\n')
     }
@@ -36,23 +29,18 @@ ext.latestChangelog = {
     return out.isEmpty() ? "See changelog.md" : out
 }
 
-// Single source of truth for the manifest substitutions. Derives the dependency version
-// ranges (in each loader's required FORMAT) from the canonical versions in gradle.properties,
-// so fabric.mod.json + neoforge.mods.toml never hold a hardcoded range that can drift on a
-// port. Expanded into both manifests by their processResources blocks.
-//   Fabric  predicate format: ">=1.21.7 <1.21.9", ">=17.0"   (space = AND)
-//   NeoForge maven range:     "[1.21.7,1.21.9)",  "[17.0,)"
+// Single source of truth for manifest substitutions: derives per-loader dependency ranges from
+// gradle.properties so the manifests never hold a drifting hardcoded range.
+//   Fabric predicate: ">=1.21.7 <1.21.9"   NeoForge maven range: "[1.21.7,1.21.9)"
 ext.manifestProps = { ->
-    def mc = rootProject.minecraft_version                          // build target = highest supported
+    def mc = rootProject.minecraft_version
     def p = mc.tokenize('.')
-    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()   // 1.21.8 -> 1.21.9 (exclusive upper)
-    // Lower bound = LOWEST supported game version. When the mod spans a compatible MC
-    // pair (e.g. 1.21.7 + 1.21.8) the floor differs from the build target, so it is taken
-    // from supported_minecraft_versions (space/comma-separated) rather than minecraft_version.
+    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()
+    // Lower bound = lowest supported game version (may differ from build target across a compatible MC pair).
     def mcFloor = rootProject.supported_minecraft_versions.tokenize(' ,').first()
     // major.minor of a version, ignoring any +build / -qualifier suffix.
     def mm = { String v -> def q = v.replaceAll(/[+\-].*$/, '').tokenize('.'); "${q[0]}.${q[1]}".toString() }
-    def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')   // 0.128.2+1.21.6 -> 0.128.2
+    def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')
     def homepage = rootProject.mod_homepage
     return [
             version                  : rootProject.mod_version,
@@ -90,11 +78,7 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // 26.1 is UNOBFUSCATED: official Mojang names ARE the runtime names. Mojang no longer
-        // ships a proguard mappings file (the 26.1.2 version JSON has no client_mappings /
-        // server_mappings download), so there is NOTHING to map — the mappings block is dropped
-        // entirely (loom.officialMojangMappings() would fail trying to download the missing file).
-        // Parchment is likewise obsolete (no obfuscated param names left to improve).
+        // No mappings block: 26.1 is unobfuscated, Mojang ships no mappings file (officialMojangMappings would fail).
     }
 }
 
@@ -138,13 +122,7 @@ allprojects {
             url = "https://maven.terraformersmc.com/"
         }
 
-        // Cloth Config — DEV-RUNTIME ONLY. AppleSkin Fabric JiJ-bundles
-        // cloth-config-fabric (me.shedaniel.autoconfig.*); Loom/Architectury
-        // does not auto-extract nested JiJ jars for a `modLocalRuntime` dep, so
-        // the dev Fabric client needs Cloth Config on the classpath explicitly
-        // (it is never compiled against and never shipped — see
-        // fabric/build.gradle). Scoped to the Cloth Config group so this
-        // canonical maven does not broaden resolution for anything else.
+        // Cloth Config (scoped to its group so it doesn't broaden resolution).
         maven {
             name = "shedaniel"
             url = "https://maven.shedaniel.me/"
@@ -194,11 +172,8 @@ allprojects {
     }
 }
 
-// The repository root is now a pure Architectury orchestration project. The legacy
-// single-loader NeoForge sources still physically live under the root `src/` (they
-// will be relocated to `common/` in Phase 1). Until then, point the root project's
-// source sets at empty, non-existent directories so the root — which has no Minecraft
-// dependencies — never attempts to compile that code. The files on disk are untouched.
+// Root is a pure orchestration project: empty its source sets so it never compiles the
+// legacy single-loader sources still living under root `src/`.
 project(':') {
     sourceSets {
         main {

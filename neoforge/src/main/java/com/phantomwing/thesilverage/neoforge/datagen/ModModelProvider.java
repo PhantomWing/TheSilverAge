@@ -16,9 +16,6 @@ import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
-// 26.1: TextureMapping slots/getters use Material (a sprite-Identifier wrapper) instead of bare
-// Identifier. Material is the simple record net.minecraft.client.resources.model.sprite.Material;
-// new Material(id) wraps a raw sprite Identifier (e.g. a trim-permutation sprite).
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
@@ -40,18 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Unified block + item model datagen for 1.21.4 (vanilla {@link ModelProvider}).
- *
- * <p>Uses the (NeoForge-AT-widened) {@link BlockModelGenerators}/{@link ItemModelGenerators}
- * helpers + their public {@code blockStateOutput}/{@code modelOutput}/{@code itemModelOutput}.
- * Render types for the transparent blocks (doors/trapdoors/grates) are registered client-side
- * (1.21.4 no longer carries render type in the model JSON).</p>
- *
- * <p>Waxed variants reuse their unwaxed counterpart's textures (vanilla-copper style). That
- * reuse is implemented for cubes/families/pillars here; for chiseled/door/trapdoor/bulb it is
- * a pending refinement (TODO) — those currently render from the block's own texture name.</p>
- */
+/** Block + item model datagen. Waxed variants reuse their unwaxed counterpart's textures. */
 public class ModModelProvider extends ModelProvider {
     public ModModelProvider(net.minecraft.data.PackOutput output) {
         super(output, TheSilverAge.MOD_ID);
@@ -161,21 +147,13 @@ public class ModModelProvider extends ModelProvider {
         flat(img, ModItems.SILVER_INGOT);
         flat(img, ModItems.SILVER_NUGGET);
         flat(img, ModItems.SILVER_SHEET);
-        // Trimmable armor item models (show applied trims in the inventory), keyed to
-        // the silver equipment asset. Mirrors how vanilla armor items are generated.
-        // Custom trimmable generator (see trimmableArmor): vanilla generateTrimmableItem
-        // only emits the 11 hardcoded vanilla materials, so the mod's own silver trim
-        // material would never get an inventory overlay. This adds the silver case.
+        // Trimmable armor item models (silver trim shows in inventory; see trimmableArmor).
         trimmableArmor(img, ModItems.SILVER_HELMET.get(), "helmet");
         trimmableArmor(img, ModItems.SILVER_CHESTPLATE.get(), "chestplate");
         trimmableArmor(img, ModItems.SILVER_LEGGINGS.get(), "leggings");
         trimmableArmor(img, ModItems.SILVER_BOOTS.get(), "boots");
 
-        // Vanilla-armor trim overrides: make the SILVER trim material show on vanilla armor
-        // inventory icons too (feature parity with 1.21.1/1.21.3 — the old trim_type-predicate
-        // overrides were dropped in the 1.21.4 datagen rewrite). We override each vanilla armor's
-        // item-model definition with a select that references vanilla's own per-material trim
-        // models (darker handling already baked in) + a generated silver case. See VANILLA_TRIMMED_ARMOR.
+        // Make the silver trim material show on vanilla armor inventory icons (see vanillaArmorTrimOverride).
         for (Item[] set : VANILLA_TRIMMED_ARMOR) {
             boolean dyeable = set[0] == Items.LEATHER_HELMET;
             vanillaArmorTrimOverride(img, set[0], "helmet", dyeable);
@@ -193,8 +171,6 @@ public class ModModelProvider extends ModelProvider {
         handheld(img, ModItems.SILVER_HOE);
         handheld(img, ModItems.SILVER_SWORD);
         handheld(img, ModItems.SILVER_KNIFE);
-        // 1.21.11 Spear: two-model setup (inventory + in_hand) via the display_context
-        // select. vanilla's generateSpear emits both models + the items/ definition.
         img.generateSpear(ModItems.SILVER_SPEAR.get());
     }
 
@@ -208,7 +184,6 @@ public class ModModelProvider extends ModelProvider {
     private static void cubeReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
         Block b = block.get();
         Identifier model = ModelTemplates.CUBE_ALL.create(b, TextureMapping.cube(textureSource.get()), bmg.modelOutput);
-        // 1.21.5: the create* helpers take MultiVariant, not Identifier — wrap via plainVariant.
         bmg.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
         bmg.registerSimpleItemModel(b, model);
     }
@@ -234,10 +209,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private static void pillar(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
-        // The mod's pillar side texture is block/<name> (no "_side" suffix) — both
-        // TexturedModel.COLUMN and TextureMapping.column use the vanilla "_side" convention,
-        // so build the mapping explicitly: SIDE = block/<name>, END = block/<name>_top.
-        // Works for unwaxed (textureSource == block) and waxed (textureSource == unwaxed).
+        // Pillar side texture is block/<name> (no "_side" suffix), so build the mapping explicitly.
         TextureMapping mapping = new TextureMapping()
                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(textureSource.get()))
                 .put(TextureSlot.END, TextureMapping.getBlockTexture(textureSource.get(), "_top"));
@@ -307,9 +279,6 @@ public class ModModelProvider extends ModelProvider {
                 .put(TextureSlot.SIDE, side);
         Identifier normalModel = ModelTemplates.DAYLIGHT_DETECTOR.create(block, normalMap, bmg.modelOutput);
         Identifier invertedModel = ModelTemplates.DAYLIGHT_DETECTOR.createWithSuffix(block, "_inverted", invertedMap, bmg.modelOutput);
-        // 1.21.5: blockstate-gen overhaul — Variant/VariantProperties removed.
-        // MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(prop)
-        //   .select(value, BlockModelGenerators.plainVariant(modelLocation))).
         bmg.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(PropertyDispatch.initial(MoonPhaseDetectorBlock.INVERTED)
                         .select(false, BlockModelGenerators.plainVariant(normalModel))
@@ -324,36 +293,23 @@ public class ModModelProvider extends ModelProvider {
     }
 
     /**
-     * Trimmable armor item model. Mirrors vanilla {@code ItemModelGenerators#generateTrimmableItem}
-     * but appends the mod's own {@code thesilverage:silver} trim material: the vanilla method
-     * iterates only the hardcoded {@code TRIM_MATERIAL_MODELS} (the 11 vanilla materials), so a
-     * custom material would never get an inventory trim overlay (the symptom: applying a silver
-     * trim shows no layer on the item). Emits a {@code minecraft:trim_material} select whose cases
-     * are TWO_LAYERED_ITEM models (layer0 = armor texture, layer1 = the
-     * {@code trims/items/<slot>_trim_<material>} paletted permutation built by the blocks atlas),
-     * with the plain (untrimmed) armor model as the fallback.
+     * Like vanilla {@code generateTrimmableItem} but adds the mod's {@code thesilverage:silver}
+     * trim material, which vanilla's hardcoded material list would otherwise omit.
      */
     private static void trimmableArmor(ItemModelGenerators img, Item item, String slot) {
         Material itemTexture = TextureMapping.getItemTexture(item);
         Identifier slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
-        // Base (no-trim) flat MODEL file — also the select fallback. Use the template
-        // directly (not generateFlatItem, which would ALSO register an item-model
-        // definition and collide with the select definition we accept() below).
+        // Use FLAT_ITEM directly, not generateFlatItem: the latter also registers an item-model
+        // definition that would collide with the select definition accepted below.
         Identifier baseModel = ModelTemplates.FLAT_ITEM.create(
                 ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture), img.modelOutput);
 
         List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
-        // Silver uses the shared asset group (carries the silver->silver_darker override
-        // for silver armor), so the item icon matches the worn rendering.
         materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
         for (ItemModelGenerators.TrimMaterialData data : materials) {
-            // assetId(equipmentAsset) resolves the per-armor override: for silver armor it
-            // yields "silver_darker" on the silver material (and the plain base suffix —
-            // "quartz", "iron", … — for every other material). suffix() is the bare name;
-            // vanilla prepends "_" before joining, giving layer1 = the atlas permutation
-            // sprite (e.g. helmet_trim_silver_darker) and model = silver_helmet_<x>_trim.
+            // assetId resolves the per-armor override (e.g. silver->silver_darker on silver armor).
             String suffix = "_" + data.assets().assetId(ModTrimMaterials.SILVER_EQUIPMENT_ASSET).suffix();
             Identifier trimModel = baseModel.withSuffix(suffix + "_trim");
             img.generateLayeredItem(trimModel, itemTexture, new Material(slotPrefix.withSuffix(suffix)));
@@ -376,12 +332,7 @@ public class ModModelProvider extends ModelProvider {
             {Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS},
     };
 
-    /**
-     * The default {@link ModelProvider#getKnownItems()} is filtered to the mod's namespace, and it
-     * drives the item-model completeness validator + saver. Since we also emit overrides for vanilla
-     * (minecraft-namespace) armor, we must declare those items as "known" or datagen would reject /
-     * skip them. Concatenate the mod items with the vanilla armor we override.
-     */
+    /** Add the overridden vanilla armor to the known-items set, else datagen skips them. */
     @Override
     protected Stream<? extends Holder<Item>> getKnownItems() {
         Stream<Holder<Item>> vanillaArmor = java.util.Arrays.stream(VANILLA_TRIMMED_ARMOR)
@@ -391,12 +342,9 @@ public class ModModelProvider extends ModelProvider {
     }
 
     /**
-     * Override a VANILLA armor piece's item-model definition so the silver trim material shows on its
-     * inventory icon (parity with 1.21.1/1.21.3). We rebuild vanilla's {@code minecraft:trim_material}
-     * select: for the 11 vanilla materials we reference vanilla's own shipped trim models (which already
-     * bake in the darker-on-matching sprite), and for silver we generate the layered model + reference
-     * it. Leather pieces are 3-layer (base + dye overlay + trim) and carry the dye tint on every case +
-     * the fallback, mirroring vanilla's leather item definition.
+     * Rebuilds a vanilla armor piece's trim_material select so the silver trim shows on its
+     * inventory icon. Vanilla materials reference their shipped trim models; silver is generated.
+     * Leather pieces are 3-layer and carry the dye tint on every case and the fallback.
      */
     private static void vanillaArmorTrimOverride(ItemModelGenerators img, Item item, String slot, boolean dyeable) {
         Identifier baseModel = ModelLocationUtils.getModelLocation(item);
@@ -409,13 +357,10 @@ public class ModModelProvider extends ModelProvider {
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
         for (ItemModelGenerators.TrimMaterialData data : materials) {
-            // Model name uses the BASE material suffix (vanilla's convention: iron_helmet_iron_trim),
-            // matching the names vanilla ships — so referencing it for vanilla materials hits the
-            // existing (darker-baked-in) model.
+            // BASE material suffix matches the model names vanilla ships (e.g. iron_helmet_iron_trim).
             Identifier trimModel = baseModel.withSuffix("_" + data.assets().base().suffix() + "_trim");
             if (data.materialKey() == ModTrimMaterials.SILVER) {
-                // Vanilla doesn't ship a silver trim model for its armor — generate it. Silver is
-                // never the matching material for vanilla armor, so always the plain silver sprite.
+                // Vanilla ships no silver trim model; generate it (always the plain silver sprite).
                 Material silverSprite = new Material(slotPrefix.withSuffix("_silver"));
                 if (dyeable) {
                     TextureMapping tm = new TextureMapping()
@@ -427,7 +372,6 @@ public class ModModelProvider extends ModelProvider {
                     img.generateLayeredItem(trimModel, itemTexture, silverSprite);
                 }
             }
-            // (vanilla materials: reference vanilla's shipped model, do not regenerate.)
             ItemModel.Unbaked caseModel = dyeable
                     ? ItemModelUtils.tintedModel(trimModel, new Dye(LEATHER_DEFAULT_COLOR))
                     : ItemModelUtils.plainModel(trimModel);
@@ -443,13 +387,7 @@ public class ModModelProvider extends ModelProvider {
         img.generateFlatItem(item.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
     }
 
-    /**
-     * Moon Dial: a {@code range_dispatch} item model on the custom {@code thesilverage:moon_phase}
-     * property — 16 frames (moon_dial_0..15) at thresholds i/16 (matching the property's
-     * {@code signal/16f}). The property type is registered into ID_MAPPER here so this run can
-     * serialize {@code "property":"thesilverage:moon_phase"} (the game-side registration is in
-     * the client bootstrap; separate JVM, no conflict).
-     */
+    /** Moon Dial: range_dispatch over thesilverage:moon_phase, 16 frames at thresholds i/16. */
     private static void moonDial(ItemModelGenerators img) {
         RangeSelectItemModelProperties.ID_MAPPER.put(ModItemProperties.MOON_PHASE, ModItemProperties.MoonPhaseProperty.MAP_CODEC);
 

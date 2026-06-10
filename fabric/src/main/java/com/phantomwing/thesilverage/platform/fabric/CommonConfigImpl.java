@@ -2,15 +2,7 @@ package com.phantomwing.thesilverage.platform.fabric;
 
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 
-/**
- * Fabric implementation of {@link com.phantomwing.thesilverage.platform.CommonConfig}
- * (resolved by Architectury's {@code @ExpectPlatform} transformer).
- *
- * <p>Delegates to the Cloth/AutoConfig-backed {@link TheSilverAgeFabricConfig}
- * (Phase 5) — the parity twin of NeoForge's {@code ModConfigSpec}. The three
- * gates resolve from the same option ids and {@code true} defaults on both
- * loaders, so loot and recipe-override behaviour stays identical.</p>
- */
+/** Fabric impl of CommonConfig (@ExpectPlatform); delegates to TheSilverAgeFabricConfig. */
 public final class CommonConfigImpl {
     private CommonConfigImpl() {
     }

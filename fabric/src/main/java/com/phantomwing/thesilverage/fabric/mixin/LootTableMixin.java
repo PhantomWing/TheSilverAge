@@ -25,33 +25,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * Fabric parity for the NeoForge Global Loot Modifiers.
- *
- * <p>NeoForge applies the Silver loot injections through GLMs (post-roll, on the
- * rolled {@code ObjectArrayList}). Fabric has no equivalent post-roll loot API,
- * so this mixin reproduces the exact GLM behaviour at the loot-roll site:</p>
- *
- * <ul>
- *   <li><b>Id stamping</b> ({@link #thesilverage$getLootTableId()} /
- *       {@link #thesilverage$setLootTableId(Identifier)}): vanilla
- *       {@code LootTable} has no id, so an {@code @Unique} field is stamped once
- *       after all tables load (see {@code TheSilverAgeFabric}, via Fabric Loot
- *       API v2 {@code LootTableEvents.ALL_LOADED}). This is the Fabric
- *       equivalent of the GLM {@code neoforge:loot_table_id} condition source.</li>
- *   <li><b>Roll injection</b> ({@link #thesilverage$applySilverLoot}): injected
- *       at {@code RETURN} of the private list-returning roll
- *       {@code getRandomItems(LootContext)} — the single path every public
- *       list-returning overload ({@code getRandomItems(LootParams)},
- *       {@code (LootParams,long)}, {@code (LootParams,RandomSource)}) funnels
- *       through. It mutates the returned {@code ObjectArrayList} exactly like
- *       the GLM {@code doApply}.</li>
- * </ul>
- *
- * <p>Per spec entry the GLM conditions ({@code loot_table_id} +
- * {@code random_chance}) and the config gate are evaluated here, then the shared
- * {@link SilverLootAlgorithms} run — so the result is identical to NeoForge.</p>
- */
+/** Fabric parity for the NeoForge Global Loot Modifiers: applies Silver loot injections at the loot-roll site. */
 @Mixin(LootTable.class)
 public abstract class LootTableMixin implements SilverLootTableId {
     @Unique
@@ -69,13 +43,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
         this.thesilverage$lootTableId = id;
     }
 
-    /**
-     * Container/structure loot path. Targets the private
-     * {@code getRandomItems(LootContext)} (the {@code ObjectArrayList} the
-     * {@code getRandomItems(LootParams[,RandomSource|long])} list overloads hand
-     * back, used by chests/barrels/etc.), so REPLACE can mutate what actually
-     * rolled — exactly as the GLM does.
-     */
+    // Container/structure loot path: targets the private getRandomItems(LootContext) that all list overloads funnel through, so REPLACE can mutate what rolled.
     @Inject(
             method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;",
             at = @At("RETURN")
@@ -90,24 +58,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
         thesilverage$applyMatchingEntries(tableId, context, generatedLoot);
     }
 
-    /**
-     * Entity/consumer loot path. {@code LivingEntity.dropFromLootTable} streams
-     * mob drops through {@code getRandomItems(LootParams, long, Consumer)} —
-     * which is a DISJOINT public entrypoint that never funnels through the
-     * private list method above, so the container injection alone misses mob
-     * drops (e.g. the silverfish silver-nugget GLM). This second injection
-     * covers that path: it rebuilds the {@link LootContext} the same way the
-     * vanilla overload does, runs the shared spec into a scratch list, and
-     * forwards the appended stacks to the same {@code consumer}.
-     *
-     * <p>Disjoint entrypoints ⇒ no double-apply: chest loot uses
-     * {@code getRandomItems(LootParams)} → private list method (only the
-     * injection above fires); entity drops use {@code (LootParams,long,Consumer)}
-     * (only this fires). REPLACE entries only ever target chest tables, so on a
-     * (empty) entity scratch list they are inert — the shared helper is reused
-     * verbatim to guarantee identical ADD/SILVERFISH behaviour across both
-     * paths.</p>
-     */
+    // Entity/consumer loot path: mob drops use the disjoint getRandomItems(LootParams,long,Consumer) which never hits the private list method, so it needs its own injection (no double-apply).
     @Inject(
             method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;JLjava/util/function/Consumer;)V",
             at = @At("TAIL")
@@ -119,8 +70,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
             return;
         }
 
-        // Mirror the vanilla overload's own context construction so the
-        // UniformGenerator / random_chance draws match a normal roll.
+        // Mirror the vanilla overload's context construction so the random draws match a normal roll.
         LootContext context = new LootContext.Builder(params)
                 .withOptionalRandomSeed(seed)
                 .create(Optional.empty());
@@ -132,14 +82,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
         }
     }
 
-    /**
-     * Shared per-entry application — the single source of GLM-parity logic used
-     * by both the container and entity paths. Mirrors each original GLM
-     * {@code doApply}: {@code neoforge:loot_table_id} filter, the config gate,
-     * the {@code minecraft:random_chance} draw
-     * ({@code random.nextFloat() < chance}, identical to
-     * {@code LootItemRandomChanceCondition}), then the shared algorithm.
-     */
+    /** Shared per-entry GLM-parity logic used by both the container and entity paths. */
     @Unique
     private void thesilverage$applyMatchingEntries(Identifier tableId,
                                                    LootContext context,
@@ -149,12 +92,10 @@ public abstract class LootTableMixin implements SilverLootTableId {
         boolean silverfishEnabled = CommonConfig.silverfishDropSilver();
 
         for (SilverLootSpec.Entry entry : SilverLootSpec.entries()) {
-            // GLM condition 1: neoforge:loot_table_id — only entries for this table.
             if (!entry.targetLootTable().equals(tableId)) {
                 continue;
             }
 
-            // Config gate (the first statement of every original doApply).
             boolean enabled = entry.op() == SilverLootSpec.Op.SILVERFISH
                     ? silverfishEnabled
                     : structureLootEnabled;
@@ -162,8 +103,6 @@ public abstract class LootTableMixin implements SilverLootTableId {
                 continue;
             }
 
-            // GLM condition 2: minecraft:random_chance(chance) — same draw as
-            // LootItemRandomChanceCondition (random.nextFloat() < chance).
             if (random.nextFloat() >= entry.chance()) {
                 continue;
             }

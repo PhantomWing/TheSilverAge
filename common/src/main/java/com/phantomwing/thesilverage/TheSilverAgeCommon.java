@@ -13,13 +13,9 @@ import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
 
 /**
- * Common (loader-agnostic) entrypoint for The Silver Age.
- *
- * <p>Registers every Architectury {@code DeferredRegister} and wires the
- * loader-agnostic gameplay event hooks. Loader-specific bootstrap (NeoForge
- * config registration, the config screen factory, GLM/condition registries,
- * firework recipe patching, data generation, Create/EMI compat) is performed by
- * the per-loader entrypoints.</p>
+ * Common (loader-agnostic) entrypoint for The Silver Age. Registers every Architectury
+ * {@code DeferredRegister} and wires the loader-agnostic gameplay event hooks;
+ * loader-specific bootstrap is performed by the per-loader entrypoints.
  */
 public final class TheSilverAgeCommon {
     public static final String MOD_ID = TheSilverAge.MOD_ID;
@@ -28,16 +24,8 @@ public final class TheSilverAgeCommon {
     }
 
     public static void init() {
-        // Architectury deferred registries. Building the static fields of these
-        // classes enqueues every entry; register() flushes them to the platform
-        // registries at the right time on each loader.
-        //
-        // Blocks MUST be registered before items: ModItems' BlockItem factories
-        // resolve their Block via RegistrySupplier#get(), and on Fabric
-        // Architectury invokes those factories eagerly during ITEMS.register()
-        // (whereas NeoForge defers them to the registry event, so order is
-        // immaterial there). Registering blocks first makes the supplier
-        // resolvable on both loaders. (ModBlocks has no dependency on ModItems.)
+        // Blocks MUST register before items: on Fabric, Architectury resolves ModItems'
+        // BlockItem factories eagerly during ITEMS.register(), so the Block supplier must already exist.
         ModBlocks.register();
         ModItems.register();
         ModBlockEntityTypes.register();
@@ -48,25 +36,17 @@ public final class TheSilverAgeCommon {
         // Loader-agnostic gameplay events.
         MonsterArmorHandler.register();
 
-        // Server→client sync of override_vanilla_recipes on join, so each
-        // client's recipe-override texture pack matches the server it joins
-        // (the recipes themselves are already server-driven). Registers the
-        // server-side payload type + join hook on both sides; the client-side
-        // receiver is wired separately from each loader's client entrypoint.
+        // Server→client sync of override_vanilla_recipes on join (matches the recipe-override
+        // texture pack to the server). Client-side receiver is wired from each loader's client entrypoint.
         ModNetworking.register();
 
-        // Silver oxidation / waxing relationships (single common spec). NeoForge
-        // keeps these in its committed data maps (impl is a no-op; its datagen
-        // provider iterates the same spec); Fabric registers them at runtime via
-        // OxidizableBlocksRegistry. Bridged through @ExpectPlatform.
+        // Silver oxidation / waxing relationships (single common spec), bridged through @ExpectPlatform.
         SilverWeatheringSpec.oxidationPairs().forEach(pair ->
                 WeatheringPlatform.registerOxidation(pair.from(), pair.to()));
         SilverWeatheringSpec.waxablePairs().forEach(pair ->
                 WeatheringPlatform.registerWaxable(pair.from(), pair.to()));
 
-        // Loader-specific setup that has no Architectury equivalent yet
-        // (NeoForge: firework recipe patch via AT-exposed fields + config;
-        // Fabric: Phase 4 no-ops). Bridged through @ExpectPlatform.
+        // Loader-specific setup that has no Architectury equivalent, bridged through @ExpectPlatform.
         CommonPlatform.onCommonSetup();
     }
 }

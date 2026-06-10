@@ -62,15 +62,13 @@ public class ItemUtils {
         int count = Math.min(new ItemStack(item.asItem()).getMaxStackSize(), from.getCount());
         ItemStack to = new ItemStack(item.asItem(), count);
 
-        // Carry over the durability of the replaced item if both items are damageable.
+        // Carry over durability if both items are damageable.
         if (from.isDamaged() && to.isDamageableItem()) {
             int durability = Math.min(from.getDamageValue(), to.getMaxDamage());
             to.setDamageValue(durability);
         }
 
-        // Carry over enchantments from the replaced item to the new item (if supported).
-        // (Uses vanilla ItemStack/Enchantment APIs rather than the NeoForge
-        // convenience helpers so this stays loader-agnostic; behaviour is the same.)
+        // Carry over enchantments if supported.
         if (from.isEnchanted() && to.isEnchantable()) {
             ItemEnchantments enchantments = from.getEnchantments();
             enchantments.keySet().forEach(enchantment -> {

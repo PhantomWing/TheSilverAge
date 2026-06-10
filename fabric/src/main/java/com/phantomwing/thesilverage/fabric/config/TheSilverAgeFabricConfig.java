@@ -6,17 +6,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
-/**
- * Fabric config, backed by Cloth Config's AutoConfig (mirrors the
- * RusticDelight-Fabric pattern). Persists to {@code config/thesilverage.json}.
- *
- * <p>The option ids and their {@code true} defaults are kept 1:1 with the
- * NeoForge {@code Configuration} ({@code ModConfigSpec}) so a user editing
- * configs sees the same five switches with identical semantics on both loaders.
- * Cross-loader code reaches the three loot/recipe gates through the
- * {@code @ExpectPlatform CommonConfig} bridge, whose Fabric impl delegates here
- * (NeoForge's impl delegates to {@code ModConfigSpec}).</p>
- */
+/** Fabric config backed by Cloth Config AutoConfig; persists to config/thesilverage.json. */
 @Config(name = TheSilverAge.MOD_ID)
 public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String SILVERFISH_DROP_SILVER_ID = "silverfish_drop_silver";
@@ -38,21 +28,11 @@ public class TheSilverAgeFabricConfig implements ConfigData {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
     }
 
-    /**
-     * Registers the config holder + serializer. MUST be called before the first
-     * {@link #get()} — i.e. at the very start of the Fabric entrypoint, ahead of
-     * the loot mixin / {@code thesilverage:config_boolean} resource condition,
-     * both of which read config very early (datapack load).
-     */
+    /** Must be called before the first get() — config is read very early (datapack load). */
     public static void register() {
         AutoConfig.register(TheSilverAgeFabricConfig.class, GsonConfigSerializer::new);
     }
 
-    /**
-     * Mirrors NeoForge {@code Configuration.getBooleanConfigurationValue} exactly,
-     * including throwing on an unknown id (callers only ever pass the five ids
-     * above; throwing keeps Fabric/NeoForge behaviour identical).
-     */
     public static boolean getBooleanConfigurationValue(String id) {
         TheSilverAgeFabricConfig config = get();
         return switch (id) {

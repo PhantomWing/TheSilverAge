@@ -24,39 +24,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-/**
- * Built-in resource pack housing the silver-themed brewing-stand / comparator /
- * repeater textures + models. Whether it applies tracks the
- * {@code override_vanilla_recipes} setting — the server's value when connected
- * to one that synced it ({@link ServerOverrideState}), else the local config —
- * so the textures stay consistent with the (server-driven) recipe overrides.
- *
- * <p><b>How the toggle works.</b> {@link AddPackFindersEvent} fires only ONCE
- * (at {@link net.minecraft.server.packs.repository.PackRepository} construction),
- * but the {@code RepositorySource} we register is re-invoked on every reload
- * (it runs inside {@code PackRepository#discoverAvailable}). So the config gate
- * lives in the SOURCE LAMBDA, not the event handler: each reload re-evaluates
- * {@link #desiredOverride()} and either provides the pack (when overrides are on)
- * or omits it (when off → vanilla textures). The pack is {@code required} so when
- * provided it is force-selected at the INITIAL resource load — meaning the
- * default-on case shows the textures from the first frame with NO reload, the
- * same end result as Fabric's {@code DEFAULT_ENABLED}. No {@code PackRepository}
- * manipulation, no {@code options.txt} persistence needed.</p>
- *
- * <p>{@link #syncFromState()} (join receiver / disconnect / config save) requests
- * a reload only when the desired state actually changed, and the reload is
- * deferred by {@link #clientTick()} until it is safe — never during the
- * world-join loading screen, which would freeze the client.</p>
- */
-// 1.21.6: buses unified — @EventBusSubscriber dropped the `bus` element (Bus enum removed).
+// Built-in resource pack for the silver-themed brewing-stand/comparator/repeater
+// textures, gated on the override_vanilla_recipes setting (server value when synced,
+// else local config). The config gate lives in the source lambda (not the event
+// handler) because AddPackFindersEvent fires once but the source re-runs every reload.
 @EventBusSubscriber(modid = TheSilverAge.MOD_ID, value = Dist.CLIENT)
 public final class RecipeOverridePackHandler {
     private static final String PACK_ID = "builtin/" + TheSilverAge.MOD_ID + "/recipe_overrides";
     private static final String PACK_RESOURCE_ROOT = "resourcepacks/silver_recipe_overrides";
 
-    /** What the pack-finder source last applied; lets {@link #clientTick()} skip a no-op reload. */
     private static volatile boolean appliedOverride = false;
-    /** Whether a sync is queued, waiting for a safe moment to reload. */
     private static volatile boolean syncPending = false;
 
     private RecipeOverridePackHandler() {
@@ -66,8 +43,6 @@ public final class RecipeOverridePackHandler {
     public static void onAddPackFinders(@NotNull AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
-        // 1.21.9: IModFile.findResource(String) was removed; resolve the pack root against
-        // the mod file's content roots (its JarContents) instead.
         Path packRoot = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile()
                 .getContents().getContentRoots().stream()
                 .map(root -> root.resolve(PACK_RESOURCE_ROOT))
@@ -75,28 +50,21 @@ public final class RecipeOverridePackHandler {
                 .findFirst()
                 .orElse(null);
         if (packRoot == null || !Files.exists(packRoot)) {
-            // In a dev environment common's resources may not be on the NeoForge
-            // mod file's resource path (see the processResources copy in
-            // neoforge/build.gradle). Skip rather than risk a null pack.
             TheSilverAge.LOGGER.warn("Recipe-override pack root '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
             return;
         }
 
-        // Register the source ONCE; its lambda re-runs on every reload, so the
-        // config/server gate here is what makes reloads re-evaluate the state.
         event.addRepositorySource(consumer -> {
             boolean enabled = desiredOverride();
             appliedOverride = enabled;
-            if (!enabled) return; // omit the pack → vanilla textures
+            if (!enabled) return;
 
             PackLocationInfo location = new PackLocationInfo(
                     PACK_ID,
                     Component.literal("The Silver Age: Recipe-Override Textures"),
                     PackSource.BUILT_IN,
                     Optional.empty());
-            // required=true: force-selected whenever provided, including at the
-            // initial resource load (no reload needed for default-on).
-            // fixedPosition=true at TOP: overrides vanilla.
+            // required=true force-selects the pack at the initial load (no reload for default-on); TOP overrides vanilla.
             PackSelectionConfig selection = new PackSelectionConfig(true, Pack.Position.TOP, true);
 
             Pack pack = Pack.readMetaAndCreate(
@@ -112,18 +80,13 @@ public final class RecipeOverridePackHandler {
         });
     }
 
-    /** On config save, request a (deferred) re-evaluation of the pack state. */
     @SubscribeEvent
     public static void onConfigReloaded(@NotNull ModConfigEvent.Reloading event) {
         if (!event.getConfig().getModId().equals(TheSilverAge.MOD_ID)) return;
         syncFromState();
     }
 
-    /**
-     * Effective override state. When connected to a server that synced its value
-     * ({@link ServerOverrideState}) that wins; otherwise the local config value.
-     * Defensive read in case the config spec hasn't loaded yet.
-     */
+    // Server value wins when synced; else local config. Defensive read in case the spec hasn't loaded.
     private static boolean desiredOverride() {
         boolean local;
         try {
@@ -134,20 +97,12 @@ public final class RecipeOverridePackHandler {
         return ServerOverrideState.effective(local);
     }
 
-    /**
-     * Request a pack-state sync. The reload (if needed) is deferred to
-     * {@link #clientTick()}: reloading during the world-join loading screen
-     * freezes the client. Called from the join receiver, disconnect, config save.
-     */
+    // Request a pack-state sync; the reload is deferred to clientTick() (reloading during world-join freezes the client).
     public static void syncFromState() {
         syncPending = true;
     }
 
-    /**
-     * Driven every client tick (registered on the game bus). Reloads — which
-     * re-runs the pack-finder source and re-evaluates the gate — only when the
-     * desired state differs from what is applied, and only once it is safe.
-     */
+    // Reloads only when the desired state differs from what is applied, and only once it is safe.
     public static void clientTick() {
         if (!syncPending) return;
         Minecraft mc = Minecraft.getInstance();

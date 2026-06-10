@@ -12,44 +12,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-/**
- * Replaces naturally-spawned mobs' golden armor with silver armor.
- *
- * <p>The transmute LOGIC is loader-agnostic and lives here. The actual event
- * subscription is loader-specific (NeoForge keeps its exact
- * {@code EntityJoinLevelEvent} + {@code loadedFromDisk()} gating; Fabric uses an
- * Architectury {@code EntityEvent.ADD} shell) and is bridged through
- * {@link MonsterArmorPlatform}.</p>
- */
+/** Replaces naturally-spawned mobs' golden armor with silver armor. */
 public final class MonsterArmorHandler {
     private static final float REPLACE_CHANCE = 0.5f; // 50% chance to replace full set
 
     private MonsterArmorHandler() {
     }
 
-    /** Wires the loader-specific entity-join hook. Called from {@code TheSilverAgeCommon.init()}. */
     public static void register() {
         MonsterArmorPlatform.registerMobSpawnHandler();
     }
 
-    /**
-     * Loader-agnostic equip logic. The caller is responsible for the spawn gating
-     * (client-side / loaded-from-disk) so NeoForge can preserve its precise
-     * {@code EntityJoinLevelEvent.loadedFromDisk()} semantics.
-     *
-     * @param entity        the entity that just joined the level
-     * @param level         the level it joined
-     * @param loadedFromDisk whether the entity was loaded from disk (NeoForge: from
-     *                       the event; Fabric shell: always {@code false})
-     */
     public static void tryEquipSilverArmor(Entity entity, Level level, boolean loadedFromDisk) {
-        // Only apply when the mob is spawning naturally in the world, not when loaded from disk or on the client side.
+        // Only apply for natural spawns: skip disk-loaded entities and the client side.
         if (level.isClientSide() || loadedFromDisk) {
             return;
         }
 
-        // Check if we should equip Silver armor. 26.1: EntityType.is(TagKey) was removed; tag
-        // membership is queried via the type's built-in registry holder.
         if (entity.getType().builtInRegistryHolder().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR) && entity instanceof Mob mob) {
             RandomSource random = mob.getRandom();
 
@@ -64,7 +43,6 @@ public final class MonsterArmorHandler {
             boolean hasGoldenBoots = boots.is(Items.GOLDEN_BOOTS);
             boolean hasFullSet = hasGoldenHelmet && hasGoldenChestplate && hasGoldenLeggings && hasGoldenBoots;
 
-            // If wearing a full set of Golden armor, try to replace the entire set with Silver armor.
             if (hasFullSet) {
                 if (random.nextFloat() < REPLACE_CHANCE) {
                     mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()));
@@ -73,7 +51,6 @@ public final class MonsterArmorHandler {
                     mob.setItemSlot(EquipmentSlot.FEET, ItemUtils.tryTransmuteStack(boots, ModItems.SILVER_BOOTS.get()));
                 }
             } else {
-                // If mob is wearing any separate pieces of Golden armor, try to individually replace with a piece of Silver armor.
                 if (hasGoldenHelmet && random.nextFloat() < REPLACE_CHANCE) {
                     mob.setItemSlot(EquipmentSlot.HEAD, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()));
                 }

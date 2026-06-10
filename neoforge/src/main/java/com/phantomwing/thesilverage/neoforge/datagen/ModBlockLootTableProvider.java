@@ -31,7 +31,6 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
     }
 
-    // Actually add our loot tables.
     @Override
     protected void generate() {
         dropOre(ModBlocks.SILVER_ORE, ModItems.RAW_SILVER);
@@ -172,11 +171,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropDoor(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
     }
 
-    // The contents of this Iterable are used for validation.
-    // We return an Iterable over our block registry's values here.
     @Override
     protected @NotNull Iterable<Block> getKnownBlocks() {
-        // The contents of our (Architectury) DeferredRegister.
         List<Block> blocks = new ArrayList<>();
         for (RegistrySupplier<Block> entry : ModBlocks.BLOCKS) {
             blocks.add(entry.get());
@@ -200,16 +196,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         add(block.get(), (b) -> createSilverOreDrop(b, item.get()));
     }
 
-    /**
-     * Like vanilla {@code createOreDrop} but with a 1-3 count range instead of a
-     * flat 1, so silver is plentiful enough to be a viable building/crafting
-     * material (player feedback). Modelled 1:1 on Mojang's own
-     * {@code createCopperOreDrops}: silk-touch still drops the ore block, the
-     * Fortune ore bonus still applies on top of the range, and explosion decay
-     * is preserved. Datagen output is loader-neutral
-     * ({@code data/thesilverage/loot_table/blocks/*.json}), so both NeoForge
-     * and Fabric pick up the new drops identically.
-     */
+    /** Copper-style ore drop with a 1-3 count range (plus silk-touch and Fortune). */
     private LootTable.Builder createSilverOreDrop(Block block, Item item) {
         HolderLookup.RegistryLookup<Enchantment> enchantments =
                 this.registries.lookupOrThrow(Registries.ENCHANTMENT);

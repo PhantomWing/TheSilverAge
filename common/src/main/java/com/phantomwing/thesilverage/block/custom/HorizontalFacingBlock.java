@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class HorizontalFacingBlock extends Block {
-    // 1.21.2 removed DirectionProperty; HORIZONTAL_FACING is now a plain EnumProperty<Direction>.
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public HorizontalFacingBlock(Properties properties) {

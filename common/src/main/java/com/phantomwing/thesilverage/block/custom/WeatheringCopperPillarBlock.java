@@ -10,14 +10,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Pillar counterpart to vanilla's {@code WeatheringCopperSlabBlock} /
- * {@code WeatheringCopperStairBlock} — the shape vanilla never shipped for
- * copper. Mirrors this project's existing {@code WeatheringCopperHorizontalFacingBlock}
- * line-for-line, swapping the {@link RotatedPillarBlock} parent in: random tick
- * advances the weather stage, and {@code isRandomlyTicking} stops at the final
- * (most-oxidized) state.
- */
+/** Weathering pillar block: random tick advances the oxidation stage. */
 public class WeatheringCopperPillarBlock extends RotatedPillarBlock implements WeatheringCopper {
     public static final MapCodec<WeatheringCopperPillarBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
             .group(WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(ChangeOverTimeBlock::getAge), propertiesCodec())

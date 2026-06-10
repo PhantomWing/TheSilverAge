@@ -25,21 +25,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Datagen for the Silver villager trade. 26.1 moved villager trades to the data-driven
- * {@code villager_trade} registry (+ {@code tags/villager_trade/<profession>/level_N} pools) and
- * deleted NeoForge's trade-registration events, so this is now pure data — loader-agnostic (the
- * generated files ship in the common jar and apply on both Fabric and NeoForge).
- *
- * <p>There is no dedicated vanilla/NeoForge "villager trade" datagen provider, and the standard
- * datapack-registry path ({@code DatapackBuiltinEntriesProvider} + {@code RegistrySetBuilder})
- * cannot attach load-conditions to an entry. So this small {@link DataProvider} writes the trade
- * itself — encoding the {@link VillagerTrade} through its own {@code CODEC} (schema-correct by
- * construction) — then injects the {@code neoforge:conditions} gate. {@link FabricConditionsProvider}
- * runs after this and mirrors that into {@code fabric:load_conditions}, so the
- * {@code enable_villager_trades} config gates the trade identically on both loaders.</p>
- *
- * <p>It also emits the cleric level-2 pool tag entry (additive merge with vanilla; {@code required:
- * false} so the pool tolerates the trade being condition-removed when the config gates it out).</p>
+ * Writes the Silver villager_trade JSON (gated by enable_villager_trades) plus an additive
+ * cleric level-2 pool tag entry. Encodes the trade via its CODEC, then injects the
+ * neoforge:conditions gate; FabricConditionsProvider mirrors it to fabric:load_conditions.
  */
 public class ModVillagerTradeProvider implements DataProvider {
     /** {@code data/thesilverage/villager_trade/cleric/2/silver_ingot_emerald.json} */
@@ -63,8 +51,7 @@ public class ModVillagerTradeProvider implements DataProvider {
             RegistryOps<JsonElement> ops = provider.createSerializationContext(JsonOps.INSTANCE);
             List<CompletableFuture<?>> futures = new ArrayList<>();
 
-            // Cleric, profession level 2: buy 3 Silver Ingot, sell 1 Emerald (maxUses 12, villagerXp 10,
-            // reputation_discount = PRICE_MULTIPLIER). The only active Silver villager trade.
+            // Cleric L2: buy 3 Silver Ingot, sell 1 Emerald.
             VillagerTrade trade = new VillagerTrade(
                     new TradeCost(ModItems.SILVER_INGOT.get(), 3),   // wants
                     new ItemStackTemplate(Items.EMERALD),            // gives

@@ -33,13 +33,12 @@ public class AddItemModifier extends LootModifier {
         this(conditionsIn, 0, item, count, count);
     }
 
-    /** Code-construction constructor (datagen) — uses the default GLM priority 0. */
+    // Datagen entry point; uses the default GLM priority 0.
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
         this(conditionsIn, 0, item, minAmount, maxAmount);
     }
 
-    // 26.1: NeoForge added a `priority` int to LootModifier (codecStart now yields
-    // (conditions[], priority)); the codec's apply() needs the priority as the 2nd parameter.
+    // The `priority` 2nd arg is required by LootModifier's codecStart.
     public AddItemModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
         super(conditionsIn, priority);
 
@@ -50,18 +49,15 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context) {
-        // Check if the modifier is enabled in the config. If not, return the generated loot as is.
         if (!CommonConfig.generateStructureLoot()) {
             return generatedLoot;
         }
 
-        // Delegate to the shared, loader-agnostic algorithm (single source of truth).
         SilverLootAlgorithms.applyAddItem(generatedLoot, context, this.item, this.min, this.max);
 
         return generatedLoot;
     }
 
-    // Return our codec here.
     @Override
     public @NotNull MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;

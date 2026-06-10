@@ -27,12 +27,7 @@ public class ModTrimMaterials {
     public static final ResourceKey<EquipmentAsset> SILVER_EQUIPMENT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation("silver"));
 
-    /**
-     * Silver trim asset group. The per-equipment-asset override makes a silver trim on
-     * SILVER armor render with the darker palette ("silver_darker") so it stays visible —
-     * vanilla's "matching material renders darker" behaviour (e.g. iron-on-iron). Used
-     * both for the registered TrimMaterial (worn rendering) and the item-model datagen.
-     */
+    // Per-asset override renders silver-on-silver trim with a darker palette so it stays visible.
     public static final MaterialAssetGroup SILVER_ASSETS =
             MaterialAssetGroup.create("silver", Map.of(SILVER_EQUIPMENT_ASSET, "silver_darker"));
 
@@ -70,13 +65,7 @@ public class ModTrimMaterials {
     }
 
     private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
-        // 1.21.5: TrimMaterial is now a record(MaterialAssetGroup assets, Component description).
-        // The ingredient Item and the legacy itemModelIndex float are no longer part of
-        // TrimMaterial — the ingredient->material association is driven by the item's
-        // PROVIDES_TRIM_MATERIAL component, and trim item models are fully data-driven.
-        // SILVER_ASSETS carries the silver->silver_darker override for matching (silver)
-        // armor. `item` / `itemModelIndex` are retained on this signature as documentation
-        // of the legacy ordering.
+        // `item`/`itemModelIndex` are unused by TrimMaterial now; kept to document legacy ordering.
         TrimMaterial trimMaterial = new TrimMaterial(SILVER_ASSETS,
                 Component.translatable(Util.makeDescriptionId("trim_material", trimKey.identifier())).withStyle(style));
         context.register(trimKey, trimMaterial);

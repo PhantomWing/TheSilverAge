@@ -6,25 +6,18 @@ import com.phantomwing.thesilverage.platform.CommonPlatform;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 
-/**
- * Fabric implementation of {@link com.phantomwing.thesilverage.platform.KnifePlatform}
- * (resolved by Architectury's {@code @ExpectPlatform} transformer).
- */
+/** Fabric impl of KnifePlatform (@ExpectPlatform). */
 public final class KnifePlatformImpl {
     private KnifePlatformImpl() {
     }
 
     public static Item createSilverKnife(Item.Properties properties, ToolMaterial material) {
-        // Only touch SilverKnifeItem (→ FDR's KnifeItem) when FDR is actually
-        // loaded, so the mod still loads standalone with the SwordItem fallback.
-        // Call the static factory (invokestatic) rather than `new SilverKnifeItem`
-        // here: an inline `new` makes the verifier load SilverKnifeItem's FDR-only
-        // superclass when THIS method is verified, crashing without FDR.
+        // Call the static factory, not `new SilverKnifeItem`: an inline new would make the verifier
+        // load the FDR-only superclass here, crashing without FDR.
         if (CommonPlatform.isModLoaded(ModIds.FARMERS_DELIGHT)) {
             return SilverKnifeItem.create(material, properties);
         }
         // Knife attack stats (0.5 damage, -2.0 speed) match FD's own knives.
-        // 1.21.5: SwordItem removed — plain Item + Item.Properties#sword.
         return new Item(properties.sword(material, 0.5F, -2.0F));
     }
 }

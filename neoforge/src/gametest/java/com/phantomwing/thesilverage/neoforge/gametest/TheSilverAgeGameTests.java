@@ -28,29 +28,8 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import java.util.function.Consumer;
 
 /**
- * Automated regression tests for The Silver Age, on Minecraft 1.21.5+'s data-driven
- * GameTest framework.
- *
- * <p><b>This whole package is a dedicated {@code gametest} source set</b> (see
- * neoforge/build.gradle). Nothing here — neither these classes nor the {@code test_instance}
- * JSON / arena structure under {@code src/gametest/resources} — is part of {@code main}, so it
- * never ships in the production jar and never sits on the runClient/runServer classpath. It is
- * wired onto the {@code :neoforge:runGameTest} run ONLY.</p>
- *
- * <p><b>How the new system fits together.</b> 1.21.5 replaced annotation-based GameTests with
- * registry objects:
- * <ul>
- *   <li>The Java assertion logic lives here as {@link Consumer}&lt;{@link GameTestHelper}&gt;
- *       entries in the {@link Registries#TEST_FUNCTION} registry. They are registered via
- *       {@link RegisterEvent} below — fired because this class is an {@link EventBusSubscriber}
- *       and the source set is on the gametest run's (mod) classpath.</li>
- *   <li>Each function is bound to a runnable test by a {@code test_instance} datapack JSON
- *       (type {@code minecraft:function}) under
- *       {@code src/gametest/resources/data/thesilverage/test_instance/}, which also names the
- *       built-in {@code minecraft:default} environment and the shared arena structure.</li>
- *   <li>The arena ({@code silver_test_arena.nbt}, a 7x5x7 stone-floored box) is a committed
- *       static resource under {@code src/gametest/resources/data/thesilverage/structure/}.</li>
- * </ul>
+ * Automated regression tests, registered as TEST_FUNCTION entries bound to test_instance JSON
+ * under src/gametest/resources. This is a dedicated gametest source set, not in the production jar.
  */
 @EventBusSubscriber(modid = TheSilverAge.MOD_ID)
 public final class TheSilverAgeGameTests {
@@ -83,16 +62,11 @@ public final class TheSilverAgeGameTests {
     // ------------------------------------------------------------------------
 
     /**
-     * A Moon Phase Detector at a full-moon night, in NORMAL (non-inverted) mode, must emit a
-     * full-strength redstone signal (POWER 15). The block's BlockEntity ticker only refreshes
-     * POWER when {@code gameTime % 20 == 0}, so we wait 25 ticks (guaranteed to cross a
-     * boundary) before asserting.
+     * Full-moon night, NORMAL mode must emit POWER 15. The ticker only refreshes POWER when
+     * gameTime % 20 == 0, so wait 25 ticks (guaranteed to cross a boundary) before asserting.
      */
     private static void moonPhaseDetectorFullMoon(GameTestHelper helper) {
-        // Day 0 -> moon phase 0 (full); 14000 ticks-of-day is night, so the detector reads
-        // the current (full) phase rather than a day transition. NORMAL mode: POWER = 15 - 0.
-        // 26.1: ServerLevel.setDayTime(long) was removed by the WorldClock rework. The overworld
-        // day time is now set via the (server) clock manager's setTotalTicks for the OVERWORLD clock.
+        // Day 0 = moon phase 0 (full); 14000 ticks-of-day is night.
         ServerLevel level = helper.getLevel();
         Holder<WorldClock> overworldClock = level.registryAccess()
                 .lookupOrThrow(Registries.WORLD_CLOCK).getOrThrow(WorldClocks.OVERWORLD);
@@ -117,8 +91,6 @@ public final class TheSilverAgeGameTests {
     private static void silverBulbLighting(GameTestHelper helper) {
         helper.setBlock(CENTER, ModBlocks.SILVER_BULB.get());
         helper.assertBlockProperty(CENTER, BlockStateProperties.LIT, false);
-        // A redstone block placed adjacent powers the bulb; copper-bulb logic flips LIT on the
-        // rising power edge.
         helper.setBlock(CENTER.above(), Blocks.REDSTONE_BLOCK);
         helper.startSequence()
                 .thenExecuteAfter(3, () ->
@@ -127,9 +99,8 @@ public final class TheSilverAgeGameTests {
     }
 
     /**
-     * Killing silverfish drops Silver Nuggets (via the silverfish-drop GLM). The drop count is
-     * a uniform 0..2, so a single kill can yield nothing — we kill a batch so at least one
-     * nugget is overwhelmingly certain (P(no drop) = (1/3)^15 ~ 7e-8).
+     * Killing silverfish drops Silver Nuggets via the GLM. Drop count is uniform 0..2, so kill a
+     * batch of 15 to make at least one nugget overwhelmingly certain.
      */
     private static void silverfishDropsSilver(GameTestHelper helper) {
         for (int i = 0; i < 15; i++) {

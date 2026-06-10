@@ -6,33 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * Single, loader-agnostic source of truth for the Silver oxidation and waxing
- * relationships.
- *
- * <p>Lifted verbatim from the original NeoForge {@code ModOxidizables.gather}
- * (oxidation steps, less → more) and {@code ModWaxables.gather} (unwaxed →
- * waxed), preserving every pair and its order. Both the NeoForge
- * {@code DataMapProvider} datagen (so the regenerated
- * {@code oxidizables.json}/{@code waxables.json} stay byte-identical) and the
- * Fabric runtime {@code OxidizableBlocksRegistry} registration iterate this
- * list — one weathering definition for both loaders.</p>
- *
- * <p>{@code ModBlocks} suppliers are wrapped in {@link Supplier} so the spec can
- * be referenced before block registration completes; the {@link Block} is
- * resolved lazily when {@link #oxidationPairs()} / {@link #waxablePairs()} are
- * iterated.</p>
- */
+/** Source of truth for the Silver oxidation and waxing relationships. */
 public final class SilverWeatheringSpec {
     private SilverWeatheringSpec() {
     }
 
-    /**
-     * An ordered weathering relationship.
-     *
-     * @param from oxidation: the less-oxidized block. waxing: the unwaxed block.
-     * @param to   oxidation: the more-oxidized block. waxing: the waxed block.
-     */
+    /** Ordered pair: oxidation less→more, or waxing unwaxed→waxed. */
     public record Pair(Supplier<Block> from, Supplier<Block> to) {
     }
 
@@ -40,10 +19,7 @@ public final class SilverWeatheringSpec {
         out.add(new Pair(less, more));
     }
 
-    /**
-     * The exact ordered oxidation steps (less-oxidized → next state). Matches
-     * the original {@code ModOxidizables} {@code add(b, less, more)} sequence.
-     */
+    /** Ordered oxidation steps (less-oxidized → next state). */
     public static List<Pair> oxidationPairs() {
         List<Pair> p = new ArrayList<>();
 
@@ -115,10 +91,7 @@ public final class SilverWeatheringSpec {
         return p;
     }
 
-    /**
-     * The exact ordered waxable pairs (unwaxed → waxed). Matches the original
-     * {@code ModWaxables} {@code add(b, unwaxed, waxed)} sequence.
-     */
+    /** Ordered waxable pairs (unwaxed → waxed). */
     public static List<Pair> waxablePairs() {
         List<Pair> p = new ArrayList<>();
 

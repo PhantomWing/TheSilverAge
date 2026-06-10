@@ -3,18 +3,9 @@ package com.phantomwing.thesilverage.utils;
 import net.minecraft.world.level.Level;
 
 public class LevelUtils {
-    /**
-     * Ticks per Minecraft day. 1.21.11 removed the {@code Level.TICKS_PER_DAY} constant (and
-     * {@code Level.getMoonPhase()}); the value is stable, so it is reproduced locally.
-     * 26.1 replaced {@code Level.getDayTime()} with the WorldClock system; the overworld day
-     * time is now {@code Level.getOverworldClockTime()} (still in ticks; 24000 = one day).
-     */
     private static final long TICKS_PER_DAY = 24000L;
 
-    /**
-     * Canonical moon phase (0-7), reproducing the removed {@code Level.getMoonPhase()}:
-     * day index ({@code dayTime / 24000}) modulo 8. 0 = Full Moon, 4 = New Moon.
-     */
+    /** Canonical moon phase (0-7): day index modulo 8. 0 = Full Moon, 4 = New Moon. */
     private static int moonPhaseOf(Level level) {
         return (int) (level.getOverworldClockTime() / TICKS_PER_DAY % 8L);
     }
@@ -40,15 +31,8 @@ public class LevelUtils {
     }
 
     /**
-     * Canonical moon phase (0-7), i.e. 0 = Full Moon, 4 = New Moon (the vanilla brightness
-     * ordering used everywhere, including the wiki's lunar-phase table). Unlike
-     * {@link #getMoonPhaseSignal(Level)} this is NOT doubled for the day/night transition —
-     * there are only eight named phases, so the text tooltip maps to the canonical phase the
-     * dial settles on.
-     *
-     * <p>Same guards as the signal helper: dimensions with a fixed time (Nether/End) and a
-     * {@code null} level fall back to {@code 0} (Full Moon), matching the full-moon frame the
-     * dial's texture shows there.</p>
+     * Canonical moon phase (0-7), 0 = Full Moon. Unlike {@link #getMoonPhaseSignal(Level)} this is
+     * NOT doubled for the day/night transition. Fixed-time dimensions and a {@code null} level give {@code 0}.
      */
     public static int getMoonPhase(Level level) {
         if (level != null && !level.dimensionType().hasFixedTime()) {

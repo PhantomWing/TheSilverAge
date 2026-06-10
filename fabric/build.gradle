@@ -1,7 +1,5 @@
 plugins {
-    // johnrengelman's shadow is abandoned + Gradle-9 incompatible; com.gradleup.shadow is the
-    // maintained fork (import package: com.gradleup.shadow). With loom-no-remap (26.1) there is
-    // no remapJar, so shadowJar becomes the PRIMARY mod artifact (bundles :common into the jar).
+    // loom-no-remap has no remapJar, so shadowJar is the primary mod artifact (bundles :common).
     id 'com.gradleup.shadow' version '9.4.2'
 }
 
@@ -13,17 +11,8 @@ architectury {
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
-    // 26.1: the mixin annotation processor is OFF by default (unobfuscated names need no
-    // refmap remapping). The old `mixin { defaultRefmapName = ... }` block was removed; the
-    // mixin still applies at runtime via thesilverage.mixins.json (its `refmap` entry is dropped).
-
-    // Give the dev server its own working directory so it has a SEPARATE
-    // config/thesilverage.json from the client (which uses run/). Without this
-    // both share run/config/thesilverage.json, making it impossible to set the
-    // client and server to different override_vanilla_recipes values — the exact
-    // mismatch the join-sync packet exists to resolve. With this split:
-    //   client config → fabric/run/config/thesilverage.json
-    //   server config → fabric/run/server/config/thesilverage.json
+    // Give the dev server its own runDir so its config is separate from the client's
+    // (lets client/server hold different override_vanilla_recipes values).
     runs {
         server {
             runDir "run/server"
@@ -39,53 +28,25 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
-// NOTE (1.21.6 branch): no Fabric recipe viewer — EMI is stalled at MC 1.21.1 and
-// JEI-Fabric has no 1.21.6 build. The original EMI integration + the
-// `-Precipe_viewer=jei|emi|both|none` toggle are preserved on the version/1.21 branch
-// and return once a 1.21.6 viewer ships. See gradle.properties PORT NOTES.
-
 dependencies {
-    // 26.1/loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
+    // loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
     implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     api "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    // Architectury API (Fabric).
     api "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    // `namedElements` no longer exists under loom-no-remap — reference :common directly.
     common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionFabric')) { transitive false }
 
-    // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
-    //      never shipped, never a hard dependency; mirrors the NeoForge intent). ----
+    // JEI — recipe viewer, dev-runtime only (never compiled against, never shipped).
+    localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}")
 
-    // NOTE (1.21.6 branch): no Fabric dev-runtime niceties.
-    //  * AppleSkin: dropped — no 1.21.4–1.21.6 build.
-    //  * JEI/EMI: no Fabric 1.21.6 recipe-viewer build surfaced (EMI stalled at 1.21.1).
-    // Re-add a Fabric recipe viewer / AppleSkin here once 1.21.6 builds exist.
-    // See gradle.properties PORT NOTES.
-
-
-    // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the
-    // Fabric AutoConfig config (TheSilverAgeFabricConfig), mirroring how
-    // RusticDelight-Fabric does its config. Being a first-class modImplementation
-    // (runtime classpath, JiJ'd at build) it ALSO satisfies AppleSkin's bundled
-    // Cloth Config need in dev, so the prior dev-only modLocalRuntime workaround
-    // is no longer required. fabric-api excluded to avoid a transitive downgrade.
+    // Cloth Config — compiled + shipped; backs the Fabric AutoConfig config. fabric-api excluded to avoid a transitive downgrade.
     implementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
-
-    // Jade (Fabric): intentionally NOT added. The NeoForge side pins a specific
-    // CurseForge file id (curse.maven:jade-324717:7428884); no Fabric 1.21.1
-    // Jade file id was confirmed available on an already-declared repo at the
-    // time of writing, and the spec marks Jade optional/nice-to-have. Add a
-    // verified `curse.maven:jade-324717:<fabric-1.21.1-file-id>` here if/when
-    // one is confirmed. (TODO: optional Jade Fabric dev dep — fabric/build.gradle)
 }
 
 processResources {
-    // Single-sourced manifest values (version, URLs, dependency ranges) derived from
-    // gradle.properties — see rootProject.ext.manifestProps in the root build.gradle.
     def manifest = rootProject.ext.manifestProps()
     inputs.properties(manifest)
 
@@ -93,61 +54,34 @@ processResources {
         expand(manifest)
     }
 
-    // Copy the built-in resource pack from common into the Fabric mod's
-    // resource output. Background: `ResourceManagerHelper.registerBuiltinResourcePack`
-    // resolves the pack root via `ModContainer.findPath(...)`, which queries
-    // the mod container's `getRootPaths()` — NOT the runtime classpath. In
-    // Architectury-Fabric dev the only roots are `fabric/build/{classes,resources}/main`;
-    // common's source set is on the classpath (which is why normal asset loading
-    // sees it) but NOT a root path. Without this copy, `findPath` returns empty
-    // for `resourcepacks/silver_recipe_overrides`, `registerBuiltinResourcePack`
-    // silently returns false, and the pack never appears in Options → Resource Packs.
-    //
-    // Production unaffected: shadowJar already physically merges common into
-    // the Fabric jar root, so the pack ends up at the correct path in the shipped jar.
-    // This block is a dev-runtime catch-up only.
-    //
-    // Loom's `mods { register("thesilverage") { sourceSet project(":common").sourceSets.main } }`
-    // is the architecturally cleaner answer but does not take effect under
-    // architectury-loom 1.7.435 + architectury-plugin 3.4.164 for this project
-    // (verified via a diagnostic log: container roots stayed Fabric-only).
+    // Copy common's built-in resource pack into the Fabric resource output so it resolves in dev
+    // (common is on the classpath but not a mod-container root path; shadowJar handles production).
     from(project(':common').file('src/main/resources/resourcepacks')) {
         into 'resourcepacks'
     }
 }
 
-// 26.1/loom-no-remap: there is no remapJar. The default `jar` is loom-processed (it injects
-// Jar-in-Jar metadata into fabric.mod.json) but is NOT the shippable artifact on its own — it
-// lacks :common. We mark it `raw` and build shadowJar ON TOP of its output (NOT from source),
-// so the Loom-modified fabric.mod.json is preserved while :common is merged in. shadowJar then
-// becomes the primary (unclassified) mod jar.
+// shadowJar is built on top of the Loom-processed `jar` (marked `raw`) so Loom's JiJ
+// fabric.mod.json is preserved while :common is merged in; shadowJar is the primary jar.
 jar {
     archiveClassifier = 'raw'
 }
 
 shadowJar {
     dependsOn jar
-    // Build from the Loom-processed jar output, not the raw source set — otherwise shadow would
-    // overwrite Loom's fabric.mod.json (with its JiJ entries) with the unprocessed one.
+    // Build from the Loom-processed jar, not source, to keep Loom's fabric.mod.json.
     mainSpec.sourcePaths.clear()
     from(zipTree(jar.archiveFile))
 
     exclude 'architectury.common.json'
 
-    // Drop the compile-only Farmer's Delight Refabricated KnifeItem stub from the
-    // shipped jar. The stub (src/main/java/vectorwing/farmersdelight/common/item/KnifeItem)
-    // exists ONLY so SilverKnifeItem can `extend` FDR's KnifeItem at compile time. It must
-    // NOT ship: at runtime the real FDR class (same FQN) is what SilverKnifeItem binds to,
-    // and a shipped stub would shadow/conflict with it. (Harmless in TSA dev: FDR is absent.)
+    // Drop the compile-only Farmer's Delight KnifeItem stub (real FDR class binds at runtime).
     exclude 'vectorwing/**'
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = null
 }
 
-// The Fabric access widener (thesilverage.accesswidener, `official` namespace) ships in the jar
-// (merged from :common) and is declared in fabric.mod.json — Fabric Loader applies it at runtime.
-// No build-time injection step exists anymore (the old remapJar injectAccessWidener is gone).
 assemble.dependsOn shadowJar
 
 sourcesJar {
@@ -156,10 +90,8 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-// 26.1/loom-no-remap + Shadow: shadowJar (not jar) is the shippable artifact, so redirect the
-// java component's outgoing artifacts to it. Otherwise `from components.java` would publish the
-// classifier='raw' jar (which lacks :common). (Maven publishing is scaffolding here — no
-// repositories are configured — but components.java must still resolve at configuration time.)
+// Redirect the java component's outgoing artifacts to shadowJar (the shippable jar) so
+// `from components.java` doesn't publish the classifier='raw' jar.
 configurations {
     apiElements {
         outgoing.artifacts.clear()
@@ -184,32 +116,23 @@ publishing {
     }
 }
 
-// ---- Modrinth + CurseForge release (Fabric jar) ----------------------------------
-// Run:  ./gradlew :fabric:publishMods            (needs MODRINTH_TOKEN / CURSEFORGE_TOKEN env vars)
-//       ./gradlew :fabric:publishMods -PpublishDryRun   (dry run — writes to build/, uploads nothing)
-// Project ids come from gradle.properties (public); tokens from env vars (secret).
+// Publishing (Fabric jar). ./gradlew :fabric:publishMods (tokens via MODRINTH_TOKEN / CURSEFORGE_TOKEN env vars).
 apply plugin: 'me.modmuss50.mod-publish-plugin'
 
 publishMods {
     file = shadowJar.archiveFile
-    // Matches the established scheme: every entry is version "1.3.1" / title "The Silver Age
-    // 1.3.1"; the game-version + loader tags distinguish them (Modrinth allows duplicate
-    // version numbers, so each loader/MC combo is its own entry under the same number).
     version = rootProject.mod_version
     displayName = "The Silver Age ${rootProject.mod_version}"
     changelog = rootProject.ext.latestChangelog()
     type = STABLE
     modLoaders.add("fabric")
-    // -PpublishDryRun => stage to build/ without uploading (safe to run without tokens).
+    // -PpublishDryRun => stage to build/ without uploading.
     dryRun = project.hasProperty("publishDryRun")
 
     modrinth {
         projectId = providers.gradleProperty("modrinth_project_id")
-        // Token: env var MODRINTH_TOKEN (CI/GitHub secret) OR a `modrinth_token` gradle
-        // property — put that in your USER ~/.gradle/gradle.properties (never the repo).
         accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
-        // build target — one jar, listed under both MC versions. See gradle.properties.
+        // Tag every supported game version on the upload, not just the build target.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         requires("architectury-api")
         requires("fabric-api")
@@ -218,8 +141,6 @@ publishMods {
     curseforge {
         projectId = providers.gradleProperty("curseforge_project_id")
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
-        // build target — one jar, listed under both MC versions. See gradle.properties.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // CurseForge requires explicit side flags (Modrinth infers them from the jar).
         client = true

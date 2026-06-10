@@ -18,13 +18,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-// 1.21.6: vanilla net.minecraft.data.tags.ItemTagsProvider was removed. NeoForge's
-// net.neoforged.neoforge.common.data.ItemTagsProvider replaces it, and its ctor dropped
-// the block-tag TagLookup param (block->item tag copying is now separate; this provider
-// only adds item tags directly, so it isn't needed).
 public class ModItemTagsProvider extends ItemTagsProvider {
-    /** Farmer's Delight's knife tag — the Cutting Board's accepted tool. Adding to it is
-     *  harmless when FD is absent (the tag is simply never consulted). */
+    /** Farmer's Delight knife tag; inert when FD is absent. */
     private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("farmersdelight", "tools/knives"));
 
@@ -46,9 +41,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(Items.GOLD_NUGGET)
                 .add(ModItems.SILVER_NUGGET.get());
 
-        // Redstone silver components — all silver forms accepted as the "S" ingredient in the
-        // Redstone Repeater / Comparator override recipes. Silver sheet is Create-only: it
-        // exists as an item either way, but is only obtainable with Create installed.
+        // Redstone silver components ("S" ingredient in Repeater/Comparator override recipes).
         tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .add(ModItems.SILVER_INGOT.get())
                 .add(ModItems.SILVER_SHEET.get());
@@ -77,7 +70,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(CommonTags.Items.INGOTS_SILVER).add(ModItems.SILVER_INGOT.get());
         tag(Tags.Items.INGOTS).addTag(CommonTags.Items.INGOTS_SILVER);
 
-        // Plates (Create compat — matches com.simibubi.create.foundation.data.recipe.CommonMetal.SILVER.plates)
+        // Plates (Create compat)
         tag(CommonTags.Items.PLATES_SILVER).add(ModItems.SILVER_SHEET.get());
         tag(CommonTags.Items.PLATES).addTag(CommonTags.Items.PLATES_SILVER);
 
@@ -98,9 +91,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
         tag(ItemTags.SPEARS).add(ModItems.SILVER_SPEAR.get());
 
-        // Farmer's Delight compat — the Silver Knife. Added to FD's knife tag (the
-        // Cutting Board's accepted tool) and the reserved c: convention tag. Both
-        // are unconditional: ignored when FD isn't installed.
+        // Silver Knife (Farmer's Delight + c: convention tag)
         tag(FARMERS_DELIGHT_KNIVES).add(ModItems.SILVER_KNIFE.get());
         tag(CommonTags.Items.TOOLS_KNIFE).add(ModItems.SILVER_KNIFE.get());
 
@@ -115,7 +106,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.SILVER_LEGGINGS.get(),
                 ModItems.SILVER_BOOTS.get()
         );
-        // 1.21.11 Nautilus Armor (BODY-slot animal armor) — the c: convention tag.
+        // Nautilus Armor
         tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get());
 
         // Armor trims

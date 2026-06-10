@@ -6,12 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable;
 
-/**
- * Feeds the NeoForge {@code oxidizables} data map from the common
- * {@link SilverWeatheringSpec} (single source of truth, shared with the Fabric
- * runtime registration). The generated {@code oxidizables.json} is byte-identical
- * to the previously hand-written provider's output.
- */
+// Feeds the NeoForge oxidizables data map from the shared SilverWeatheringSpec.
 public class ModOxidizables {
     public static void gather(DataMapProvider.Builder<Oxidizable, Block> b) {
         for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.oxidationPairs()) {

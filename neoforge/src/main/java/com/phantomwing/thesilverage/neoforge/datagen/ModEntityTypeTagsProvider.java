@@ -18,7 +18,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
-            .add(EntityType.ZOMBIE) // Husks are not included, because the Desert is thematically more suitable for golden armor.
+            .add(EntityType.ZOMBIE) // Husks excluded: desert suits golden armor thematically.
             .add(EntityType.ZOMBIE_VILLAGER)
             .add(EntityType.SKELETON)
             .add(EntityType.STRAY)

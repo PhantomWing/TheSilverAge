@@ -11,38 +11,19 @@ import java.util.function.Supplier;
 /**
  * Single, loader-agnostic source of truth for every Silver loot injection.
  *
- * <p>Lifted verbatim from the original NeoForge
- * {@code ModGlobalLootModifierProvider.start()} (468 lines). Each {@link Entry}
- * preserves, exactly, the original GLM's: datagen JSON file name, target vanilla
- * loot table, {@code random_chance}, operation, added item, count bounds, and
- * (for REPLACE) the list of removed items, in the original declaration order.
- * This is the parity contract — both the NeoForge GLM datagen provider and the
- * Fabric loot mixin iterate this list, so the two loaders behave identically and
- * the regenerated NeoForge GLM JSON is byte-identical to what is committed.</p>
- *
- * <p>The {@code targetLootTable} is {@code minecraft:<path>} where {@code path}
- * is the {@code BuiltInLootTables} key path — exactly what the original
- * {@code isVanillaLootTable(key)} produced
- * ({@code Identifier.withDefaultNamespace(key.identifier().getPath())}) and
- * what the {@code neoforge:loot_table_id} condition matches against. For the
- * silverfish entry it is {@code EntityType.SILVERFISH.getDefaultLootTable()}
- * ({@code minecraft:entities/silverfish}).</p>
- *
- * <p>{@code ModItems} suppliers are wrapped in {@link Supplier} so this class
- * can be class-loaded before item registration completes; the item is resolved
- * lazily when {@link #entries()} is iterated at datagen / loot-roll time.</p>
+ * <p>{@code item} suppliers are lazy so this class can be loaded before item
+ * registration completes; they resolve when {@link #entries()} is iterated.</p>
  */
 public final class SilverLootSpec {
     private SilverLootSpec() {
     }
 
-    /** The three loot operations, matching the three original GLM types. */
     public enum Op {
-        /** {@code AddItemModifier} — appends {@code [min,max]} of {@code item} (stack-splitting). */
+        /** Appends {@code [min,max]} of {@code item} (stack-splitting). */
         ADD,
-        /** {@code ReplaceItemModifier} — transmutes up to {@code [minStacks,maxStacks]} (0 ⇒ all) matched stacks. */
+        /** Transmutes up to {@code [minStacks,maxStacks]} (0 ⇒ all) matched stacks. */
         REPLACE,
-        /** {@code SilverfishDropsModifier} — tests carried conditions, then appends {@code [min,max]} of {@code item}. */
+        /** Tests carried conditions, then appends {@code [min,max]} of {@code item}. */
         SILVERFISH
     }
 
@@ -70,7 +51,6 @@ public final class SilverLootSpec {
         return () -> item;
     }
 
-    // --- Vanilla loot table ids (BuiltInLootTables key paths, default-namespaced) ---
     private static final Identifier SILVERFISH_ENTITY = mc("entities/silverfish");
     private static final Identifier DESERT_PYRAMID = mc("chests/desert_pyramid");
     private static final Identifier JUNGLE_TEMPLE = mc("chests/jungle_temple");
@@ -105,11 +85,7 @@ public final class SilverLootSpec {
     private static final Identifier DESERT_WELL_ARCHAEOLOGY = mc("archaeology/desert_well");
     private static final Identifier TRAIL_RUINS_ARCHAEOLOGY_COMMON = mc("archaeology/trail_ruins_common");
 
-    /**
-     * The complete ordered list of loot injections. Iterated by the NeoForge
-     * GLM datagen provider (one GLM JSON per entry, in this order) and by the
-     * Fabric loot mixin (entries filtered by the rolled table id).
-     */
+    /** The complete ordered list of loot injections. */
     public static List<Entry> entries() {
         return List.of(
                 // Silverfish
@@ -270,9 +246,7 @@ public final class SilverLootSpec {
                 new Entry("silver_chestplate_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL, 0.1f, Op.REPLACE,
                         ModItems.SILVER_CHESTPLATE::get, 0, 0, List.of(vanilla(Items.LEATHER_CHESTPLATE))),
 
-                // Nautilus Armor (1.21.11) — replace vanilla Copper Nautilus Armor in the ocean
-                // structure chests that carry it with the silver tier (1/4 chance), mirroring the
-                // Silver Horse Armor loot approach (loot-only, not craftable).
+                // Nautilus Armor
                 new Entry("silver_nautilus_armor_from_buried_treasure", BURIED_TREASURE, 0.25f, Op.REPLACE,
                         ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
                 new Entry("silver_nautilus_armor_from_shipwreck_treasure", SHIPWRECK_TREASURE, 0.25f, Op.REPLACE,

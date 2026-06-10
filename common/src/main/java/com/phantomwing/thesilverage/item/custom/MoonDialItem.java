@@ -12,31 +12,9 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Consumer;
 
-/**
- * The Moon Dial item. Adds a hover tooltip naming the moon phase the dial is
- * currently displaying (the same phase that drives its {@code moon_phase}
- * item-property texture, so text and icon always agree).
- *
- * <p>Vanilla has <b>no</b> translation strings for lunar phases (the moon is
- * never shown as text anywhere in the game), so the eight names are mod-owned
- * keys under {@code thesilverage.moon_phase.*} (en/de/nl supplied).</p>
- *
- * <p>{@code Item.TooltipContext} in 1.21.1 exposes no {@link Level} (only
- * {@code registries()}/{@code tickRate()}/{@code mapData()}), so the phase is
- * read from the client world — exactly like the moon_phase item-property
- * predicate, which is also fed the client level. The client lookup is wrapped
- * in {@link EnvExecutor#getEnvSpecific} (supplier-of-supplier) so the
- * {@code net.minecraft.client.Minecraft} reference is never class-loaded on a
- * dedicated server even though {@code appendHoverText} is declared on the
- * common {@link Item}.</p>
- */
+/** Moon Dial item: hover tooltip names the current moon phase. */
 public class MoonDialItem extends Item {
-    /**
-     * Index = vanilla {@link Level#getMoonPhase()}: 0 = Full, 1 = Waning
-     * Gibbous, 2 = Third Quarter, 3 = Waning Crescent, 4 = New, 5 = Waxing
-     * Crescent, 6 = First Quarter, 7 = Waxing Gibbous (the brightness ordering
-     * documented at https://minecraft.wiki/w/Moon).
-     */
+    // Indexed by Level#getMoonPhase(): 0 = Full ... 7 = Waxing Gibbous.
     private static final String[] PHASE_KEYS = {
             "thesilverage.moon_phase.full",
             "thesilverage.moon_phase.waning_gibbous",
@@ -55,8 +33,7 @@ public class MoonDialItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context,
                                 TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        // 1.21.5: appendHoverText now takes a TooltipDisplay + a Consumer<Component>
-        // line-adder instead of a List<Component>.
+        // Wrapped via EnvExecutor so Minecraft is never class-loaded on a dedicated server.
         Level level = EnvExecutor.getEnvSpecific(
                 () -> () -> net.minecraft.client.Minecraft.getInstance().level,
                 () -> () -> null);

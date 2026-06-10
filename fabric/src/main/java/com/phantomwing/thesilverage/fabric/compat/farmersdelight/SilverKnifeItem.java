@@ -4,29 +4,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
-/**
- * Silver Knife when Farmer's Delight Refabricated is present: a real FD
- * {@link KnifeItem}. FDR keeps the {@code vectorwing.farmersdelight.common}
- * package and the same {@code (Tier, Item.Properties)} constructor as the
- * NeoForge build, so this is the same shape as the NeoForge counterpart.
- *
- * <p>Only classloaded when FDR is installed — {@code KnifePlatformImpl} guards
- * construction behind {@code isModLoaded("farmersdelight")}.</p>
- */
+/** Silver Knife as a real FD KnifeItem; only classloaded when FDR is installed. */
 public class SilverKnifeItem extends KnifeItem {
     public SilverKnifeItem(ToolMaterial material, Item.Properties properties) {
         super(material, properties);
     }
 
-    /**
-     * Factory used by {@code KnifePlatformImpl} behind the {@code isModLoaded}
-     * guard. The {@code new SilverKnifeItem} MUST live here, not inline in the
-     * caller: the JVM verifier loads classes named by a {@code new} instruction
-     * when verifying the enclosing method, so an inline {@code new SilverKnifeItem}
-     * would force-load the {@code KnifeItem} superclass and crash when FDR is
-     * absent (standalone — the compile-time stub is stripped from the jar).
-     * Reached via {@code invokestatic}, this loads only when FDR is present.
-     */
+    // The `new` MUST stay in this factory, not inline in the caller: an inline new would make
+    // the JVM verifier force-load the KnifeItem superclass and crash when FDR is absent.
     public static Item create(ToolMaterial material, Item.Properties properties) {
         return new SilverKnifeItem(material, properties);
     }

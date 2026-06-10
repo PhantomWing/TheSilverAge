@@ -12,64 +12,25 @@ import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-/**
- * Fabric entrypoint for The Silver Age.
- *
- * <p>Delegates the loader-agnostic bootstrap to {@link TheSilverAgeCommon#init()}
- * and wires the one Fabric-only piece needed for loot parity: stamping each
- * loaded {@code LootTable} with its registry id so the {@code LootTableMixin}
- * (the Fabric equivalent of the NeoForge Global Loot Modifiers) knows which
- * {@link com.phantomwing.thesilverage.loot.SilverLootSpec} entries to apply at
- * roll time.</p>
- */
+/** Fabric entrypoint for The Silver Age. */
 public final class TheSilverAgeFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        // MUST be first: the loot mixin and the thesilverage:config_boolean
-        // resource condition read config very early (datapack load), so the
-        // AutoConfig holder must be registered before anything else runs.
+        // MUST be first: config is read very early (datapack load) by the loot mixin and resource condition.
         TheSilverAgeFabricConfig.register();
 
         TheSilverAgeCommon.init();
 
-        // Silver Nugget firework-star parity. NeoForge mutates the vanilla
-        // FireworkStarRecipe static fields in FMLCommonSetupEvent; Fabric has no
-        // equivalent staged setup, so do it here — registries are populated by
-        // the time the ModInitializer runs (after TheSilverAgeCommon.init()),
-        // and the shared loader-agnostic ModFireworks rebuilds SHAPE_INGREDIENT
-        // from the merged key set (no loader-specific CompoundIngredient).
         ModFireworks.register();
 
-        // Silver villager-trade parity. NeoForge adds the Cleric trade from
-        // VillagerTradesEvent; Fabric registers it once here via
-        // TradeOfferHelper (the ENABLE_VILLAGER_TRADES gate is evaluated live
-        // inside the listing so runtime config toggles still take effect).
         ModVillagerTrades.register();
 
-        // Silver ore world-gen parity. NeoForge attaches the placed features to
-        // biomes via neoforge:add_features biome-modifier JSON (which Fabric
-        // ignores); this re-creates those three injections through the Fabric
-        // BiomeModifications API so silver ore actually generates on Fabric.
+        // Attaches silver-ore placed features to biomes (Fabric ignores NeoForge's add_features JSON).
         ModWorldGen.register();
 
-        // Parity twin of the NeoForge `thesilverage:config_boolean` recipe
-        // condition. The shared generated data carries BOTH dialects in each
-        // conditional file (NeoForge `neoforge:conditions` +
-        // Fabric `fabric:load_conditions`, the latter emitted by the NeoForge
-        // datagen post-processor); this registers the runtime handler so Fabric
-        // can evaluate the translated block. `fabric:all_mods_loaded` (the
-        // create-gated recipes) is built into fabric-api and needs no
-        // registration here.
         ResourceConditions.register(ConfigBooleanResourceCondition.TYPE);
 
-        // NOTE: Create is not yet available past MC 1.21.1, so the Fabric Create
-        // hook is dropped on this branch. Recipe parity remains handled by the
-        // shared condition-gated generated data; re-add a runtime Create-Fabric
-        // integration here once Create ships for 1.21.3.
-
-        // Vanilla LootTable carries no id of its own. Once all loot tables are
-        // loaded, stamp each instance with its registry id (read back by the
-        // Silver loot mixin — mirrors the GLM neoforge:loot_table_id condition).
+        // Stamp each loaded LootTable with its registry id (vanilla tables carry none); read by LootTableMixin.
         LootTableEvents.ALL_LOADED.register((resourceManager, lootRegistry) ->
                 lootRegistry.entrySet().forEach(e -> {
                     LootTable table = e.getValue();

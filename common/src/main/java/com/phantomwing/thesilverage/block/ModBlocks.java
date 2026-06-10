@@ -270,8 +270,7 @@ public class ModBlocks {
     }
 
     private static <T extends Block> RegistrySupplier<T> registerSilverBlock(String name, BlockBehaviour.Properties baseProps, Function<Block.Properties, T> function) {
-        // 1.21.2 requires the registry id to be set on the block Properties before
-        // construction (Architectury's DeferredRegister doesn't do this for us).
+        // Block Properties must carry the registry id before construction.
         ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, TheSilverAge.resourceLocation(name));
         return BLOCKS.register(name, () -> function.apply(baseProps.setId(key)));
     }

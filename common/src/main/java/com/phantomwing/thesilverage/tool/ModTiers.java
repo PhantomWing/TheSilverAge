@@ -5,11 +5,6 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.world.item.ToolMaterial;
 
 public class ModTiers {
-    // 1.21.2 replaced the Tier interface (+ Tiers enum) with the ToolMaterial
-    // record. Constructor order:
-    //   (TagKey<Block> incorrectBlocksForDrops, int durability, float speed,
-    //    float attackDamageBonus, int enchantmentValue, TagKey<Item> repairItems)
-    // The repair input is now a TagKey<Item> directly (was a Supplier<Ingredient>).
     public static final ToolMaterial SILVER = new ToolMaterial(
             ModTags.Blocks.INCORRECT_FOR_SILVER_TOOL,
             208, // Durability (Wood is 59, Stone is 131, Iron is 250, Diamond is 1561, Gold is 32, Netherite is 2031)

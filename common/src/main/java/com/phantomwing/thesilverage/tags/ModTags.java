@@ -35,16 +35,8 @@ public class ModTags {
         public static final TagKey<Block> INCORRECT_FOR_SILVER_TOOL = tag("incorrect_for_silver_tool");
         public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
 
-        // Family aggregation tags. Used to keep the Sable compatibility entries
-        // (sable:heavy / super_light / quarter_volume in this mod's generated
-        // data) tidy — Sable references the family tag, the family tag
-        // enumerates the eight weathering/waxed variants once.
-        //
-        // weathered_silver_blocks: the seven non-base SILVER_BLOCK variants —
-        // exposed/weathered/oxidized + their four waxed forms. The base
-        // SILVER_BLOCK is intentionally excluded: it is the only one in
-        // #c:storage_blocks (only it can be uncrafted back into ingots), and
-        // Sable already classifies #c:storage_blocks as sable:heavy.
+        // Family aggregation tags for Sable compatibility entries.
+        // WEATHERED_SILVER_BLOCKS excludes base SILVER_BLOCK (it lives in #c:storage_blocks).
         public static final TagKey<Block> WEATHERED_SILVER_BLOCKS = tag("weathered_silver_blocks");
         public static final TagKey<Block> CUT_SILVER_BLOCKS = tag("cut_silver_blocks");
         public static final TagKey<Block> CHISELED_SILVER_BLOCKS = tag("chiseled_silver_blocks");
@@ -61,11 +53,7 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> GLISTERING_NUGGETS = tag("glistering_nuggets");
 
-        /**
-         * Items accepted as the silver component in the Redstone Repeater and Redstone Comparator
-         * override recipes. Populated with silver ingot (always) and silver sheet (Create-only).
-         * Addons may contribute extra silver forms to this tag.
-         */
+        /** Silver components for the Repeater/Comparator override recipes. */
         public static final TagKey<Item> REDSTONE_SILVER_COMPONENTS = tag("redstone_silver_components");
 
         private static TagKey<Item> tag(String name) {

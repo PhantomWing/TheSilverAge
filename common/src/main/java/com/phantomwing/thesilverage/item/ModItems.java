@@ -28,18 +28,11 @@ public class ModItems {
 
     // Silver items
     public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver");
-    // 1.21.5: the ingredient->trim-material link moved off TrimMaterial (which dropped its
-    // `ingredient` field) onto the ingredient item, via the PROVIDES_TRIM_MATERIAL component.
-    // Without this, a smithing table can't apply the silver trim with a silver ingot.
-    // 26.1: ProvidesTrimMaterial now takes a Holder<TrimMaterial>, which can't be resolved from
-    // a dynamic-registry ResourceKey at item-registration time. Item.Properties.trimMaterial(key)
-    // is the vanilla helper that wires it as a DELAYED holder component (resolved against the
-    // registry later), replacing the old `.component(PROVIDES_TRIM_MATERIAL, new ...(key))`.
+    // trimMaterial(key) wires the delayed trim-material holder so the silver ingot can apply the trim.
     public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", Item::new,
             baseItem().trimMaterial(ModTrimMaterials.SILVER));
     public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget");
-    // Silver sheet is a Create-compat item (obtained via Mechanical Press).
-    // Only appears in the creative tab when Create is loaded.
+    // Create-compat item; only appears in the creative tab when Create is loaded.
     public static final RegistrySupplier<Item> SILVER_SHEET = registerWithModCompat("silver_sheet", ModIds.CREATE);
 
     // Silver tools
@@ -48,24 +41,17 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_AXE = registerAxe("silver_axe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
     public static final RegistrySupplier<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
-    // 1.21.11 ("The Copper Age") added the Spear — a charge-attack weapon. Mirrors copper_spear.
     public static final RegistrySupplier<Item> SILVER_SPEAR = registerSpear("silver_spear", ModTiers.SILVER);
-    // Farmer's Delight compat: a real FD KnifeItem when FD is present, a plain
-    // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
-    // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
+    // Farmer's Delight compat; only appears in the creative tab when FD is loaded.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
 
     // Silver armor
-    public static final RegistrySupplier<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.HELMET); // durability factor 10 (Iron is 15, Gold is 7) — set on the ArmorMaterial in ModArmorMaterials
+    public static final RegistrySupplier<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.HELMET);
     public static final RegistrySupplier<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.CHESTPLATE);
     public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.LEGGINGS);
     public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorType.BOOTS);
-    // 1.21.5: AnimalArmorItem removed — horse armor is now a plain Item whose
-    // Item.Properties#horseArmor(material) sets the ARMOR/equipment components and
-    // binds the EQUESTRIAN body slot to the material's equipment asset.
     public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new Item(props.horseArmor(ModArmorMaterials.SILVER_ARMOR_MATERIAL)), baseItem().stacksTo(1));
-    // 1.21.11 ("The Copper Age") added Nautilus Armor — BODY-slot animal armor for the Nautilus
-    // mob. Mirrors copper_nautilus_armor. Loot-only (ocean structures); not craftable.
+    // Nautilus (BODY-slot) animal armor; loot-only, not craftable.
     public static final RegistrySupplier<Item> SILVER_NAUTILUS_ARMOR = register("silver_nautilus_armor", (props) -> new Item(props.nautilusArmor(ModArmorMaterials.SILVER_ARMOR_MATERIAL)), baseItem().stacksTo(1));
 
     // Utility items
@@ -214,42 +200,22 @@ public class ModItems {
 
     // Registry functions
     private static RegistrySupplier<Item> registerArmor(String name, ArmorMaterial material, ArmorType armorType) {
-        // 1.21.5: ArmorItem removed — armor is a plain Item whose Item.Properties#humanoidArmor
-        // (material, type) sets durability (material.durability() × ArmorType#getDurability),
-        // defense, toughness, knockback resistance and the equip sound. (Replaces the old
-        // ArmorItem ctor, which applied material.humanoidProperties(props, type).)
         return register(name, (props) -> new Item(props.humanoidArmor(material, armorType)), baseItem());
     }
 
 
     private static RegistrySupplier<Item> registerSword(String name, ToolMaterial material) {
-        // 1.21.5: SwordItem removed — sword is a plain Item; Item.Properties#sword sets the
-        // WEAPON/TOOL/attribute components (attack damage 3, speed -2.4 preserved).
         return register(name, (props) -> new Item(props.sword(material, 3, -2.4f)), baseItem());
     }
 
     private static RegistrySupplier<Item> registerSpear(String name, ToolMaterial material) {
-        // 1.21.11: Spear is a plain Item; Item.Properties#spear sets the WEAPON/TOOL components
-        // plus the charge-attack parameters. The attack DAMAGE comes from the material's
-        // attackDamageBonus (silver 2.5 → 3.5 displayed). The first float is the attack-SPEED
-        // factor: displayed attack speed = 1.0 / factor, so 1.0f → 1.0 attack speed. The
-        // remaining params are the charge curve, mirroring vanilla copper_spear.
+        // First float is the attack-speed factor (displayed speed = 1.0 / factor); rest is the charge curve.
         return register(name, (props) -> new Item(
                 props.spear(material, 1.0f, 0.82f, 0.65f, 4.0f, 9.0f, 8.25f, 5.1f, 12.5f, 4.6f)), baseItem());
     }
 
-    /**
-     * Register the Silver Knife. The concrete class is chosen per loader by
-     * {@link com.phantomwing.thesilverage.platform.KnifePlatform} (FD's KnifeItem
-     * when present, SwordItem fallback otherwise), so the item is always
-     * registered but the FD-referencing class only loads when FD is installed.
-     * Attack attributes ({@code 0.5}, {@code -2.0}) match FD's own knives, set
-     * here via the vanilla {@link DiggerItem#createAttributes}. The item only
-     * joins the creative tab when {@code modId} is loaded.
-     */
+    /** Concrete class chosen per loader by KnifePlatform so the FD class only loads when FD is present. */
     private static RegistrySupplier<Item> registerKnife(String name, ToolMaterial material, String modId) {
-        // Knife attack stats are applied per loader inside KnifePlatform/its
-        // SwordItem fallback (1.21.2 moved them out of Item.Properties#attributes).
         Item.Properties props = baseItem().setId(itemKey(name));
         RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(props, material));
         if (CommonPlatform.isModLoaded(modId)) {
@@ -263,7 +229,6 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerPickaxe(String name, ToolMaterial material) {
-        // 1.21.5: PickaxeItem removed — plain Item + Item.Properties#pickaxe (damage 1.0, speed -2.8).
         return register(name, (props) -> new Item(props.pickaxe(material, 1.0f, -2.8f)), baseItem());
     }
 
@@ -280,9 +245,7 @@ public class ModItems {
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlock(String name, RegistrySupplier<T> block, Item.Properties properties) {
-        // 1.21.2: BlockItem no longer overrides getDescriptionId() to use the
-        // block's "block.*" key — the translation prefix now comes from the
-        // Item.Properties. Without this, block items get an "item.*" key.
+        // useBlockDescriptionPrefix() gives block items a "block.*" key instead of "item.*".
         return register(name, (props) -> new BlockItem(block.get(), props), properties.useBlockDescriptionPrefix());
     }
 
@@ -311,11 +274,7 @@ public class ModItems {
         return item;
     }
 
-    /**
-     * 1.21.2 requires the registry id to be set on the {@link Item.Properties}
-     * before the item is constructed (Architectury's DeferredRegister doesn't do
-     * this for us). All register helpers route their Properties through this key.
-     */
+    /** Item Properties must carry the registry id before construction. */
     private static ResourceKey<Item> itemKey(String name) {
         return ResourceKey.create(Registries.ITEM, TheSilverAge.resourceLocation(name));
     }
