@@ -63,6 +63,10 @@ public class DataGenerators {
 
         event.addProvider(new ModDatapackProvider(output, lookupProvider));
 
+        // Villager trade (26.1 data-driven villager_trade registry + cleric pool tag). Emits a
+        // neoforge:conditions gate; must run BEFORE FabricConditionsProvider so the mirror picks it up.
+        event.addProvider(new ModVillagerTradeProvider(output, lookupProvider));
+
         // MUST be registered LAST — post-processes the shared generated tree,
         // mirroring each neoforge:conditions block with a fabric:load_conditions
         // one so the single shared data gates identically on both loaders.
