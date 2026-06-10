@@ -59,6 +59,10 @@ processResources {
     from(project(':common').file('src/main/resources/resourcepacks')) {
         into 'resourcepacks'
     }
+
+    // Same dev-only reason: Fabric Loader reads the access widener (declared in fabric.mod.json)
+    // from the mod's resource root, which in dev is the Fabric source set — not common's.
+    from(project(':common').file('src/main/resources/thesilverage.accesswidener'))
 }
 
 // shadowJar is built on top of the Loom-processed `jar` (marked `raw`) so Loom's JiJ
