@@ -6,7 +6,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "fabric:load_conditions": [
     {
       "condition": "thesilverage:config_boolean",

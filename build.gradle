@@ -35,7 +35,9 @@ ext.latestChangelog = {
 ext.manifestProps = { ->
     def mc = rootProject.minecraft_version
     def p = mc.tokenize('.')
-    def mcNext = "${p[0]}.${p[1]}.${(p[2] as int) + 1}".toString()
+    // Treat a missing patch segment as 0 so a 2-segment version (e.g. "26.2") still yields a patch bump ("26.2.1").
+    def mcPatch = (p.size() > 2 ? p[2] as int : 0)
+    def mcNext = "${p[0]}.${p[1]}.${mcPatch + 1}".toString()
     // Lower bound = lowest supported game version (may differ from build target across a compatible MC pair).
     def mcFloor = rootProject.supported_minecraft_versions.tokenize(' ,').first()
     // major.minor of a version, ignoring any +build / -qualifier suffix.

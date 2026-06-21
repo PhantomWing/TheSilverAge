@@ -194,22 +194,22 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<Block> registerWeatheringSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE.weathering().unaffected())).sound(ModSoundTypes.SILVER_GRATE);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperGrateBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE.weathering().unaffected())).sound(ModSoundTypes.SILVER_GRATE);
         return registerSilverBlock(name, baseProps, WaterloggedTransparentBlock::new);
     }
 
     private static RegistrySupplier<Block> registerWeatheringSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB.weathering().unaffected())).sound(ModSoundTypes.SILVER_BULB);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperBulbBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB.weathering().unaffected())).sound(ModSoundTypes.SILVER_BULB);
         return registerSilverBlock(name, baseProps, CopperBulbBlock::new);
     }
 

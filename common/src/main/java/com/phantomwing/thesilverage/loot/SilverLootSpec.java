@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.loot;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
@@ -274,7 +275,7 @@ public final class SilverLootSpec {
 
                 // Trail Ruins
                 new Entry("silver_ingot_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.WHITE_DYE))),
+                        ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.DYE.pick(DyeColor.WHITE)))),
                 new Entry("silver_nugget_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
                         ModItems.SILVER_NUGGET::get, 0, 0, List.of(vanilla(Items.GOLD_NUGGET)))
         );

@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -104,7 +104,7 @@ public final class TheSilverAgeGameTests {
      */
     private static void silverfishDropsSilver(GameTestHelper helper) {
         for (int i = 0; i < 15; i++) {
-            Silverfish silverfish = helper.spawnWithNoFreeWill(EntityType.SILVERFISH, CENTER);
+            Silverfish silverfish = helper.spawnWithNoFreeWill(EntityTypes.SILVERFISH, CENTER);
             helper.kill(silverfish);
         }
         helper.startSequence()

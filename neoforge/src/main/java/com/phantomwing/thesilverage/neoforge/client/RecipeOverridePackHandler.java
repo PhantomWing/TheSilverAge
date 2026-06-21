@@ -107,8 +107,8 @@ public final class RecipeOverridePackHandler {
         if (!syncPending) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc == null) return;
-        if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
-        if (mc.screen instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
+        if (mc.gui.overlay() != null) return;                   // a resource reload is already in progress
+        if (mc.gui.screen() instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
         syncPending = false;
         if (appliedOverride != desiredOverride()) {
             mc.reloadResourcePacks();

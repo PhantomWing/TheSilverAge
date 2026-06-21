@@ -5,7 +5,7 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,10 +18,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
-            .add(EntityType.ZOMBIE) // Husks excluded: desert suits golden armor thematically.
-            .add(EntityType.ZOMBIE_VILLAGER)
-            .add(EntityType.SKELETON)
-            .add(EntityType.STRAY)
-            .add(EntityType.BOGGED);
+            .add(EntityTypes.ZOMBIE.builtInRegistryHolder().key()) // Husks excluded: desert suits golden armor thematically.
+            .add(EntityTypes.ZOMBIE_VILLAGER.builtInRegistryHolder().key())
+            .add(EntityTypes.SKELETON.builtInRegistryHolder().key())
+            .add(EntityTypes.STRAY.builtInRegistryHolder().key())
+            .add(EntityTypes.BOGGED.builtInRegistryHolder().key());
     }
 }
