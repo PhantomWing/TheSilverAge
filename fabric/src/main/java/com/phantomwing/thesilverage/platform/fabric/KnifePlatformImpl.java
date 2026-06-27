@@ -12,12 +12,14 @@ public final class KnifePlatformImpl {
     }
 
     public static Item createSilverKnife(Item.Properties properties, ToolMaterial material) {
+        // FDR's KnifeItem takes only Properties now, so bake the knife attack stats (0.5 damage,
+        // -2.0 speed, matching FD's knives) into the properties up front for both paths.
+        Item.Properties knifeProps = properties.sword(material, 0.5F, -2.0F);
         // Call the static factory, not `new SilverKnifeItem`: an inline new would make the verifier
         // load the FDR-only superclass here, crashing without FDR.
         if (CommonPlatform.isModLoaded(ModIds.FARMERS_DELIGHT)) {
-            return SilverKnifeItem.create(material, properties);
+            return SilverKnifeItem.create(knifeProps);
         }
-        // Knife attack stats (0.5 damage, -2.0 speed) match FD's own knives.
-        return new Item(properties.sword(material, 0.5F, -2.0F));
+        return new Item(knifeProps);
     }
 }
