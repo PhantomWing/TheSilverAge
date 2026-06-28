@@ -158,3 +158,39 @@ publishing {
         // Add repositories to publish to here.
     }
 }
+
+// Modrinth + CurseForge publishing (Fabric jar). ./gradlew :fabric:publishMods
+// (-PpublishDryRun to stage without uploading; tokens via MODRINTH_TOKEN / CURSEFORGE_TOKEN
+// env vars or modrinth_token / curseforge_token in ~/.gradle/gradle.properties).
+apply plugin: 'me.modmuss50.mod-publish-plugin'
+
+publishMods {
+    file = remapJar.archiveFile
+    version = rootProject.mod_version
+    displayName = "The Silver Age ${rootProject.mod_version}"
+    changelog = rootProject.ext.latestChangelog()
+    type = STABLE
+    modLoaders.add("fabric")
+    // -PpublishDryRun => stage to build/ without uploading.
+    dryRun = project.hasProperty("publishDryRun")
+
+    modrinth {
+        projectId = providers.gradleProperty("modrinth_project_id")
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
+        minecraftVersions.add(rootProject.minecraft_version)
+        requires("architectury-api")
+        requires("fabric-api")
+        requires("cloth-config")
+    }
+    curseforge {
+        projectId = providers.gradleProperty("curseforge_project_id")
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
+        minecraftVersions.add(rootProject.minecraft_version)
+        // CurseForge needs explicit side flags (Modrinth infers them from the jar).
+        client = true
+        server = true
+        requires("architectury-api")
+        requires("fabric-api")
+        requires("cloth-config")
+    }
+}

@@ -1,10 +1,32 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
     id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
+    // Modrinth + CurseForge publishing — applied per loader subproject.
+    id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
+}
+
+// Per-release changelog: notes under the first "# X.Y.Z" header in changelog.md, up to the
+// next "# " — used as the Modrinth/CurseForge changelog for each upload.
+ext.latestChangelog = {
+    def f = rootProject.file('changelog.md')
+    if (!f.exists()) return "See changelog.md"
+    def body = new StringBuilder()
+    boolean started = false, done = false
+    f.eachLine { line ->
+        if (done) return
+        if (line.startsWith('# ')) {
+            if (started) { done = true; return }
+            started = true
+            return
+        }
+        if (started) body.append(line).append('\n')
+    }
+    def out = body.toString().trim()
+    return out.isEmpty() ? "See changelog.md" : out
 }
 
 architectury {
