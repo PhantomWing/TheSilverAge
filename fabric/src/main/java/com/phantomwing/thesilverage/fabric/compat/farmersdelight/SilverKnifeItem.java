@@ -1,21 +1,20 @@
 package com.phantomwing.thesilverage.fabric.compat.farmersdelight;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ToolMaterial;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
 /**
  * Silver Knife when Farmer's Delight Refabricated is present: a real FD
  * {@link KnifeItem}. FDR keeps the {@code vectorwing.farmersdelight.common}
- * package and the same {@code (Tier, Item.Properties)} constructor as the
+ * package and the same {@code (Item.Properties)} constructor as the
  * NeoForge build, so this is the same shape as the NeoForge counterpart.
  *
  * <p>Only classloaded when FDR is installed — {@code KnifePlatformImpl} guards
  * construction behind {@code isModLoaded("farmersdelight")}.</p>
  */
 public class SilverKnifeItem extends KnifeItem {
-    public SilverKnifeItem(ToolMaterial material, Item.Properties properties) {
-        super(material, properties);
+    public SilverKnifeItem(Item.Properties properties) {
+        super(properties);
     }
 
     /**
@@ -27,7 +26,7 @@ public class SilverKnifeItem extends KnifeItem {
      * absent (standalone — the compile-time stub is stripped from the jar).
      * Reached via {@code invokestatic}, this loads only when FDR is present.
      */
-    public static Item create(ToolMaterial material, Item.Properties properties) {
-        return new SilverKnifeItem(material, properties);
+    public static Item create(Item.Properties properties) {
+        return new SilverKnifeItem(properties);
     }
 }

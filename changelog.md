@@ -1,3 +1,8 @@
+# 1.3.2
+### Fixes
+- Fix broken compatibility with Farmer's Delight Refabricated
+
+
 # 1.3.1
 ### Fixes
 - Fixed server crashing on startup when using NeoForge.

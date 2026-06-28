@@ -1,7 +1,6 @@
 package vectorwing.farmersdelight.common.item;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ToolMaterial;
 
 /**
  * COMPILE-TIME STUB of Farmer's Delight's {@code KnifeItem} — NOT the real
@@ -17,7 +16,7 @@ import net.minecraft.world.item.ToolMaterial;
  * Fabric-side stub used for FDR.</p>
  *
  * <p><b>Why it's safe.</b> The signature mirrors the real FD class's
- * constructor {@code (ToolMaterial, Item.Properties)}. It is stripped from the
+ * constructor {@code (Item.Properties)}. It is stripped from the
  * published jar, so in a production instance the real
  * {@code vectorwing.farmersdelight.common.item.KnifeItem} is what
  * {@code SilverKnifeItem} binds to once FD ships for 1.21.5. In TheSilverAge's
@@ -27,12 +26,10 @@ import net.minecraft.world.item.ToolMaterial;
  * never runs.</p>
  */
 public class KnifeItem extends Item {
-    public KnifeItem(ToolMaterial material, Item.Properties properties) {
-        // 1.21.5: DiggerItem was removed; tools are plain Item + Item.Properties
-        // tool components. The exact setup is irrelevant here — the stub is never
-        // instantiated (FD absent on this branch) and is stripped from the jar; the
-        // ctor signature just has to satisfy SilverKnifeItem's super call. `material`
-        // is unused for the same reason.
+    public KnifeItem(Item.Properties properties) {
+        // The exact setup is irrelevant here — the stub is never instantiated (FD
+        // absent on this branch) and is stripped from the jar; the ctor signature
+        // just has to satisfy SilverKnifeItem's super call.
         super(properties);
     }
 }
