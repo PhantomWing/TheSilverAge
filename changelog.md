@@ -1,3 +1,8 @@
+# 1.3.3
+### Fixes
+- Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
+
+
 # 1.3.1
 ### Fixes
 - Fixed server crashing on startup when using NeoForge.
