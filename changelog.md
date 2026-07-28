@@ -1,3 +1,8 @@
+# 1.3.3
+### Fixes
+- Fixed the Cleric selling Silver Ingots for Emeralds not showing up on Fabric
+
+
 # 1.3.2
 ### Fixes
 - Fix broken compatibility with Farmer's Delight Refabricated
