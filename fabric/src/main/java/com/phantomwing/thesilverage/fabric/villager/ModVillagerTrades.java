@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.fabric.villager;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.villager.SilverVillagerTrades;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
@@ -20,6 +21,24 @@ import net.minecraft.world.entity.npc.VillagerTrades;
  *
  * <p>The trade content itself comes from the shared
  * {@link SilverVillagerTrades} so both loaders stay byte-identical.</p>
+ *
+ * <p><b>Why the two-argument adder.</b> The {@code Consumer}-based overload of
+ * {@code registerVillagerOffers} documents that it "adds the same trade offers to
+ * current and rebalanced trades": it runs the callback twice, once against
+ * {@link VillagerTrades#TRADES} and once against {@code VillagerTrades.EXPERIMENTAL_TRADES}.
+ * Vanilla builds the experimental map by copying the normal one and replacing only the
+ * professions it actually rebalanced — the cleric is not one of them, so both maps hold
+ * the <em>same</em> per-profession object. Both passes therefore mutated a single array,
+ * leaving two copies of the listing and letting one villager roll the silver trade
+ * twice.</p>
+ *
+ * <p>The {@code VillagerOffersAdder} overload exposes the {@code rebalanced} flag, so the
+ * second pass can be skipped — but only when it would actually write to the same array.
+ * For a profession vanilla DID rebalance (librarian, armorer, wandering trader, ...) the
+ * two pools are separate objects, and skipping would leave the trade missing from
+ * rebalanced worlds. {@code sharesRebalancedPool} therefore compares the two pools by
+ * identity and skips only when they are the same object, which is correct for every
+ * profession.</p>
  */
 public final class ModVillagerTrades {
     private ModVillagerTrades() {
@@ -30,12 +49,24 @@ public final class ModVillagerTrades {
 
         // Cleric, profession level 2 — parity with the NeoForge
         // VillagerProfession.CLERIC / trades.get(2) branch.
-        TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 2, factories ->
-                factories.add((trader, random) ->
-                        TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                                TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
-                                ? clericTrade.getOffer(trader, random)
-                                : null));
+        TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 2, (factories, rebalanced) -> {
+            // Checked INSIDE the callback: TradeOfferHelper only sets up its trade maps
+            // when registerVillagerOffers is first called, so testing beforehand would
+            // read an uninitialised state and wrongly report the pools as distinct.
+            if (rebalanced && sharesRebalancedPool(VillagerProfession.CLERIC)) {
+                return;
+            }
+            factories.add((trader, random) ->
+                    TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                            TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
+                            ? clericTrade.getOffer(trader, random)
+                            : null);
+        });
+
+        // NOTE for the wandering-trader trade below: if it is ever enabled, use the same
+        // sharesRebalancedPool guard. Vanilla DOES rebalance the wandering trader, so its
+        // two pools are separate objects and the listing must be added on both passes —
+        // an unconditional `if (rebalanced) return;` would drop it in rebalanced worlds.
 
         // Wandering trader: parity with NeoForge ModVillagerTrades —
         // addWanderingTraderTrades is gated by ENABLE_WANDERING_TRADER_TRADES
@@ -44,5 +75,20 @@ public final class ModVillagerTrades {
         // trade is enabled on NeoForge; add the matching
         // TradeOfferHelper.registerWanderingTraderOffers(...) call in lockstep
         // when it is.
+    }
+
+    /**
+     * True when the profession's normal and rebalanced trade pools are the same object.
+     *
+     * <p>On this MC version the trade maps are keyed by
+     * {@code ResourceKey<VillagerProfession>}; 1.21.4 and earlier key them by
+     * {@link VillagerProfession} itself.</p>
+     */
+    private static boolean sharesRebalancedPool(ResourceKey<VillagerProfession> profession) {
+        var normal = VillagerTrades.TRADES.get(profession);
+        var rebalanced = VillagerTrades.EXPERIMENTAL_TRADES.get(profession);
+        // A null rebalanced entry means Fabric will create a fresh map for it, so the
+        // two are distinct and the listing must be added on both passes.
+        return normal != null && normal == rebalanced;
     }
 }
