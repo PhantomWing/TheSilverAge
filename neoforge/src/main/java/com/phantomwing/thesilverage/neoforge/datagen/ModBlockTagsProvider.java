@@ -184,7 +184,39 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get())
+
+                // Silver Lantern
+                .add(ModBlocks.SILVER_LANTERN.get())
+                .add(ModBlocks.EXPOSED_SILVER_LANTERN.get())
+                .add(ModBlocks.WEATHERED_SILVER_LANTERN.get())
+                .add(ModBlocks.OXIDIZED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN.get())
+
+                // Silver Chain
+                .add(ModBlocks.SILVER_CHAIN.get())
+                .add(ModBlocks.EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN.get())
+
+                // Silver Bars
+                .add(ModBlocks.SILVER_BARS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get());
+        // NOTE: the Silver Torch is deliberately absent — it is instant-break
+        // (no requiresCorrectToolForDrops), so it needs no tool/tier tags.
 
         // Silver Block family aggregation — the seven non-base variants only.
         // The base SILVER_BLOCK is intentionally excluded: it is in
@@ -258,6 +290,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get());
+        tag(ModTags.Blocks.SILVER_BARS)
+                .add(ModBlocks.SILVER_BARS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get());
     }
 
     private void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -384,9 +425,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.SILVER_PILLARS);
 
         tag(SABLE_SUPER_LIGHT)
-                .addTag(ModTags.Blocks.SILVER_GRATES);
+                .addTag(ModTags.Blocks.SILVER_GRATES)
+                .addTag(ModTags.Blocks.SILVER_BARS);
 
         tag(SABLE_QUARTER_VOLUME)
-                .addTag(ModTags.Blocks.SILVER_GRATES);
+                .addTag(ModTags.Blocks.SILVER_GRATES)
+                .addTag(ModTags.Blocks.SILVER_BARS);
     }
 }

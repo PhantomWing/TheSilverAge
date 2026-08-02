@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "thesilverage:silver_ingot"
+    },
+    "N": {
+      "item": "thesilverage:silver_nugget"
+    }
+  },
+  "pattern": [
+    "N",
+    "I",
+    "N"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thesilverage:silver_chain"
+  }
+}

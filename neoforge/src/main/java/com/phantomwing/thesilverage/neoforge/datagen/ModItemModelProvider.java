@@ -216,6 +216,44 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem2DWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
         blockItem2DWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
         blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
+
+        // Silver Lantern — flat sprite from the item texture (matches vanilla lanterns).
+        blockItem2D(ModBlocks.SILVER_LANTERN);
+        blockItem2D(ModBlocks.EXPOSED_SILVER_LANTERN);
+        blockItem2D(ModBlocks.WEATHERED_SILVER_LANTERN);
+        blockItem2D(ModBlocks.OXIDIZED_SILVER_LANTERN);
+        blockItem2DWithTexture(ModBlocks.WAXED_SILVER_LANTERN, ModBlocks.SILVER_LANTERN);
+        blockItem2DWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN, ModBlocks.EXPOSED_SILVER_LANTERN);
+        blockItem2DWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN, ModBlocks.WEATHERED_SILVER_LANTERN);
+        blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN, ModBlocks.OXIDIZED_SILVER_LANTERN);
+
+        // Silver Chain
+        blockItem2D(ModBlocks.SILVER_CHAIN);
+        blockItem2D(ModBlocks.EXPOSED_SILVER_CHAIN);
+        blockItem2D(ModBlocks.WEATHERED_SILVER_CHAIN);
+        blockItem2D(ModBlocks.OXIDIZED_SILVER_CHAIN);
+        blockItem2DWithTexture(ModBlocks.WAXED_SILVER_CHAIN, ModBlocks.SILVER_CHAIN);
+        blockItem2DWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN, ModBlocks.EXPOSED_SILVER_CHAIN);
+        blockItem2DWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN, ModBlocks.WEATHERED_SILVER_CHAIN);
+        blockItem2DWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN, ModBlocks.OXIDIZED_SILVER_CHAIN);
+
+        // Silver Bars + Torch — flat sprite from the BLOCK texture (no separate item sprite).
+        blockItem2DFromBlockTexture(ModBlocks.SILVER_BARS, ModBlocks.SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.EXPOSED_SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.WAXED_SILVER_BARS, ModBlocks.SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.WAXED_EXPOSED_SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
+        blockItem2DFromBlockTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
+
+        blockItem2DFromBlockTexture(ModBlocks.SILVER_TORCH, ModBlocks.SILVER_TORCH);
+    }
+
+    // item/generated sprite taken from the block texture (for blocks with no dedicated item sprite).
+    private <T extends Block, U extends Block> void blockItem2DFromBlockTexture(RegistrySupplier<T> block, RegistrySupplier<U> textureBlock) {
+        withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+                .texture("layer0", BlockUtils.getBlockResourceLocation(textureBlock.get()));
     }
 
     // A simple item with a model generated from its sprite.

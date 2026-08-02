@@ -390,6 +390,77 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+
+        // Silver Torch — mirrors the vanilla Copper Torch shape (nugget over coal over stick).
+        silverTorch(output, ModItems.SILVER_TORCH.get(), ModItems.SILVER_NUGGET.get());
+
+        // Silver Lantern
+        lantern(output, ModItems.SILVER_LANTERN.get(), ModItems.SILVER_NUGGET.get(), ModItems.SILVER_TORCH.get());
+        waxable(output, ModItems.SILVER_LANTERN.get(), ModItems.WAXED_SILVER_LANTERN.get());
+        waxable(output, ModItems.EXPOSED_SILVER_LANTERN.get(), ModItems.WAXED_EXPOSED_SILVER_LANTERN.get());
+        waxable(output, ModItems.WEATHERED_SILVER_LANTERN.get(), ModItems.WAXED_WEATHERED_SILVER_LANTERN.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_LANTERN.get(), ModItems.WAXED_OXIDIZED_SILVER_LANTERN.get());
+
+        // Silver Chain
+        chain(output, ModItems.SILVER_CHAIN.get(), ModItems.SILVER_INGOT.get(), ModItems.SILVER_NUGGET.get());
+        waxable(output, ModItems.SILVER_CHAIN.get(), ModItems.WAXED_SILVER_CHAIN.get());
+        waxable(output, ModItems.EXPOSED_SILVER_CHAIN.get(), ModItems.WAXED_EXPOSED_SILVER_CHAIN.get());
+        waxable(output, ModItems.WEATHERED_SILVER_CHAIN.get(), ModItems.WAXED_WEATHERED_SILVER_CHAIN.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_CHAIN.get(), ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
+
+        // Silver Bars
+        bars(output, ModItems.SILVER_BARS.get(), ModItems.SILVER_INGOT.get());
+        waxable(output, ModItems.SILVER_BARS.get(), ModItems.WAXED_SILVER_BARS.get());
+        waxable(output, ModItems.EXPOSED_SILVER_BARS.get(), ModItems.WAXED_EXPOSED_SILVER_BARS.get());
+        waxable(output, ModItems.WEATHERED_SILVER_BARS.get(), ModItems.WAXED_WEATHERED_SILVER_BARS.get());
+        waxable(output, ModItems.OXIDIZED_SILVER_BARS.get(), ModItems.WAXED_OXIDIZED_SILVER_BARS.get());
+    }
+
+    /** Torch: nugget over coal/charcoal over a stick, yields 4 (vanilla Copper Torch shape). */
+    private static void silverTorch(RecipeOutput output, ItemLike result, ItemLike nugget) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 4)
+                .pattern("N")
+                .pattern("X")
+                .pattern("#")
+                .define('N', nugget)
+                .define('X', Ingredient.of(Items.COAL, Items.CHARCOAL))
+                .define('#', Items.STICK)
+                .unlockedBy(getHasName(nugget), has(nugget))
+                .save(output);
+    }
+
+    /** Lantern: 8 nuggets around a torch (vanilla lantern shape). */
+    private static void lantern(RecipeOutput output, ItemLike result, ItemLike nugget, ItemLike torch) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 1)
+                .pattern("XXX")
+                .pattern("X#X")
+                .pattern("XXX")
+                .define('X', nugget)
+                .define('#', torch)
+                .unlockedBy(getHasName(nugget), has(nugget))
+                .save(output);
+    }
+
+    /** Chain: nugget / ingot / nugget vertically (vanilla chain shape). */
+    private static void chain(RecipeOutput output, ItemLike result, ItemLike ingot, ItemLike nugget) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 1)
+                .pattern("N")
+                .pattern("I")
+                .pattern("N")
+                .define('I', ingot)
+                .define('N', nugget)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
+    }
+
+    /** Bars: 6 ingots in a 3x2, yields 16 (vanilla iron/copper bars shape). */
+    private static void bars(RecipeOutput output, ItemLike result, ItemLike ingot) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 16)
+                .pattern("###")
+                .pattern("###")
+                .define('#', ingot)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
     }
 
     /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */

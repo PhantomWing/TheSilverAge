@@ -112,6 +112,21 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.OXIDIZED_SILVER_DOOR::get);
 
+        // Silver Lantern
+        ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.EXPOSED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LANTERN::get, ModBlocks.WEATHERED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LANTERN::get, ModBlocks.OXIDIZED_SILVER_LANTERN::get);
+
+        // Silver Chain
+        ox(p, ModBlocks.SILVER_CHAIN::get, ModBlocks.EXPOSED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_CHAIN::get, ModBlocks.WEATHERED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_CHAIN::get, ModBlocks.OXIDIZED_SILVER_CHAIN::get);
+
+        // Silver Bars
+        ox(p, ModBlocks.SILVER_BARS::get, ModBlocks.EXPOSED_SILVER_BARS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WEATHERED_SILVER_BARS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.OXIDIZED_SILVER_BARS::get);
+
         return p;
     }
 
@@ -199,6 +214,24 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WAXED_EXPOSED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.WAXED_WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_DOOR::get, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR::get);
+
+        // Silver Lantern
+        ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.WAXED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LANTERN::get, ModBlocks.WAXED_EXPOSED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LANTERN::get, ModBlocks.WAXED_WEATHERED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_LANTERN::get, ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN::get);
+
+        // Silver Chain
+        ox(p, ModBlocks.SILVER_CHAIN::get, ModBlocks.WAXED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_CHAIN::get, ModBlocks.WAXED_EXPOSED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_CHAIN::get, ModBlocks.WAXED_WEATHERED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_CHAIN::get, ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN::get);
+
+        // Silver Bars
+        ox(p, ModBlocks.SILVER_BARS::get, ModBlocks.WAXED_SILVER_BARS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WAXED_EXPOSED_SILVER_BARS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.WAXED_WEATHERED_SILVER_BARS::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_BARS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BARS::get);
 
         return p;
     }

@@ -1,4 +1,8 @@
-# 1.3.3
+# 1.4.0
+### Additions
+- Added Silver Lantern, Silver Chain and Silver Bars (including oxidized and waxed variants)
+- Added Silver Torch, crafted with a Silver Nugget
+
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
 

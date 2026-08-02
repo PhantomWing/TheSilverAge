@@ -170,6 +170,40 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropDoor(ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
         dropDoor(ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
         dropDoor(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
+
+        // Silver Lantern
+        dropSelf(ModBlocks.SILVER_LANTERN);
+        dropSelf(ModBlocks.EXPOSED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WEATHERED_SILVER_LANTERN);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN);
+
+        // Silver Chain
+        dropSelf(ModBlocks.SILVER_CHAIN);
+        dropSelf(ModBlocks.EXPOSED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WEATHERED_SILVER_CHAIN);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN);
+
+        // Silver Bars
+        dropSelf(ModBlocks.SILVER_BARS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BARS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BARS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BARS);
+
+        // Silver Torch — the wall variant drops the (single) torch item.
+        dropSelf(ModBlocks.SILVER_TORCH);
+        dropOther(ModBlocks.SILVER_WALL_TORCH.get(), ModBlocks.SILVER_TORCH.get());
     }
 
     // The contents of this Iterable are used for validation.

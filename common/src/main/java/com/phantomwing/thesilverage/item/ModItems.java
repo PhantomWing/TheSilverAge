@@ -11,6 +11,7 @@ import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
@@ -187,6 +188,41 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_DOOR = registerBlock("waxed_exposed_silver_door", ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
     public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_DOOR = registerBlock("waxed_weathered_silver_door", ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_DOOR = registerBlock("waxed_oxidized_silver_door", ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
+
+    // Silver Lantern
+    public static final RegistrySupplier<Item> SILVER_LANTERN = registerBlock("silver_lantern", ModBlocks.SILVER_LANTERN);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_LANTERN = registerBlock("exposed_silver_lantern", ModBlocks.EXPOSED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_LANTERN = registerBlock("weathered_silver_lantern", ModBlocks.WEATHERED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_LANTERN = registerBlock("oxidized_silver_lantern", ModBlocks.OXIDIZED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> WAXED_SILVER_LANTERN = registerBlock("waxed_silver_lantern", ModBlocks.WAXED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_LANTERN = registerBlock("waxed_exposed_silver_lantern", ModBlocks.WAXED_EXPOSED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_LANTERN = registerBlock("waxed_weathered_silver_lantern", ModBlocks.WAXED_WEATHERED_SILVER_LANTERN);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_LANTERN = registerBlock("waxed_oxidized_silver_lantern", ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN);
+
+    // Silver Chain
+    public static final RegistrySupplier<Item> SILVER_CHAIN = registerBlock("silver_chain", ModBlocks.SILVER_CHAIN);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_CHAIN = registerBlock("exposed_silver_chain", ModBlocks.EXPOSED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_CHAIN = registerBlock("weathered_silver_chain", ModBlocks.WEATHERED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_CHAIN = registerBlock("oxidized_silver_chain", ModBlocks.OXIDIZED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> WAXED_SILVER_CHAIN = registerBlock("waxed_silver_chain", ModBlocks.WAXED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_CHAIN = registerBlock("waxed_exposed_silver_chain", ModBlocks.WAXED_EXPOSED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_CHAIN = registerBlock("waxed_weathered_silver_chain", ModBlocks.WAXED_WEATHERED_SILVER_CHAIN);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_CHAIN = registerBlock("waxed_oxidized_silver_chain", ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN);
+
+    // Silver Bars
+    public static final RegistrySupplier<Item> SILVER_BARS = registerBlock("silver_bars", ModBlocks.SILVER_BARS);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_BARS = registerBlock("exposed_silver_bars", ModBlocks.EXPOSED_SILVER_BARS);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_BARS = registerBlock("weathered_silver_bars", ModBlocks.WEATHERED_SILVER_BARS);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_BARS = registerBlock("oxidized_silver_bars", ModBlocks.OXIDIZED_SILVER_BARS);
+    public static final RegistrySupplier<Item> WAXED_SILVER_BARS = registerBlock("waxed_silver_bars", ModBlocks.WAXED_SILVER_BARS);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_BARS = registerBlock("waxed_exposed_silver_bars", ModBlocks.WAXED_EXPOSED_SILVER_BARS);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BARS = registerBlock("waxed_weathered_silver_bars", ModBlocks.WAXED_WEATHERED_SILVER_BARS);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BARS = registerBlock("waxed_oxidized_silver_bars", ModBlocks.WAXED_OXIDIZED_SILVER_BARS);
+
+    // Silver Torch (StandingAndWallBlockItem: floor torch, or wall torch when placed on a wall)
+    public static final RegistrySupplier<Item> SILVER_TORCH = register("silver_torch",
+            (props) -> new StandingAndWallBlockItem(ModBlocks.SILVER_TORCH.get(), ModBlocks.SILVER_WALL_TORCH.get(), props, Direction.DOWN),
+            baseItem());
 
     // Helper functions
     public static Item.Properties baseItem() {

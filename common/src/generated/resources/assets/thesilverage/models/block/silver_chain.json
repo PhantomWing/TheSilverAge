@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/chain",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "thesilverage:block/silver_chain",
+    "particle": "thesilverage:block/silver_chain"
+  }
+}

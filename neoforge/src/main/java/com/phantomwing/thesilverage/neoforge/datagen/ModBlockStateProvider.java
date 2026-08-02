@@ -161,6 +161,109 @@ public class ModBlockStateProvider extends BlockStateProvider {
         doorWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_DOOR, ModBlocks.EXPOSED_SILVER_DOOR);
         doorWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
         doorWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
+
+        // Silver Lantern
+        lantern(ModBlocks.SILVER_LANTERN);
+        lantern(ModBlocks.EXPOSED_SILVER_LANTERN);
+        lantern(ModBlocks.WEATHERED_SILVER_LANTERN);
+        lantern(ModBlocks.OXIDIZED_SILVER_LANTERN);
+        lanternWithTexture(ModBlocks.WAXED_SILVER_LANTERN, ModBlocks.SILVER_LANTERN);
+        lanternWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN, ModBlocks.EXPOSED_SILVER_LANTERN);
+        lanternWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN, ModBlocks.WEATHERED_SILVER_LANTERN);
+        lanternWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN, ModBlocks.OXIDIZED_SILVER_LANTERN);
+
+        // Silver Chain
+        chain(ModBlocks.SILVER_CHAIN);
+        chain(ModBlocks.EXPOSED_SILVER_CHAIN);
+        chain(ModBlocks.WEATHERED_SILVER_CHAIN);
+        chain(ModBlocks.OXIDIZED_SILVER_CHAIN);
+        chainWithTexture(ModBlocks.WAXED_SILVER_CHAIN, ModBlocks.SILVER_CHAIN);
+        chainWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN, ModBlocks.EXPOSED_SILVER_CHAIN);
+        chainWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN, ModBlocks.WEATHERED_SILVER_CHAIN);
+        chainWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN, ModBlocks.OXIDIZED_SILVER_CHAIN);
+
+        // Silver Bars
+        bars(ModBlocks.SILVER_BARS);
+        bars(ModBlocks.EXPOSED_SILVER_BARS);
+        bars(ModBlocks.WEATHERED_SILVER_BARS);
+        bars(ModBlocks.OXIDIZED_SILVER_BARS);
+        barsWithTexture(ModBlocks.WAXED_SILVER_BARS, ModBlocks.SILVER_BARS);
+        barsWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS);
+        barsWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
+        barsWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
+
+        // Silver Torch (floor + wall)
+        torch(ModBlocks.SILVER_TORCH, ModBlocks.SILVER_WALL_TORCH);
+    }
+
+    /** Lantern: standing + hanging models off the vanilla templates, cutout render type. */
+    private void lantern(RegistrySupplier<LanternBlock> block) {
+        lanternWithTexture(block, block);
+    }
+
+    private void lanternWithTexture(RegistrySupplier<LanternBlock> block, RegistrySupplier<LanternBlock> textureBlock) {
+        ResourceLocation texture = BlockUtils.getBlockResourceLocation(textureBlock.get());
+        ModelFile standing = this.models()
+                .withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/template_lantern"))
+                .texture("lantern", texture)
+                .renderType(RenderType.cutout().name);
+        ModelFile hanging = this.models()
+                .withExistingParent(BlockUtils.getName(block.get(), "hanging"), ResourceLocation.withDefaultNamespace("block/template_hanging_lantern"))
+                .texture("lantern", texture)
+                .renderType(RenderType.cutout().name);
+
+        getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(state.getValue(LanternBlock.HANGING) ? hanging : standing)
+                .build());
+    }
+
+    /** Chain: single model rotated per axis (matches vanilla's chain blockstate). */
+    private void chain(RegistrySupplier<ChainBlock> block) {
+        chainWithTexture(block, block);
+    }
+
+    private void chainWithTexture(RegistrySupplier<ChainBlock> block, RegistrySupplier<ChainBlock> textureBlock) {
+        // 1.21.1 has no block/template_chain (added in 1.21.9 alongside copper_chain), so
+        // inherit the geometry from vanilla block/chain and override its textures.
+        ResourceLocation texture = BlockUtils.getBlockResourceLocation(textureBlock.get());
+        ModelFile model = this.models()
+                .withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/chain"))
+                .texture("all", texture)
+                .texture("particle", texture)
+                .renderType(RenderType.cutout().name);
+
+        getVariantBuilder(block.get()).forAllStates(state -> switch (state.getValue(ChainBlock.AXIS)) {
+            case X -> ConfiguredModel.builder().modelFile(model).rotationX(90).rotationY(90).build();
+            case Z -> ConfiguredModel.builder().modelFile(model).rotationX(90).build();
+            default -> ConfiguredModel.builder().modelFile(model).build();
+        });
+    }
+
+    /** Bars: vanilla pane multipart (post/post_ends/cap/side), cutout render type. */
+    private void bars(RegistrySupplier<IronBarsBlock> block) {
+        barsWithTexture(block, block);
+    }
+
+    private void barsWithTexture(RegistrySupplier<IronBarsBlock> block, RegistrySupplier<IronBarsBlock> textureBlock) {
+        ResourceLocation texture = BlockUtils.getBlockResourceLocation(textureBlock.get());
+        paneBlockWithRenderType(block.get(), texture, texture, RenderType.cutout().name);
+    }
+
+    /** Torch: floor model + wall model, both cutout. The wall torch has no item. */
+    private void torch(RegistrySupplier<TorchBlock> block, RegistrySupplier<WallTorchBlock> wallBlock) {
+        ResourceLocation texture = BlockUtils.getBlockResourceLocation(block.get());
+        ModelFile standing = this.models()
+                .withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/template_torch"))
+                .texture("torch", texture)
+                .renderType(RenderType.cutout().name);
+        ModelFile wall = this.models()
+                .withExistingParent(BlockUtils.getName(wallBlock.get()), ResourceLocation.withDefaultNamespace("block/template_torch_wall"))
+                .texture("torch", texture)
+                .renderType(RenderType.cutout().name);
+
+        getVariantBuilder(block.get()).partialState().setModels(new ConfiguredModel(standing));
+        // Wall torch faces away from the block it is attached to; vanilla offsets by 90°.
+        horizontalBlock(wallBlock.get(), state -> wall, 90);
     }
 
     private void stairs(RegistrySupplier<StairBlock> stairs, RegistrySupplier<Block> parentBlock) {

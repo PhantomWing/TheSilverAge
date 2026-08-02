@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "thesilverage:silver_torch"
+    },
+    "X": {
+      "item": "thesilverage:silver_nugget"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "X#X",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thesilverage:silver_lantern"
+  }
+}

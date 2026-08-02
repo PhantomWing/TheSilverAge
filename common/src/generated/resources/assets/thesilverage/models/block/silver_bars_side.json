@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "edge": "thesilverage:block/silver_bars",
+    "pane": "thesilverage:block/silver_bars"
+  }
+}

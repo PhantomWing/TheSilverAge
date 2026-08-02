@@ -4,10 +4,14 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacingBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringCopperBarsBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringCopperChainBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringCopperLanternBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringCopperPillarBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
@@ -178,6 +182,47 @@ public class ModBlocks {
     public static final RegistrySupplier<DoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerSilverDoor("waxed_weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<DoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerSilverDoor("waxed_oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
+    // Silver Lantern
+    public static final RegistrySupplier<LanternBlock> SILVER_LANTERN = registerWeatheringSilverLantern("silver_lantern", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<LanternBlock> EXPOSED_SILVER_LANTERN = registerWeatheringSilverLantern("exposed_silver_lantern", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<LanternBlock> WEATHERED_SILVER_LANTERN = registerWeatheringSilverLantern("weathered_silver_lantern", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<LanternBlock> OXIDIZED_SILVER_LANTERN = registerWeatheringSilverLantern("oxidized_silver_lantern", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<LanternBlock> WAXED_SILVER_LANTERN = registerSilverLantern("waxed_silver_lantern", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<LanternBlock> WAXED_EXPOSED_SILVER_LANTERN = registerSilverLantern("waxed_exposed_silver_lantern", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<LanternBlock> WAXED_WEATHERED_SILVER_LANTERN = registerSilverLantern("waxed_weathered_silver_lantern", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<LanternBlock> WAXED_OXIDIZED_SILVER_LANTERN = registerSilverLantern("waxed_oxidized_silver_lantern", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Chain
+    public static final RegistrySupplier<ChainBlock> SILVER_CHAIN = registerWeatheringSilverChain("silver_chain", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<ChainBlock> EXPOSED_SILVER_CHAIN = registerWeatheringSilverChain("exposed_silver_chain", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<ChainBlock> WEATHERED_SILVER_CHAIN = registerWeatheringSilverChain("weathered_silver_chain", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<ChainBlock> OXIDIZED_SILVER_CHAIN = registerWeatheringSilverChain("oxidized_silver_chain", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<ChainBlock> WAXED_SILVER_CHAIN = registerSilverChain("waxed_silver_chain", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<ChainBlock> WAXED_EXPOSED_SILVER_CHAIN = registerSilverChain("waxed_exposed_silver_chain", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<ChainBlock> WAXED_WEATHERED_SILVER_CHAIN = registerSilverChain("waxed_weathered_silver_chain", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<ChainBlock> WAXED_OXIDIZED_SILVER_CHAIN = registerSilverChain("waxed_oxidized_silver_chain", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Bars
+    public static final RegistrySupplier<IronBarsBlock> SILVER_BARS = registerWeatheringSilverBars("silver_bars", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<IronBarsBlock> EXPOSED_SILVER_BARS = registerWeatheringSilverBars("exposed_silver_bars", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<IronBarsBlock> WEATHERED_SILVER_BARS = registerWeatheringSilverBars("weathered_silver_bars", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<IronBarsBlock> OXIDIZED_SILVER_BARS = registerWeatheringSilverBars("oxidized_silver_bars", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<IronBarsBlock> WAXED_SILVER_BARS = registerSilverBars("waxed_silver_bars", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<IronBarsBlock> WAXED_EXPOSED_SILVER_BARS = registerSilverBars("waxed_exposed_silver_bars", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<IronBarsBlock> WAXED_WEATHERED_SILVER_BARS = registerSilverBars("waxed_weathered_silver_bars", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<IronBarsBlock> WAXED_OXIDIZED_SILVER_BARS = registerSilverBars("waxed_oxidized_silver_bars", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Torch (non-oxidizable; blue "moonlight" flame via SOUL_FIRE_FLAME particle)
+    public static final RegistrySupplier<TorchBlock> SILVER_TORCH = registerSilverBlock("silver_torch",
+            BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH),
+            (props) -> new TorchBlock(ParticleTypes.SOUL_FIRE_FLAME, props));
+    public static final RegistrySupplier<WallTorchBlock> SILVER_WALL_TORCH = registerSilverBlock("silver_wall_torch",
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WALL_TORCH),
+            (props) -> new WallTorchBlock(ParticleTypes.SOUL_FIRE_FLAME, props));
+
     private static RegistrySupplier<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
         return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperFullBlock(weatherState, props));
     }
@@ -260,6 +305,36 @@ public class ModBlocks {
     private static RegistrySupplier<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
         return registerSilverBlock(name, baseProps, (props) -> new DoorBlock(ModBlockSetTypes.SILVER, props));
+    }
+
+    private static RegistrySupplier<LanternBlock> registerWeatheringSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperLanternBlock(weatherState, props));
+    }
+
+    private static RegistrySupplier<LanternBlock> registerSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        return registerSilverBlock(name, baseProps, LanternBlock::new);
+    }
+
+    private static RegistrySupplier<ChainBlock> registerWeatheringSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.CHAIN));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperChainBlock(weatherState, props));
+    }
+
+    private static RegistrySupplier<ChainBlock> registerSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.CHAIN));
+        return registerSilverBlock(name, baseProps, ChainBlock::new);
+    }
+
+    private static RegistrySupplier<IronBarsBlock> registerWeatheringSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperBarsBlock(weatherState, props));
+    }
+
+    private static RegistrySupplier<IronBarsBlock> registerSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        return registerSilverBlock(name, baseProps, IronBarsBlock::new);
     }
 
     @SuppressWarnings("unused")
