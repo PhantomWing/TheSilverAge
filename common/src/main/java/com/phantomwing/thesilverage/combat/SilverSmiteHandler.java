@@ -1,13 +1,17 @@
 package com.phantomwing.thesilverage.combat;
 
+import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.platform.SmitePlatform;
 import com.phantomwing.thesilverage.tags.ModTags;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 /**
  * Innate anti-undead damage for silver tools ("silver burns the undead").
@@ -31,7 +35,13 @@ public final class SilverSmiteHandler {
      * this sits deliberately below Smite I and leaves room for the real
      * enchantment on top.
      */
-    public static final float BONUS_DAMAGE = 1.5f;
+    public static final float BONUS_DAMAGE = 1.0f;
+
+    /**
+     * The Silver Hoe gets a reduced bonus: hoes swing fast enough that the full
+     * bonus would make it the strongest anti-undead option in the set.
+     */
+    public static final float HOE_BONUS_DAMAGE = 0.5f;
 
     private SilverSmiteHandler() {
     }
@@ -47,8 +57,24 @@ public final class SilverSmiteHandler {
     }
 
     /**
-     * The bonus damage to add for an incoming attack, or {@code 0} when it does
-     * not apply.
+     * The bonus this stack grants, or {@code 0} if it grants none. Single source
+     * of truth for both the damage hook and the tooltip, so the number shown is
+     * always the number dealt.
+     */
+    public static float getBonusFor(ItemStack stack) {
+        if (!appliesTo(stack)) {
+            return 0.0f;
+        }
+
+        return stack.is(ModItems.SILVER_HOE.get()) ? HOE_BONUS_DAMAGE : BONUS_DAMAGE;
+    }
+
+    /**
+     * Handles an incoming attack: returns the bonus damage to add (or {@code 0}),
+     * and emits vanilla's magic-crit particle when the bonus applies.
+     *
+     * <p>Both loaders funnel through this single method so the damage and the
+     * particle can never diverge between them.</p>
      *
      * <p>Only direct melee attacks count: {@code getDirectEntity() == getEntity()}
      * excludes arrows and other projectiles, which carry their own damage and
@@ -57,7 +83,46 @@ public final class SilverSmiteHandler {
      * @param target the entity being hurt
      * @param source the damage source
      */
-    public static float getBonusDamage(LivingEntity target, DamageSource source) {
+    public static float handleIncomingDamage(LivingEntity target, DamageSource source) {
+        float bonus = getBonusDamage(target, source);
+        if (bonus > 0.0f) {
+            spawnMagicCritParticle(target, source);
+        }
+
+        return bonus;
+    }
+
+    /**
+     * Vanilla's "magic crit" effect (the {@code ENCHANTED_HIT} particle burst
+     * Smite produces), via the same {@code Player#magicCrit} path vanilla uses in
+     * {@code Player#attack}.
+     *
+     * <p>Vanilla ALREADY fires that effect whenever an enchantment added damage to
+     * the hit, so calling it again for an enchanted silver tool would double the
+     * particles. The check below probes the weapon's enchantments against this
+     * exact target: if they contribute any damage (Smite on undead, Sharpness on
+     * anything, ...), vanilla has it covered and this does nothing.</p>
+     */
+    private static void spawnMagicCritParticle(LivingEntity target, DamageSource source) {
+        // Vanilla only emits this for player attacks; mobs swinging silver get no particle.
+        if (!(source.getEntity() instanceof Player player)
+                || !(target.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        ItemStack weapon = player.getItemBySlot(EquipmentSlot.MAINHAND);
+
+        // Probe value is arbitrary: we only care whether enchantments raise it.
+        float probe = 1.0f;
+        if (EnchantmentHelper.modifyDamage(serverLevel, weapon, target, source, probe) > probe) {
+            return;
+        }
+
+        player.magicCrit(target);
+    }
+
+    /** Pure calculation of the bonus for this hit, with no side effects. */
+    private static float getBonusDamage(LivingEntity target, DamageSource source) {
         // Server-authoritative only. LivingEntity#hurt also runs client-side (hurt
         // animation / knockback prediction); the Fabric mixin sits on that method,
         // so without this the client would compute a different number than the
@@ -77,6 +142,6 @@ public final class SilverSmiteHandler {
         }
 
         // Same tag vanilla Smite targets, so modded undead are covered too.
-        return appliesTo(attacker.getItemBySlot(EquipmentSlot.MAINHAND)) ? BONUS_DAMAGE : 0.0f;
+        return getBonusFor(attacker.getItemBySlot(EquipmentSlot.MAINHAND));
     }
 }

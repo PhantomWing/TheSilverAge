@@ -16,7 +16,7 @@ public final class SmitePlatformImpl {
 
     public static void registerDamageHandler() {
         NeoForge.EVENT_BUS.addListener((LivingIncomingDamageEvent event) -> {
-            float bonus = SilverSmiteHandler.getBonusDamage(event.getEntity(), event.getSource());
+            float bonus = SilverSmiteHandler.handleIncomingDamage(event.getEntity(), event.getSource());
             if (bonus > 0.0f) {
                 event.setAmount(event.getAmount() + bonus);
             }

@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 import java.text.DecimalFormat;
@@ -34,13 +35,21 @@ public final class SilverSmiteTooltip {
         ClientTooltipEvent.ITEM.register((stack, lines, context, flag) -> {
             // Gated on the local config: with the bonus switched off the line
             // would be a lie. (Server-side value is authoritative for damage.)
-            if (!SilverSmiteHandler.appliesTo(stack) || !CommonConfig.silverSmite()) {
+            if (!CommonConfig.silverSmite()) {
                 return;
             }
 
-            lines.add(Component.translatable("tooltip.thesilverage.silver_smite",
-                            FORMAT.format(SilverSmiteHandler.BONUS_DAMAGE))
-                    .withStyle(ChatFormatting.GRAY));
+            float bonus = SilverSmiteHandler.getBonusFor(stack);
+            if (bonus <= 0.0f) {
+                return;
+            }
+
+            // Leading space + blue, matching how vanilla renders an item's own
+            // attribute lines (e.g. armour's " +1 Armor") — see
+            // ItemStack#addModifierTooltip, which also prepends CommonComponents.space().
+            lines.add(CommonComponents.space()
+                    .append(Component.translatable("tooltip.thesilverage.silver_smite", FORMAT.format(bonus)))
+                    .withStyle(ChatFormatting.BLUE));
         });
     }
 }

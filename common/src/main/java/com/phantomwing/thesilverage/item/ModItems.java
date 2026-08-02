@@ -270,7 +270,8 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerAxe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 4.5f, -3.0f));
+        // 5.0 + the 2.5 tier bonus + the player's 1.0 base = 8.5 displayed damage.
+        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 5.0f, -3.0f));
         return register(name, (props) -> new AxeItem(tier, props), baseProps);
     }
 

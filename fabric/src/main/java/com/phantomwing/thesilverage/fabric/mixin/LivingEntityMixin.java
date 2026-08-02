@@ -33,7 +33,7 @@ public abstract class LivingEntityMixin {
     @ModifyVariable(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
             at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float thesilverage$addSilverSmiteDamage(float value, DamageSource source, float amount) {
-        float bonus = SilverSmiteHandler.getBonusDamage((LivingEntity) (Object) this, source);
+        float bonus = SilverSmiteHandler.handleIncomingDamage((LivingEntity) (Object) this, source);
         return bonus > 0.0f ? value + bonus : value;
     }
 }
