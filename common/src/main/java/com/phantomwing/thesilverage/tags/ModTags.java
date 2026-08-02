@@ -70,6 +70,13 @@ public class ModTags {
          */
         public static final TagKey<Item> REDSTONE_SILVER_COMPONENTS = tag("redstone_silver_components");
 
+        /**
+         * Silver tools that carry the innate anti-undead damage bonus (see
+         * {@link com.phantomwing.thesilverage.combat.SilverSmiteHandler}). Datapacks
+         * and addons can add their own items here to grant the same bonus.
+         */
+        public static final TagKey<Item> SILVER_SMITE_TOOLS = tag("silver_smite_tools");
+
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
         }

@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "修改部分原版合成配方以使用银（如酿造台、中继器、比较器等）。",
   "thesilverage.configuration.section.thesilverage.common.toml": "白银时代的各项可配置设置。",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "白银时代配置",
+  "thesilverage.configuration.silver_smite": "白银亡灵杀手",
+  "thesilverage.configuration.silver_smite.tooltip": "银制工具是否对亡灵生物造成额外伤害？",
   "thesilverage.configuration.silverfish_drop_silver": "蠹虫掉落银粒",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "蠹虫是否随机掉落0–2个银粒？",
   "thesilverage.configuration.title": "白银时代配置",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "亏凸月",
   "thesilverage.moon_phase.waxing_crescent": "蛾眉月",
   "thesilverage.moon_phase.waxing_gibbous": "盈凸月",
+  "tooltip.thesilverage.silver_smite": "对亡灵生物造成+%s伤害",
   "trim_material.thesilverage.silver": "银材料"
 }

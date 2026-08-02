@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.neoforge.client;
 
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
 import net.neoforged.bus.api.IEventBus;
@@ -44,6 +45,10 @@ public final class TheSilverAgeNeoForgeClient {
                 (mc, parent) -> new ConfigurationScreen(mc, parent, StyledConfigSectionScreen::new));
 
         modEventBus.addListener(TheSilverAgeNeoForgeClient::clientSetup);
+
+        // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
+        // tooltip event, so the same common class is called from the Fabric client too.
+        SilverSmiteTooltip.register();
 
         // Recipe-override server-sync client receiver. MUST be registered during
         // mod construction, NOT in clientSetup: Architectury's NeoForge adaptor

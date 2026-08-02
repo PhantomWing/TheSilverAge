@@ -174,6 +174,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)",
   "thesilverage.configuration.section.thesilverage.common.toml": "Various configurable settings for The Silver Age.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "The Silver Age Configuration",
+  "thesilverage.configuration.silver_smite": "Silver smite",
+  "thesilverage.configuration.silver_smite.tooltip": "Should silver tools deal extra damage to undead mobs?",
   "thesilverage.configuration.silverfish_drop_silver": "Silverfish drop Silver Nuggets",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Should Silverfish randomly drop 0-2 Silver Nuggets?",
   "thesilverage.configuration.title": "The Silver Age Configuration",
@@ -185,5 +187,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Waning Gibbous",
   "thesilverage.moon_phase.waxing_crescent": "Waxing Crescent",
   "thesilverage.moon_phase.waxing_gibbous": "Waxing Gibbous",
+  "tooltip.thesilverage.silver_smite": "+%s Damage to Undead",
   "trim_material.thesilverage.silver": "Silver Material"
 }

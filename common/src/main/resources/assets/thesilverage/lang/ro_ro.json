@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifică unele rețete existente pentru a folosi argint (de ex. Stand de Băuturi, Repetor, Comparator, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Diverse setări configurabile pentru Era Argintului.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Configurație Era Argintului",
+  "thesilverage.configuration.silver_smite": "Izbire de argint",
+  "thesilverage.configuration.silver_smite.tooltip": "Uneltele de argint ar trebui să provoace daune suplimentare nemorților?",
   "thesilverage.configuration.silverfish_drop_silver": "Peștișorii de argint lasă pepite de argint",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Ar trebui Peștișorii de argint să lase aleatoriu 0–2 pepite de argint?",
   "thesilverage.configuration.title": "Configurație Era Argintului",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Lună gheboasă descrescătoare",
   "thesilverage.moon_phase.waxing_crescent": "Seceră crescătoare",
   "thesilverage.moon_phase.waxing_gibbous": "Lună gheboasă crescătoare",
+  "tooltip.thesilverage.silver_smite": "+%s daune împotriva nemorților",
   "trim_material.thesilverage.silver": "Material de argint"
 }

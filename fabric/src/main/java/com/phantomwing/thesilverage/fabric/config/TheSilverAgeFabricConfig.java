@@ -34,6 +34,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_WANDERING_TRADER_TRADES_ID = "enable_wandering_trader_trades";
     public boolean enable_wandering_trader_trades = true;
 
+    public static final String SILVER_SMITE_ID = "silver_smite";
+    public boolean silver_smite = true;
+
     public static TheSilverAgeFabricConfig get() {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
     }
@@ -61,6 +64,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_WANDERING_TRADER_TRADES_ID -> config.enable_wandering_trader_trades;
             case OVERRIDE_VANILLA_RECIPES_ID -> config.override_vanilla_recipes;
             case GENERATE_STRUCTURE_LOOT_ID -> config.generate_structure_loot;
+            case SILVER_SMITE_ID -> config.silver_smite;
             default -> throw new Error("Invalid setting ID: " + id);
         };
     }

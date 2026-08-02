@@ -5,6 +5,7 @@ import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
+import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
@@ -47,6 +48,9 @@ public final class TheSilverAgeCommon {
 
         // Loader-agnostic gameplay events.
         MonsterArmorHandler.register();
+
+        // Innate anti-undead damage for silver tools (built in, not an enchantment).
+        SilverSmiteHandler.register();
 
         // Server→client sync of override_vanilla_recipes on join, so each
         // client's recipe-override texture pack matches the server it joins

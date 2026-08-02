@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifie certaines recettes existantes pour utiliser de l'argent à la place (p. ex. l'alambic, le répéteur, le comparateur, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Divers paramètres configurables pour L'Âge d'argent.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Configuration de L'Âge d'argent",
+  "thesilverage.configuration.silver_smite": "Châtiment de l'argent",
+  "thesilverage.configuration.silver_smite.tooltip": "Les outils en argent doivent-ils infliger des dégâts supplémentaires aux morts-vivants ?",
   "thesilverage.configuration.silverfish_drop_silver": "Les poissons d'argent lâchent des pépites d'argent",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Les poissons d'argent doivent-ils lâcher aléatoirement 0 à 2 pépites d'argent ?",
   "thesilverage.configuration.title": "Configuration de L'Âge d'argent",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Gibbeuse décroissante",
   "thesilverage.moon_phase.waxing_crescent": "Premier croissant",
   "thesilverage.moon_phase.waxing_gibbous": "Gibbeuse croissante",
+  "tooltip.thesilverage.silver_smite": "+%s de dégâts contre les morts-vivants",
   "trim_material.thesilverage.silver": "Matériau en argent"
 }

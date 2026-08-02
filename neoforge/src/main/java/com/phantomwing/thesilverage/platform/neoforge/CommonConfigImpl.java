@@ -24,4 +24,8 @@ public final class CommonConfigImpl {
     public static boolean overrideVanillaRecipes() {
         return Configuration.OVERRIDE_VANILLA_RECIPES.get();
     }
+
+    public static boolean silverSmite() {
+        return Configuration.SILVER_SMITE.get();
+    }
 }

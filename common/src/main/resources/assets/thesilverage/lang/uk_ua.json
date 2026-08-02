@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Змінює деякі існуючі рецепти крафту, щоб використовувати срібло (наприклад, варильна підставка, повторювач, компаратор, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Різні налаштування Срібної доби.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Налаштування Срібної доби",
+  "thesilverage.configuration.silver_smite": "Срібна кара",
+  "thesilverage.configuration.silver_smite.tooltip": "Чи мають срібні інструменти завдавати додаткової шкоди нежиті?",
   "thesilverage.configuration.silverfish_drop_silver": "Срібнясики випускають самородки срібла",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Чи повинні срібнясики випадково випускати 0–2 самородки срібла?",
   "thesilverage.configuration.title": "Налаштування Срібної доби",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Спадаючий місяць",
   "thesilverage.moon_phase.waxing_crescent": "Молодий серп",
   "thesilverage.moon_phase.waxing_gibbous": "Растучий місяць",
+  "tooltip.thesilverage.silver_smite": "+%s до шкоди по нежиті",
   "trim_material.thesilverage.silver": "Срібний матеріал"
 }

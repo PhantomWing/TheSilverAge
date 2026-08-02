@@ -57,4 +57,15 @@ public final class CommonConfig {
     public static boolean overrideVanillaRecipes() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
+
+    /**
+     * Gate for the innate anti-undead damage on silver tools
+     * ({@link com.phantomwing.thesilverage.combat.SilverSmiteHandler}). NeoForge:
+     * {@code Configuration.SILVER_SMITE.get()}. Fabric: {@code true} until the
+     * Phase 5 Fabric config exists (matches the NeoForge default).
+     */
+    @ExpectPlatform
+    public static boolean silverSmite() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
 }

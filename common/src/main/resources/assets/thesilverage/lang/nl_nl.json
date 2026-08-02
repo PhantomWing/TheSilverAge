@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Past enkele bestaande maakrecepten aan om zilver te gebruiken. (bijv. brouwsel, versterker, vergelijker, ...)",
   "thesilverage.configuration.section.thesilverage.common.toml": "Verschillende configureerbare instellingen voor The Silver Age.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "The Silver Age-configuratie",
+  "thesilverage.configuration.silver_smite": "Zilveren kastijding",
+  "thesilverage.configuration.silver_smite.tooltip": "Moeten zilveren gereedschappen extra schade toebrengen aan ondoden?",
   "thesilverage.configuration.silverfish_drop_silver": "Zilvervissen laten zilverklompjes vallen",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Moeten zilvervissen willekeurig 0-2 zilverklompjes laten vallen?",
   "thesilverage.configuration.title": "The Silver Age-configuratie",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Afnemende maan",
   "thesilverage.moon_phase.waxing_crescent": "Wassende sikkel",
   "thesilverage.moon_phase.waxing_gibbous": "Wassende maan",
+  "tooltip.thesilverage.silver_smite": "+%s schade tegen ondoden",
   "trim_material.thesilverage.silver": "Zilvermateriaal"
 }

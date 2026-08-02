@@ -51,6 +51,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .add(ModItems.SILVER_INGOT.get())
                 .add(ModItems.SILVER_SHEET.get());
+
+        // Silver tools carrying the innate anti-undead damage bonus. The Silver
+        // Knife is included: it is registered on both loaders (a Farmer's Delight
+        // KnifeItem when FD is present, a plain fallback otherwise).
+        tag(ModTags.Items.SILVER_SMITE_TOOLS)
+                .add(ModItems.SILVER_SWORD.get())
+                .add(ModItems.SILVER_AXE.get())
+                .add(ModItems.SILVER_PICKAXE.get())
+                .add(ModItems.SILVER_SHOVEL.get())
+                .add(ModItems.SILVER_HOE.get())
+                .add(ModItems.SILVER_KNIFE.get());
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {

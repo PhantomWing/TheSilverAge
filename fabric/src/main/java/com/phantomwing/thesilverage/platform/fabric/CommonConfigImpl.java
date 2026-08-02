@@ -29,4 +29,9 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.OVERRIDE_VANILLA_RECIPES_ID);
     }
+
+    public static boolean silverSmite() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.SILVER_SMITE_ID);
+    }
 }

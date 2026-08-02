@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifica alcune ricette esistenti per usare l'argento (es. Distillatore, Ripetitore, Comparatore, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Varie impostazioni configurabili per L'Età dell'Argento.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Configurazione di L'Età dell'Argento",
+  "thesilverage.configuration.silver_smite": "Anatema d'argento",
+  "thesilverage.configuration.silver_smite.tooltip": "Gli strumenti d'argento devono infliggere danni extra ai non morti?",
   "thesilverage.configuration.silverfish_drop_silver": "I pesciolini d'argento rilasciano pepite d'argento",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "I pesciolini d'argento devono rilasciare casualmente 0–2 pepite d'argento?",
   "thesilverage.configuration.title": "Configurazione di L'Età dell'Argento",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Gibbosa calante",
   "thesilverage.moon_phase.waxing_crescent": "Falce crescente",
   "thesilverage.moon_phase.waxing_gibbous": "Gibbosa crescente",
+  "tooltip.thesilverage.silver_smite": "+%s danni contro i non morti",
   "trim_material.thesilverage.silver": "Materiale d'argento"
 }

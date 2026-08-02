@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "기존의 일부 제작법을 은을 사용하도록 수정합니다(예: 양조기, 리피터, 비교기 등).",
   "thesilverage.configuration.section.thesilverage.common.toml": "은의 시대를 위한 다양한 설정.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "은의 시대 설정",
+  "thesilverage.configuration.silver_smite": "은 강타",
+  "thesilverage.configuration.silver_smite.tooltip": "은 도구가 언데드에게 추가 피해를 입혀야 하나요?",
   "thesilverage.configuration.silverfish_drop_silver": "좀이 은 조각을 떨어뜨림",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "좀이 0~2개의 은 조각을 무작위로 떨어뜨려야 합니까?",
   "thesilverage.configuration.title": "은의 시대 설정",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "이지러지는 달",
   "thesilverage.moon_phase.waxing_crescent": "초승달",
   "thesilverage.moon_phase.waxing_gibbous": "차오르는 달",
+  "tooltip.thesilverage.silver_smite": "언데드에게 +%s 피해",
   "trim_material.thesilverage.silver": "은 재료"
 }

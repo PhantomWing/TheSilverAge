@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Passt einige bestehende Herstellungsrezepte an, um stattdessen Silber zu verwenden. (z.B. Braustand, Verstärker, Komparator, ...)",
   "thesilverage.configuration.section.thesilverage.common.toml": "Verschiedene konfigurierbare Einstellungen für The Silver Age.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "The Silver Age Konfiguration",
+  "thesilverage.configuration.silver_smite": "Silber-Bann",
+  "thesilverage.configuration.silver_smite.tooltip": "Sollen Silberwerkzeuge zusätzlichen Schaden gegen Untote verursachen?",
   "thesilverage.configuration.silverfish_drop_silver": "Silberfischchen lassen Silberklumpen fallen",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Sollen Silberfischchen zufällig 0-2 Silberklumpen fallen lassen?",
   "thesilverage.configuration.title": "The Silver Age Konfiguration",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Abnehmender Mond",
   "thesilverage.moon_phase.waxing_crescent": "Zunehmende Sichel",
   "thesilverage.moon_phase.waxing_gibbous": "Zunehmender Mond",
+  "tooltip.thesilverage.silver_smite": "+%s Schaden gegen Untote",
   "trim_material.thesilverage.silver": "Silbermaterial"
 }

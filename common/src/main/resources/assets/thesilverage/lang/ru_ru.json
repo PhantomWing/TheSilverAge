@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Изменяет некоторые существующие рецепты крафта, чтобы использовать серебро (например, варочная стойка, повторитель, компаратор, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Различные настройки Серебряного века.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Настройки Серебряного века",
+  "thesilverage.configuration.silver_smite": "Серебряная кара",
+  "thesilverage.configuration.silver_smite.tooltip": "Должны ли серебряные инструменты наносить дополнительный урон нежити?",
   "thesilverage.configuration.silverfish_drop_silver": "Чешуйницы роняют самородки серебра",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "Должны ли чешуйницы случайно ронять 0–2 самородка серебра?",
   "thesilverage.configuration.title": "Настройки Серебряного века",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Убывающая луна",
   "thesilverage.moon_phase.waxing_crescent": "Молодой месяц",
   "thesilverage.moon_phase.waxing_gibbous": "Прибывающая луна",
+  "tooltip.thesilverage.silver_smite": "+%s к урону по нежити",
   "trim_material.thesilverage.silver": "Серебряный материал"
 }

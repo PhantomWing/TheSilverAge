@@ -2,6 +2,7 @@
 ### Additions
 - Added Silver Lantern, Silver Chain and Silver Bars (including oxidized and waxed variants)
 - Added Silver Torch, crafted with a Silver Nugget
+- Silver tools now deal +1.5 extra damage to undead mobs. This is a built-in property, not an enchantment, so it stacks with Smite. Can be turned off with the `silver_smite` config option.
 
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric

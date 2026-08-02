@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifica algunas recetas existentes para usar plata en su lugar (p. ej. Soporte para pociones, Repetidor, Comparador, …).",
   "thesilverage.configuration.section.thesilverage.common.toml": "Diversos ajustes configurables para La Edad de Plata.",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "Configuración de La Edad de Plata",
+  "thesilverage.configuration.silver_smite": "Golpeo de plata",
+  "thesilverage.configuration.silver_smite.tooltip": "¿Deberían las herramientas de plata infligir daño adicional a los no muertos?",
   "thesilverage.configuration.silverfish_drop_silver": "Los lepismas sueltan pepitas de plata",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "¿Deberían los lepismas soltar de 0 a 2 pepitas de plata aleatoriamente?",
   "thesilverage.configuration.title": "Configuración de La Edad de Plata",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "Gibosa menguante",
   "thesilverage.moon_phase.waxing_crescent": "Luna creciente",
   "thesilverage.moon_phase.waxing_gibbous": "Gibosa creciente",
+  "tooltip.thesilverage.silver_smite": "+%s de daño a los no muertos",
   "trim_material.thesilverage.silver": "Material de plata"
 }

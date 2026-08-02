@@ -173,6 +173,8 @@
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "既存の一部のクラフトレシピを銀を使うように変更します(例: 醸造台、リピーター、コンパレーターなど)。",
   "thesilverage.configuration.section.thesilverage.common.toml": "白銀の時代の各種設定。",
   "thesilverage.configuration.section.thesilverage.common.toml.title": "白銀の時代 設定",
+  "thesilverage.configuration.silver_smite": "銀のアンデッド特効",
+  "thesilverage.configuration.silver_smite.tooltip": "銀の道具はアンデッドに追加ダメージを与えますか？",
   "thesilverage.configuration.silverfish_drop_silver": "シルバーフィッシュが銀塊をドロップ",
   "thesilverage.configuration.silverfish_drop_silver.tooltip": "シルバーフィッシュがランダムに0〜2個の銀塊をドロップするか?",
   "thesilverage.configuration.title": "白銀の時代 設定",
@@ -184,5 +186,6 @@
   "thesilverage.moon_phase.waning_gibbous": "下弦凸月",
   "thesilverage.moon_phase.waxing_crescent": "三日月",
   "thesilverage.moon_phase.waxing_gibbous": "上弦凸月",
+  "tooltip.thesilverage.silver_smite": "アンデッドに+%sのダメージ",
   "trim_material.thesilverage.silver": "銀の素材"
 }
