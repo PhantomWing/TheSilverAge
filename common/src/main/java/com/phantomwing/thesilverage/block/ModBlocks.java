@@ -3,11 +3,18 @@ package com.phantomwing.thesilverage.block;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
-import com.phantomwing.thesilverage.block.custom.WeatheringCopperHorizontalFacingBlock;
-import com.phantomwing.thesilverage.block.custom.WeatheringCopperBarsBlock;
-import com.phantomwing.thesilverage.block.custom.WeatheringCopperChainBlock;
-import com.phantomwing.thesilverage.block.custom.WeatheringCopperLanternBlock;
-import com.phantomwing.thesilverage.block.custom.WeatheringCopperPillarBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverHorizontalFacingBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverFullBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverSlabBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverGrateBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverBulbBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverStairBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverTrapDoorBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverDoorBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverBarsBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverChainBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverLanternBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverPillarBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -224,12 +231,12 @@ public class ModBlocks {
             (props) -> new WallTorchBlock(ParticleTypes.SOUL_FIRE_FLAME, props));
 
     private static RegistrySupplier<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
-        return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringCopperFullBlock(weatherState, props));
+        return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringSilverFullBlock(weatherState, props));
     }
 
     private static RegistrySupplier<HorizontalFacingBlock> registerWeatheringSilverHorizontalFacingBlock(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperHorizontalFacingBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverHorizontalFacingBlock(weatherState, props));
     }
 
     private static RegistrySupplier<HorizontalFacingBlock> registerSilverHorizontalFacingBlock(String name, WeatheringCopper.WeatherState weatherState) {
@@ -239,7 +246,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<Block> registerWeatheringSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperGrateBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverGrateBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
@@ -249,7 +256,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<Block> registerWeatheringSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperBulbBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBulbBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
@@ -259,7 +266,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<SlabBlock> registerWeatheringSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperSlabBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverSlabBlock(weatherState, props));
     }
 
     private static RegistrySupplier<SlabBlock> registerSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {
@@ -269,7 +276,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<StairBlock> registerWeatheringSilverStairs(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperStairBlock(weatherState, Blocks.IRON_BLOCK.defaultBlockState(), props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverStairBlock(weatherState, Blocks.IRON_BLOCK.defaultBlockState(), props));
     }
 
     private static RegistrySupplier<StairBlock> registerSilverStairs(String name, WeatheringCopper.WeatherState weatherState) {
@@ -279,7 +286,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<RotatedPillarBlock> registerWeatheringSilverPillar(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperPillarBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverPillarBlock(weatherState, props));
     }
 
     private static RegistrySupplier<RotatedPillarBlock> registerSilverPillar(String name, WeatheringCopper.WeatherState weatherState) {
@@ -289,7 +296,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<TrapDoorBlock> registerWeatheringSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR));
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
     private static RegistrySupplier<TrapDoorBlock> registerSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
@@ -299,7 +306,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<DoorBlock> registerWeatheringSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
     private static RegistrySupplier<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
@@ -309,7 +316,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<LanternBlock> registerWeatheringSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperLanternBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLanternBlock(weatherState, props));
     }
 
     private static RegistrySupplier<LanternBlock> registerSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
@@ -319,7 +326,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<ChainBlock> registerWeatheringSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.CHAIN));
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperChainBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverChainBlock(weatherState, props));
     }
 
     private static RegistrySupplier<ChainBlock> registerSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
@@ -329,7 +336,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<IronBarsBlock> registerWeatheringSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringCopperBarsBlock(weatherState, props));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBarsBlock(weatherState, props));
     }
 
     private static RegistrySupplier<IronBarsBlock> registerSilverBars(String name, WeatheringCopper.WeatherState weatherState) {

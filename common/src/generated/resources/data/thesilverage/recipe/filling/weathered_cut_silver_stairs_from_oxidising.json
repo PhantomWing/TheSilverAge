@@ -3,6 +3,10 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "create"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
     }
   ],
   "type": "create:filling",
@@ -12,6 +16,10 @@
       "values": [
         "create"
       ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
     }
   ],
   "ingredients": [

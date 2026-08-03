@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.compat.emi;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.SilverOxidation;
 
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
@@ -39,6 +40,15 @@ public class ModEmiPlugin implements EmiPlugin {
 
     @Override
     public void register(@NotNull EmiRegistry registry) {
+        // Every recipe below is an oxidation/waxing interaction. With
+        // enable_silver_oxidation off, the weathered and waxed blocks are never
+        // obtainable, so none of these belong in a recipe viewer — including the
+        // axe ones, even though scraping itself still works in-world for anyone
+        // holding leftover blocks.
+        if (!SilverOxidation.enabled()) {
+            return;
+        }
+
         final EmiIngredient honeycomb = EmiStack.of(Items.HONEYCOMB);
         final EmiIngredient axes = EmiIngredient.of(ItemTags.AXES);
 

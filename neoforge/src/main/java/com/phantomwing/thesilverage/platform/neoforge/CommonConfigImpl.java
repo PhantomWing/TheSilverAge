@@ -26,6 +26,10 @@ public final class CommonConfigImpl {
     }
 
     public static boolean silverSmite() {
-        return Configuration.SILVER_SMITE.get();
+        return Configuration.ENABLE_SILVER_SMITE.get();
+    }
+
+    public static boolean silverOxidation() {
+        return Configuration.ENABLE_SILVER_OXIDATION.get();
     }
 }

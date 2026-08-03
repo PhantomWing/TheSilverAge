@@ -61,11 +61,22 @@ public final class CommonConfig {
     /**
      * Gate for the innate anti-undead damage on silver tools
      * ({@link com.phantomwing.thesilverage.combat.SilverSmiteHandler}). NeoForge:
-     * {@code Configuration.SILVER_SMITE.get()}. Fabric: {@code true} until the
+     * {@code Configuration.ENABLE_SILVER_SMITE.get()}. Fabric: {@code true} until the
      * Phase 5 Fabric config exists (matches the NeoForge default).
      */
     @ExpectPlatform
     public static boolean silverSmite() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
+     * Gate for silver weathering: oxidation over time and honeycomb waxing. When
+     * off, silver blocks never advance a weather stage and refuse honeycomb, but
+     * the oxidizable/waxable mappings stay registered so an axe can still scrape
+     * existing blocks back down.
+     */
+    @ExpectPlatform
+    public static boolean silverOxidation() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 }

@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.block.custom;
 
+import com.phantomwing.thesilverage.block.SilverOxidation;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -12,27 +13,31 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Weathering counterpart to {@link IronBarsBlock} — the oxidizing bars shape
- * (mirrors {@code WeatheringCopperBarsBlock} added to vanilla in 1.21.9).
- * Line-for-line identical to {@link WeatheringCopperPillarBlock}, swapping the
+ * (mirrors {@code WeatheringSilverBarsBlock} added to vanilla in 1.21.9).
+ * Line-for-line identical to {@link WeatheringSilverPillarBlock}, swapping the
  * {@link IronBarsBlock} parent in.
  */
-public class WeatheringCopperBarsBlock extends IronBarsBlock implements WeatheringCopper {
-    public static final MapCodec<WeatheringCopperBarsBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
+public class WeatheringSilverBarsBlock extends IronBarsBlock implements WeatheringCopper {
+    public static final MapCodec<WeatheringSilverBarsBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
             .group(WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(ChangeOverTimeBlock::getAge), propertiesCodec())
-            .apply(instance, WeatheringCopperBarsBlock::new));
+            .apply(instance, WeatheringSilverBarsBlock::new));
     private final WeatheringCopper.WeatherState weatherState;
 
-    public @NotNull MapCodec<WeatheringCopperBarsBlock> codec() {
+    public @NotNull MapCodec<WeatheringSilverBarsBlock> codec() {
         return CODEC;
     }
 
-    public WeatheringCopperBarsBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
+    public WeatheringSilverBarsBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
         super(properties);
 
         this.weatherState = weatherState;
     }
 
     protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (!SilverOxidation.enabled()) {
+            return;
+        }
+
         this.changeOverTime(state, level, pos, random);
     }
 

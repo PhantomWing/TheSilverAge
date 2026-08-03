@@ -1,6 +1,18 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
   "ingredients": [
     {
       "item": "thesilverage:oxidized_silver_lantern"

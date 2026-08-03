@@ -32,6 +32,11 @@ public final class CommonConfigImpl {
 
     public static boolean silverSmite() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                TheSilverAgeFabricConfig.SILVER_SMITE_ID);
+                TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);
+    }
+
+    public static boolean silverOxidation() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);
     }
 }
