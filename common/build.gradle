@@ -35,6 +35,27 @@ dependencies {
     // the intermediary-mapped Fabric jar and neither jar is ever shipped.
     modCompileOnly "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_common_version}"
     modCompileOnly "maven.modrinth:data-anchor:${rootProject.data_anchor_common_version}"
+
+    // Enhanced Celestials 2 — a different mod, not an upgrade, so it is compiled
+    // against alongside EC1 and dispatched between at runtime (see compat/LunarEvents).
+    //
+    // Plain compileOnly, NOT modCompileOnly, and the NeoForge build rather than the
+    // Fabric one. EC2's Fabric jar declares `Fabric-Loom-Mixin-Remap-Type: static`,
+    // and loom only runs its "built with a newer version of Loom" check on static
+    // jars (ArtifactMetadata: the check is skipped entirely for the classic `mixin`
+    // type) — which is why EC1's Fabric jar passes despite ALSO being newer than ours
+    // (Loom 1.10.453 vs 1.7.435), while EC2's 1.16.3 is refused. Same reason CorgiLib
+    // Fabric and FD Refabricated are unusable here; all three are static.
+    //
+    // The NeoForge jar sidesteps it: not Loom-produced, and already Mojmap, so it
+    // lines up with our named mappings with no remap step. Only signatures are needed
+    // here and nothing is shipped, and the Fabric jar exposes identical class names,
+    // so the shipped Fabric build binds to the real classes fine.
+    //
+    // The alternative is -Ploom.ignoreDependencyLoomVersionValidation=true, which
+    // would allow the Fabric jar via modCompileOnly, but it disables the check for
+    // EVERY dependency including runtime ones, so it is not worth it for signatures.
+    compileOnly "${rootProject.enhanced_celestials_2_core_neoforge}"
 }
 
 publishing {

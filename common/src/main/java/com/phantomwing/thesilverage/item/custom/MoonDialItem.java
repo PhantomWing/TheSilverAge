@@ -1,8 +1,6 @@
 package com.phantomwing.thesilverage.item.custom;
 
-import com.phantomwing.thesilverage.compat.ModIds;
-import com.phantomwing.thesilverage.compat.enhancedcelestials.EnhancedCelestialsCompat;
-import com.phantomwing.thesilverage.platform.CommonPlatform;
+import com.phantomwing.thesilverage.compat.LunarEvents;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import dev.architectury.utils.EnvExecutor;
 import net.minecraft.ChatFormatting;
@@ -68,17 +66,13 @@ public class MoonDialItem extends Item {
                 () -> () -> net.minecraft.client.Minecraft.getInstance().level,
                 () -> () -> null);
 
-        // Enhanced Celestials: during a lunar event the dial names the event
+        // Enhanced Celestials (1 or 2): during a lunar event the dial names the event
         // ("Blood Moon") above the phase, in that moon's own colour. The phase line
         // stays because events are NOT tied to a full moon — Blood/Blue/Harvest
         // Moons roll on any of the eight phases by default (only the Super variants
         // require phase 0), so dropping it would leave the dial's phase texture
         // disagreeing with its text.
-        // Guarded by isModLoaded so EnhancedCelestialsCompat (and every EC class it
-        // names) is only ever classloaded when the mod is actually present.
-        Component lunarEvent = CommonPlatform.isModLoaded(ModIds.ENHANCED_CELESTIALS)
-                ? EnhancedCelestialsCompat.getActiveLunarEventName(level)
-                : null;
+        Component lunarEvent = LunarEvents.activeEventName(level);
 
         if (lunarEvent != null) {
             tooltip.add(lunarEvent);

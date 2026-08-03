@@ -1,10 +1,8 @@
 package com.phantomwing.thesilverage.client;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.compat.ModIds;
-import com.phantomwing.thesilverage.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import com.phantomwing.thesilverage.compat.LunarEvents;
 import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -81,10 +79,7 @@ public final class ModItemProperties {
             return moonPhaseSignal;
         }
 
-        // Guarded by isModLoaded so EnhancedCelestialsCompat (and every EC class
-        // it names) is only ever classloaded when the mod is present.
-        if (!CommonPlatform.isModLoaded(ModIds.ENHANCED_CELESTIALS)
-                || !EnhancedCelestialsCompat.isSuperMoonActive(world)) {
+        if (!LunarEvents.isSuperMoonActive(world)) {
             return moonPhaseSignal;
         }
 

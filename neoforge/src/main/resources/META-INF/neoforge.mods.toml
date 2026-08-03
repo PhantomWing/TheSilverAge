@@ -41,10 +41,21 @@ ordering = "AFTER"
 side = "BOTH"
 
 # Optional: when Enhanced Celestials is present the Moon Dial names the active
-# lunar event (Blood Moon, ...) instead of the vanilla phase.
+# lunar event (Blood Moon, ...) above the vanilla phase and tints its moon to match.
 [[dependencies.thesilverage]]
 modId = "enhancedcelestials"
 type = "optional"
 versionRange = "[6.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: Enhanced Celestials 2 is a separate mod rather than an update, so it is
+# supported alongside the above. This is the library half — the events themselves
+# come from enhancedcelestials2defaultlunarevents (or any other add-on), which we
+# never touch directly, so it is deliberately not listed.
+[[dependencies.thesilverage]]
+modId = "enhancedcelestials2core"
+type = "optional"
+versionRange = "[1.0,)"
 ordering = "AFTER"
 side = "BOTH"

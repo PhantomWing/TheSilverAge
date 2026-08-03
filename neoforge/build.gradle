@@ -68,7 +68,15 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
 def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
-logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, FD: ${loadFD}")
+
+// Which Enhanced Celestials is present at dev runtime (see gradle.properties). Both
+// compat paths compile regardless; this only decides what is loaded to test against.
+def enhancedCelestialsVersion = (project.findProperty('enhanced_celestials') ?: rootProject.enhanced_celestials).toString()
+if (!['1', '2', 'none'].contains(enhancedCelestialsVersion)) {
+    throw new GradleException("Invalid enhanced_celestials='${enhancedCelestialsVersion}'. Valid values: 1, 2, none")
+}
+def loadEnhancedCelestials = enhancedCelestialsVersion != 'none'
+logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, FD: ${loadFD}, Enhanced Celestials: ${enhancedCelestialsVersion}")
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -98,10 +106,26 @@ dependencies {
 
     // Enhanced Celestials (optional Moon Dial compat). Dev-runtime only, like Jade/JEI,
     // so the lunar-event tooltip can actually be exercised in game. Its own required
-    // deps (CorgiLib + DataAnchor) have to come along or EC refuses to load.
-    modLocalRuntime "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_neoforge_version}"
-    modLocalRuntime "maven.modrinth:corgilib:${rootProject.corgilib_neoforge_version}"
-    modLocalRuntime "maven.modrinth:data-anchor:${rootProject.data_anchor_neoforge_version}"
+    // deps (CorgiLib + DataAnchor) have to come along or EC refuses to load, and both
+    // versions of the mod want the same ones.
+    if (loadEnhancedCelestials) {
+        modLocalRuntime "maven.modrinth:corgilib:${rootProject.corgilib_neoforge_version}"
+        modLocalRuntime "maven.modrinth:data-anchor:${rootProject.data_anchor_neoforge_version}"
+    }
+    if (enhancedCelestialsVersion == '1') {
+        modLocalRuntime "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_neoforge_version}"
+    }
+    if (enhancedCelestialsVersion == '2') {
+        // The Core is a library with no events of its own, so the Default Lunar
+        // Events mod has to come with it or there is nothing to see.
+        //
+        // localRuntime, not modLocalRuntime: loom refuses to remap these jars
+        // ("Namespace mismatch, expected mojang got named"). No remap is needed
+        // anyway — NeoForge mods are already Mojmap — so they go on the runtime
+        // classpath directly, where NeoForge's dev-time locator picks them up.
+        localRuntime "${rootProject.enhanced_celestials_2_core_neoforge}"
+        localRuntime "${rootProject.enhanced_celestials_2_events_neoforge}"
+    }
 
     // Farmer's Delight (optional compat — the Silver Knife). compileOnly ALWAYS so
     // the FD KnifeItem subclass compiles; localRuntime only when -PloadFD (default

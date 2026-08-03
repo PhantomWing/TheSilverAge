@@ -1,9 +1,7 @@
 package com.phantomwing.thesilverage.client;
 
-import com.phantomwing.thesilverage.compat.ModIds;
-import com.phantomwing.thesilverage.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import com.phantomwing.thesilverage.compat.LunarEvents;
 import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.platform.CommonPlatform;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -60,15 +58,12 @@ public final class ModItemColors {
     }
 
     private static int moonDialTint(ItemStack stack, int tintIndex) {
-        if (tintIndex != MOON_TINT_INDEX
-                || !CommonPlatform.isModLoaded(ModIds.ENHANCED_CELESTIALS)) {
+        if (tintIndex != MOON_TINT_INDEX) {
             return NO_TINT;
         }
 
-        // Guarded by isModLoaded above so EnhancedCelestialsCompat (and every EC
-        // class it names) is only ever classloaded when the mod is present.
         Level level = Minecraft.getInstance().level;
-        int colour = EnhancedCelestialsCompat.getActiveLunarEventColor(level);
+        int colour = LunarEvents.activeEventColor(level);
 
         return colour == NO_TINT ? NO_TINT : asTint(colour);
     }

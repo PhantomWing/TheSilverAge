@@ -33,6 +33,7 @@
     "cloth-config": "*"
   },
   "suggests": {
-    "enhancedcelestials": ">=6.0"
+    "enhancedcelestials": ">=6.0",
+    "enhancedcelestials2core": ">=1.0"
   }
 }
