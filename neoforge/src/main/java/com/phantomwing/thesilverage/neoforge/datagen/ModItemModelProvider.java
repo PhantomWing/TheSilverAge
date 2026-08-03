@@ -310,28 +310,51 @@ public class ModItemModelProvider extends ItemModelProvider {
         Item item = deferredItem.get();
         String itemPath = item.toString();
 
-        for (int i = 0; i <= 15; i++) {
+        // The dial is two layers: an untinted base (layer0) and the moon itself
+        // (layer1). layer1 carries tintIndex 1 — item/generated gives every layer a
+        // tint index equal to its number — which ModItemColors uses to recolour the
+        // moon to the active Enhanced Celestials lunar event.
+        ResourceLocation baseTexture = ItemUtils.getItemResourceLocation(item, "base");
+        ResourceLocation upcomingBaseTexture = ItemUtils.getItemResourceLocation(item, "upcoming_base");
+        ResourceLocation superMoonTexture = ItemUtils.getItemResourceLocation(item, "super_moon");
+
+        // 0-15 are the moon phase signals; 16/17 are the super moon frames
+        // ModItemProperties swaps in during an Enhanced Celestials super event.
+        for (int i = 0; i <= ModItemProperties.SUPER_MOON_UPCOMING; i++) {
             String modelName = itemPath + "_" + i;
             ResourceLocation phaseModelLoc = ResourceLocation.parse(modelName);
 
-            ResourceLocation phaseTexture = ItemUtils.getItemResourceLocation(item, i + "");
-            ResourceLocation itemLoc = ItemUtils.getItemResourceLocation(item);
+            // getMoonPhaseSignal: signal = phase * 2 - (isDay ? 1 : 0). So an even
+            // signal is a settled night phase, and an odd one is the daytime
+            // transition toward the NEXT phase, which uses the "upcoming" base.
+            boolean superMoon = i >= ModItemProperties.SUPER_MOON_NIGHT;
+            boolean upcoming = superMoon ? i == ModItemProperties.SUPER_MOON_UPCOMING : i % 2 != 0;
 
-            // This is used for making the ExistingFileHelper acknowledge that this texture exist, so this will avoid an IllegalArgumentException
-            existingFileHelper.trackGenerated(phaseTexture, PackType.CLIENT_RESOURCES, ".png", "textures");
+            // A super moon replaces the full moon it always coincides with.
+            ResourceLocation moonTexture = superMoon
+                    ? superMoonTexture
+                    : ItemUtils.getItemResourceLocation(item, "moon_" + (upcoming ? ((i + 1) / 2) % 8 : i / 2));
+
+            // Lets ExistingFileHelper acknowledge the textures so it does not throw.
+            existingFileHelper.trackGenerated(moonTexture, PackType.CLIENT_RESOURCES, ".png", "textures");
+            existingFileHelper.trackGenerated(upcoming ? upcomingBaseTexture : baseTexture,
+                    PackType.CLIENT_RESOURCES, ".png", "textures");
 
             // Moon phase model variant.
             getBuilder(modelName)
                     .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                    .texture("layer0", itemLoc.getNamespace() + ":" + itemLoc.getPath())
-                    .texture("layer1", phaseTexture);
+                    .texture("layer0", upcoming ? upcomingBaseTexture : baseTexture)
+                    .texture("layer1", moonTexture);
 
-            // Base item model, containing an override for each moon phase.
+            // Base item model, containing an override for each moon phase. Its own
+            // layers are the full-moon frame, matching the fallback LevelUtils uses
+            // for fixed-time dimensions.
             this.withExistingParent(itemPath, mcLoc("item/generated"))
                     .override()
                     .model(new ModelFile.UncheckedModelFile(phaseModelLoc.getNamespace() + ":item/" + phaseModelLoc.getPath()))
                     .predicate(ModItemProperties.MOON_PHASE, i / 100f).end()
-                    .texture("layer0", ItemUtils.getItemResourceLocation(item));
+                    .texture("layer0", baseTexture)
+                    .texture("layer1", ItemUtils.getItemResourceLocation(item, "moon_0"));
         }
     }
 

@@ -96,9 +96,22 @@
       "predicate": {
         "thesilverage:moon_phase": 0.15
       }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_16",
+      "predicate": {
+        "thesilverage:moon_phase": 0.16
+      }
+    },
+    {
+      "model": "thesilverage:item/moon_dial_17",
+      "predicate": {
+        "thesilverage:moon_phase": 0.17
+      }
     }
   ],
   "textures": {
-    "layer0": "thesilverage:item/moon_dial"
+    "layer0": "thesilverage:item/moon_dial_base",
+    "layer1": "thesilverage:item/moon_dial_moon_0"
   }
 }

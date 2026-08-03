@@ -88,6 +88,18 @@ dependencies {
     // for a dev-only food/saturation HUD overlay.
     modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
 
+    // Enhanced Celestials is deliberately NOT a Gradle dev-runtime dep on Fabric.
+    // Every CorgiLib Fabric build for 1.21.1 is compiled with Loom 1.9.428+, and
+    // architectury-loom 1.7.435 (this branch) hard-refuses to remap them:
+    //   "Mod was built with a newer version of Loom (1.10.455)"
+    // Same wall as FD Refabricated (see gradle.properties). To exercise the lunar
+    // event tooltip on Fabric, drop the jars straight into fabric/run/mods/ instead
+    // (Loom never touches them there):
+    //   Enhanced-Celestials-Fabric-1.21.1-6.0.2.5.jar
+    //   Corgilib-Fabric-1.21.1-5.0.0.9.jar
+    //   Data_Anchor-fabric-1.21.1-2.0.0.14.jar
+    // NeoForge has no such limit and pulls EC in via modLocalRuntime normally.
+
 
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the
     // Fabric AutoConfig config (TheSilverAgeFabricConfig), mirroring how

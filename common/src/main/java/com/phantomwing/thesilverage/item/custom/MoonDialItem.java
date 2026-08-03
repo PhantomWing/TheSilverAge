@@ -1,5 +1,8 @@
 package com.phantomwing.thesilverage.item.custom;
 
+import com.phantomwing.thesilverage.compat.ModIds;
+import com.phantomwing.thesilverage.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import dev.architectury.utils.EnvExecutor;
 import net.minecraft.ChatFormatting;
@@ -19,6 +22,13 @@ import java.util.List;
  * <p>Vanilla has <b>no</b> translation strings for lunar phases (the moon is
  * never shown as text anywhere in the game), so the eight names are mod-owned
  * keys under {@code thesilverage.moon_phase.*} (en/de/nl supplied).</p>
+ *
+ * <p>With Enhanced Celestials installed an extra line naming the active lunar
+ * event is shown <i>above</i> the phase. The phase line is kept rather than
+ * replaced because lunar events are not tied to a full moon: Blood, Blue and
+ * Harvest Moons list all eight phases as valid by default (only the Super
+ * variants require phase 0), so the dial's phase texture and its text would
+ * otherwise disagree.</p>
  *
  * <p>{@code Item.TooltipContext} in 1.21.1 exposes no {@link Level} (only
  * {@code registries()}/{@code tickRate()}/{@code mapData()}), so the phase is
@@ -57,6 +67,22 @@ public class MoonDialItem extends Item {
         Level level = EnvExecutor.getEnvSpecific(
                 () -> () -> net.minecraft.client.Minecraft.getInstance().level,
                 () -> () -> null);
+
+        // Enhanced Celestials: during a lunar event the dial names the event
+        // ("Blood Moon") above the phase, in that moon's own colour. The phase line
+        // stays because events are NOT tied to a full moon — Blood/Blue/Harvest
+        // Moons roll on any of the eight phases by default (only the Super variants
+        // require phase 0), so dropping it would leave the dial's phase texture
+        // disagreeing with its text.
+        // Guarded by isModLoaded so EnhancedCelestialsCompat (and every EC class it
+        // names) is only ever classloaded when the mod is actually present.
+        Component lunarEvent = CommonPlatform.isModLoaded(ModIds.ENHANCED_CELESTIALS)
+                ? EnhancedCelestialsCompat.getActiveLunarEventName(level)
+                : null;
+
+        if (lunarEvent != null) {
+            tooltip.add(lunarEvent);
+        }
 
         int phase = LevelUtils.getMoonPhase(level);
         tooltip.add(Component.translatable(PHASE_KEYS[phase])

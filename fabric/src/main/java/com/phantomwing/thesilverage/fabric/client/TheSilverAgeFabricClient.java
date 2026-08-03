@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric.client;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
@@ -23,6 +24,10 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientPlatform.registerItemProperties();
+
+        // Tints the Moon Dial's moon layer to the active Enhanced Celestials
+        // lunar event. Cross-loader Architectury registry, shared with NeoForge.
+        ModItemColors.register();
 
         // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
         // tooltip event, so the same common class is called from the NeoForge client too.

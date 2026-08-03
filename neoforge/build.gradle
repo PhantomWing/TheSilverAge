@@ -96,6 +96,13 @@ dependencies {
     modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
     modLocalRuntime "curse.maven:jade-324717:7428884"
 
+    // Enhanced Celestials (optional Moon Dial compat). Dev-runtime only, like Jade/JEI,
+    // so the lunar-event tooltip can actually be exercised in game. Its own required
+    // deps (CorgiLib + DataAnchor) have to come along or EC refuses to load.
+    modLocalRuntime "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_neoforge_version}"
+    modLocalRuntime "maven.modrinth:corgilib:${rootProject.corgilib_neoforge_version}"
+    modLocalRuntime "maven.modrinth:data-anchor:${rootProject.data_anchor_neoforge_version}"
+
     // Farmer's Delight (optional compat — the Silver Knife). compileOnly ALWAYS so
     // the FD KnifeItem subclass compiles; localRuntime only when -PloadFD (default
     // true) so FD is present for dev testing + datagen (--existing-mod farmersdelight).

@@ -2,6 +2,6 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "thesilverage:item/moon_dial_upcoming_base",
-    "layer1": "thesilverage:item/moon_dial_moon_1"
+    "layer1": "thesilverage:item/moon_dial_super_moon"
   }
 }

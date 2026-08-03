@@ -39,3 +39,12 @@ type = "required"
 versionRange = "[13.0.8,)"
 ordering = "AFTER"
 side = "BOTH"
+
+# Optional: when Enhanced Celestials is present the Moon Dial names the active
+# lunar event (Blood Moon, ...) instead of the vanilla phase.
+[[dependencies.thesilverage]]
+modId = "enhancedcelestials"
+type = "optional"
+versionRange = "[6.0,)"
+ordering = "AFTER"
+side = "BOTH"

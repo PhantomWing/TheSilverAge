@@ -1,12 +1,16 @@
 package com.phantomwing.thesilverage.client;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.compat.ModIds;
+import com.phantomwing.thesilverage.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 /**
  * Loader-agnostic client item-property registration.
@@ -37,6 +41,14 @@ public final class ModItemProperties {
     public static final ResourceLocation MOON_PHASE =
             ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
 
+    /** The two {@link LevelUtils#getMoonPhaseSignal} values whose overlay is the full moon. */
+    private static final int FULL_MOON_NIGHT = 0;
+    private static final int FULL_MOON_UPCOMING = 15;
+
+    /** Signals past the 0-15 phase range, reserved for the super moon overlay. */
+    public static final int SUPER_MOON_NIGHT = 16;
+    public static final int SUPER_MOON_UPCOMING = 17;
+
     private ModItemProperties() {
     }
 
@@ -49,8 +61,33 @@ public final class ModItemProperties {
      */
     public static void register() {
         ItemProperties.register(ModItems.MOON_DIAL.get(), MOON_PHASE, (stack, world, entity, seed) -> {
-            int moonPhaseSignal = LevelUtils.getMoonPhaseSignal(world);
+            int moonPhaseSignal = superMoonSignal(world, LevelUtils.getMoonPhaseSignal(world));
             return moonPhaseSignal / 100f; // Normalize between [0, 1] for texture selection
         });
+    }
+
+    /**
+     * Swaps in the reserved super-moon signals when Enhanced Celestials is
+     * running one of its enlarged events, so the model can replace the full-moon
+     * overlay with the dedicated super moon texture.
+     *
+     * <p>Only signals 0 and 15 are remapped — the two frames whose overlay is the
+     * full moon (the full-moon night, and the day leading up to it). Super events
+     * only roll on a full moon, but a pack could widen that; restricting the swap
+     * keeps a crescent frame from being handed a full moon's art.</p>
+     */
+    private static int superMoonSignal(Level world, int moonPhaseSignal) {
+        if (moonPhaseSignal != FULL_MOON_NIGHT && moonPhaseSignal != FULL_MOON_UPCOMING) {
+            return moonPhaseSignal;
+        }
+
+        // Guarded by isModLoaded so EnhancedCelestialsCompat (and every EC class
+        // it names) is only ever classloaded when the mod is present.
+        if (!CommonPlatform.isModLoaded(ModIds.ENHANCED_CELESTIALS)
+                || !EnhancedCelestialsCompat.isSuperMoonActive(world)) {
+            return moonPhaseSignal;
+        }
+
+        return moonPhaseSignal == FULL_MOON_NIGHT ? SUPER_MOON_NIGHT : SUPER_MOON_UPCOMING;
     }
 }

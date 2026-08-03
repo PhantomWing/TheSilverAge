@@ -29,6 +29,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     // Architectury API (common).
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // Enhanced Celestials (optional Moon Dial compat). compileOnly: the API classes are
+    // identical on both loaders (EC is Architectury-based), so common compiles against
+    // the intermediary-mapped Fabric jar and neither jar is ever shipped.
+    modCompileOnly "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_common_version}"
+    modCompileOnly "maven.modrinth:data-anchor:${rootProject.data_anchor_common_version}"
 }
 
 publishing {

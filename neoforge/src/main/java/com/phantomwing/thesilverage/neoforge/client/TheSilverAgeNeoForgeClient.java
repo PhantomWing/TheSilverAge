@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.neoforge.client;
 
+import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
@@ -69,5 +70,10 @@ public final class TheSilverAgeNeoForgeClient {
 
     private static void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(ClientPlatform::registerItemProperties);
+
+        // Tints the Moon Dial's moon layer to the active Enhanced Celestials
+        // lunar event. Cross-loader Architectury registry, shared with Fabric;
+        // its NeoForge adaptor buffers this until RegisterColorHandlersEvent.Item.
+        event.enqueueWork(ModItemColors::register);
     }
 }

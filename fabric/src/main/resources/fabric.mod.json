@@ -31,5 +31,8 @@
     "minecraft": ">=1.21.1",
     "architectury": ">=13.0.8",
     "cloth-config": "*"
+  },
+  "suggests": {
+    "enhancedcelestials": ">=6.0"
   }
 }
