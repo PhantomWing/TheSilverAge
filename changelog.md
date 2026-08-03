@@ -1,9 +1,9 @@
 # 1.4.0
 ### Additions
 - Added Silver Lantern, Silver Chain and Silver Bars (including oxidized and waxed variants)
+- Added Silver Brick Wall (including oxidized and waxed variants)
 - Added Silver Torch, crafted with a Silver Nugget
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). This is a built-in property, not an enchantment, so it stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
-
 - Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
 
 ### Changes
@@ -11,6 +11,9 @@
 
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
+- Crafting a Silver Bulb (and its variants) now yields 4 instead of 1
+- Crafting Silver Bricks from Silver Ingots now yields 1 instead of 4
+- Crafting Chiseled Silver from Cut Silver Slabs (and its variants) now yields 1 instead of 2
 
 
 # 1.3.1

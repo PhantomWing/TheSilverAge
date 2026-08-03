@@ -81,6 +81,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         stairs(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS, ModBlocks.WEATHERED_SILVER_BRICKS);
         stairs(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS, ModBlocks.OXIDIZED_SILVER_BRICKS);
 
+        // Silver Brick Wall — textured from the bricks of the matching weather stage.
+        wall(ModBlocks.SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wall(ModBlocks.EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wall(ModBlocks.WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wall(ModBlocks.OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        wall(ModBlocks.WAXED_SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wall(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wall(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wall(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
         // Cut Silver Stairs
         stairs(ModBlocks.CUT_SILVER_STAIRS, ModBlocks.CUT_SILVER);
         stairs(ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.EXPOSED_CUT_SILVER);
@@ -268,6 +278,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void stairs(RegistrySupplier<StairBlock> stairs, RegistrySupplier<Block> parentBlock) {
         stairsBlock(stairs.get(), blockTexture(parentBlock.get()));
+    }
+
+    /** Wall multipart (post / side / side_tall) plus the inventory model, off the parent's texture. */
+    private void wall(RegistrySupplier<WallBlock> wall, RegistrySupplier<Block> parentBlock) {
+        wallBlock(wall.get(), blockTexture(parentBlock.get()));
     }
 
     private void slab(RegistrySupplier<SlabBlock> slab, RegistrySupplier<Block> parentBlock) {

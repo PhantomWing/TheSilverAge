@@ -86,6 +86,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get())
 
+                // Silver Brick Wall
+                .add(ModBlocks.SILVER_BRICK_WALL.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL.get())
+
                 // Silver Brick Slab
                 .add(ModBlocks.SILVER_BRICK_SLAB.get())
                 .add(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get())
@@ -332,6 +342,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_EXPOSED_SILVER.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER.get())
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER.get());
+
+        // Lets the Silver Torch sit on top of walls and fences: a wall only keeps its
+        // centre post for blocks in this tag (vanilla lists torch / soul_torch /
+        // redstone_torch / copper_torch here). Only the standing torch belongs; the
+        // wall variant attaches to the side.
+        tag(BlockTags.WALL_POST_OVERRIDE).add(ModBlocks.SILVER_TORCH.get());
+
+        // Walls
+        tag(BlockTags.WALLS)
+                .add(ModBlocks.SILVER_BRICK_WALL.get())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL.get());
 
         // Slabs
         tag(BlockTags.SLABS)

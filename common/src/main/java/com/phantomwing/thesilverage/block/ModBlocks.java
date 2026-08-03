@@ -15,6 +15,7 @@ import com.phantomwing.thesilverage.block.custom.WeatheringSilverBarsBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverChainBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverLanternBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverPillarBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverWallBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -107,6 +108,17 @@ public class ModBlocks {
     public static final RegistrySupplier<StairBlock> WAXED_EXPOSED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_exposed_silver_brick_stairs", WeatheringCopper.WeatherState.EXPOSED);
     public static final RegistrySupplier<StairBlock> WAXED_WEATHERED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_weathered_silver_brick_stairs", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<StairBlock> WAXED_OXIDIZED_SILVER_BRICK_STAIRS = registerSilverStairs("waxed_oxidized_silver_brick_stairs", WeatheringCopper.WeatherState.OXIDIZED);
+
+    // Silver Brick Wall
+    public static final RegistrySupplier<WallBlock> SILVER_BRICK_WALL = registerWeatheringSilverWall("silver_brick_wall", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<WallBlock> EXPOSED_SILVER_BRICK_WALL = registerWeatheringSilverWall("exposed_silver_brick_wall", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<WallBlock> WEATHERED_SILVER_BRICK_WALL = registerWeatheringSilverWall("weathered_silver_brick_wall", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<WallBlock> OXIDIZED_SILVER_BRICK_WALL = registerWeatheringSilverWall("oxidized_silver_brick_wall", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<WallBlock> WAXED_SILVER_BRICK_WALL = registerSilverWall("waxed_silver_brick_wall", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<WallBlock> WAXED_EXPOSED_SILVER_BRICK_WALL = registerSilverWall("waxed_exposed_silver_brick_wall", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<WallBlock> WAXED_WEATHERED_SILVER_BRICK_WALL = registerSilverWall("waxed_weathered_silver_brick_wall", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<WallBlock> WAXED_OXIDIZED_SILVER_BRICK_WALL = registerSilverWall("waxed_oxidized_silver_brick_wall", WeatheringCopper.WeatherState.OXIDIZED);
 
     public static final RegistrySupplier<SlabBlock> CUT_SILVER_SLAB = registerWeatheringSilverSlab("cut_silver_slab", WeatheringCopper.WeatherState.UNAFFECTED);
     public static final RegistrySupplier<SlabBlock> EXPOSED_CUT_SILVER_SLAB = registerWeatheringSilverSlab("exposed_cut_silver_slab", WeatheringCopper.WeatherState.EXPOSED);
@@ -282,6 +294,18 @@ public class ModBlocks {
     private static RegistrySupplier<StairBlock> registerSilverStairs(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState);
         return registerSilverBlock(name, baseProps, (props) -> new StairBlock(Blocks.IRON_BLOCK.defaultBlockState(), props));
+    }
+
+    // forceSolidOn() matches how vanilla builds its walls, so blocks can still be
+    // placed/attached on top of them.
+    private static RegistrySupplier<WallBlock> registerWeatheringSilverWall(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState).forceSolidOn();
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverWallBlock(weatherState, props));
+    }
+
+    private static RegistrySupplier<WallBlock> registerSilverWall(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState).forceSolidOn();
+        return registerSilverBlock(name, baseProps, WallBlock::new);
     }
 
     private static RegistrySupplier<RotatedPillarBlock> registerWeatheringSilverPillar(String name, WeatheringCopper.WeatherState weatherState) {

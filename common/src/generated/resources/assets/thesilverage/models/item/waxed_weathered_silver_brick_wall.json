@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "thesilverage:block/weathered_silver_bricks"
+  }
+}

@@ -81,6 +81,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSlab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
         dropSlab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
 
+        // Silver Brick Wall
+        dropSelf(ModBlocks.SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL);
+
         // Silver Brick Stairs
         dropSelf(ModBlocks.SILVER_BRICK_STAIRS);
         dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);

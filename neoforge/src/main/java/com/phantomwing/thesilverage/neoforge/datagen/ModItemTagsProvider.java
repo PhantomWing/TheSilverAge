@@ -131,6 +131,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Beacon
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(ModItems.SILVER_INGOT.get());
 
+        // Walls
+        tag(ItemTags.WALLS)
+                .add(ModItems.SILVER_BRICK_WALL.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get());
+
         // Slabs
         tag(ItemTags.SLABS)
                 .add(ModItems.SILVER_BRICK_SLAB.get())

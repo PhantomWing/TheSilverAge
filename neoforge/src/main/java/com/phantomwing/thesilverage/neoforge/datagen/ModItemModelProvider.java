@@ -17,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -116,6 +117,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
         blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
         blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Wall — walls have no full block model; the item uses the
+        // vanilla wall inventory shape, textured from the matching bricks.
+        wallItem(ModBlocks.SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wallItem(ModBlocks.EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wallItem(ModBlocks.WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wallItem(ModBlocks.OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        wallItem(ModBlocks.WAXED_SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wallItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wallItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wallItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
 
         // Silver Brick Slab
         blockItem(ModBlocks.SILVER_BRICK_SLAB);
@@ -275,6 +287,10 @@ public class ModItemModelProvider extends ItemModelProvider {
     private <T extends Item> void handheldItem(RegistrySupplier<T> item) {
         withExistingParent(ItemUtils.getName(item.get()), ResourceLocation.withDefaultNamespace("item/handheld"))
                 .texture("layer0", ItemUtils.getItemResourceLocation(item.get()));
+    }
+
+    private void wallItem(RegistrySupplier<WallBlock> wall, RegistrySupplier<Block> textureBlock) {
+        wallInventory(BlockUtils.getName(wall.get()), BlockUtils.getBlockResourceLocation(textureBlock.get()));
     }
 
     private <T extends Block> void blockItem(RegistrySupplier<T> block) {

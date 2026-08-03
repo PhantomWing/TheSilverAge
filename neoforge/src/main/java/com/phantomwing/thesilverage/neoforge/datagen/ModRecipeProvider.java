@@ -170,7 +170,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // Waxed brick variants are additionally obtainable via Honeycomb on
         // the matching unwaxed one (the waxable() chain below); placed
         // silver_bricks also still oxidize naturally over time.
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 4);
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 1);
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
         stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
@@ -193,6 +193,30 @@ public class ModRecipeProvider extends RecipeProvider {
         //   3) Stonecutter from the matching Silver Block (1 -> 4)
         // Paths 1+2 come from stairsWithCutting; path 3 is the extra
         // stoneCutting block below. Mirrors the Cut Silver Stairs pattern.
+        // Silver Brick Wall
+        wallWithCutting(output, ModItems.SILVER_BRICK_WALL.get(), ModItems.SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        stoneCutting(output, ModItems.SILVER_BRICK_WALL.get(), ModItems.SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+
+        waxable(oxidationGated, ModItems.SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get());
+
         stairsWithCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BRICKS.get());
         stairsWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
         stairsWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
@@ -302,15 +326,15 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
 
         // Chiseled Silver
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), 1);
 
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), 1);
 
         stoneCutting(output, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER.get(), 1);
         stoneCutting(oxidationGated, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
@@ -582,6 +606,19 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
+    /** Wall: 6 from a 3x2 of the material, plus a 1:1 stonecutting shortcut. */
+    private static void wallWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        stoneCutting(recipeOutput, item, material, 1);
+        wall(recipeOutput, item, material);
+    }
+
+    private static void wall(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        wallBuilder(RecipeCategory.BUILDING_BLOCKS, item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
     private static void slabWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stoneCutting(recipeOutput, item, material, 2);
         slab(recipeOutput, item, material);
@@ -654,7 +691,8 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     private static void bulb(RecipeOutput output, ItemLike block, ItemLike result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 1)
+        // Yields 4, matching vanilla's Copper Bulb.
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 4)
                 .pattern(" S ")
                 .pattern("SBS")
                 .pattern(" R ")
