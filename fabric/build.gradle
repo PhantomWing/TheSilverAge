@@ -88,6 +88,12 @@ dependencies {
     // for a dev-only food/saturation HUD overlay.
     modLocalRuntime("squeek.appleskin:appleskin-fabric:mc1.21-3.0.6")
 
+    // The Lead Age (sibling mod) from CurseForge, for side-by-side comparison —
+    // the mirror of how The Lead Age pulls in The Silver Age. Safe to remap here:
+    // both projects build on architectury-loom 1.7.435, so its Fabric jar is a
+    // classic `mixin` jar rather than one of the `static` ones loom 1.7 refuses.
+    modLocalRuntime "curse.maven:the-lead-age-1544260:${rootProject.the_lead_age_fabric_file}"
+
     // Enhanced Celestials is deliberately NOT a Gradle dev-runtime dep on Fabric.
     // Every CorgiLib Fabric build for 1.21.1 is compiled with Loom 1.9.428+, and
     // architectury-loom 1.7.435 (this branch) hard-refuses to remap them:

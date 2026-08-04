@@ -18,6 +18,12 @@ def datagenExisting = rootProject.file('common/src/main/resources/').absolutePat
 // `--existing-mod farmersdelight` arg can be gated on it too.
 def loadFD = (project.findProperty('loadFD') ?: rootProject.loadFD).toString().toBoolean()
 
+// The side-by-side comparison mod (The Lead Age) is useless — and per the sibling
+// project can hang/crash — in the headless game-test and data-generation runs, so
+// it is only loaded for runClient/runServer.
+def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().contains('data') }
+
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
@@ -103,6 +109,14 @@ dependencies {
     // AppleSkin / Jade — dev-runtime niceties (runtime-only).
     modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
     modLocalRuntime "curse.maven:jade-324717:7428884"
+
+    // The Lead Age (sibling mod) from CurseForge, for side-by-side comparison —
+    // the mirror of how The Lead Age pulls in The Silver Age. Skipped for the
+    // headless datagen / game-test runs, where a full content mod is useless and,
+    // per the sibling project's own note, can hang or crash the run.
+    if (!runningGameTest && !runningDataGen) {
+        modLocalRuntime "curse.maven:the-lead-age-1544260:${rootProject.the_lead_age_neoforge_file}"
+    }
 
     // Enhanced Celestials (optional Moon Dial compat). Dev-runtime only, like Jade/JEI,
     // so the lunar-event tooltip can actually be exercised in game. Its own required

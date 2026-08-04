@@ -5,9 +5,12 @@ import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
+import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.minecraft.client.particle.FlameParticle;
 
 /**
  * Fabric client entrypoint for The Silver Age.
@@ -28,6 +31,9 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // Tints the Moon Dial's moon layer to the active Enhanced Celestials
         // lunar event. Cross-loader Architectury registry, shared with NeoForge.
         ModItemColors.register();
+
+        // The Silver Torch flame: vanilla flame behaviour over the violet sprite.
+        ParticleFactoryRegistry.getInstance().register(ModParticles.SILVER_FLAME.get(), FlameParticle.Provider::new);
 
         // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
         // tooltip event, so the same common class is called from the NeoForge client too.

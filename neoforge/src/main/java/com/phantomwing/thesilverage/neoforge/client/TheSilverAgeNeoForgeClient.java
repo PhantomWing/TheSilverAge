@@ -4,12 +4,15 @@ import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
+import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
+import net.minecraft.client.particle.FlameParticle;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -46,6 +49,7 @@ public final class TheSilverAgeNeoForgeClient {
                 (mc, parent) -> new ConfigurationScreen(mc, parent, StyledConfigSectionScreen::new));
 
         modEventBus.addListener(TheSilverAgeNeoForgeClient::clientSetup);
+        modEventBus.addListener(TheSilverAgeNeoForgeClient::registerParticleProviders);
 
         // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
         // tooltip event, so the same common class is called from the Fabric client too.
@@ -66,6 +70,11 @@ public final class TheSilverAgeNeoForgeClient {
         // The sync above is deferred; this tick applies it once it's safe to reload
         // (never during the world-join loading screen — that hangs).
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> RecipeOverridePackHandler.clientTick());
+    }
+
+    /** The Silver Torch flame: vanilla flame behaviour over the violet sprite. */
+    private static void registerParticleProviders(final RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticles.SILVER_FLAME.get(), FlameParticle.Provider::new);
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {

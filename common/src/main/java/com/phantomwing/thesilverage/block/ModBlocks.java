@@ -3,6 +3,8 @@ package com.phantomwing.thesilverage.block;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
+import com.phantomwing.thesilverage.block.custom.SilverTorchBlock;
+import com.phantomwing.thesilverage.block.custom.SilverWallTorchBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverHorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverFullBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverSlabBlock;
@@ -19,7 +21,6 @@ import com.phantomwing.thesilverage.block.custom.WeatheringSilverWallBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.*;
@@ -234,13 +235,13 @@ public class ModBlocks {
     public static final RegistrySupplier<IronBarsBlock> WAXED_WEATHERED_SILVER_BARS = registerSilverBars("waxed_weathered_silver_bars", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<IronBarsBlock> WAXED_OXIDIZED_SILVER_BARS = registerSilverBars("waxed_oxidized_silver_bars", WeatheringCopper.WeatherState.OXIDIZED);
 
-    // Silver Torch (non-oxidizable; blue "moonlight" flame via SOUL_FIRE_FLAME particle)
+    // Silver Torch (non-oxidizable; violet flame via the custom silver_flame particle)
     public static final RegistrySupplier<TorchBlock> SILVER_TORCH = registerSilverBlock("silver_torch",
             BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH),
-            (props) -> new TorchBlock(ParticleTypes.SOUL_FIRE_FLAME, props));
+            SilverTorchBlock::new);
     public static final RegistrySupplier<WallTorchBlock> SILVER_WALL_TORCH = registerSilverBlock("silver_wall_torch",
             BlockBehaviour.Properties.ofFullCopy(Blocks.WALL_TORCH),
-            (props) -> new WallTorchBlock(ParticleTypes.SOUL_FIRE_FLAME, props));
+            SilverWallTorchBlock::new);
 
     private static RegistrySupplier<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
         return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringSilverFullBlock(weatherState, props));

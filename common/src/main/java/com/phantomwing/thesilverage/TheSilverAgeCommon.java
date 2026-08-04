@@ -11,6 +11,7 @@ import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.WeatheringPlatform;
+import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
 
@@ -43,6 +44,7 @@ public final class TheSilverAgeCommon {
         ModBlocks.register();
         ModItems.register();
         ModBlockEntityTypes.register();
+        ModParticles.register();
         ModCreativeModeTab.register();
         ModArmorMaterials.register();
         ModPlacementModifiers.register();
