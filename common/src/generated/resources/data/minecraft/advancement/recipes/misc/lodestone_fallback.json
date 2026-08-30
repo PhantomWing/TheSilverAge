@@ -27,6 +27,15 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",
