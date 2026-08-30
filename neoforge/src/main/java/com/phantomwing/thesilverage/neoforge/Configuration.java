@@ -19,6 +19,10 @@ public class Configuration {
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_SMITE;
 
+    // Innate anti-undead damage reduction on silver armour.
+    public static final String ENABLE_UNDEAD_PROTECTION_ID = "enable_undead_protection";
+    public static ModConfigSpec.BooleanValue ENABLE_UNDEAD_PROTECTION;
+
     // Silver weathering: oxidation over time + honeycomb waxing.
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_OXIDATION;
@@ -39,6 +43,7 @@ public class Configuration {
             case OVERRIDE_VANILLA_RECIPES_ID -> Configuration.OVERRIDE_VANILLA_RECIPES.get();
             case GENERATE_STRUCTURE_LOOT_ID -> Configuration.GENERATE_STRUCTURE_LOOT.get();
             case ENABLE_SILVER_SMITE_ID -> Configuration.ENABLE_SILVER_SMITE.get();
+            case ENABLE_UNDEAD_PROTECTION_ID -> Configuration.ENABLE_UNDEAD_PROTECTION.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
             default -> throw new Error("Invalid setting ID: " + id);
         };
@@ -54,6 +59,7 @@ public class Configuration {
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
         GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.define(GENERATE_STRUCTURE_LOOT_ID, true);
         ENABLE_SILVER_SMITE = COMMON_BUILDER.define(ENABLE_SILVER_SMITE_ID, true);
+        ENABLE_UNDEAD_PROTECTION = COMMON_BUILDER.define(ENABLE_UNDEAD_PROTECTION_ID, true);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);
 
         // Build config

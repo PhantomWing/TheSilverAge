@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Les blocs d'argent doivent-ils s'oxyder avec le temps et pouvoir être cirés avec un rayon de miel ? Les blocs existants peuvent toujours être grattés avec une hache.",
   "thesilverage.configuration.enable_silver_smite": "Châtiment de l'argent",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Les outils en argent doivent-ils infliger des dégâts supplémentaires aux morts-vivants ?",
+  "thesilverage.configuration.enable_undead_protection": "Protection contre les morts-vivants",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "L'armure en argent doit-elle réduire les dégâts infligés par les morts-vivants ?",
   "thesilverage.configuration.enable_villager_trades": "Activer les échanges des villageois",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Les villageois doivent-ils échanger les objets de L'Âge d'argent ?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Activer les échanges du marchand ambulant",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Premier croissant",
   "thesilverage.moon_phase.waxing_gibbous": "Gibbeuse croissante",
   "tooltip.thesilverage.silver_smite": "+%s de dégâts contre les morts-vivants",
+  "tooltip.thesilverage.undead_protection": "+%s de protection contre les morts-vivants",
   "trim_material.thesilverage.silver": "Matériau en argent"
 }

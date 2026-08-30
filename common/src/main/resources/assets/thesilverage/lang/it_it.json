@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "I blocchi d'argento devono ossidarsi nel tempo ed essere cerabili con il favo? I blocchi esistenti possono ancora essere raschiati con un'ascia.",
   "thesilverage.configuration.enable_silver_smite": "Anatema d'argento",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Gli strumenti d'argento devono infliggere danni extra ai non morti?",
+  "thesilverage.configuration.enable_undead_protection": "Protezione dai non morti",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "L'armatura d'argento deve ridurre i danni subiti dai non morti?",
   "thesilverage.configuration.enable_villager_trades": "Abilita gli scambi dei villici",
   "thesilverage.configuration.enable_villager_trades.tooltip": "I villici devono commerciare gli oggetti di L'Età dell'Argento?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Abilita gli scambi del mercante errante",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Falce crescente",
   "thesilverage.moon_phase.waxing_gibbous": "Gibbosa crescente",
   "tooltip.thesilverage.silver_smite": "+%s danni contro i non morti",
+  "tooltip.thesilverage.undead_protection": "+%s protezione dai non morti",
   "trim_material.thesilverage.silver": "Materiale d'argento"
 }

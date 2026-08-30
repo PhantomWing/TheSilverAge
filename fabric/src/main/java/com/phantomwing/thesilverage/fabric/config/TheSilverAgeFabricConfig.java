@@ -37,6 +37,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public boolean enable_silver_smite = true;
 
+    public static final String ENABLE_UNDEAD_PROTECTION_ID = "enable_undead_protection";
+    public boolean enable_undead_protection = true;
+
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public boolean enable_silver_oxidation = true;
 
@@ -68,6 +71,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case OVERRIDE_VANILLA_RECIPES_ID -> config.override_vanilla_recipes;
             case GENERATE_STRUCTURE_LOOT_ID -> config.generate_structure_loot;
             case ENABLE_SILVER_SMITE_ID -> config.enable_silver_smite;
+            case ENABLE_UNDEAD_PROTECTION_ID -> config.enable_undead_protection;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
             default -> throw new Error("Invalid setting ID: " + id);
         };

@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Moeten zilveren blokken na verloop van tijd oxideren en met honingraat ingewassen kunnen worden? Bestaande blokken kunnen nog steeds met een bijl worden afgeschraapt.",
   "thesilverage.configuration.enable_silver_smite": "Zilveren kastijding",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Moeten zilveren gereedschappen extra schade toebrengen aan ondoden?",
+  "thesilverage.configuration.enable_undead_protection": "Bescherming tegen ondoden",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Moet zilveren harnas de schade van ondoden verminderen?",
   "thesilverage.configuration.enable_villager_trades": "Dorpelingenhandel inschakelen",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Moeten dorpelingen handelen in voorwerpen uit The Silver Age?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Zwervende handelaar inschakelen",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Wassende sikkel",
   "thesilverage.moon_phase.waxing_gibbous": "Wassende maan",
   "tooltip.thesilverage.silver_smite": "+%s schade tegen ondoden",
+  "tooltip.thesilverage.undead_protection": "+%s bescherming tegen ondoden",
   "trim_material.thesilverage.silver": "Zilvermateriaal"
 }

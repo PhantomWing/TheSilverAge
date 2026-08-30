@@ -52,7 +52,9 @@ public final class TheSilverAgeCommon {
         // Loader-agnostic gameplay events.
         MonsterArmorHandler.register();
 
-        // Innate anti-undead damage for silver tools (built in, not an enchantment).
+        // Innate anti-undead damage for silver tools, and the matching damage
+        // reduction on silver armour (both built in, not enchantments). They share
+        // one loader-specific hook, wired here.
         SilverSmiteHandler.register();
 
         // Refuses honeycomb on silver while the oxidation config is off.

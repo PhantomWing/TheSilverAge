@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "은 블록이 시간이 지나면서 산화되고 벌집으로 밀랍칠할 수 있어야 하나요? 기존 블록은 도끼로 긁어낼 수 있습니다.",
   "thesilverage.configuration.enable_silver_smite": "은 강타",
   "thesilverage.configuration.enable_silver_smite.tooltip": "은 도구가 언데드에게 추가 피해를 입혀야 하나요?",
+  "thesilverage.configuration.enable_undead_protection": "언데드 보호",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "은 갑옷이 언데드로부터 받는 피해를 줄여야 하나요?",
   "thesilverage.configuration.enable_villager_trades": "주민 거래 활성화",
   "thesilverage.configuration.enable_villager_trades.tooltip": "주민이 은의 시대 아이템을 거래해야 합니까?",
   "thesilverage.configuration.enable_wandering_trader_trades": "방랑상인 거래 활성화",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "초승달",
   "thesilverage.moon_phase.waxing_gibbous": "차오르는 달",
   "tooltip.thesilverage.silver_smite": "언데드에게 +%s 피해",
+  "tooltip.thesilverage.undead_protection": "언데드 보호 +%s",
   "trim_material.thesilverage.silver": "은 재료"
 }

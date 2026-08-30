@@ -35,6 +35,11 @@ public final class CommonConfigImpl {
                 TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);
     }
 
+    public static boolean undeadProtection() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_UNDEAD_PROTECTION_ID);
+    }
+
     public static boolean silverOxidation() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);

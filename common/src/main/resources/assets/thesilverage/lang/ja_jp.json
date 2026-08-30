@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "銀ブロックは時間とともに酸化し、ハニカムで酸化を防げますか？既存のブロックは斧で削り取ることができます。",
   "thesilverage.configuration.enable_silver_smite": "銀のアンデッド特効",
   "thesilverage.configuration.enable_silver_smite.tooltip": "銀の道具はアンデッドに追加ダメージを与えますか？",
+  "thesilverage.configuration.enable_undead_protection": "アンデッド耐性",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "銀の防具はアンデッドから受けるダメージを軽減しますか？",
   "thesilverage.configuration.enable_villager_trades": "村人の取引を有効化",
   "thesilverage.configuration.enable_villager_trades.tooltip": "村人が白銀の時代のアイテムを取引するか?",
   "thesilverage.configuration.enable_wandering_trader_trades": "行商人の取引を有効化",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "三日月",
   "thesilverage.moon_phase.waxing_gibbous": "上弦凸月",
   "tooltip.thesilverage.silver_smite": "アンデッドに+%sのダメージ",
+  "tooltip.thesilverage.undead_protection": "アンデッド耐性+%s",
   "trim_material.thesilverage.silver": "銀の素材"
 }

@@ -62,6 +62,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.SILVER_SHOVEL.get())
                 .add(ModItems.SILVER_HOE.get())
                 .add(ModItems.SILVER_KNIFE.get());
+
+        // Silver armour carrying the innate reduction against undead attackers.
+        // One point per piece, so a full player set is worth 4. Silver Horse Armor
+        // is a single BODY-slot piece, so a barded horse gets 1.
+        tag(ModTags.Items.UNDEAD_PROTECTION_ARMOR)
+                .add(ModItems.SILVER_HELMET.get())
+                .add(ModItems.SILVER_CHESTPLATE.get())
+                .add(ModItems.SILVER_LEGGINGS.get())
+                .add(ModItems.SILVER_BOOTS.get())
+                .add(ModItems.SILVER_HORSE_ARMOR.get());
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {

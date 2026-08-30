@@ -77,6 +77,15 @@ public class ModTags {
          */
         public static final TagKey<Item> SILVER_SMITE_TOOLS = tag("silver_smite_tools");
 
+        /**
+         * Silver armour that carries the innate damage reduction against undead
+         * attackers (see
+         * {@link com.phantomwing.thesilverage.combat.UndeadProtectionHandler}).
+         * Datapacks and addons can add their own pieces here to grant the same
+         * protection; each piece in the tag is worth one point.
+         */
+        public static final TagKey<Item> UNDEAD_PROTECTION_ARMOR = tag("undead_protection_armor");
+
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
         }

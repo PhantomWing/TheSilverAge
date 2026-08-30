@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Должны ли серебряные блоки окисляться со временем и вощиться сотами? Существующие блоки всё ещё можно очистить топором.",
   "thesilverage.configuration.enable_silver_smite": "Серебряная кара",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Должны ли серебряные инструменты наносить дополнительный урон нежити?",
+  "thesilverage.configuration.enable_undead_protection": "Защита от нежити",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Должна ли серебряная броня уменьшать урон от нежити?",
   "thesilverage.configuration.enable_villager_trades": "Включить торговлю с жителями",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Должны ли жители торговать предметами Серебряного века?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Включить торговлю странствующего торговца",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Молодой месяц",
   "thesilverage.moon_phase.waxing_gibbous": "Прибывающая луна",
   "tooltip.thesilverage.silver_smite": "+%s к урону по нежити",
+  "tooltip.thesilverage.undead_protection": "+%s к защите от нежити",
   "trim_material.thesilverage.silver": "Серебряный материал"
 }

@@ -176,6 +176,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Should silver blocks oxidize over time and be waxable with honeycomb? Existing blocks can still be scraped with an axe.",
   "thesilverage.configuration.enable_silver_smite": "Silver smite",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Should silver tools deal extra damage to undead mobs?",
+  "thesilverage.configuration.enable_undead_protection": "Undead protection",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Should silver armor reduce damage taken from undead mobs?",
   "thesilverage.configuration.enable_villager_trades": "Enable villager trades",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Should villagers trade The Silver Age items?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Enable wandering trader trades",
@@ -198,5 +200,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Waxing Crescent",
   "thesilverage.moon_phase.waxing_gibbous": "Waxing Gibbous",
   "tooltip.thesilverage.silver_smite": "+%s Damage to Undead",
+  "tooltip.thesilverage.undead_protection": "+%s Undead Protection",
   "trim_material.thesilverage.silver": "Silver Material"
 }

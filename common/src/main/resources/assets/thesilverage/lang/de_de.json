@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Sollen Silberblöcke mit der Zeit oxidieren und mit Honigwaben gewachst werden können? Vorhandene Blöcke können weiterhin mit einer Axt abgekratzt werden.",
   "thesilverage.configuration.enable_silver_smite": "Silber-Bann",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Sollen Silberwerkzeuge zusätzlichen Schaden gegen Untote verursachen?",
+  "thesilverage.configuration.enable_undead_protection": "Untoten-Schutz",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Soll Silberrüstung den Schaden durch Untote verringern?",
   "thesilverage.configuration.enable_villager_trades": "Dorfbewohnerhandel aktivieren",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Sollen Dorfbewohner mit Gegenständen aus The Silver Age handeln?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Fahrenden Händlerhandel aktivieren",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Zunehmende Sichel",
   "thesilverage.moon_phase.waxing_gibbous": "Zunehmender Mond",
   "tooltip.thesilverage.silver_smite": "+%s Schaden gegen Untote",
+  "tooltip.thesilverage.undead_protection": "+%s Untoten-Schutz",
   "trim_material.thesilverage.silver": "Silbermaterial"
 }

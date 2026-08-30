@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Blocurile de argint ar trebui să se oxideze în timp și să poată fi ceruite cu fagure? Blocurile existente pot fi în continuare răzuite cu un topor.",
   "thesilverage.configuration.enable_silver_smite": "Izbire de argint",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Uneltele de argint ar trebui să provoace daune suplimentare nemorților?",
+  "thesilverage.configuration.enable_undead_protection": "Protecție împotriva nemorților",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Armura de argint ar trebui să reducă daunele primite de la nemorți?",
   "thesilverage.configuration.enable_villager_trades": "Activează schimburile sătenilor",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Ar trebui sătenii să facă schimburi cu obiecte din Era Argintului?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Activează schimburile Negustorului Rătăcitor",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Seceră crescătoare",
   "thesilverage.moon_phase.waxing_gibbous": "Lună gheboasă crescătoare",
   "tooltip.thesilverage.silver_smite": "+%s daune împotriva nemorților",
+  "tooltip.thesilverage.undead_protection": "+%s protecție împotriva nemorților",
   "trim_material.thesilverage.silver": "Material de argint"
 }

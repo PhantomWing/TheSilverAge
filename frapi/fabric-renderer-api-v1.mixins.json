@@ -1,0 +1,39 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.client.renderer",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "block.model.BlockStateModelMixin",
+    "block.model.BlockStateModelPartMixin",
+    "block.model.MultiPartModelMixin",
+    "block.model.MultiPartModelSharedBakedStateAccessor",
+    "block.model.SimpleModelWrapperMixin",
+    "block.model.SingleVariantMixin",
+    "block.model.WeightedVariantsMixin",
+    "block.particle.BlockMarkerMixin",
+    "block.particle.BlockStateModelSetMixin",
+    "block.particle.ScreenEffectRendererMixin",
+    "block.particle.TerrainParticleMixin",
+    "block.render.BlockFeatureRendererMixin",
+    "block.render.BlockModelRenderStateMixin",
+    "block.render.BlockStateModelWrapperMixin",
+    "block.render.LevelRendererMixin",
+    "block.render.SectionCompilerMixin",
+    "item.CuboidItemModelWrapperMixin",
+    "item.ItemStackRenderStateLayerRenderStateMixin",
+    "item.ItemStackRenderStateMixin",
+    "sprite.MaterialBakerMixin",
+    "sprite.ModelManager1Mixin",
+    "sprite.SpriteLoaderPreparationsMixin",
+    "sprite.TextureAtlasMixin",
+    "submit.OrderedSubmitNodeCollectorMixin",
+    "submit.SubmitNodeCollectionMixin",
+    "submit.SubmitNodeStorageMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

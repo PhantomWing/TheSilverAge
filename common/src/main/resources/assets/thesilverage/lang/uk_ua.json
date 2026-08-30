@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Чи мають срібні блоки окислюватися з часом і вощитися стільниками? Наявні блоки все ще можна зішкребти сокирою.",
   "thesilverage.configuration.enable_silver_smite": "Срібна кара",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Чи мають срібні інструменти завдавати додаткової шкоди нежиті?",
+  "thesilverage.configuration.enable_undead_protection": "Захист від нежиті",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "Чи має срібна броня зменшувати шкоду від нежиті?",
   "thesilverage.configuration.enable_villager_trades": "Увімкнути обмін з селянами",
   "thesilverage.configuration.enable_villager_trades.tooltip": "Чи повинні селяни торгувати предметами Срібної доби?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Увімкнути обмін з мандрівним торговцем",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Молодий серп",
   "thesilverage.moon_phase.waxing_gibbous": "Растучий місяць",
   "tooltip.thesilverage.silver_smite": "+%s до шкоди по нежиті",
+  "tooltip.thesilverage.undead_protection": "+%s до захисту від нежиті",
   "trim_material.thesilverage.silver": "Срібний матеріал"
 }

@@ -70,6 +70,17 @@ public final class CommonConfig {
     }
 
     /**
+     * Gate for the innate anti-undead damage reduction on silver armour
+     * ({@link com.phantomwing.thesilverage.combat.UndeadProtectionHandler}).
+     * NeoForge: {@code Configuration.ENABLE_UNDEAD_PROTECTION.get()}. Fabric: the
+     * AutoConfig value of the same name.
+     */
+    @ExpectPlatform
+    public static boolean undeadProtection() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
      * Gate for silver weathering: oxidation over time and honeycomb waxing. When
      * off, silver blocks never advance a weather stage and refuse honeycomb, but
      * the oxidizable/waxable mappings stay registered so an axe can still scrape

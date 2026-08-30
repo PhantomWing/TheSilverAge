@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "银块是否会随时间氧化，并可用蜂巢涂蜡？现有方块仍可用斧头刮除。",
   "thesilverage.configuration.enable_silver_smite": "白银亡灵杀手",
   "thesilverage.configuration.enable_silver_smite.tooltip": "银制工具是否对亡灵生物造成额外伤害？",
+  "thesilverage.configuration.enable_undead_protection": "亡灵防护",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "银制盔甲是否减少受到的亡灵生物伤害？",
   "thesilverage.configuration.enable_villager_trades": "启用村民交易",
   "thesilverage.configuration.enable_villager_trades.tooltip": "村民是否交易白银时代物品？",
   "thesilverage.configuration.enable_wandering_trader_trades": "启用流浪商人交易",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "蛾眉月",
   "thesilverage.moon_phase.waxing_gibbous": "盈凸月",
   "tooltip.thesilverage.silver_smite": "对亡灵生物造成+%s伤害",
+  "tooltip.thesilverage.undead_protection": "亡灵防护+%s",
   "trim_material.thesilverage.silver": "银材料"
 }

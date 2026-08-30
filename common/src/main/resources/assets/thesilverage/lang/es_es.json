@@ -175,6 +175,8 @@
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "¿Deberían los bloques de plata oxidarse con el tiempo y poder encerarse con panal? Los bloques existentes aún se pueden raspar con un hacha.",
   "thesilverage.configuration.enable_silver_smite": "Golpeo de plata",
   "thesilverage.configuration.enable_silver_smite.tooltip": "¿Deberían las herramientas de plata infligir daño adicional a los no muertos?",
+  "thesilverage.configuration.enable_undead_protection": "Protección contra no muertos",
+  "thesilverage.configuration.enable_undead_protection.tooltip": "¿Debería la armadura de plata reducir el daño recibido de los no muertos?",
   "thesilverage.configuration.enable_villager_trades": "Habilitar intercambios de aldeanos",
   "thesilverage.configuration.enable_villager_trades.tooltip": "¿Deberían los aldeanos comerciar con objetos de La Edad de Plata?",
   "thesilverage.configuration.enable_wandering_trader_trades": "Habilitar intercambios del mercader errante",
@@ -197,5 +199,6 @@
   "thesilverage.moon_phase.waxing_crescent": "Luna creciente",
   "thesilverage.moon_phase.waxing_gibbous": "Gibosa creciente",
   "tooltip.thesilverage.silver_smite": "+%s de daño a los no muertos",
+  "tooltip.thesilverage.undead_protection": "+%s de protección contra no muertos",
   "trim_material.thesilverage.silver": "Material de plata"
 }
