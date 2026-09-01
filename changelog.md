@@ -1,13 +1,9 @@
-# 1.3.4
-### Fixes
-- Fixed the advancements tab background not showing.
-- Fixed some recipe advancements ignoring the "Override vanilla recipes" setting on Fabric.
-- Fixed the Silver Knife advancement showing without Farmer's Delight installed.
-
-
 # 1.3.3
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
+- Fixed the advancements tab background not showing.
+- Fixed some recipe advancements ignoring the "Override vanilla recipes" setting on Fabric.
+- Fixed the Silver Knife advancement showing without Farmer's Delight installed.
 
 
 # 1.3.2
