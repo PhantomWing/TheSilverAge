@@ -45,6 +45,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.SILVER_PICKAXE);
         handheldItem(ModItems.SILVER_AXE);
         handheldItem(ModItems.SILVER_HOE);
+        handheldItem(ModItems.SILVER_KNIFE);
 
         // Silver armor
         armorItem(ModItems.SILVER_HELMET);
@@ -109,6 +110,46 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
         blockItem(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
         blockItem(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
+        // Silver Bricks
+        blockItem(ModBlocks.SILVER_BRICKS);
+        blockItem(ModBlocks.EXPOSED_SILVER_BRICKS);
+        blockItem(ModBlocks.WEATHERED_SILVER_BRICKS);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BRICKS);
+        blockItem(ModBlocks.WAXED_SILVER_BRICKS);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Slab
+        blockItem(ModBlocks.SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+        // Silver Brick Stairs
+        blockItem(ModBlocks.SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
+
+        // Silver Pillar
+        blockItem(ModBlocks.SILVER_PILLAR);
+        blockItem(ModBlocks.EXPOSED_SILVER_PILLAR);
+        blockItem(ModBlocks.WEATHERED_SILVER_PILLAR);
+        blockItem(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
 
         // Cut Silver Slab
         blockItem(ModBlocks.CUT_SILVER_SLAB);

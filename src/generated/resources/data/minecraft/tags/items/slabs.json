@@ -7,6 +7,14 @@
     "thesilverage:waxed_cut_silver_slab",
     "thesilverage:waxed_exposed_cut_silver_slab",
     "thesilverage:waxed_weathered_cut_silver_slab",
-    "thesilverage:waxed_oxidized_cut_silver_slab"
+    "thesilverage:waxed_oxidized_cut_silver_slab",
+    "thesilverage:silver_brick_slab",
+    "thesilverage:exposed_silver_brick_slab",
+    "thesilverage:weathered_silver_brick_slab",
+    "thesilverage:oxidized_silver_brick_slab",
+    "thesilverage:waxed_silver_brick_slab",
+    "thesilverage:waxed_exposed_silver_brick_slab",
+    "thesilverage:waxed_weathered_silver_brick_slab",
+    "thesilverage:waxed_oxidized_silver_brick_slab"
   ]
 }

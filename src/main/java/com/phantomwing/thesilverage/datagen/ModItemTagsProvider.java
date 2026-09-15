@@ -5,9 +5,13 @@ import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -18,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
+    private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
+            TagKey.create(Registries.ITEM, new ResourceLocation("farmersdelight", "tools/knives"));
+
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID, existingFileHelper);
     }
@@ -37,6 +44,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
+        // Silver Knife: both knife tags Farmer's Delight's own knives use. Inert without FD.
+        tag(FARMERS_DELIGHT_KNIVES).add(ModItems.SILVER_KNIFE.get());
+        tag(CommonTags.Items.TOOLS_KNIVES).add(ModItems.SILVER_KNIFE.get());
+
         // Storage blocks
         tag(CommonTags.Items.STORAGE_BLOCKS_SILVER).add(ModItems.SILVER_BLOCK.get());
         tag(CommonTags.Items.STORAGE_BLOCKS_RAW_SILVER).add(ModItems.RAW_SILVER_BLOCK.get());
@@ -107,7 +118,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.WAXED_CUT_SILVER_SLAB.get())
                 .add(ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get())
                 .add(ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
-                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
+                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get())
+                .add(ModItems.SILVER_BRICK_SLAB.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get());
 
         // Stairs
         tag(ItemTags.STAIRS)
@@ -118,7 +137,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.WAXED_CUT_SILVER_STAIRS.get())
                 .add(ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get())
                 .add(ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
-                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
+                .add(ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get())
+                .add(ModItems.SILVER_BRICK_STAIRS.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
 
         // Trapdoors
         tag(ItemTags.TRAPDOORS)

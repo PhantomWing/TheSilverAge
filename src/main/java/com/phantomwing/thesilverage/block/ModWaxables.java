@@ -38,6 +38,30 @@ public class ModWaxables {
         builder.put(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get());
         builder.put(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get(), ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
 
+        // Silver Bricks
+        builder.put(ModBlocks.SILVER_BRICKS.get(), ModBlocks.WAXED_SILVER_BRICKS.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_BRICKS.get(), ModBlocks.WAXED_EXPOSED_SILVER_BRICKS.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_BRICKS.get(), ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_BRICKS.get(), ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        // Silver Brick Slab
+        builder.put(ModBlocks.SILVER_BRICK_SLAB.get(), ModBlocks.WAXED_SILVER_BRICK_SLAB.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get(), ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_BRICK_SLAB.get(), ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB.get(), ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get());
+
+        // Silver Brick Stairs
+        builder.put(ModBlocks.SILVER_BRICK_STAIRS.get(), ModBlocks.WAXED_SILVER_BRICK_STAIRS.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS.get(), ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS.get(), ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
+
+        // Silver Pillar
+        builder.put(ModBlocks.SILVER_PILLAR.get(), ModBlocks.WAXED_SILVER_PILLAR.get());
+        builder.put(ModBlocks.EXPOSED_SILVER_PILLAR.get(), ModBlocks.WAXED_EXPOSED_SILVER_PILLAR.get());
+        builder.put(ModBlocks.WEATHERED_SILVER_PILLAR.get(), ModBlocks.WAXED_WEATHERED_SILVER_PILLAR.get());
+        builder.put(ModBlocks.OXIDIZED_SILVER_PILLAR.get(), ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR.get());
+
         // Chiseled Silver
         builder.put(ModBlocks.CHISELED_SILVER.get(), ModBlocks.WAXED_CHISELED_SILVER.get());
         builder.put(ModBlocks.EXPOSED_CHISELED_SILVER.get(), ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get());

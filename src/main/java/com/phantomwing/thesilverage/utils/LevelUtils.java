@@ -22,4 +22,13 @@ public class LevelUtils {
 
         return 0;
     }
+
+    /** Moon phase 0-7 (0 = full moon), with the same fixed-time and null fallback as the signal. */
+    public static int getMoonPhase(Level level) {
+        if (level != null && !level.dimensionType().hasFixedTime()) {
+            return level.getMoonPhase();
+        }
+
+        return 0;
+    }
 }

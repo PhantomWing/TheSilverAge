@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.compat.ModIds;
+import com.phantomwing.thesilverage.compat.farmersdelight.SilverKnifeItem;
+import com.phantomwing.thesilverage.item.custom.MoonDialItem;
 import com.phantomwing.thesilverage.tool.ModTiers;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.LinkedHashSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TheSilverAge.MOD_ID);
@@ -38,6 +41,9 @@ public class ModItems {
     public static final RegistryObject<Item> SILVER_HOE = registerHoe("silver_hoe", ModTiers.SILVER);
     public static final RegistryObject<Item> SILVER_SWORD = registerSword("silver_sword", ModTiers.SILVER);
 
+    // Farmer's Delight KnifeItem when FD is loaded, a SwordItem fallback otherwise.
+    public static final RegistryObject<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
+
     // Silver armor
     public static final RegistryObject<Item> SILVER_HELMET = registerArmor("silver_helmet", ModArmorMaterials.SILVER, ArmorItem.Type.HELMET);
     public static final RegistryObject<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER, ArmorItem.Type.CHESTPLATE);
@@ -48,7 +54,7 @@ public class ModItems {
             baseItem());
 
     // Utility items
-    public static final RegistryObject<Item> MOON_DIAL = register("moon_dial");
+    public static final RegistryObject<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());
     public static final RegistryObject<Item> MOON_PHASE_DETECTOR = registerBlock(ModBlocks.MOON_PHASE_DETECTOR);
 
     // Silver blocks
@@ -75,6 +81,36 @@ public class ModItems {
     public static final RegistryObject<Item> WAXED_EXPOSED_CUT_SILVER = registerBlock(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
     public static final RegistryObject<Item> WAXED_WEATHERED_CUT_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
     public static final RegistryObject<Item> WAXED_OXIDIZED_CUT_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
+    // Silver Bricks
+    public static final RegistryObject<Item> SILVER_BRICKS = registerBlock(ModBlocks.SILVER_BRICKS);
+    public static final RegistryObject<Item> EXPOSED_SILVER_BRICKS = registerBlock(ModBlocks.EXPOSED_SILVER_BRICKS);
+    public static final RegistryObject<Item> WEATHERED_SILVER_BRICKS = registerBlock(ModBlocks.WEATHERED_SILVER_BRICKS);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_BRICKS = registerBlock(ModBlocks.OXIDIZED_SILVER_BRICKS);
+    public static final RegistryObject<Item> WAXED_SILVER_BRICKS = registerBlock(ModBlocks.WAXED_SILVER_BRICKS);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_BRICKS = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_BRICKS = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_BRICKS = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
+
+    // Silver Brick Slab
+    public static final RegistryObject<Item> SILVER_BRICK_SLAB = registerBlock(ModBlocks.SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> EXPOSED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> WEATHERED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> WAXED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_BRICK_SLAB = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+    // Silver Brick Stairs
+    public static final RegistryObject<Item> SILVER_BRICK_STAIRS = registerBlock(ModBlocks.SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> EXPOSED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> WEATHERED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> WAXED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_BRICK_STAIRS = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
 
     // Cut Silver Slab
     public static final RegistryObject<Item> CUT_SILVER_SLAB = registerBlock(ModBlocks.CUT_SILVER_SLAB);
@@ -105,6 +141,16 @@ public class ModItems {
     public static final RegistryObject<Item> WAXED_EXPOSED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
     public static final RegistryObject<Item> WAXED_WEATHERED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
     public static final RegistryObject<Item> WAXED_OXIDIZED_CHISELED_SILVER = registerBlock(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
+
+    // Silver Pillar
+    public static final RegistryObject<Item> SILVER_PILLAR = registerBlock(ModBlocks.SILVER_PILLAR);
+    public static final RegistryObject<Item> EXPOSED_SILVER_PILLAR = registerBlock(ModBlocks.EXPOSED_SILVER_PILLAR);
+    public static final RegistryObject<Item> WEATHERED_SILVER_PILLAR = registerBlock(ModBlocks.WEATHERED_SILVER_PILLAR);
+    public static final RegistryObject<Item> OXIDIZED_SILVER_PILLAR = registerBlock(ModBlocks.OXIDIZED_SILVER_PILLAR);
+    public static final RegistryObject<Item> WAXED_SILVER_PILLAR = registerBlock(ModBlocks.WAXED_SILVER_PILLAR);
+    public static final RegistryObject<Item> WAXED_EXPOSED_SILVER_PILLAR = registerBlock(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+    public static final RegistryObject<Item> WAXED_WEATHERED_SILVER_PILLAR = registerBlock(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+    public static final RegistryObject<Item> WAXED_OXIDIZED_SILVER_PILLAR = registerBlock(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
 
     // Silver Trapdoor
     public static final RegistryObject<Item> SILVER_TRAPDOOR = registerBlock(ModBlocks.SILVER_TRAPDOOR);
@@ -160,6 +206,16 @@ public class ModItems {
         return register(name, (props) -> new SwordItem(tier, 3, -2.4f, props), baseItem());
     }
 
+    private static RegistryObject<Item> registerKnife(String name, Tier tier, String modId) {
+        return registerWithModCompat(name, modId, () -> {
+            // Stats match FD's knives. SwordItem takes an int modifier, so the fallback rounds 0.5 to 0.
+            if (ModList.get().isLoaded(modId)) {
+                return SilverKnifeItem.create(tier, 0.5f, -2.0f, baseItem());
+            }
+            return new SwordItem(tier, 0, -2.0f, baseItem());
+        });
+    }
+
     private static RegistryObject<Item> registerShovel(String name, Tier tier) {
         return register(name, (props) -> new ShovelItem(tier, 1.5f, -3.0f, props), baseItem());
     }
@@ -195,7 +251,12 @@ public class ModItems {
 
     /** Register an item that only appears in the creative tab when the given mod is loaded. */
     private static RegistryObject<Item> registerWithModCompat(String name, String modId) {
-        RegistryObject<Item> item = ITEMS.register(name, () -> new Item(baseItem()));
+        return registerWithModCompat(name, modId, () -> new Item(baseItem()));
+    }
+
+    /** Always registered; only listed in the creative tab when {@code modId} is loaded. */
+    private static RegistryObject<Item> registerWithModCompat(String name, String modId, Supplier<Item> factory) {
+        RegistryObject<Item> item = ITEMS.register(name, factory);
         if (ModList.get().isLoaded(modId)) {
             CREATIVE_TAB_ITEMS.add(item);
         }

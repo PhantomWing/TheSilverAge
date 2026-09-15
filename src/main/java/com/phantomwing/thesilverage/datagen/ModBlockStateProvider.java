@@ -51,6 +51,46 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithTexture(ModBlocks.WAXED_WEATHERED_CUT_SILVER, ModBlocks.WEATHERED_CUT_SILVER);
         blockWithTexture(ModBlocks.WAXED_OXIDIZED_CUT_SILVER, ModBlocks.OXIDIZED_CUT_SILVER);
 
+        // Silver Bricks
+        simpleBlock(ModBlocks.SILVER_BRICKS);
+        simpleBlock(ModBlocks.EXPOSED_SILVER_BRICKS);
+        simpleBlock(ModBlocks.WEATHERED_SILVER_BRICKS);
+        simpleBlock(ModBlocks.OXIDIZED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_SILVER_BRICKS, ModBlocks.SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        blockWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Stairs
+        stairs(ModBlocks.SILVER_BRICK_STAIRS, ModBlocks.SILVER_BRICKS);
+        stairs(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        stairs(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        stairs(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_SILVER_BRICK_STAIRS, ModBlocks.SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS, ModBlocks.EXPOSED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS, ModBlocks.WEATHERED_SILVER_BRICKS);
+        stairs(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Slab
+        slab(ModBlocks.SILVER_BRICK_SLAB, ModBlocks.SILVER_BRICKS);
+        slab(ModBlocks.EXPOSED_SILVER_BRICK_SLAB, ModBlocks.EXPOSED_SILVER_BRICKS);
+        slab(ModBlocks.WEATHERED_SILVER_BRICK_SLAB, ModBlocks.WEATHERED_SILVER_BRICKS);
+        slab(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_SILVER_BRICK_SLAB, ModBlocks.SILVER_BRICKS);
+        slab(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB, ModBlocks.EXPOSED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB, ModBlocks.WEATHERED_SILVER_BRICKS);
+        slab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
+        // Silver Pillar
+        pillarBlock(ModBlocks.SILVER_PILLAR);
+        pillarBlock(ModBlocks.EXPOSED_SILVER_PILLAR);
+        pillarBlock(ModBlocks.WEATHERED_SILVER_PILLAR);
+        pillarBlock(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        pillarBlockWithTexture(ModBlocks.WAXED_SILVER_PILLAR, ModBlocks.SILVER_PILLAR);
+        pillarBlockWithTexture(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR, ModBlocks.EXPOSED_SILVER_PILLAR);
+        pillarBlockWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR, ModBlocks.WEATHERED_SILVER_PILLAR);
+        pillarBlockWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR, ModBlocks.OXIDIZED_SILVER_PILLAR);
+
         // Cut Silver Stairs
         stairs(ModBlocks.CUT_SILVER_STAIRS, ModBlocks.CUT_SILVER);
         stairs(ModBlocks.EXPOSED_CUT_SILVER_STAIRS, ModBlocks.EXPOSED_CUT_SILVER);
@@ -168,16 +208,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         horizontalBlock(block.get(), cubeAll);
     }
 
-    private void pillarBlock(RegistryObject<Block> block) {
-        ResourceLocation side = BlockUtils.getBlockResourceLocation(block.get());
-        ResourceLocation end = BlockUtils.getBlockResourceLocation(block.get(), "top");
-        simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
+    private void pillarBlock(RegistryObject<? extends RotatedPillarBlock> block) {
+        pillarBlockWithTexture(block, block);
     }
 
-    private void pillarBlockWithTexture(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {
+    // axisBlock (not simpleBlock) so the axis=x/y/z variants get their rotations and the
+    // matching *_horizontal model; the model is named after `block`, textured from `textureBlock`.
+    private void pillarBlockWithTexture(RegistryObject<? extends RotatedPillarBlock> block, RegistryObject<? extends RotatedPillarBlock> textureBlock) {
         ResourceLocation side = BlockUtils.getBlockResourceLocation(textureBlock.get());
         ResourceLocation end = BlockUtils.getBlockResourceLocation(textureBlock.get(), "top");
-        simpleBlock(block.get(), this.models().cubeColumn(BlockUtils.getName(block.get()), side, end));
+        axisBlock(block.get(), side, end);
     }
 
     private void blockWithTexture(RegistryObject<Block> block, RegistryObject<Block> textureBlock) {

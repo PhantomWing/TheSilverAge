@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "thesilverage:block/weathered_silver_pillar_top",
+    "side": "thesilverage:block/weathered_silver_pillar"
+  }
+}

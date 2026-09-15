@@ -21,7 +21,13 @@ build
 .claude
 
 # cache
-src/generated/resources/.cache
+# Unanchored so it also catches the multiloader layout other branches use
+# (common/src/generated/resources/.cache). Committing a HashCache from another
+# branch makes a later runData silently skip writes.
+**/.cache/
+
+# Build leftovers from the multiloader branches' architectury setup
+.architectury-transformer/
 
 # other
 eclipse

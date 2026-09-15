@@ -6,6 +6,11 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -22,8 +27,9 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     // Actually add our loot tables.
     @Override
     protected void generate() {
-        dropOre(ModBlocks.SILVER_ORE, ModItems.RAW_SILVER);
-        dropOre(ModBlocks.DEEPSLATE_SILVER_ORE, ModItems.RAW_SILVER);
+        // 1-3 raw silver, so building with silver is less of a grind.
+        dropOre(ModBlocks.SILVER_ORE, ModItems.RAW_SILVER, 1.0F, 3.0F);
+        dropOre(ModBlocks.DEEPSLATE_SILVER_ORE, ModItems.RAW_SILVER, 1.0F, 3.0F);
         dropSelf(ModBlocks.RAW_SILVER_BLOCK);
 
         // Redstone blocks
@@ -48,6 +54,46 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
         dropSelf(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
         dropSelf(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
+        // Silver Bricks
+        dropSelf(ModBlocks.SILVER_BRICKS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICKS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Slab
+        dropSlab(ModBlocks.SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+        // Silver Brick Stairs
+        dropSelf(ModBlocks.SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
+
+        // Silver Pillar
+        dropSelf(ModBlocks.SILVER_PILLAR);
+        dropSelf(ModBlocks.EXPOSED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WEATHERED_SILVER_PILLAR);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
 
         // Cut Silver Slab
         dropSlab(ModBlocks.CUT_SILVER_SLAB);
@@ -140,7 +186,11 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         add(block.get(), this::createDoorTable);
     }
 
-    private void dropOre(RegistryObject<Block> block, RegistryObject<Item> item) {
-        add(block.get(), (b) -> createOreDrop(b, item.get()));
+    /** Like vanilla lapis ore: silk touch drops the block, otherwise min-max items plus fortune. */
+    private void dropOre(RegistryObject<Block> block, RegistryObject<Item> item, float min, float max) {
+        add(block.get(), (b) -> createSilkTouchDispatchTable(b, this.applyExplosionDecay(b,
+                LootItem.lootTableItem(item.get())
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
+                        .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
     }
 }

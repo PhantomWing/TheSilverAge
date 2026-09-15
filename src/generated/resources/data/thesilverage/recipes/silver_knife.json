@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "equipment",
+        "key": {
+          "I": {
+            "item": "minecraft:stick"
+          },
+          "X": {
+            "item": "thesilverage:silver_ingot"
+          }
+        },
+        "pattern": [
+          "X",
+          "I"
+        ],
+        "result": {
+          "item": "thesilverage:silver_knife"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

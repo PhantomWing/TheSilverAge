@@ -35,6 +35,15 @@ public class ModTags {
         public static final TagKey<Block> INCORRECT_FOR_SILVER_TOOL = tag("incorrect_for_silver_tool");
         public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
 
+        // Family tags referenced by the Sable tags. The Block of Silver is left out of
+        // WEATHERED_SILVER_BLOCKS because Sable already treats #forge:storage_blocks as heavy.
+        public static final TagKey<Block> WEATHERED_SILVER_BLOCKS = tag("weathered_silver_blocks");
+        public static final TagKey<Block> CUT_SILVER_BLOCKS = tag("cut_silver_blocks");
+        public static final TagKey<Block> CHISELED_SILVER_BLOCKS = tag("chiseled_silver_blocks");
+        public static final TagKey<Block> SILVER_BRICK_BLOCKS = tag("silver_brick_blocks");
+        public static final TagKey<Block> SILVER_PILLARS = tag("silver_pillars");
+        public static final TagKey<Block> SILVER_GRATES = tag("silver_grates");
+
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
