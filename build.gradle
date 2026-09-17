@@ -1,6 +1,27 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
     id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
+    // Modrinth + CurseForge publishing, applied per loader subproject.
+    id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
+}
+
+// Body of the newest changelog.md section, used as the release notes on both platforms.
+ext.latestChangelog = {
+    def f = rootProject.file('changelog.md')
+    if (!f.exists()) return "See changelog.md"
+    def body = new StringBuilder()
+    boolean started = false, done = false
+    f.eachLine { line ->
+        if (done) return
+        if (line.startsWith('# ')) {
+            if (started) { done = true; return }   // reached the next version, stop
+            started = true                          // first version header, start
+            return                                  // skip the header line itself
+        }
+        if (started) body.append(line).append('\n')
+    }
+    def out = body.toString().trim()
+    return out.isEmpty() ? "See changelog.md" : out
 }
 
 tasks.named('wrapper', Wrapper).configure {
