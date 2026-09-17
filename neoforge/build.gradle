@@ -158,3 +158,33 @@ publishing {
         // Add repositories to publish to here.
     }
 }
+
+apply plugin: 'me.modmuss50.mod-publish-plugin'
+
+publishMods {
+    file = remapJar.archiveFile
+    version = rootProject.mod_version
+    displayName = "The Silver Age ${rootProject.mod_version}"
+    changelog = rootProject.ext.latestChangelog()
+    type = STABLE
+    modLoaders.add("neoforge")
+    // -PpublishDryRun => stage to build/ without uploading.
+    dryRun = project.hasProperty("publishDryRun")
+
+    modrinth {
+        projectId = providers.gradleProperty("modrinth_project_id")
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
+        minecraftVersions.add(rootProject.minecraft_version)
+        // NeoForge only needs Architectury; fabric-api / cloth-config are Fabric-only.
+        requires("architectury-api")
+    }
+    curseforge {
+        projectId = providers.gradleProperty("curseforge_project_id")
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
+        minecraftVersions.add(rootProject.minecraft_version)
+        // CurseForge needs explicit side flags (Modrinth infers them from the jar).
+        client = true
+        server = true
+        requires("architectury-api")
+    }
+}
