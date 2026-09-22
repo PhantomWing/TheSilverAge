@@ -7,7 +7,13 @@ import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import java.util.Set;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -31,14 +37,12 @@ public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
     private static final float XP_MEDIUM = 1f;
 
-    // Kept so conditional override recipes can wrap it via output.withConditions(...).
-    private final RecipeOutput output;
-    private final HolderLookup.Provider registries;
+    // 26.3: RecipeProvider owns `output`; the recipe context is kept for registry lookups.
+    private final BootstrapContext<Recipe<?>> recipeContext;
 
-    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
-        this.output = output;
-        this.registries = registries;
+    protected ModRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        super(recipes, advancements);
+        this.recipeContext = recipes;
     }
 
     @Override
@@ -47,20 +51,19 @@ public class ModRecipeProvider extends RecipeProvider {
         buildRecipeOverrides(this.output);
     }
 
-    public static final class Runner extends RecipeProvider.Runner {
-        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-            super(packOutput, registries);
-        }
+    /** 26.3 wires recipes through a multi-registry bootstrap: recipes plus their unlock advancements. */
+    public static MultiRegistryBootstrap create() {
+        return new MultiRegistryBootstrap() {
+            @Override
+            public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
+                return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
+            }
 
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-            return new ModRecipeProvider(registries, output);
-        }
-
-        @Override
-        public String getName() {
-            return "The Silver Age Recipes";
-        }
+            @Override
+            public void run(BootstrapGetter getter) {
+                new ModRecipeProvider(getter.get(Registries.RECIPE), getter.get(Registries.ADVANCEMENT)).buildRecipes();
+            }
+        };
     }
 
     private void buildCraftingRecipes(@NotNull RecipeOutput output) {
@@ -488,7 +491,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     /** Firework star override: conditional STAR = gold or silver nugget, plus a vanilla _fallback. */
     private void fireworkStarOverride(RecipeOutput conditionalOutput, RecipeOutput fallbackOutput) {
-        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderGetter<Item> items = this.recipeContext.lookup(Registries.ITEM);
         // Ingredient.of has no TagKey overload — resolve tags to HolderSets.
         Ingredient dye = Ingredient.of(items.getOrThrow(ItemTags.DYES));
         Ingredient skulls = Ingredient.of(items.getOrThrow(ItemTags.SKULLS));

@@ -304,19 +304,25 @@ public class ModModelProvider extends ModelProvider {
         Identifier baseModel = ModelTemplates.FLAT_ITEM.create(
                 ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture), img.modelOutput);
 
-        List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
-        materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
-
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
-        for (ItemModelGenerators.TrimMaterialData data : materials) {
-            // assetId resolves the per-armor override (e.g. silver->silver_darker on silver armor).
-            String suffix = "_" + data.assets().assetId(ModTrimMaterials.SILVER_EQUIPMENT_ASSET).suffix();
-            Identifier trimModel = baseModel.withSuffix(suffix + "_trim");
-            img.generateLayeredItem(trimModel, itemTexture, new Material(slotPrefix.withSuffix(suffix)));
-            cases.add(ItemModelUtils.when(data.materialKey(), ItemModelUtils.plainModel(trimModel)));
+        for (ItemModelGenerators.TrimMaterialData data : ItemModelGenerators.TRIM_MATERIAL_MODELS) {
+            cases.add(trimCase(img, baseModel, itemTexture, slotPrefix, data.palette().suffix(), data.materialKey()));
         }
+        // 26.3 moved the per-armor override into the equipment asset trim_overrides, so the
+        // silver-on-silver darker palette is selected here explicitly.
+        cases.add(trimCase(img, baseModel, itemTexture, slotPrefix, "silver_darker", ModTrimMaterials.SILVER));
         img.itemModelOutput.accept(item,
                 ItemModelUtils.select(new TrimMaterialProperty(), ItemModelUtils.plainModel(baseModel), cases));
+    }
+
+    /** One trim_material case: generates the layered model and returns the select case. */
+    private static SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>> trimCase(
+            ItemModelGenerators img, Identifier baseModel, Material itemTexture, Identifier slotPrefix,
+            String paletteSuffix, ResourceKey<TrimMaterial> materialKey) {
+        String suffix = "_" + paletteSuffix;
+        Identifier trimModel = baseModel.withSuffix(suffix + "_trim");
+        img.generateLayeredItem(trimModel, itemTexture, new Material(slotPrefix.withSuffix(suffix)));
+        return ItemModelUtils.when(materialKey, ItemModelUtils.plainModel(trimModel));
     }
 
     /** Vanilla leather-dye default tint (0xFFA06540) — must be carried on leather trim cases + fallback. */
@@ -352,13 +358,17 @@ public class ModModelProvider extends ModelProvider {
         Material overlayTexture = dyeable ? TextureMapping.getItemTexture(item, "_overlay") : null;
         Identifier slotPrefix = ItemModelGenerators.prefixForSlotTrim(slot);
 
-        List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(ItemModelGenerators.TRIM_MATERIAL_MODELS);
-        materials.add(new ItemModelGenerators.TrimMaterialData(ModTrimMaterials.SILVER_ASSETS, ModTrimMaterials.SILVER));
+        record TrimEntry(String suffix, ResourceKey<TrimMaterial> materialKey) {}
+        List<TrimEntry> materials = new ArrayList<>();
+        for (ItemModelGenerators.TrimMaterialData vanilla : ItemModelGenerators.TRIM_MATERIAL_MODELS) {
+            materials.add(new TrimEntry(vanilla.palette().suffix(), vanilla.materialKey()));
+        }
+        materials.add(new TrimEntry("silver", ModTrimMaterials.SILVER));
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>();
-        for (ItemModelGenerators.TrimMaterialData data : materials) {
-            // BASE material suffix matches the model names vanilla ships (e.g. iron_helmet_iron_trim).
-            Identifier trimModel = baseModel.withSuffix("_" + data.assets().base().suffix() + "_trim");
+        for (TrimEntry data : materials) {
+            // Suffix matches the model names vanilla ships (e.g. iron_helmet_iron_trim).
+            Identifier trimModel = baseModel.withSuffix("_" + data.suffix() + "_trim");
             if (data.materialKey() == ModTrimMaterials.SILVER) {
                 // Vanilla ships no silver trim model; generate it (always the plain silver sprite).
                 Material silverSprite = new Material(slotPrefix.withSuffix("_silver"));

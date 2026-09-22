@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:repeater",
+      "required": false
+    },
+    {
+      "id": "minecraft:repeater_fallback",
+      "required": false
+    }
+  ]
+}

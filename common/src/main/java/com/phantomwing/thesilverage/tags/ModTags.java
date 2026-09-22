@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.tags;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -46,6 +47,26 @@ public class ModTags {
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+        }
+    }
+
+    /**
+     * Tags over our own recipes so advancements can name a recipe without resolving it.
+     *
+     * <p>26.3 made recipes a datapack registry and recipe_unlocked takes a HolderSet. Recipes are
+     * written in a parallel provider pass, so a direct reference is not resolvable and the
+     * advancement is silently dropped. Entries are optional: a recipe whose condition fails is
+     * simply absent from the tag rather than erroring.</p>
+     */
+    public static class Recipes {
+        public static final TagKey<Recipe<?>> UNLOCKS_BREWING_STAND = tag("unlocks/brewing_stand");
+        public static final TagKey<Recipe<?>> UNLOCKS_LODESTONE = tag("unlocks/lodestone");
+        public static final TagKey<Recipe<?>> UNLOCKS_COMPARATOR = tag("unlocks/comparator");
+        public static final TagKey<Recipe<?>> UNLOCKS_REPEATER = tag("unlocks/repeater");
+        public static final TagKey<Recipe<?>> UNLOCKS_SILVER_FROM_CRUSHED = tag("unlocks/silver_ingot_from_crushed_raw_silver");
+
+        private static TagKey<Recipe<?>> tag(String name) {
+            return TagKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
         }
     }
 

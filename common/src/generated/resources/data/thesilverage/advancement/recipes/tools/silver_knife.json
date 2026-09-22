@@ -19,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_knife"
+        "recipes": "thesilverage:silver_knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -9,10 +9,10 @@
         "trims/items/helmet_trim",
         "trims/items/boots_trim"
       ],
-      "palette_key": "trims/color_palettes/trim_palette",
+      "palette_key": "minecraft:trim_base",
       "permutations": {
-        "silver": "thesilverage:trims/color_palettes/silver",
-        "silver_darker": "thesilverage:trims/color_palettes/silver_darker"
+        "silver": "thesilverage:trim/silver",
+        "silver_darker": "thesilverage:trim/silver_darker"
       }
     }
   ]

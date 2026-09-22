@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ReplaceItemModifier extends LootModifier
@@ -39,22 +41,22 @@ public class ReplaceItemModifier extends LootModifier
     private final int maxStacks;
 
     // Replaces all stacks of the item, keeping stack size.
-    public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace) {
+    public ReplaceItemModifier(Optional<Holder<LootItemCondition>> conditions, ItemLike itemToAdd, List<Item> itemToReplace) {
         this(conditions, 0, itemToAdd, itemToReplace, 0, 0);
     }
 
     // Replaces a random number of stacks of the item, keeping stack size.
-    public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int maxStacks) {
+    public ReplaceItemModifier(Optional<Holder<LootItemCondition>> conditions, ItemLike itemToAdd, List<Item> itemToReplace, int maxStacks) {
         this(conditions, 0, itemToAdd, itemToReplace, maxStacks, maxStacks);
     }
 
     // Datagen entry point; uses the default GLM priority 0.
-    public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
+    public ReplaceItemModifier(Optional<Holder<LootItemCondition>> conditions, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
         this(conditions, 0, itemToAdd, itemToReplace, minStacks, maxStacks);
     }
 
     // The `priority` 2nd arg is required by LootModifier's codecStart.
-    public ReplaceItemModifier(LootItemCondition[] conditions, int priority, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
+    public ReplaceItemModifier(Optional<Holder<LootItemCondition>> conditions, int priority, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
         super(conditions, priority);
 
         this.removedItems = itemToReplace;

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:cut_silver_from_silver_block_stonecutting"
+        "recipes": "thesilverage:cut_silver_from_silver_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

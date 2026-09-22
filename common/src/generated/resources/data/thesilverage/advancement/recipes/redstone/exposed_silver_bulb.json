@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:exposed_silver_bulb"
+        "recipes": "thesilverage:exposed_silver_bulb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

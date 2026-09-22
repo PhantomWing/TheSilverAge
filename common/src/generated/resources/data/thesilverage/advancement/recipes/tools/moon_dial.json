@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:moon_dial"
+        "recipes": "thesilverage:moon_dial"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

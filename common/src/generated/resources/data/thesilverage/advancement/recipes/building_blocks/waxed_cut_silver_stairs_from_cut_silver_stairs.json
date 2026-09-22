@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_cut_silver_stairs_from_cut_silver_stairs"
+        "recipes": "thesilverage:waxed_cut_silver_stairs_from_cut_silver_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

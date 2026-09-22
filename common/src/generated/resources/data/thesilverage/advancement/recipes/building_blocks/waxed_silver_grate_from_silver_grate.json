@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_silver_grate_from_silver_grate"
+        "recipes": "thesilverage:waxed_silver_grate_from_silver_grate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

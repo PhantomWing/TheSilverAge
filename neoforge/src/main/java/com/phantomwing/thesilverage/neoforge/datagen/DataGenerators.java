@@ -2,6 +2,8 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
@@ -23,17 +25,23 @@ public class DataGenerators {
     public static void gatherData(GatherDataEvent.Client event) {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getWorldLookupProvider();
 
-        event.addProvider(new ModRecipeProvider.Runner(output, lookupProvider));
+        // World layer: worldgen features, placements, trim material and biome modifiers.
+        event.createWorldRegistryObjects(ModDatapackProvider.BUILDER, Set.of(TheSilverAge.MOD_ID));
 
-        event.addProvider(new LootTableProvider(
-                output,
-                Set.of(),
-                List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)),
-                lookupProvider));
-
-        event.addProvider(new AdvancementProvider(output, lookupProvider, List.of(new ModAdvancementProvider())));
+        // 26.3 moved recipes, loot tables and advancements out of standalone providers and
+        // into reloadable datapack registries. Recipes need two registries (they also emit
+        // their unlock advancements), hence the multi-registry bootstrap.
+        event.createReloadableRegistryObjects(new RegistrySetBuilder()
+                .add(ModRecipeProvider.create())
+                .add(Registries.LOOT_TABLE, new LootTableProvider(
+                        Set.of(),
+                        List.of(new LootTableProvider.SubProviderEntry(
+                                ModBlockLootTableProvider::new, LootContextParamSets.BLOCK))))
+                .add(Registries.ADVANCEMENT, new AdvancementProvider(
+                        List.of(ModAdvancementProvider::new))),
+                Set.of(TheSilverAge.MOD_ID));
 
         event.addProvider(new ModDataMapProvider(output, lookupProvider));
 
@@ -43,10 +51,10 @@ public class DataGenerators {
         event.addProvider(new ModItemTagsProvider(output, lookupProvider));
         event.addProvider(new ModBiomeTagsProvider(output, lookupProvider));
         event.addProvider(new ModEntityTypeTagsProvider(output, lookupProvider));
+        // Recipes live on the reloadable layer in 26.3, so their tags need that lookup.
+        event.addProvider(new ModRecipeTagsProvider(output, event.getReloadableLookupProvider()));
 
         event.addProvider(new ModGlobalLootModifierProvider(output, lookupProvider));
-
-        event.addProvider(new ModDatapackProvider(output, lookupProvider));
 
         // Must run BEFORE FabricConditionsProvider so its neoforge:conditions gate gets mirrored.
         event.addProvider(new ModVillagerTradeProvider(output, lookupProvider));

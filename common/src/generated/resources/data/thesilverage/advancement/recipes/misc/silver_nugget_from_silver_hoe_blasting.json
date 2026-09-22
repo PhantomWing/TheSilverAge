@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_nugget_from_silver_hoe_blasting"
+        "recipes": "thesilverage:silver_nugget_from_silver_hoe_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

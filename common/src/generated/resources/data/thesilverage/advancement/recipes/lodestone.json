@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_melon_slice": {
+    "has_chiseled_stone_bricks": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:melon_slice"
+            "items": "minecraft:chiseled_stone_bricks"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:glistering_melon_slice"
+        "recipes": "#thesilverage:unlocks/lodestone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,14 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_melon_slice"
+      "has_chiseled_stone_bricks"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:glistering_melon_slice"
+      "minecraft:lodestone",
+      "minecraft:lodestone_fallback"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

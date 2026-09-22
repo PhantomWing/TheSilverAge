@@ -225,7 +225,7 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerShovel(String name, ToolMaterial material) {
-        return register(name, (props) -> new ShovelItem(material, 1.5f, -3.0f, props), baseItem());
+        return register(name, (props) -> new Item(props.shovel(material, 1.5f, -3.0f)), baseItem());
     }
 
     private static RegistrySupplier<Item> registerPickaxe(String name, ToolMaterial material) {
@@ -233,11 +233,11 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerAxe(String name, ToolMaterial material) {
-        return register(name, (props) -> new AxeItem(material, 4.5f, -3.0f, props), baseItem());
+        return register(name, (props) -> new Item(props.axe(material, 4.5f, -3.0f)), baseItem());
     }
 
     private static RegistrySupplier<Item> registerHoe(String name, ToolMaterial material) {
-        return register(name, (props) -> new HoeItem(material, -2.5f, -0.5f, props), baseItem());
+        return register(name, (props) -> new Item(props.hoe(material, -2.5f, -0.5f)), baseItem());
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlock(String name, RegistrySupplier<T> block) {

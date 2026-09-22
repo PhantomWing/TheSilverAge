@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:oxidized_cut_silver_slab_from_oxidized_silver_stonecutting"
+        "recipes": "thesilverage:oxidized_cut_silver_slab_from_oxidized_silver_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

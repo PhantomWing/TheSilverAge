@@ -1,6 +1,5 @@
 package com.phantomwing.thesilverage.block.custom;
 
-import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
@@ -37,14 +36,9 @@ import org.jetbrains.annotations.NotNull;
 public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static final int MAX_POWER = 15;
 
-    public static final MapCodec<MoonPhaseDetectorBlock> CODEC = simpleCodec(MoonPhaseDetectorBlock::new);
     public static final IntegerProperty POWER;
     public static final BooleanProperty INVERTED;
     protected static final VoxelShape SHAPE;
-
-    public @NotNull MapCodec<MoonPhaseDetectorBlock> codec() {
-        return CODEC;
-    }
 
     public MoonPhaseDetectorBlock(BlockBehaviour.Properties properties) {
         super(properties);

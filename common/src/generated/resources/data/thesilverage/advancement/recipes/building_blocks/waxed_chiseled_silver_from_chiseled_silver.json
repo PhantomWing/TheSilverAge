@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_chiseled_silver_from_chiseled_silver"
+        "recipes": "thesilverage:waxed_chiseled_silver_from_chiseled_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

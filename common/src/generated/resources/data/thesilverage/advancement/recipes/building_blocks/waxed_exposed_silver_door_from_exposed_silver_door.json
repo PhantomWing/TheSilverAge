@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_exposed_silver_door_from_exposed_silver_door"
+        "recipes": "thesilverage:waxed_exposed_silver_door_from_exposed_silver_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

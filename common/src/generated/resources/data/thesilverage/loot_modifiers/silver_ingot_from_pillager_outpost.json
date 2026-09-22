@@ -1,15 +1,18 @@
 {
   "type": "thesilverage:replace_item",
-  "conditions": [
-    {
-      "condition": "neoforge:loot_table_id",
-      "loot_table_id": "minecraft:chests/pillager_outpost"
-    },
-    {
-      "chance": 1.0,
-      "condition": "minecraft:random_chance"
-    }
-  ],
+  "condition": {
+    "type": "minecraft:all_of",
+    "terms": [
+      {
+        "type": "neoforge:loot_table_id",
+        "loot_table_id": "minecraft:chests/pillager_outpost"
+      },
+      {
+        "type": "minecraft:random_chance",
+        "chance": 1.0
+      }
+    ]
+  },
   "in_stacks": 0,
   "item": "thesilverage:silver_ingot",
   "max_stacks": 2,

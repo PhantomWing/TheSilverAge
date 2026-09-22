@@ -17,7 +17,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import dev.architectury.registry.registries.RegistrySupplier;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,8 +28,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ModBlockLootTableProvider extends BlockLootSubProvider {
-    public ModBlockLootTableProvider(HolderLookup.Provider lookupProvider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
+    public ModBlockLootTableProvider(LootTableSubProvider.Context context) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
     }
 
     @Override
@@ -198,12 +199,10 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
     /** Copper-style ore drop with a 1-3 count range (plus silk-touch and Fortune). */
     private LootTable.Builder createSilverOreDrop(Block block, Item item) {
-        HolderLookup.RegistryLookup<Enchantment> enchantments =
-                this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return this.createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
                 LootItem.lootTableItem(item)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                        .apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 3)))
                         .apply(ApplyBonusCount.addOreBonusCount(
-                                enchantments.getOrThrow(Enchantments.FORTUNE)))));
+                                this.enchantments.getOrThrow(Enchantments.FORTUNE)))));
     }
 }

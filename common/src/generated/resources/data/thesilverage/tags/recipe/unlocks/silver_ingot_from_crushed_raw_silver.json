@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "thesilverage:silver_ingot_from_crushed_raw_silver_smelting",
+      "required": false
+    },
+    {
+      "id": "thesilverage:silver_ingot_from_crushed_raw_silver_blasting",
+      "required": false
+    }
+  ]
+}

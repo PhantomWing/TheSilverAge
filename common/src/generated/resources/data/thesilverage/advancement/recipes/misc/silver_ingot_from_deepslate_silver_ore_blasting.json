@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_ingot_from_deepslate_silver_ore_blasting"
+        "recipes": "thesilverage:silver_ingot_from_deepslate_silver_ore_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

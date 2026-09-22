@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_ingot_from_raw_silver_smelting"
+        "recipes": "thesilverage:silver_ingot_from_raw_silver_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

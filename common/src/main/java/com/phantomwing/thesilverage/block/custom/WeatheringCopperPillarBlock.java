@@ -1,7 +1,5 @@
 package com.phantomwing.thesilverage.block.custom;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -12,14 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 /** Weathering pillar block: random tick advances the oxidation stage. */
 public class WeatheringCopperPillarBlock extends RotatedPillarBlock implements WeatheringCopper {
-    public static final MapCodec<WeatheringCopperPillarBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
-            .group(WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(ChangeOverTimeBlock::getAge), propertiesCodec())
-            .apply(instance, WeatheringCopperPillarBlock::new));
     private final WeatheringCopper.WeatherState weatherState;
-
-    public @NotNull MapCodec<WeatheringCopperPillarBlock> codec() {
-        return CODEC;
-    }
 
     public WeatheringCopperPillarBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
         super(properties);

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:weathered_silver_bulb"
+        "recipes": "thesilverage:weathered_silver_bulb"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

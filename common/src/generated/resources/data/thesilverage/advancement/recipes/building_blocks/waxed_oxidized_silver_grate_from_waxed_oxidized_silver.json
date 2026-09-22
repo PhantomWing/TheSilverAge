@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_oxidized_silver_grate_from_waxed_oxidized_silver"
+        "recipes": "thesilverage:waxed_oxidized_silver_grate_from_waxed_oxidized_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

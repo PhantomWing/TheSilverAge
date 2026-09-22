@@ -1,15 +1,18 @@
 {
   "type": "thesilverage:silverfish_drop_silver_modifier",
-  "conditions": [
-    {
-      "condition": "neoforge:loot_table_id",
-      "loot_table_id": "minecraft:entities/silverfish"
-    },
-    {
-      "chance": 1.0,
-      "condition": "minecraft:random_chance"
-    }
-  ],
+  "condition": {
+    "type": "minecraft:all_of",
+    "terms": [
+      {
+        "type": "neoforge:loot_table_id",
+        "loot_table_id": "minecraft:entities/silverfish"
+      },
+      {
+        "type": "minecraft:random_chance",
+        "chance": 1.0
+      }
+    ]
+  },
   "item": "thesilverage:silver_nugget",
   "maxAmount": 2,
   "minAmount": 0,

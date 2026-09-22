@@ -20,5 +20,13 @@
         "texture": "thesilverage:silver"
       }
     ]
-  }
+  },
+  "trim_overrides": [
+    {
+      "palette": "thesilverage:trim/silver_darker",
+      "when": {
+        "material": "thesilverage:silver"
+      }
+    }
+  ]
 }

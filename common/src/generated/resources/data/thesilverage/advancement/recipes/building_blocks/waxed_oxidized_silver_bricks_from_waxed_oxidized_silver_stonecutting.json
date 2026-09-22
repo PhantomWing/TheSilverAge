@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_oxidized_silver_bricks_from_waxed_oxidized_silver_stonecutting"
+        "recipes": "thesilverage:waxed_oxidized_silver_bricks_from_waxed_oxidized_silver_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_silver_block_from_silver_block"
+        "recipes": "thesilverage:waxed_silver_block_from_silver_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class SilverfishDropsModifier extends LootModifier {
     public static final MapCodec<SilverfishDropsModifier> CODEC = RecordCodecBuilder.mapCodec(inst ->
@@ -30,12 +33,12 @@ public class SilverfishDropsModifier extends LootModifier {
     private final int maxAmount;
 
     // Datagen entry point; uses the default GLM priority 0.
-    public SilverfishDropsModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
+    public SilverfishDropsModifier(Optional<Holder<LootItemCondition>> conditionsIn, Item item, int minAmount, int maxAmount) {
         this(conditionsIn, 0, item, minAmount, maxAmount);
     }
 
     // The `priority` 2nd arg is required by LootModifier's codecStart.
-    public SilverfishDropsModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
+    public SilverfishDropsModifier(Optional<Holder<LootItemCondition>> conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
         super(conditionsIn, priority);
 
         this.item = item;
@@ -49,11 +52,8 @@ public class SilverfishDropsModifier extends LootModifier {
             return generatedLoot;
         }
 
-        for (LootItemCondition condition: this.conditions) {
-            if (!condition.test(context))
-            {
-                return generatedLoot;
-            }
+        if (this.condition.isPresent() && !this.condition.get().value().test(context)) {
+            return generatedLoot;
         }
 
         SilverLootAlgorithms.applySilverfishDrops(generatedLoot, context, this.item, this.minAmount, this.maxAmount);

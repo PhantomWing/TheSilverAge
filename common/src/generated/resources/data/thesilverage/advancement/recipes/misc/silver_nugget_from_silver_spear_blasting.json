@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_nugget_from_silver_spear_blasting"
+        "recipes": "thesilverage:silver_nugget_from_silver_spear_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

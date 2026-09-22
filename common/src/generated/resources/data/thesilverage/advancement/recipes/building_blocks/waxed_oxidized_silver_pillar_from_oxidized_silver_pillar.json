@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_oxidized_silver_pillar_from_oxidized_silver_pillar"
+        "recipes": "thesilverage:waxed_oxidized_silver_pillar_from_oxidized_silver_pillar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

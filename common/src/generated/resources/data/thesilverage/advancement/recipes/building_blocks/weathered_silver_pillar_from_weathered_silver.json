@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:weathered_silver_pillar_from_weathered_silver"
+        "recipes": "thesilverage:weathered_silver_pillar_from_weathered_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

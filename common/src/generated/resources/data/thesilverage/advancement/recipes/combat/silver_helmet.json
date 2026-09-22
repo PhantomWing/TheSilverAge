@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_helmet"
+        "recipes": "thesilverage:silver_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

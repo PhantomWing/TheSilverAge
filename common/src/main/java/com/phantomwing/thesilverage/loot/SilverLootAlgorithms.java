@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class SilverLootAlgorithms {
     /** Rolls a count in {@code [min, max]} and appends that many of {@code item}, stack-splitting as needed. */
     public static void applyAddItem(ObjectArrayList<ItemStack> generatedLoot, LootContext context,
                                     Item item, int min, int max) {
-        int count = UniformGenerator.between(min, max).getInt(context);
+        int count = Mth.nextInt(context.getRandom(), min, max);
         if (count > 0) {
             ItemStack addedStack = new ItemStack(item, count);
 
@@ -49,7 +49,7 @@ public final class SilverLootAlgorithms {
                                         Item item, List<Item> removedItems, int minStacks, int maxStacks) {
         ObjectArrayList<ItemStack> lootArray = new ObjectArrayList<>();
         int numberOfStacksToAdd = maxStacks > 0
-                ? UniformGenerator.between(minStacks, maxStacks).getInt(lootContext)
+                ? Mth.nextInt(lootContext.getRandom(), minStacks, maxStacks)
                 : Integer.MAX_VALUE;
         final int[] stacksToAdd = {numberOfStacksToAdd};
 
@@ -78,7 +78,7 @@ public final class SilverLootAlgorithms {
     /** Rolls a count in {@code [min, max]} and appends a single stack of that many {@code item}. */
     public static void applySilverfishDrops(ObjectArrayList<ItemStack> generatedLoot, LootContext context,
                                             Item item, int min, int max) {
-        int count = UniformGenerator.between(min, max).getInt(context);
+        int count = Mth.nextInt(context.getRandom(), min, max);
         if (count > 0) {
             generatedLoot.add(new ItemStack(item, count));
         }

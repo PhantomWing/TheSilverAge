@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:lodestone",
+      "required": false
+    },
+    {
+      "id": "minecraft:lodestone_fallback",
+      "required": false
+    }
+  ]
+}

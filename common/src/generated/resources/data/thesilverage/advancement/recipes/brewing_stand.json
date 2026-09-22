@@ -1,13 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "thesilverage:config_boolean",
-        "settingId": "override_vanilla_recipes"
-      }
-    }
-  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_blaze_rod": {
@@ -22,20 +13,11 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:brewing_stand_fallback"
+        "recipes": "#thesilverage:unlocks/brewing_stand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:not",
-      "value": {
-        "condition": "thesilverage:config_boolean",
-        "settingId": "override_vanilla_recipes"
-      }
-    }
-  ],
   "requirements": [
     [
       "has_the_recipe",
@@ -44,7 +26,9 @@
   ],
   "rewards": {
     "recipes": [
+      "minecraft:brewing_stand",
       "minecraft:brewing_stand_fallback"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_nugget_from_silver_nautilus_armor_smelting"
+        "recipes": "thesilverage:silver_nugget_from_silver_nautilus_armor_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

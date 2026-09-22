@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_boots"
+        "recipes": "thesilverage:silver_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:raw_silver_block_from_raw_silver"
+        "recipes": "thesilverage:raw_silver_block_from_raw_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

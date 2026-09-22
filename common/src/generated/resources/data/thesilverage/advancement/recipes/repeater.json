@@ -1,10 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "thesilverage:config_boolean",
-      "settingId": "override_vanilla_recipes"
-    }
-  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_redstone_torch": {
@@ -19,17 +13,11 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:comparator"
+        "recipes": "#thesilverage:unlocks/repeater"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "thesilverage:config_boolean",
-      "settingId": "override_vanilla_recipes"
-    }
-  ],
   "requirements": [
     [
       "has_the_recipe",
@@ -38,7 +26,9 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:comparator"
+      "minecraft:repeater",
+      "minecraft:repeater_fallback"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

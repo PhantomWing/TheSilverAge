@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:cut_silver_slab"
+        "recipes": "thesilverage:cut_silver_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

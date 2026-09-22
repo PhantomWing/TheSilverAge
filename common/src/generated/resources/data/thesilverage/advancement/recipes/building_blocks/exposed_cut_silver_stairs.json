@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:exposed_cut_silver_stairs"
+        "recipes": "thesilverage:exposed_cut_silver_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

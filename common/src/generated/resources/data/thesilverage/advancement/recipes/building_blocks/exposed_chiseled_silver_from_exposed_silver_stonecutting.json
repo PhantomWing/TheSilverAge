@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:exposed_chiseled_silver_from_exposed_silver_stonecutting"
+        "recipes": "thesilverage:exposed_chiseled_silver_from_exposed_silver_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

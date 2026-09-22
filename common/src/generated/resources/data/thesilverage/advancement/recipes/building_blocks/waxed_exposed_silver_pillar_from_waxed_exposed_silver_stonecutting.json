@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:waxed_exposed_silver_pillar_from_waxed_exposed_silver_stonecutting"
+        "recipes": "thesilverage:waxed_exposed_silver_pillar_from_waxed_exposed_silver_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

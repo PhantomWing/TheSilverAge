@@ -8,11 +8,11 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 
@@ -27,9 +27,9 @@ public class ModTrimMaterials {
     public static final ResourceKey<EquipmentAsset> SILVER_EQUIPMENT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation("silver"));
 
-    // Per-asset override renders silver-on-silver trim with a darker palette so it stays visible.
-    public static final MaterialAssetGroup SILVER_ASSETS =
-            MaterialAssetGroup.create("silver", Map.of(SILVER_EQUIPMENT_ASSET, "silver_darker"));
+    // 26.3 replaced MaterialAssetGroup with a single palette id; the per-asset
+    // "silver_darker" override for silver-on-silver trim has no equivalent.
+    public static final Identifier SILVER_PALETTE = TheSilverAge.resourceLocation("trim/silver");
 
     public static final LinkedHashMap<ResourceKey<TrimMaterial>, Float> MOD_TRIM_MATERIALS = Util.make(new LinkedHashMap<>(), (map) -> {
         map.put(ModTrimMaterials.SILVER, ModTrimMaterials.SILVER_INDEX);
@@ -66,7 +66,7 @@ public class ModTrimMaterials {
 
     private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
         // `item`/`itemModelIndex` are unused by TrimMaterial now; kept to document legacy ordering.
-        TrimMaterial trimMaterial = new TrimMaterial(SILVER_ASSETS,
+        TrimMaterial trimMaterial = new TrimMaterial(SILVER_PALETTE,
                 Component.translatable(Util.makeDescriptionId("trim_material", trimKey.identifier())).withStyle(style));
         context.register(trimKey, trimMaterial);
     }
