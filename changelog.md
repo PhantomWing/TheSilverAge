@@ -1,3 +1,9 @@
+# 1.3.4
+
+### Fixes
+- Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
+
+
 # 1.3.3
 ### Fixes
 - Fixed the Cleric selling Silver Ingots for Emeralds not showing up on Fabric
