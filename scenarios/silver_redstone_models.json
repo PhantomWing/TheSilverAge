@@ -1,0 +1,20 @@
+{
+  "name": "Silver repeaters and comparators draw vanilla's torches, lit and unlit",
+  "gamemode": "creative",
+  "steps": [
+    { "setblock": [-3, 0, 0], "block": "minecraft:repeater[facing=south,delay=1]" },
+    { "setblock": [-1, 0, 0], "block": "minecraft:repeater[facing=south,delay=4]" },
+    { "setblock": [1, 0, 0], "block": "minecraft:comparator[facing=south,mode=compare]" },
+    { "setblock": [3, 0, 0], "block": "minecraft:comparator[facing=south,mode=subtract]" },
+    { "setblock": [-1, 0, 1], "block": "minecraft:redstone_block" },
+    { "setblock": [1, 0, 1], "block": "minecraft:redstone_block" },
+    { "setblock": [3, 0, 1], "block": "minecraft:redstone_block" },
+    { "expect": "block", "at": [-3, 0, 0], "is": "minecraft:repeater", "with": { "powered": "false" } },
+    { "expect": "block", "at": [-1, 0, 0], "is": "minecraft:repeater", "with": { "powered": "true" } },
+    { "expect": "block", "at": [1, 0, 0], "is": "minecraft:comparator", "with": { "powered": "true" } },
+    { "expect": "block", "at": [3, 0, 0], "is": "minecraft:comparator", "with": { "powered": "true" } },
+    { "move": [0, 0, -3] },
+    { "look": [0, 0, 0] },
+    { "screenshot": "repeaters_and_comparators" }
+  ]
+}
