@@ -32,7 +32,9 @@ public class DataGenerators {
 
         // 26.3 moved recipes, loot tables and advancements out of standalone providers and
         // into reloadable datapack registries. Recipes need two registries (they also emit
-        // their unlock advancements), hence the multi-registry bootstrap.
+        // their unlock advancements), hence the multi-registry bootstrap. Only the listed
+        // namespaces are written, and the vanilla recipes and advancements the mod overrides are
+        // minecraft's.
         event.createReloadableRegistryObjects(new RegistrySetBuilder()
                 .add(ModRecipeProvider.create())
                 .add(Registries.LOOT_TABLE, new LootTableProvider(
@@ -41,7 +43,7 @@ public class DataGenerators {
                                 ModBlockLootTableProvider::new, LootContextParamSets.BLOCK))))
                 .add(Registries.ADVANCEMENT, new AdvancementProvider(
                         List.of(ModAdvancementProvider::new))),
-                Set.of(TheSilverAge.MOD_ID));
+                Set.of(TheSilverAge.MOD_ID, "minecraft"));
 
         event.addProvider(new ModDataMapProvider(output, lookupProvider));
 

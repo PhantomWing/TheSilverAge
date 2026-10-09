@@ -55,18 +55,19 @@ public class ModAdvancementProvider extends AdvancementSubProvider {
         AdvancementHolder obtainSilverIngot = obtainItemAdvancement(this.output, theSilverAge, ModItems.SILVER_INGOT.get());
         obtainItemAdvancement(this.output, obtainSilverIngot, ModItems.MOON_DIAL.get());
 
-        // Recipe-book unlocks for the config-gated override recipes. 26.3 drops the advancement
-        // that RecipeBuilder would normally emit for a conditioned recipe, so these are built here
-        // and name a recipe TAG, which resolves when the datapack loads rather than at datagen.
-        recipeUnlock("brewing_stand", ModTags.Recipes.UNLOCKS_BREWING_STAND, Items.BLAZE_ROD,
+        // Recipe-book unlocks for the config-gated override recipes, at vanilla's own advancement ids
+        // so they replace vanilla's. Vanilla's name the recipe outright, and 26.3 binds a recipe an
+        // advancement names: with override_vanilla_recipes off that recipe is gone, and the server
+        // refused to start. These name a tag of optional entries instead, empty for the half that's off.
+        recipeUnlock("minecraft:recipes/brewing/brewing_stand", ModTags.Recipes.UNLOCKS_BREWING_STAND, Items.BLAZE_ROD,
                 vanillaRecipe("brewing_stand"), vanillaRecipe("brewing_stand_fallback"));
-        recipeUnlock("lodestone", ModTags.Recipes.UNLOCKS_LODESTONE, Items.CHISELED_STONE_BRICKS,
+        recipeUnlock("minecraft:recipes/decorations/lodestone", ModTags.Recipes.UNLOCKS_LODESTONE, Items.CHISELED_STONE_BRICKS,
                 vanillaRecipe("lodestone"), vanillaRecipe("lodestone_fallback"));
-        recipeUnlock("comparator", ModTags.Recipes.UNLOCKS_COMPARATOR, Items.REDSTONE_TORCH,
+        recipeUnlock("minecraft:recipes/redstone/comparator", ModTags.Recipes.UNLOCKS_COMPARATOR, Items.REDSTONE_TORCH,
                 vanillaRecipe("comparator"), vanillaRecipe("comparator_fallback"));
-        recipeUnlock("repeater", ModTags.Recipes.UNLOCKS_REPEATER, Items.REDSTONE_TORCH,
+        recipeUnlock("minecraft:recipes/redstone/repeater", ModTags.Recipes.UNLOCKS_REPEATER, Items.REDSTONE_TORCH,
                 vanillaRecipe("repeater"), vanillaRecipe("repeater_fallback"));
-        recipeUnlock("silver_ingot_from_crushed_raw_silver", ModTags.Recipes.UNLOCKS_SILVER_FROM_CRUSHED,
+        recipeUnlock(TheSilverAge.MOD_ID + ":recipes/silver_ingot_from_crushed_raw_silver", ModTags.Recipes.UNLOCKS_SILVER_FROM_CRUSHED,
                 ModItems.RAW_SILVER.get(),
                 ownRecipe("silver_ingot_from_crushed_raw_silver_smelting"),
                 ownRecipe("silver_ingot_from_crushed_raw_silver_blasting"));
@@ -95,7 +96,7 @@ public class ModAdvancementProvider extends AdvancementSubProvider {
      * the recipe being conditioned away (the tag is simply empty then).
      */
     @SafeVarargs
-    private void recipeUnlock(String name, TagKey<Recipe<?>> tag, net.minecraft.world.level.ItemLike trigger,
+    private void recipeUnlock(String id, TagKey<Recipe<?>> tag, net.minecraft.world.level.ItemLike trigger,
                               ResourceKey<Recipe<?>>... rewarded) {
         String hasItem = "has_" + ItemUtils.getName(trigger);
         AdvancementRewards.Builder rewards = new AdvancementRewards.Builder();
@@ -110,7 +111,7 @@ public class ModAdvancementProvider extends AdvancementSubProvider {
                         this.output.lookup(Registries.RECIPE).getOrThrow(tag)))
                 .requirements(AdvancementRequirements.anyOf(List.of("has_the_recipe", hasItem)))
                 .rewards(rewards)
-                .save(this.output, TheSilverAge.MOD_ID + ":recipes/" + name);
+                .save(this.output, id);
     }
 
     private static ResourceKey<Recipe<?>> vanillaRecipe(String path) {

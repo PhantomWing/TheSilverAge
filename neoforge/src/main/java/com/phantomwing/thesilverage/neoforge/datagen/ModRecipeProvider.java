@@ -8,6 +8,8 @@ import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
@@ -32,6 +34,7 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
@@ -408,10 +411,11 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
                 .save(output);
 
-        // Conditional overrides:
+        // Conditional overrides. Their unlock advancements are ModAdvancementProvider's, at vanilla's
+        // ids, which the ones RecipeBuilder makes would collide with.
         ICondition condition = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
-        RecipeOutput conditionalOutput = output.withConditions(condition);
-        RecipeOutput fallbackOutput = output.withConditions(new NotCondition(condition));
+        RecipeOutput conditionalOutput = withoutUnlocks(output.withConditions(condition));
+        RecipeOutput fallbackOutput = withoutUnlocks(output.withConditions(new NotCondition(condition)));
 
         // Lodestone
         shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
@@ -487,6 +491,31 @@ public class ModRecipeProvider extends RecipeProvider {
 
         // Firework Star override: STAR shape accepts gold OR silver nugget.
         fireworkStarOverride(conditionalOutput, fallbackOutput);
+    }
+
+    /** Saves through {@code output} without the unlock advancement RecipeBuilder makes for each recipe. */
+    private static RecipeOutput withoutUnlocks(RecipeOutput output) {
+        return new RecipeOutput() {
+            @Override
+            public void accept(ResourceKey<Recipe<?>> key, Recipe<?> recipe, AdvancementHolder advancement, ICondition... conditions) {
+                output.accept(key, recipe, null, conditions);
+            }
+
+            @Override
+            public Advancement.Builder advancement() {
+                return output.advancement();
+            }
+
+            @Override
+            public <S> HolderGetter<S> lookup(ResourceKey<? extends Registry<? extends S>> registry) {
+                return output.lookup(registry);
+            }
+
+            @Override
+            public <S> Stream<Holder.Reference<S>> listContextElements(ResourceKey<? extends Registry<? extends S>> registry) {
+                return output.listContextElements(registry);
+            }
+        };
     }
 
     /** Firework star override: conditional STAR = gold or silver nugget, plus a vanilla _fallback. */

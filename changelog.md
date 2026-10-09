@@ -2,6 +2,8 @@
 
 ### Fixes
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
+- Fixed the server failing to start with "Override vanilla recipes" turned off.
+- Fixed the Glistering Melon Slice recipe with silver nuggets missing.
 
 
 # 1.3.3
