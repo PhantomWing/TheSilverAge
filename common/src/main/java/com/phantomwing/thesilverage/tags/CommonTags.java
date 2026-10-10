@@ -36,6 +36,7 @@ public class CommonTags {
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
 
         // ARMORS — 1.21.11 nautilus armor convention tag (Silver Nautilus Armor).
+        public static final TagKey<Item> ARMORS_HORSE = tag("armors/horse");
         public static final TagKey<Item> ARMORS_NAUTILUS = tag("armors/nautilus");
 
         private static TagKey<Item> tag(String path) {

@@ -116,6 +116,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.SILVER_BOOTS.get()
         );
         // 1.21.11 Nautilus Armor (BODY-slot animal armor) — the c: convention tag.
+        // Horse Armor - the c: convention tag, which every loader has from 1.21.11.
+        tag(CommonTags.Items.ARMORS_HORSE).add(ModItems.SILVER_HORSE_ARMOR.get());
         tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get());
 
         // Armor trims

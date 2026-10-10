@@ -2,6 +2,7 @@
 
 ### Fixes
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
+- Silver Horse Armor is now in the c:armors/horse tag, so other mods recognize it as horse armor.
 
 
 # 1.3.3
