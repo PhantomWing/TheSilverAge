@@ -4,6 +4,7 @@
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
 - Fixed the server failing to start with "Override vanilla recipes" turned off.
 - Fixed the Glistering Melon Slice recipe with silver nuggets missing.
+- Silver Horse Armor is now in the c:armors/horse tag, so other mods recognize it as horse armor.
 
 
 # 1.3.3
