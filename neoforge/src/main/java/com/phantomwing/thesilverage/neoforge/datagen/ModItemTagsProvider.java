@@ -107,6 +107,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.SILVER_BOOTS.get().builtInRegistryHolder().key()
         );
         // Nautilus Armor
+        // Horse Armor - the c: convention tag, which every loader has from 1.21.11.
+        tag(CommonTags.Items.ARMORS_HORSE).add(ModItems.SILVER_HORSE_ARMOR.get().builtInRegistryHolder().key());
         tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get().builtInRegistryHolder().key());
 
         // Armor trims
