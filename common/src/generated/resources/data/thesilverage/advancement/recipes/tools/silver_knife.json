@@ -7,11 +7,11 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_silver_ingot": {
+    "has_ingots_silver": {
       "conditions": {
         "items": [
           {
-            "items": "thesilverage:silver_ingot"
+            "items": "#c:ingots/silver"
           }
         ]
       },
@@ -35,7 +35,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_silver_ingot"
+      "has_ingots_silver"
     ]
   ],
   "rewards": {
