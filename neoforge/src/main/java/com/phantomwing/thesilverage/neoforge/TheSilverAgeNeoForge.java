@@ -22,7 +22,8 @@ public final class TheSilverAgeNeoForge {
         ModConditions.register(modEventBus);
         ModLootModifiers.register(modEventBus);
 
-        container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
+        // Named as it was while the type was COMMON, so players keep their settings.
+        container.registerConfig(ModConfig.Type.LOCAL, Configuration.COMMON_CONFIG, "thesilverage-common.toml");
 
         if (FMLEnvironment.getDist().isClient()) {
             TheSilverAgeNeoForgeClient.init(modEventBus, container);

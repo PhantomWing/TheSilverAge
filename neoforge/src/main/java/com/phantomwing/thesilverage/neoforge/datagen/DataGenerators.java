@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.PackGenerator;
 
 import java.util.List;
 import java.util.Set;
@@ -26,16 +27,17 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getWorldLookupProvider();
+        PackGenerator pack = event.getDefaultPackGenerator();
 
         // World layer: worldgen features, placements, trim material and biome modifiers.
-        event.createWorldRegistryObjects(ModDatapackProvider.BUILDER, Set.of(TheSilverAge.MOD_ID));
+        pack.createWorldRegistryObjects(ModDatapackProvider.BUILDER, Set.of(TheSilverAge.MOD_ID));
 
         // 26.3 moved recipes, loot tables and advancements out of standalone providers and
         // into reloadable datapack registries. Recipes need two registries (they also emit
         // their unlock advancements), hence the multi-registry bootstrap. Only the listed
         // namespaces are written, and the vanilla recipes and advancements the mod overrides are
         // minecraft's.
-        event.createReloadableRegistryObjects(new RegistrySetBuilder()
+        pack.createReloadableRegistryObjects(new RegistrySetBuilder()
                 .add(ModRecipeProvider.create())
                 .add(Registries.LOOT_TABLE, new LootTableProvider(
                         Set.of(),
@@ -53,8 +55,9 @@ public class DataGenerators {
         event.addProvider(new ModItemTagsProvider(output, lookupProvider));
         event.addProvider(new ModBiomeTagsProvider(output, lookupProvider));
         event.addProvider(new ModEntityTypeTagsProvider(output, lookupProvider));
-        // Recipes live on the reloadable layer in 26.3, so their tags need that lookup.
-        event.addProvider(new ModRecipeTagsProvider(output, event.getReloadableLookupProvider()));
+        // Recipes live on the reloadable layer in 26.3, so their tags need that lookup: the pack's,
+        // as the event's doesn't hold the recipes generated above.
+        event.addProvider(new ModRecipeTagsProvider(output, pack.getReloadableLookupProvider()));
 
         event.addProvider(new ModGlobalLootModifierProvider(output, lookupProvider));
 
