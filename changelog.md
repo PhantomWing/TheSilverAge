@@ -1,7 +1,12 @@
 # 1.3.4
 
+### Changes
+- Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
+
 ### Fixes
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
+- Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
+- Added the missing Silver Knife name in every language besides English.
 
 
 # 1.3.3
