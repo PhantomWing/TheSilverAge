@@ -1,6 +1,6 @@
 {
   "values": [
-    "thesilverage:silver_ingot",
-    "thesilverage:silver_sheet"
+    "#c:ingots/silver",
+    "#c:plates/silver"
   ]
 }

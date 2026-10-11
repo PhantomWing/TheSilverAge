@@ -4,7 +4,7 @@
   "key": {
     "A": "minecraft:amethyst_shard",
     "G": "minecraft:glass",
-    "S": "thesilverage:silver_ingot"
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     "GGG",

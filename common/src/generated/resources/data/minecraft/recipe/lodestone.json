@@ -14,7 +14,7 @@
   ],
   "key": {
     "#": "minecraft:chiseled_stone_bricks",
-    "S": "thesilverage:silver_ingot"
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     "###",
