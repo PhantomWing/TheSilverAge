@@ -44,14 +44,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Glistering nuggets (used for e.g. the Glistering Melon override recipe)
         tag(ModTags.Items.GLISTERING_NUGGETS)
                 .add(Items.GOLD_NUGGET)
-                .add(ModItems.SILVER_NUGGET.get());
+                .addTag(CommonTags.Items.NUGGETS_SILVER);
 
         // Redstone silver components — all silver forms accepted as the "S" ingredient in the
         // Redstone Repeater / Comparator override recipes. Silver sheet is Create-only: it
         // exists as an item either way, but is only obtainable with Create installed.
         tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
-                .add(ModItems.SILVER_INGOT.get())
-                .add(ModItems.SILVER_SHEET.get());
+                .addTag(CommonTags.Items.INGOTS_SILVER)
+                .addTag(CommonTags.Items.PLATES_SILVER);
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -67,7 +67,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.RAW_MATERIALS).addTag(CommonTags.Items.RAW_MATERIALS_SILVER);
 
         // Materials
-        tag(CommonTags.Items.TOOL_MATERIALS_SILVER).add(ModItems.SILVER_INGOT.get());
+        tag(CommonTags.Items.TOOL_MATERIALS_SILVER).addTag(CommonTags.Items.INGOTS_SILVER);
 
         // Nuggets
         tag(CommonTags.Items.NUGGETS_SILVER).add(ModItems.SILVER_NUGGET.get());

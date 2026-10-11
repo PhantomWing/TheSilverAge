@@ -7,17 +7,9 @@
   ],
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:all_mods_loaded",
-      "values": [
-        "farmersdelight"
-      ]
-    }
-  ],
   "key": {
     "I": "minecraft:stick",
-    "X": "thesilverage:silver_ingot"
+    "X": "#c:ingots/silver"
   },
   "pattern": [
     "X",
