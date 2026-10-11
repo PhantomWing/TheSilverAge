@@ -1,8 +1,13 @@
 # 1.3.4
 
+### Changes
+- Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
+
 ### Fixes
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
 - Silver Horse Armor is now in the c:armors/horse tag, so other mods recognize it as horse armor.
+- Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
+- Added the missing names for the Silver Knife, Silver Spear and Silver Nautilus Armor in every language besides English.
 
 
 # 1.3.3

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "thesilverage:silver_ingot",
+    "#": "#c:ingots/silver",
     "S": "minecraft:stick"
   },
   "pattern": [

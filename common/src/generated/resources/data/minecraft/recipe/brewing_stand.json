@@ -15,7 +15,7 @@
   ],
   "key": {
     "B": "minecraft:blaze_rod",
-    "S": "thesilverage:silver_ingot"
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     " B ",

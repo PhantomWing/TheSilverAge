@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "thesilverage:silver_ingot"
+    "#": "#c:ingots/silver"
   },
   "pattern": [
     "##",
