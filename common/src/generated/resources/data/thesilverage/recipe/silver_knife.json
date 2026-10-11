@@ -17,7 +17,7 @@
   ],
   "key": {
     "I": "minecraft:stick",
-    "X": "thesilverage:silver_ingot"
+    "X": "#c:ingots/silver"
   },
   "pattern": [
     "X",

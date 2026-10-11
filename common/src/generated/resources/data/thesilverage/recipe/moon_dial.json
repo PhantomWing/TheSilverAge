@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "R": "minecraft:redstone",
-    "S": "thesilverage:silver_ingot"
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     " S ",
