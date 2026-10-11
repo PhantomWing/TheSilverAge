@@ -10,12 +10,15 @@
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5
+- Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
 
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
 - Crafting a Silver Bulb (and its variants) now yields 4 instead of 1
 - Crafting Silver Bricks from Silver Ingots now yields 1 instead of 4
 - Crafting Chiseled Silver from Cut Silver Slabs (and its variants) now yields 1 instead of 2
+- Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
+- Added the missing Silver Knife name in every language besides English.
 
 
 # 1.3.1

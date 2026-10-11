@@ -6,7 +6,7 @@
       "item": "thesilverage:silver_torch"
     },
     "X": {
-      "item": "thesilverage:silver_nugget"
+      "tag": "c:nuggets/silver"
     }
   },
   "pattern": [

@@ -5,11 +5,14 @@ import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -22,6 +25,12 @@ import java.util.concurrent.CompletableFuture;
 public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
     private static final float XP_MEDIUM = 1f;
+
+    // Recipes that use silver take the c: tags, so another mod's silver works in them too. The
+    // storage block and nugget conversions and the smelting keep this mod's own items: other
+    // silver mods have the same recipes for theirs, and two recipes matching one grid clash.
+    private static final TagKey<Item> SILVER_INGOTS = CommonTags.Items.INGOTS_SILVER;
+    private static final TagKey<Item> SILVER_NUGGETS = CommonTags.Items.NUGGETS_SILVER;
 
     public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider);
@@ -55,11 +64,11 @@ public class ModRecipeProvider extends RecipeProvider {
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
         // Tools
-        sword(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_INGOT.get());
-        pickaxe(output, ModItems.SILVER_PICKAXE.get(), ModItems.SILVER_INGOT.get());
-        axe(output, ModItems.SILVER_AXE.get(), ModItems.SILVER_INGOT.get());
-        hoe(output, ModItems.SILVER_HOE.get(), ModItems.SILVER_INGOT.get());
-        shovel(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_INGOT.get());
+        sword(output, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
+        pickaxe(output, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
+        axe(output, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
+        hoe(output, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
+        shovel(output, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
 
         // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
         // Gated on FD being present — without FD the item is a hidden fallback,
@@ -68,16 +77,16 @@ public class ModRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
-                .define('X', ModItems.SILVER_INGOT.get())
+                .define('X', SILVER_INGOTS)
                 .define('I', Items.STICK)
-                .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(fdGated);
 
         // Armor
-        helmet(output, ModItems.SILVER_HELMET.get(), ModItems.SILVER_INGOT.get());
-        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), ModItems.SILVER_INGOT.get());
-        leggings(output, ModItems.SILVER_LEGGINGS.get(), ModItems.SILVER_INGOT.get());
-        boots(output, ModItems.SILVER_BOOTS.get(), ModItems.SILVER_INGOT.get());
+        helmet(output, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
+        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
+        leggings(output, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
+        boots(output, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
 
         // Smelting tools/armor into nuggets
         oreSmeltingRecipes(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
@@ -111,7 +120,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("SRS")
                 .pattern(" S ")
                 .define('R', Items.REDSTONE)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(output);
 
@@ -122,7 +131,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("SSS")
                 .define('G', Items.GLASS)
                 .define('A', Items.AMETHYST_SHARD)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
                 .save(output);
         
@@ -170,7 +179,12 @@ public class ModRecipeProvider extends RecipeProvider {
         // Waxed brick variants are additionally obtainable via Honeycomb on
         // the matching unwaxed one (the waxable() chain below); placed
         // silver_bricks also still oxidize naturally over time.
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 1);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), 1)
+                .pattern("##")
+                .pattern("##")
+                .define('#', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(output, getRecipeName(ModItems.SILVER_INGOT.get(), ModItems.SILVER_BRICKS.get()));
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
         stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
@@ -407,38 +421,38 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER_GRATE.get());
 
         // Silver Door
-        door(output, ModItems.SILVER_DOOR.get(), ModItems.SILVER_INGOT.get());
+        door(output, ModItems.SILVER_DOOR.get(), SILVER_INGOTS);
         waxable(oxidationGated, ModItems.SILVER_DOOR.get(), ModItems.WAXED_SILVER_DOOR.get());
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_DOOR.get(), ModItems.WAXED_EXPOSED_SILVER_DOOR.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_DOOR.get(), ModItems.WAXED_WEATHERED_SILVER_DOOR.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_DOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_DOOR.get());
 
         // Silver Trapdoor
-        trapdoor(output, ModItems.SILVER_TRAPDOOR.get(), ModItems.SILVER_INGOT.get());
+        trapdoor(output, ModItems.SILVER_TRAPDOOR.get(), SILVER_INGOTS);
         waxable(oxidationGated, ModItems.SILVER_TRAPDOOR.get(), ModItems.WAXED_SILVER_TRAPDOOR.get());
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
 
         // Silver Torch — mirrors the vanilla Copper Torch shape (nugget over coal over stick).
-        silverTorch(output, ModItems.SILVER_TORCH.get(), ModItems.SILVER_NUGGET.get());
+        silverTorch(output, ModItems.SILVER_TORCH.get(), SILVER_NUGGETS);
 
         // Silver Lantern
-        lantern(output, ModItems.SILVER_LANTERN.get(), ModItems.SILVER_NUGGET.get(), ModItems.SILVER_TORCH.get());
+        lantern(output, ModItems.SILVER_LANTERN.get(), SILVER_NUGGETS, ModItems.SILVER_TORCH.get());
         waxable(oxidationGated, ModItems.SILVER_LANTERN.get(), ModItems.WAXED_SILVER_LANTERN.get());
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_LANTERN.get(), ModItems.WAXED_EXPOSED_SILVER_LANTERN.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_LANTERN.get(), ModItems.WAXED_WEATHERED_SILVER_LANTERN.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_LANTERN.get(), ModItems.WAXED_OXIDIZED_SILVER_LANTERN.get());
 
         // Silver Chain
-        chain(output, ModItems.SILVER_CHAIN.get(), ModItems.SILVER_INGOT.get(), ModItems.SILVER_NUGGET.get());
+        chain(output, ModItems.SILVER_CHAIN.get(), SILVER_INGOTS, SILVER_NUGGETS);
         waxable(oxidationGated, ModItems.SILVER_CHAIN.get(), ModItems.WAXED_SILVER_CHAIN.get());
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_CHAIN.get(), ModItems.WAXED_EXPOSED_SILVER_CHAIN.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_CHAIN.get(), ModItems.WAXED_WEATHERED_SILVER_CHAIN.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_CHAIN.get(), ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
 
         // Silver Bars
-        bars(output, ModItems.SILVER_BARS.get(), ModItems.SILVER_INGOT.get());
+        bars(output, ModItems.SILVER_BARS.get(), SILVER_INGOTS);
         waxable(oxidationGated, ModItems.SILVER_BARS.get(), ModItems.WAXED_SILVER_BARS.get());
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_BARS.get(), ModItems.WAXED_EXPOSED_SILVER_BARS.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_BARS.get(), ModItems.WAXED_WEATHERED_SILVER_BARS.get());
@@ -446,7 +460,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     /** Torch: nugget over coal/charcoal over a stick, yields 4 (vanilla Copper Torch shape). */
-    private static void silverTorch(RecipeOutput output, ItemLike result, ItemLike nugget) {
+    private static void silverTorch(RecipeOutput output, ItemLike result, TagKey<Item> nugget) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 4)
                 .pattern("N")
                 .pattern("X")
@@ -459,7 +473,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     /** Lantern: 8 nuggets around a torch (vanilla lantern shape). */
-    private static void lantern(RecipeOutput output, ItemLike result, ItemLike nugget, ItemLike torch) {
+    private static void lantern(RecipeOutput output, ItemLike result, TagKey<Item> nugget, ItemLike torch) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 1)
                 .pattern("XXX")
                 .pattern("X#X")
@@ -471,7 +485,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     /** Chain: nugget / ingot / nugget vertically (vanilla chain shape). */
-    private static void chain(RecipeOutput output, ItemLike result, ItemLike ingot, ItemLike nugget) {
+    private static void chain(RecipeOutput output, ItemLike result, TagKey<Item> ingot, TagKey<Item> nugget) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 1)
                 .pattern("N")
                 .pattern("I")
@@ -483,7 +497,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     /** Bars: 6 ingots in a 3x2, yields 16 (vanilla iron/copper bars shape). */
-    private static void bars(RecipeOutput output, ItemLike result, ItemLike ingot) {
+    private static void bars(RecipeOutput output, ItemLike result, TagKey<Item> ingot) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 16)
                 .pattern("###")
                 .pattern("###")
@@ -515,8 +529,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("#S#")
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
-                .define('S', ModItems.SILVER_INGOT.get())
-                .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
+                .define('S', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(conditionalOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
@@ -532,7 +546,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(conditionalOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
@@ -631,16 +645,16 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    private static void door(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private static void door(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
         doorBuilder(item, Ingredient.of(material))
-                .group(ItemUtils.getName(material))
+                .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    private static void trapdoor(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+    private static void trapdoor(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
         trapdoorBuilder(item, Ingredient.of(material))
-                .group(ItemUtils.getName(material))
+                .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
@@ -728,7 +742,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(item, result));
     }
 
-    protected static void sword(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected static void sword(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, tool)
             .pattern("#")
             .pattern("#")
@@ -739,7 +753,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void pickaxe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected static void pickaxe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("###")
             .pattern(" S ")
@@ -749,7 +763,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .unlockedBy(getHasName(material), has(material))
             .save(recipeOutput);
     }
-    protected static void axe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected static void axe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern("#S")
@@ -760,7 +774,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void hoe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected static void hoe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern(" S")
@@ -771,7 +785,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void shovel(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected static void shovel(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, tool)
             .pattern("#")
             .pattern("S")
@@ -782,7 +796,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected static void helmet(RecipeOutput recipeOutput, ItemLike helmet, ItemLike material) {
+    protected static void helmet(RecipeOutput recipeOutput, ItemLike helmet, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet)
                 .pattern("###")
                 .pattern("# #")
@@ -791,7 +805,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, ItemLike material) {
+    protected static void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chestplate)
                 .pattern("# #")
                 .pattern("###")
@@ -801,7 +815,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void leggings(RecipeOutput recipeOutput, ItemLike leggings, ItemLike material) {
+    protected static void leggings(RecipeOutput recipeOutput, ItemLike leggings, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, leggings)
                 .pattern("###")
                 .pattern("# #")
@@ -811,7 +825,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void boots(RecipeOutput recipeOutput, ItemLike boots, ItemLike material) {
+    protected static void boots(RecipeOutput recipeOutput, ItemLike boots, TagKey<Item> material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots)
                 .pattern("# #")
                 .pattern("# #")
@@ -867,5 +881,9 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected static String getRecipeName(ItemLike item, ItemLike result) {
         return TheSilverAge.MOD_ID + ":" + getConversionRecipeName(result, item);
+    }
+
+    protected static String getHasName(TagKey<Item> tag) {
+        return "has_" + tag.location().getPath().replace('/', '_');
     }
 }

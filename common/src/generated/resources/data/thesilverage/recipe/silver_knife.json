@@ -20,7 +20,7 @@
       "item": "minecraft:stick"
     },
     "X": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "c:ingots/silver"
     }
   },
   "pattern": [

@@ -6,7 +6,7 @@
       "item": "minecraft:stick"
     },
     "N": {
-      "item": "thesilverage:silver_nugget"
+      "tag": "c:nuggets/silver"
     },
     "X": [
       {

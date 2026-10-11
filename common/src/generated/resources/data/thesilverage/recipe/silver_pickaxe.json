@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "c:ingots/silver"
     },
     "S": {
       "item": "minecraft:stick"

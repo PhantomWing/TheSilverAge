@@ -6,7 +6,7 @@
       "item": "minecraft:redstone"
     },
     "S": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "c:ingots/silver"
     }
   },
   "pattern": [

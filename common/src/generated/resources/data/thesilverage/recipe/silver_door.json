@@ -4,7 +4,7 @@
   "group": "silver_ingot",
   "key": {
     "#": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "c:ingots/silver"
     }
   },
   "pattern": [

@@ -18,7 +18,7 @@
       "item": "minecraft:chiseled_stone_bricks"
     },
     "S": {
-      "item": "thesilverage:silver_ingot"
+      "tag": "c:ingots/silver"
     }
   },
   "pattern": [
