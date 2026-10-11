@@ -3,7 +3,7 @@
   "category": "redstone",
   "group": "silver_ingot",
   "key": {
-    "#": "thesilverage:silver_ingot"
+    "#": "#c:ingots/silver"
   },
   "pattern": [
     "##",

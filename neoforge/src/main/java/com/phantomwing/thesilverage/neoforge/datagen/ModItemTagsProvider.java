@@ -39,12 +39,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Glistering nuggets (used for e.g. the Glistering Melon override recipe)
         tag(ModTags.Items.GLISTERING_NUGGETS)
                 .add(Items.GOLD_NUGGET.builtInRegistryHolder().key())
-                .add(ModItems.SILVER_NUGGET.get().builtInRegistryHolder().key());
+                .addTag(CommonTags.Items.NUGGETS_SILVER);
 
         // Redstone silver components ("S" ingredient in Repeater/Comparator override recipes).
         tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
-                .add(ModItems.SILVER_INGOT.get().builtInRegistryHolder().key())
-                .add(ModItems.SILVER_SHEET.get().builtInRegistryHolder().key());
+                .addTag(CommonTags.Items.INGOTS_SILVER)
+                .addTag(CommonTags.Items.PLATES_SILVER);
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -60,7 +60,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.RAW_MATERIALS).addTag(CommonTags.Items.RAW_MATERIALS_SILVER);
 
         // Materials
-        tag(CommonTags.Items.TOOL_MATERIALS_SILVER).add(ModItems.SILVER_INGOT.get().builtInRegistryHolder().key());
+        tag(CommonTags.Items.TOOL_MATERIALS_SILVER).addTag(CommonTags.Items.INGOTS_SILVER);
 
         // Nuggets
         tag(CommonTags.Items.NUGGETS_SILVER).add(ModItems.SILVER_NUGGET.get().builtInRegistryHolder().key());

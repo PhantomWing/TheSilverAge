@@ -5,6 +5,7 @@ import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderGetter;
@@ -15,6 +16,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.crafting.*;
@@ -30,6 +32,11 @@ import java.util.concurrent.CompletableFuture;
 public class ModRecipeProvider extends RecipeProvider {
     private static final float XP_TINY = 0.1f;
     private static final float XP_MEDIUM = 1f;
+
+    // Recipes that use silver take the c: tags, so another mod's silver works in them too. The
+    // storage block and nugget conversions and the smelting keep this mod's own items: other
+    // silver mods have the same recipes for theirs, and two recipes matching one grid clash.
+    private static final TagKey<Item> SILVER_INGOTS = CommonTags.Items.INGOTS_SILVER;
 
     // Kept so conditional override recipes can wrap it via output.withConditions(...).
     private final RecipeOutput output;
@@ -73,28 +80,28 @@ public class ModRecipeProvider extends RecipeProvider {
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
         // Tools
-        sword(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_INGOT.get());
-        pickaxe(output, ModItems.SILVER_PICKAXE.get(), ModItems.SILVER_INGOT.get());
-        axe(output, ModItems.SILVER_AXE.get(), ModItems.SILVER_INGOT.get());
-        hoe(output, ModItems.SILVER_HOE.get(), ModItems.SILVER_INGOT.get());
-        shovel(output, ModItems.SILVER_SHOVEL.get(), ModItems.SILVER_INGOT.get());
-        spear(output, ModItems.SILVER_SPEAR.get(), ModItems.SILVER_INGOT.get());
+        sword(output, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
+        pickaxe(output, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
+        axe(output, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
+        hoe(output, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
+        shovel(output, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
+        spear(output, ModItems.SILVER_SPEAR.get(), SILVER_INGOTS);
 
         // Silver Knife, gated on Farmer's Delight being present.
         var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT));
         shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
-                .define('X', ModItems.SILVER_INGOT.get())
+                .define('X', SILVER_INGOTS)
                 .define('I', Items.STICK)
-                .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(fdGated);
 
         // Armor
-        helmet(output, ModItems.SILVER_HELMET.get(), ModItems.SILVER_INGOT.get());
-        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), ModItems.SILVER_INGOT.get());
-        leggings(output, ModItems.SILVER_LEGGINGS.get(), ModItems.SILVER_INGOT.get());
-        boots(output, ModItems.SILVER_BOOTS.get(), ModItems.SILVER_INGOT.get());
+        helmet(output, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
+        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
+        leggings(output, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
+        boots(output, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
 
         // Smelting tools/armor into nuggets
         oreSmeltingRecipes(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
@@ -130,7 +137,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("SRS")
                 .pattern(" S ")
                 .define('R', Items.REDSTONE)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(output);
 
@@ -141,7 +148,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("SSS")
                 .define('G', Items.GLASS)
                 .define('A', Items.AMETHYST_SHARD)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
                 .save(output);
         
@@ -179,7 +186,12 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
         // Silver Bricks
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_INGOT.get(), 4);
+        shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), 4)
+                .pattern("##")
+                .pattern("##")
+                .define('#', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(output, getRecipeName(ModItems.SILVER_INGOT.get(), ModItems.SILVER_BRICKS.get()));
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
         stoneCutting(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
@@ -379,14 +391,14 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(output, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER_GRATE.get());
 
         // Silver Door
-        door(output, ModItems.SILVER_DOOR.get(), ModItems.SILVER_INGOT.get());
+        door(output, ModItems.SILVER_DOOR.get(), SILVER_INGOTS);
         waxable(output, ModItems.SILVER_DOOR.get(), ModItems.WAXED_SILVER_DOOR.get());
         waxable(output, ModItems.EXPOSED_SILVER_DOOR.get(), ModItems.WAXED_EXPOSED_SILVER_DOOR.get());
         waxable(output, ModItems.WEATHERED_SILVER_DOOR.get(), ModItems.WAXED_WEATHERED_SILVER_DOOR.get());
         waxable(output, ModItems.OXIDIZED_SILVER_DOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_DOOR.get());
 
         // Silver Trapdoor
-        trapdoor(output, ModItems.SILVER_TRAPDOOR.get(), ModItems.SILVER_INGOT.get());
+        trapdoor(output, ModItems.SILVER_TRAPDOOR.get(), SILVER_INGOTS);
         waxable(output, ModItems.SILVER_TRAPDOOR.get(), ModItems.WAXED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
         waxable(output, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
@@ -416,8 +428,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("#S#")
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
-                .define('S', ModItems.SILVER_INGOT.get())
-                .unlockedBy(getHasName(ModItems.SILVER_INGOT.get()), has(ModItems.SILVER_INGOT.get()))
+                .define('S', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(conditionalOutput);
         shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
@@ -433,7 +445,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
-                .define('S', ModItems.SILVER_INGOT.get())
+                .define('S', SILVER_INGOTS)
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(conditionalOutput);
         shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
@@ -544,16 +556,16 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    private void door(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
-        doorBuilder(item, Ingredient.of(material))
-                .group(ItemUtils.getName(material))
+    private void door(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
+        doorBuilder(item, tag(material))
+                .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
-    private void trapdoor(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
-        trapdoorBuilder(item, Ingredient.of(material))
-                .group(ItemUtils.getName(material))
+    private void trapdoor(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
+        trapdoorBuilder(item, tag(material))
+                .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
@@ -640,7 +652,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, getRecipeName(item, result));
     }
 
-    protected void sword(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void sword(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, tool)
             .pattern("#")
             .pattern("#")
@@ -651,7 +663,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected void spear(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void spear(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, tool)
             .pattern("  #")
             .pattern(" S ")
@@ -662,7 +674,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected void pickaxe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void pickaxe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.TOOLS, tool)
             .pattern("###")
             .pattern(" S ")
@@ -672,7 +684,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .unlockedBy(getHasName(material), has(material))
             .save(recipeOutput);
     }
-    protected void axe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void axe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern("#S")
@@ -683,7 +695,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected void hoe(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void hoe(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.TOOLS, tool)
             .pattern("##")
             .pattern(" S")
@@ -694,7 +706,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected void shovel(RecipeOutput recipeOutput, ItemLike tool, ItemLike material) {
+    protected void shovel(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
         shaped(RecipeCategory.TOOLS, tool)
             .pattern("#")
             .pattern("S")
@@ -705,7 +717,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
     }
 
-    protected void helmet(RecipeOutput recipeOutput, ItemLike helmet, ItemLike material) {
+    protected void helmet(RecipeOutput recipeOutput, ItemLike helmet, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, helmet)
                 .pattern("###")
                 .pattern("# #")
@@ -714,7 +726,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, ItemLike material) {
+    protected void chestplate(RecipeOutput recipeOutput, ItemLike chestplate, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, chestplate)
                 .pattern("# #")
                 .pattern("###")
@@ -724,7 +736,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected void leggings(RecipeOutput recipeOutput, ItemLike leggings, ItemLike material) {
+    protected void leggings(RecipeOutput recipeOutput, ItemLike leggings, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, leggings)
                 .pattern("###")
                 .pattern("# #")
@@ -734,7 +746,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected void boots(RecipeOutput recipeOutput, ItemLike boots, ItemLike material) {
+    protected void boots(RecipeOutput recipeOutput, ItemLike boots, TagKey<Item> material) {
         shaped(RecipeCategory.COMBAT, boots)
                 .pattern("# #")
                 .pattern("# #")
@@ -794,5 +806,9 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected String getRecipeName(ItemLike item, ItemLike result) {
         return TheSilverAge.MOD_ID + ":" + getConversionRecipeName(result, item);
+    }
+
+    protected static String getHasName(TagKey<Item> tag) {
+        return "has_" + tag.location().getPath().replace('/', '_');
     }
 }
