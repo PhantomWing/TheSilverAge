@@ -8,6 +8,8 @@
 - Silver Horse Armor is now in the c:armors/horse tag, so other mods recognize it as horse armor.
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing names for the Silver Knife, Silver Spear and Silver Nautilus Armor in every language besides English.
+- Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
+- Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
 
 
 # 1.3.3
