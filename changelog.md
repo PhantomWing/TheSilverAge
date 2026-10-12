@@ -7,6 +7,8 @@
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing Silver Knife name in every language besides English.
+- Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
+- Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
 
 
 # 1.3.3
