@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.api.distmarker.Dist;
@@ -17,11 +16,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.jarcontents.JarContents;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.resource.JarContentsPackResources;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 
 // Built-in resource pack for the silver-themed brewing-stand/comparator/repeater
@@ -35,6 +34,8 @@ public final class RecipeOverridePackHandler {
 
     private static volatile boolean appliedOverride = false;
     private static volatile boolean syncPending = false;
+    // Without the pack no reload can change appliedOverride, so every sync would reload again.
+    private static volatile boolean packAvailable = false;
 
     private RecipeOverridePackHandler() {
     }
@@ -43,16 +44,14 @@ public final class RecipeOverridePackHandler {
     public static void onAddPackFinders(@NotNull AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
-        Path packRoot = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile()
-                .getContents().getContentRoots().stream()
-                .map(root -> root.resolve(PACK_RESOURCE_ROOT))
-                .filter(Files::exists)
-                .findFirst()
-                .orElse(null);
-        if (packRoot == null || !Files.exists(packRoot)) {
-            TheSilverAge.LOGGER.warn("Recipe-override pack root '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
+        // Read through the mod file's contents, as NeoForge's own addPackFinders does: its content roots
+        // are folders only in a dev run, and in a shipped jar the jar file itself.
+        JarContents contents = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile().getContents();
+        if (!contents.containsFile(PACK_RESOURCE_ROOT + "/pack.mcmeta")) {
+            TheSilverAge.LOGGER.warn("Recipe-override pack '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
             return;
         }
+        packAvailable = true;
 
         event.addRepositorySource(consumer -> {
             boolean enabled = desiredOverride();
@@ -69,7 +68,7 @@ public final class RecipeOverridePackHandler {
 
             Pack pack = Pack.readMetaAndCreate(
                     location,
-                    new PathPackResources.PathResourcesSupplier(packRoot),
+                    new JarContentsPackResources.JarContentsResourcesSupplier(contents, PACK_RESOURCE_ROOT),
                     PackType.CLIENT_RESOURCES,
                     selection);
             if (pack != null) {
@@ -110,7 +109,7 @@ public final class RecipeOverridePackHandler {
         if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
         if (mc.screen instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
         syncPending = false;
-        if (appliedOverride != desiredOverride()) {
+        if (packAvailable && appliedOverride != desiredOverride()) {
             mc.reloadResourcePacks();
         }
     }
