@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.api.distmarker.Dist;
@@ -17,11 +16,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.jarcontents.JarContents;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.resource.JarContentsPackResources;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -58,6 +57,8 @@ public final class RecipeOverridePackHandler {
     private static volatile boolean appliedOverride = false;
     /** Whether a sync is queued, waiting for a safe moment to reload. */
     private static volatile boolean syncPending = false;
+    /** Whether the pack registered: without it no reload can change appliedOverride, so every sync would reload again. */
+    private static volatile boolean packAvailable = false;
 
     private RecipeOverridePackHandler() {
     }
@@ -66,21 +67,14 @@ public final class RecipeOverridePackHandler {
     public static void onAddPackFinders(@NotNull AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
-        // 1.21.9: IModFile.findResource(String) was removed; resolve the pack root against
-        // the mod file's content roots (its JarContents) instead.
-        Path packRoot = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile()
-                .getContents().getContentRoots().stream()
-                .map(root -> root.resolve(PACK_RESOURCE_ROOT))
-                .filter(Files::exists)
-                .findFirst()
-                .orElse(null);
-        if (packRoot == null || !Files.exists(packRoot)) {
-            // In a dev environment common's resources may not be on the NeoForge
-            // mod file's resource path (see the processResources copy in
-            // neoforge/build.gradle). Skip rather than risk a null pack.
-            TheSilverAge.LOGGER.warn("Recipe-override pack root '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
+        // 1.21.9 removed IModFile.findResource(String). Read through the mod file's contents, as NeoForge's own
+        // addPackFinders does: its content roots are folders only in a dev run, and in a shipped jar the jar file itself.
+        JarContents contents = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile().getContents();
+        if (!contents.containsFile(PACK_RESOURCE_ROOT + "/pack.mcmeta")) {
+            TheSilverAge.LOGGER.warn("Recipe-override pack '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
             return;
         }
+        packAvailable = true;
 
         // Register the source ONCE; its lambda re-runs on every reload, so the
         // config/server gate here is what makes reloads re-evaluate the state.
@@ -101,7 +95,7 @@ public final class RecipeOverridePackHandler {
 
             Pack pack = Pack.readMetaAndCreate(
                     location,
-                    new PathPackResources.PathResourcesSupplier(packRoot),
+                    new JarContentsPackResources.JarContentsResourcesSupplier(contents, PACK_RESOURCE_ROOT),
                     PackType.CLIENT_RESOURCES,
                     selection);
             if (pack != null) {
@@ -155,7 +149,7 @@ public final class RecipeOverridePackHandler {
         if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
         if (mc.screen instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
         syncPending = false;
-        if (appliedOverride != desiredOverride()) {
+        if (packAvailable && appliedOverride != desiredOverride()) {
             mc.reloadResourcePacks();
         }
     }
