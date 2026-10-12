@@ -11,6 +11,8 @@
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing names for the Silver Knife, Silver Spear and Silver Nautilus Armor in every language besides English.
 - Fixed the mod failing to load on NeoForge 26.3.0.37 and newer, with "ModConfig$Type does not have member field COMMON". It now needs NeoForge 26.3.0.48 or newer, with Architectury API 22.0.4 or newer, and keeps the settings you already have.
+- Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
+- Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
 
 
 # 1.3.3
