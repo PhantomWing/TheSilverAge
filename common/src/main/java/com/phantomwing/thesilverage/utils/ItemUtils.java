@@ -2,17 +2,17 @@ package com.phantomwing.thesilverage.utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.Objects;
 
 public class ItemUtils {
-    public static ResourceLocation getResourceLocation(ItemLike item) {
+    public static Identifier getResourceLocation(ItemLike item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
     }
 
@@ -25,26 +25,26 @@ public class ItemUtils {
     }
 
     public static String getNameWithNamespace(ItemLike item) {
-        ResourceLocation rl = getResourceLocation(item);
+        Identifier rl = getResourceLocation(item);
         return rl.getNamespace() + ":" + rl.getPath();
     }
 
-    public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
+    public static Identifier getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
         String namespace = getNamespace(item);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
+        return Identifier.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
-    public static ResourceLocation getItemResourceLocation(ItemLike item) {
+    public static Identifier getItemResourceLocation(ItemLike item) {
         return getPrefixedResourceLocation(item, "item", "");
     }
 
-    public static ResourceLocation getItemResourceLocation(ItemLike item, String suffix) {
+    public static Identifier getItemResourceLocation(ItemLike item, String suffix) {
         return getPrefixedResourceLocation(item, "item", suffix);
     }
 
     public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
         String itemName = item.toString();
-        String trimName = trimMaterial.location().getPath();
+        String trimName = trimMaterial.identifier().getPath();
 
         if (itemName.contains(trimName)) {
             return trimName + "_darker";
@@ -62,15 +62,13 @@ public class ItemUtils {
         int count = Math.min(new ItemStack(item.asItem()).getMaxStackSize(), from.getCount());
         ItemStack to = new ItemStack(item.asItem(), count);
 
-        // Carry over the durability of the replaced item if both items are damageable.
+        // Carry over durability if both items are damageable.
         if (from.isDamaged() && to.isDamageableItem()) {
             int durability = Math.min(from.getDamageValue(), to.getMaxDamage());
             to.setDamageValue(durability);
         }
 
-        // Carry over enchantments from the replaced item to the new item (if supported).
-        // (Uses vanilla ItemStack/Enchantment APIs rather than the NeoForge
-        // convenience helpers so this stays loader-agnostic; behaviour is the same.)
+        // Carry over enchantments if supported.
         if (from.isEnchanted() && to.isEnchantable()) {
             ItemEnchantments enchantments = from.getEnchantments();
             enchantments.keySet().forEach(enchantment -> {

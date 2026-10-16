@@ -6,28 +6,27 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.data.advancements.AdvancementSubProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ModAdvancementProvider implements AdvancementProvider.AdvancementGenerator {
+public class ModAdvancementProvider implements AdvancementSubProvider {
     @Override
-    public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer, @NotNull ExistingFileHelper existingFileHelper) {
+    public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer) {
         // Root tab
         AdvancementHolder theSilverAge = Advancement.Builder.advancement()
                 .display(ModItems.RAW_SILVER.get(),
                         getAdvancementTitle("root"),
                         getAdvancementDesc("root"),
-                        ResourceLocation.parse("thesilverage:textures/block/oxidized_cut_silver.png"),
+                        Identifier.parse("thesilverage:block/oxidized_cut_silver"),
                         AdvancementType.TASK, false, false, false)
                 .addCriterion("root", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
                 .save(consumer, getNameId("root"));

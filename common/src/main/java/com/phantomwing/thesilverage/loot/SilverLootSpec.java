@@ -1,8 +1,9 @@
 package com.phantomwing.thesilverage.loot;
 
 import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
@@ -11,38 +12,19 @@ import java.util.function.Supplier;
 /**
  * Single, loader-agnostic source of truth for every Silver loot injection.
  *
- * <p>Lifted verbatim from the original NeoForge
- * {@code ModGlobalLootModifierProvider.start()} (468 lines). Each {@link Entry}
- * preserves, exactly, the original GLM's: datagen JSON file name, target vanilla
- * loot table, {@code random_chance}, operation, added item, count bounds, and
- * (for REPLACE) the list of removed items, in the original declaration order.
- * This is the parity contract — both the NeoForge GLM datagen provider and the
- * Fabric loot mixin iterate this list, so the two loaders behave identically and
- * the regenerated NeoForge GLM JSON is byte-identical to what is committed.</p>
- *
- * <p>The {@code targetLootTable} is {@code minecraft:<path>} where {@code path}
- * is the {@code BuiltInLootTables} key path — exactly what the original
- * {@code isVanillaLootTable(key)} produced
- * ({@code ResourceLocation.withDefaultNamespace(key.location().getPath())}) and
- * what the {@code neoforge:loot_table_id} condition matches against. For the
- * silverfish entry it is {@code EntityType.SILVERFISH.getDefaultLootTable()}
- * ({@code minecraft:entities/silverfish}).</p>
- *
- * <p>{@code ModItems} suppliers are wrapped in {@link Supplier} so this class
- * can be class-loaded before item registration completes; the item is resolved
- * lazily when {@link #entries()} is iterated at datagen / loot-roll time.</p>
+ * <p>{@code item} suppliers are lazy so this class can be loaded before item
+ * registration completes; they resolve when {@link #entries()} is iterated.</p>
  */
 public final class SilverLootSpec {
     private SilverLootSpec() {
     }
 
-    /** The three loot operations, matching the three original GLM types. */
     public enum Op {
-        /** {@code AddItemModifier} — appends {@code [min,max]} of {@code item} (stack-splitting). */
+        /** Appends {@code [min,max]} of {@code item} (stack-splitting). */
         ADD,
-        /** {@code ReplaceItemModifier} — transmutes up to {@code [minStacks,maxStacks]} (0 ⇒ all) matched stacks. */
+        /** Transmutes up to {@code [minStacks,maxStacks]} (0 ⇒ all) matched stacks. */
         REPLACE,
-        /** {@code SilverfishDropsModifier} — tests carried conditions, then appends {@code [min,max]} of {@code item}. */
+        /** Tests carried conditions, then appends {@code [min,max]} of {@code item}. */
         SILVERFISH
     }
 
@@ -58,57 +40,53 @@ public final class SilverLootSpec {
      * @param max            ADD/SILVERFISH: max count. REPLACE: maxStacks (0 ⇒ replace all).
      * @param removedItems   REPLACE only: items eligible to be replaced (empty for ADD/SILVERFISH).
      */
-    public record Entry(String id, ResourceLocation targetLootTable, float chance, Op op,
+    public record Entry(String id, Identifier targetLootTable, float chance, Op op,
                         Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
     }
 
-    private static ResourceLocation mc(String path) {
-        return ResourceLocation.withDefaultNamespace(path);
+    private static Identifier mc(String path) {
+        return Identifier.withDefaultNamespace(path);
     }
 
     private static Supplier<Item> vanilla(Item item) {
         return () -> item;
     }
 
-    // --- Vanilla loot table ids (BuiltInLootTables key paths, default-namespaced) ---
-    private static final ResourceLocation SILVERFISH_ENTITY = mc("entities/silverfish");
-    private static final ResourceLocation DESERT_PYRAMID = mc("chests/desert_pyramid");
-    private static final ResourceLocation JUNGLE_TEMPLE = mc("chests/jungle_temple");
-    private static final ResourceLocation SHIPWRECK_TREASURE = mc("chests/shipwreck_treasure");
-    private static final ResourceLocation SHIPWRECK_MAP = mc("chests/shipwreck_map");
-    private static final ResourceLocation BURIED_TREASURE = mc("chests/buried_treasure");
-    private static final ResourceLocation VILLAGE_ARMORER = mc("chests/village/village_armorer");
-    private static final ResourceLocation VILLAGE_TEMPLE = mc("chests/village/village_temple");
-    private static final ResourceLocation VILLAGE_TOOLSMITH = mc("chests/village/village_toolsmith");
-    private static final ResourceLocation VILLAGE_WEAPONSMITH = mc("chests/village/village_weaponsmith");
-    private static final ResourceLocation VILLAGE_CARTOGRAPHER = mc("chests/village/village_cartographer");
-    private static final ResourceLocation WEAPONSMITH_GIFT = mc("gameplay/hero_of_the_village/weaponsmith_gift");
-    private static final ResourceLocation ABANDONED_MINESHAFT = mc("chests/abandoned_mineshaft");
-    private static final ResourceLocation SIMPLE_DUNGEON = mc("chests/simple_dungeon");
-    private static final ResourceLocation STRONGHOLD_CORRIDOR = mc("chests/stronghold_corridor");
-    private static final ResourceLocation STRONGHOLD_CROSSING = mc("chests/stronghold_crossing");
-    private static final ResourceLocation STRONGHOLD_LIBRARY = mc("chests/stronghold_library");
-    private static final ResourceLocation PILLAGER_OUTPOST = mc("chests/pillager_outpost");
-    private static final ResourceLocation TRIAL_CHAMBERS_REWARD = mc("chests/trial_chambers/reward");
-    private static final ResourceLocation TRIAL_CHAMBERS_REWARD_OMINOUS = mc("chests/trial_chambers/reward_ominous");
-    private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION = mc("chests/trial_chambers/intersection");
-    private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION_BARREL = mc("chests/trial_chambers/intersection_barrel");
-    private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR_POT = mc("pots/trial_chambers/corridor");
-    private static final ResourceLocation ANCIENT_CITY = mc("chests/ancient_city");
-    private static final ResourceLocation END_CITY_TREASURE = mc("chests/end_city_treasure");
-    private static final ResourceLocation IGLOO_CHEST = mc("chests/igloo_chest");
-    private static final ResourceLocation WOODLAND_MANSION = mc("chests/woodland_mansion");
-    private static final ResourceLocation UNDERWATER_RUIN_BIG = mc("chests/underwater_ruin_big");
-    private static final ResourceLocation UNDERWATER_RUIN_SMALL = mc("chests/underwater_ruin_small");
-    private static final ResourceLocation OCEAN_RUIN_WARM_ARCHAEOLOGY = mc("archaeology/ocean_ruin_warm");
-    private static final ResourceLocation DESERT_WELL_ARCHAEOLOGY = mc("archaeology/desert_well");
-    private static final ResourceLocation TRAIL_RUINS_ARCHAEOLOGY_COMMON = mc("archaeology/trail_ruins_common");
+    private static final Identifier SILVERFISH_ENTITY = mc("entities/silverfish");
+    private static final Identifier DESERT_PYRAMID = mc("chests/desert_pyramid");
+    private static final Identifier JUNGLE_TEMPLE = mc("chests/jungle_temple");
+    private static final Identifier SHIPWRECK_TREASURE = mc("chests/shipwreck_treasure");
+    private static final Identifier SHIPWRECK_MAP = mc("chests/shipwreck_map");
+    private static final Identifier SHIPWRECK_SUPPLY = mc("chests/shipwreck_supply");
+    private static final Identifier BURIED_TREASURE = mc("chests/buried_treasure");
+    private static final Identifier VILLAGE_ARMORER = mc("chests/village/village_armorer");
+    private static final Identifier VILLAGE_TEMPLE = mc("chests/village/village_temple");
+    private static final Identifier VILLAGE_TOOLSMITH = mc("chests/village/village_toolsmith");
+    private static final Identifier VILLAGE_WEAPONSMITH = mc("chests/village/village_weaponsmith");
+    private static final Identifier VILLAGE_CARTOGRAPHER = mc("chests/village/village_cartographer");
+    private static final Identifier WEAPONSMITH_GIFT = mc("gameplay/hero_of_the_village/weaponsmith_gift");
+    private static final Identifier ABANDONED_MINESHAFT = mc("chests/abandoned_mineshaft");
+    private static final Identifier SIMPLE_DUNGEON = mc("chests/simple_dungeon");
+    private static final Identifier STRONGHOLD_CORRIDOR = mc("chests/stronghold_corridor");
+    private static final Identifier STRONGHOLD_CROSSING = mc("chests/stronghold_crossing");
+    private static final Identifier STRONGHOLD_LIBRARY = mc("chests/stronghold_library");
+    private static final Identifier PILLAGER_OUTPOST = mc("chests/pillager_outpost");
+    private static final Identifier TRIAL_CHAMBERS_REWARD = mc("chests/trial_chambers/reward");
+    private static final Identifier TRIAL_CHAMBERS_REWARD_OMINOUS = mc("chests/trial_chambers/reward_ominous");
+    private static final Identifier TRIAL_CHAMBERS_INTERSECTION = mc("chests/trial_chambers/intersection");
+    private static final Identifier TRIAL_CHAMBERS_INTERSECTION_BARREL = mc("chests/trial_chambers/intersection_barrel");
+    private static final Identifier TRIAL_CHAMBERS_CORRIDOR_POT = mc("pots/trial_chambers/corridor");
+    private static final Identifier ANCIENT_CITY = mc("chests/ancient_city");
+    private static final Identifier END_CITY_TREASURE = mc("chests/end_city_treasure");
+    private static final Identifier IGLOO_CHEST = mc("chests/igloo_chest");
+    private static final Identifier WOODLAND_MANSION = mc("chests/woodland_mansion");
+    private static final Identifier UNDERWATER_RUIN_BIG = mc("chests/underwater_ruin_big");
+    private static final Identifier UNDERWATER_RUIN_SMALL = mc("chests/underwater_ruin_small");
+    private static final Identifier OCEAN_RUIN_WARM_ARCHAEOLOGY = mc("archaeology/ocean_ruin_warm");
+    private static final Identifier DESERT_WELL_ARCHAEOLOGY = mc("archaeology/desert_well");
+    private static final Identifier TRAIL_RUINS_ARCHAEOLOGY_COMMON = mc("archaeology/trail_ruins_common");
 
-    /**
-     * The complete ordered list of loot injections. Iterated by the NeoForge
-     * GLM datagen provider (one GLM JSON per entry, in this order) and by the
-     * Fabric loot mixin (entries filtered by the rolled table id).
-     */
+    /** The complete ordered list of loot injections. */
     public static List<Entry> entries() {
         return List.of(
                 // Silverfish
@@ -269,6 +247,20 @@ public final class SilverLootSpec {
                 new Entry("silver_chestplate_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL, 0.1f, Op.REPLACE,
                         ModItems.SILVER_CHESTPLATE::get, 0, 0, List.of(vanilla(Items.LEATHER_CHESTPLATE))),
 
+                // Nautilus Armor
+                new Entry("silver_nautilus_armor_from_buried_treasure", BURIED_TREASURE, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_treasure", SHIPWRECK_TREASURE, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_supply", SHIPWRECK_SUPPLY, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_shipwreck_map", SHIPWRECK_MAP, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_underwater_ruin_big", UNDERWATER_RUIN_BIG, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+                new Entry("silver_nautilus_armor_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1, List.of(vanilla(Items.COPPER_NAUTILUS_ARMOR))),
+
                 // Ocean Ruins
                 new Entry("silver_nugget_from_ocean_ruin_warm_archaeology", OCEAN_RUIN_WARM_ARCHAEOLOGY, 0.5f, Op.REPLACE,
                         ModItems.SILVER_NUGGET::get, 0, 0, List.of(vanilla(Items.GOLD_NUGGET))),
@@ -283,7 +275,7 @@ public final class SilverLootSpec {
 
                 // Trail Ruins
                 new Entry("silver_ingot_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.WHITE_DYE))),
+                        ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.DYE.pick(DyeColor.WHITE)))),
                 new Entry("silver_nugget_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
                         ModItems.SILVER_NUGGET::get, 0, 0, List.of(vanilla(Items.GOLD_NUGGET)))
         );

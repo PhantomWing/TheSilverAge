@@ -2,15 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "thesilverage:weathered_cut_silver_slab"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "thesilverage:weathered_cut_silver_slab",
+    "minecraft:honeycomb"
   ],
   "result": {
-    "count": 1,
     "id": "thesilverage:waxed_weathered_cut_silver_slab"
   }
 }

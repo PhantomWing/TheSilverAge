@@ -1,56 +1,41 @@
 package com.phantomwing.thesilverage.client;
 
+import com.mojang.serialization.MapCodec;
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.LevelUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * Loader-agnostic client item-property registration.
- *
- * <p>The Moon Dial {@code moon_phase} override is pure vanilla client API
- * ({@link net.minecraft.client.renderer.item.ItemProperties#register}), so the
- * registration logic is shared here instead of being duplicated per loader. Both
- * loaders' {@code ClientPlatform.registerItemProperties()} implementations
- * delegate to {@link #register()}:</p>
- *
- * <ul>
- *   <li><b>NeoForge</b>: {@code platform.neoforge.ClientPlatformImpl} →
- *       {@code neoforge.item.ModItemProperties.register()} → here, invoked from
- *       {@code FMLClientSetupEvent} (unchanged lifecycle/behaviour).</li>
- *   <li><b>Fabric</b>: {@code platform.fabric.ClientPlatformImpl} → here,
- *       invoked from the {@code ClientModInitializer}
- *       ({@code fabric.client.TheSilverAgeFabricClient}).</li>
- * </ul>
- *
- * <p>This class is {@code @Environment(CLIENT)} — fabric-loader's
- * {@code @Environment} is the one Fabric annotation explicitly allowed in
- * {@code common} (see {@code common/build.gradle}). It is only ever referenced
- * from client-only call sites, so it is never loaded on a dedicated server.</p>
- */
-@Environment(EnvType.CLIENT)
+/** Client registration of the Moon Dial's {@code thesilverage:moon_phase} range-select item-model property. */
 public final class ModItemProperties {
-    /** {@code thesilverage:moon_phase} — identical id to the original NeoForge registration. */
-    public static final ResourceLocation MOON_PHASE =
-            ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
+    public static final Identifier MOON_PHASE =
+            Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
 
     private ModItemProperties() {
     }
 
-    /**
-     * Registers the {@code moon_phase} item-property override on the Moon Dial.
-     *
-     * <p>Predicate is byte-for-byte the original NeoForge one: read the moon
-     * phase signal for the holder's level and normalise to {@code [0, 1]} by
-     * dividing by {@code 100f} for texture selection.</p>
-     */
     public static void register() {
-        ItemProperties.register(ModItems.MOON_DIAL.get(), MOON_PHASE, (stack, world, entity, seed) -> {
-            int moonPhaseSignal = LevelUtils.getMoonPhaseSignal(world);
-            return moonPhaseSignal / 100f; // Normalize between [0, 1] for texture selection
-        });
+        RangeSelectItemModelProperties.ID_MAPPER.put(MOON_PHASE, MoonPhaseProperty.MAP_CODEC);
+    }
+
+    /** 16-state moon-phase property (see {@link LevelUtils#getMoonPhaseSignal}). */
+    public record MoonPhaseProperty() implements RangeSelectItemModelProperty {
+        public static final MapCodec<MoonPhaseProperty> MAP_CODEC = MapCodec.unit(new MoonPhaseProperty());
+
+        @Override
+        public float get(ItemStack stack, @Nullable ClientLevel level, @Nullable ItemOwner entity, int seed) {
+            // 0..15 → 0..0.9375 in exact 1/16 steps (powers-of-two denominators are exact as floats).
+            return LevelUtils.getMoonPhaseSignal(level) / 16f;
+        }
+
+        @Override
+        public MapCodec<? extends RangeSelectItemModelProperty> type() {
+            return MAP_CODEC;
+        }
     }
 }

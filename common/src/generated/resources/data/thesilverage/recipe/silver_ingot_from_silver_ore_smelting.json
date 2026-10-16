@@ -1,13 +1,8 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
   "experience": 1.0,
-  "ingredient": {
-    "item": "thesilverage:silver_ore"
-  },
+  "ingredient": "thesilverage:silver_ore",
   "result": {
-    "count": 1,
     "id": "thesilverage:silver_ingot"
   }
 }

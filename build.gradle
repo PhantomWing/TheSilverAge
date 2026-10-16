@@ -1,10 +1,70 @@
 plugins {
     id 'architectury-plugin' version "${architectury_plugin_version}"
-    id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
+    // loom-no-remap: 26.1 is unobfuscated, no mappings/remapJar; common is bundled via Shadow.
+    id 'dev.architectury.loom-no-remap' version "${architectury_loom_version}" apply false
+    // Publishing — applied per loader subproject.
+    id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}" apply false
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
+}
+
+// Per-release changelog: notes under the first "# X.Y.Z" header in changelog.md, up to the next "# ".
+ext.latestChangelog = {
+    def f = rootProject.file('changelog.md')
+    if (!f.exists()) return "See changelog.md"
+    def body = new StringBuilder()
+    boolean started = false, done = false
+    f.eachLine { line ->
+        if (done) return
+        if (line.startsWith('# ')) {
+            if (started) { done = true; return }
+            started = true
+            return
+        }
+        if (started) body.append(line).append('\n')
+    }
+    def out = body.toString().trim()
+    return out.isEmpty() ? "See changelog.md" : out
+}
+
+// Single source of truth for manifest substitutions: derives per-loader dependency ranges from
+// gradle.properties so the manifests never hold a drifting hardcoded range.
+//   Fabric predicate: ">=1.21.7 <1.21.9"   NeoForge maven range: "[1.21.7,1.21.9)"
+ext.manifestProps = { ->
+    def mc = rootProject.minecraft_version
+    def p = mc.tokenize('.')
+    // Treat a missing patch segment as 0 so a 2-segment version (e.g. "26.2") still yields a patch bump ("26.2.1").
+    def mcPatch = (p.size() > 2 ? p[2] as int : 0)
+    def mcNext = "${p[0]}.${p[1]}.${mcPatch + 1}".toString()
+    // Lower bound = lowest supported game version (may differ from build target across a compatible MC pair).
+    def mcFloor = rootProject.supported_minecraft_versions.tokenize(' ,').first()
+    // major.minor of a version, ignoring any +build / -qualifier suffix.
+    def mm = { String v -> def q = v.replaceAll(/[+\-].*$/, '').tokenize('.'); "${q[0]}.${q[1]}".toString() }
+    def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')
+    def homepage = rootProject.mod_homepage
+    return [
+            version                  : rootProject.mod_version,
+            mod_id                   : rootProject.mod_id,
+            mod_name                 : rootProject.mod_name,
+            mod_description          : rootProject.mod_description,
+            mod_author               : rootProject.mod_author,
+            mod_license              : rootProject.mod_license,
+            mod_homepage             : homepage,
+            mod_issues               : "${homepage}/issues".toString(),
+            // fabric.mod.json (predicate format)
+            dep_minecraft_fabric     : ">=${mcFloor} <${mcNext}".toString(),
+            dep_fabricloader         : ">=${rootProject.fabric_loader_version}".toString(),
+            dep_fabric_api           : ">=${fabricApiFloor}".toString(),
+            dep_architectury_fabric  : ">=${mm(rootProject.architectury_version)}".toString(),
+            dep_cloth                : ">=${mm(rootProject.cloth_config_version)}".toString(),
+            // neoforge.mods.toml (maven range format)
+            dep_loader_neoforge      : rootProject.loader_version_range,
+            dep_neoforge             : rootProject.neo_version_range,
+            dep_minecraft_neoforge   : "[${mcFloor},${mcNext})".toString(),
+            dep_architectury_neoforge: "[${mm(rootProject.architectury_version)},)".toString(),
+    ]
 }
 
 architectury {
@@ -12,7 +72,7 @@ architectury {
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'dev.architectury.loom-no-remap'
 
     loom {
         silentMojangMappingsLicense()
@@ -20,12 +80,7 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // Mojang official mappings, layered with Parchment (kept consistent with the
-        // existing NeoForge ModDev setup which used Parchment ${parchment_mappings_version}).
-        mappings loom.layered {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_mappings_version}@zip")
-        }
+        // No mappings block: 26.1 is unobfuscated, Mojang ships no mappings file (officialMojangMappings would fail).
     }
 }
 
@@ -69,17 +124,17 @@ allprojects {
             url = "https://maven.terraformersmc.com/"
         }
 
-        // Cloth Config — DEV-RUNTIME ONLY. AppleSkin Fabric JiJ-bundles
-        // cloth-config-fabric (me.shedaniel.autoconfig.*); Loom/Architectury
-        // does not auto-extract nested JiJ jars for a `modLocalRuntime` dep, so
-        // the dev Fabric client needs Cloth Config on the classpath explicitly
-        // (it is never compiled against and never shipped — see
-        // fabric/build.gradle). Scoped to the Cloth Config group so this
-        // canonical maven does not broaden resolution for anything else.
+        // Cloth Config (scoped to its group so it doesn't broaden resolution).
         maven {
             name = "shedaniel"
             url = "https://maven.shedaniel.me/"
             content { includeGroup "me.shedaniel.cloth" }
+        }
+
+        // Modrinth Maven — Farmer's Delight (NeoForge optional compat).
+        maven {
+            url = "https://api.modrinth.com/maven"
+            content { includeGroup "maven.modrinth" }
         }
 
         // Create, Ponder, Flywheel
@@ -100,11 +155,11 @@ allprojects {
         }
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
-        options.release = 21
+        options.release = 25
     }
 
     java {
@@ -119,11 +174,8 @@ allprojects {
     }
 }
 
-// The repository root is now a pure Architectury orchestration project. The legacy
-// single-loader NeoForge sources still physically live under the root `src/` (they
-// will be relocated to `common/` in Phase 1). Until then, point the root project's
-// source sets at empty, non-existent directories so the root — which has no Minecraft
-// dependencies — never attempts to compile that code. The files on disk are untouched.
+// Root is a pure orchestration project: empty its source sets so it never compiles the
+// legacy single-loader sources still living under root `src/`.
 project(':') {
     sourceSets {
         main {

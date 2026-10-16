@@ -13,6 +13,7 @@
   "in_stacks": 0,
   "item": "thesilverage:silver_axe",
   "max_stacks": 0,
+  "priority": 0,
   "removed_item": [
     "minecraft:stone_axe"
   ]

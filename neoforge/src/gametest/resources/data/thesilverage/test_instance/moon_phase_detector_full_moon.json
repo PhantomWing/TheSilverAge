@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "function": "thesilverage:moon_phase_detector_full_moon",
+  "structure": "thesilverage:silver_test_arena",
+  "environment": "minecraft:default",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true
+}

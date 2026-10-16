@@ -3,9 +3,7 @@
   "category": "building",
   "group": "weathered_cut_silver",
   "key": {
-    "#": {
-      "item": "thesilverage:weathered_cut_silver"
-    }
+    "#": "thesilverage:weathered_cut_silver"
   },
   "pattern": [
     "#  ",

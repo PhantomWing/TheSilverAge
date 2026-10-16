@@ -13,6 +13,7 @@
   "in_stacks": 1,
   "item": "thesilverage:moon_dial",
   "max_stacks": 2,
+  "priority": 0,
   "removed_item": [
     "minecraft:clock",
     "minecraft:compass"

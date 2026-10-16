@@ -1,35 +1,41 @@
 modLoader = "javafml"
-loaderVersion = "[4,)"
-issueTrackerURL = "https://github.com/PhantomWing/TheSilverAge/issues"
-license = "MIT License"
+loaderVersion = "${dep_loader_neoforge}"
+issueTrackerURL = "${mod_issues}"
+license = "${mod_license}"
 
 [[mods]]
-modId = "thesilverage"
+modId = "${mod_id}"
 version = "${version}"
-displayName = "The Silver Age"
-displayURL = "https://github.com/PhantomWing/TheSilverAge"
-authors = "PhantomWing"
+displayName = "${mod_name}"
+displayURL = "${mod_homepage}"
+authors = "${mod_author}"
 description = '''
-A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.
+${mod_description}
 '''
 
-[[dependencies.thesilverage]]
+# Client-only mixin that hides the mod-managed recipe-override resource pack
+# from Options → Resource Packs (the pack stays in the repository and is toggled
+# by config / server-sync; it just isn't a user-facing entry).
+[[mixins]]
+config = "thesilverage.neoforge.mixins.json"
+
+[[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.1.218,)"
+versionRange = "${dep_neoforge}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.thesilverage]]
+[[dependencies.${mod_id}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,1.21.2)"
+versionRange = "${dep_minecraft_neoforge}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.thesilverage]]
+[[dependencies.${mod_id}]]
 modId = "architectury"
 type = "required"
-versionRange = "[13.0.8,)"
+versionRange = "${dep_architectury_neoforge}"
 ordering = "AFTER"
 side = "BOTH"

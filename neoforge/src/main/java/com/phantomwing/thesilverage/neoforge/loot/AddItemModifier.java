@@ -30,15 +30,17 @@ public class AddItemModifier extends LootModifier {
     private final int max;
 
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item, int count) {
-        super(conditionsIn);
-
-        this.item = item;
-        this.min = count;
-        this.max = count;
+        this(conditionsIn, 0, item, count, count);
     }
 
+    // Datagen entry point; uses the default GLM priority 0.
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
-        super(conditionsIn);
+        this(conditionsIn, 0, item, minAmount, maxAmount);
+    }
+
+    // The `priority` 2nd arg is required by LootModifier's codecStart.
+    public AddItemModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
+        super(conditionsIn, priority);
 
         this.item = item;
         this.min = minAmount;
@@ -47,18 +49,15 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context) {
-        // Check if the modifier is enabled in the config. If not, return the generated loot as is.
         if (!CommonConfig.generateStructureLoot()) {
             return generatedLoot;
         }
 
-        // Delegate to the shared, loader-agnostic algorithm (single source of truth).
         SilverLootAlgorithms.applyAddItem(generatedLoot, context, this.item, this.min, this.max);
 
         return generatedLoot;
     }
 
-    // Return our codec here.
     @Override
     public @NotNull MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;

@@ -6,7 +6,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "fabric:load_conditions": [
     {
       "condition": "thesilverage:config_boolean",
@@ -14,12 +13,8 @@
     }
   ],
   "key": {
-    "#": {
-      "item": "minecraft:chiseled_stone_bricks"
-    },
-    "S": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "#": "minecraft:chiseled_stone_bricks",
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     "###",
@@ -27,7 +22,6 @@
     "###"
   ],
   "result": {
-    "count": 1,
     "id": "minecraft:lodestone"
   }
 }

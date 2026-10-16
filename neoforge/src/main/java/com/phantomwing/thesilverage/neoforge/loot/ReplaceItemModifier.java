@@ -38,35 +38,24 @@ public class ReplaceItemModifier extends LootModifier
     private final int minStacks;
     private final int maxStacks;
 
-    /**
-     * This loot modifier replaces all stacks of the specified item with another item (keeping the stack size).
-     */
+    // Replaces all stacks of the item, keeping stack size.
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace) {
-        super(conditions);
-
-        this.removedItems = itemToReplace;
-        this.item = itemToAdd.asItem();
-        this.minStacks = 0;
-        this.maxStacks = 0;
+        this(conditions, 0, itemToAdd, itemToReplace, 0, 0);
     }
 
-    /**
-     * This loot modifier replaces a random number of stacks of the specified item with another item (keeping the stack size).
-     */
+    // Replaces a random number of stacks of the item, keeping stack size.
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int maxStacks) {
-        super(conditions);
-
-        this.removedItems = itemToReplace;
-        this.item = itemToAdd.asItem();
-        this.minStacks = maxStacks;
-        this.maxStacks = maxStacks;
+        this(conditions, 0, itemToAdd, itemToReplace, maxStacks, maxStacks);
     }
 
-    /**
-     * This loot modifier replaces a number of stacks of the specified item with another item (keeping the stack size).
-     */
+    // Datagen entry point; uses the default GLM priority 0.
     public ReplaceItemModifier(LootItemCondition[] conditions, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
-        super(conditions);
+        this(conditions, 0, itemToAdd, itemToReplace, minStacks, maxStacks);
+    }
+
+    // The `priority` 2nd arg is required by LootModifier's codecStart.
+    public ReplaceItemModifier(LootItemCondition[] conditions, int priority, ItemLike itemToAdd, List<Item> itemToReplace, int minStacks, int maxStacks) {
+        super(conditions, priority);
 
         this.removedItems = itemToReplace;
         this.item = itemToAdd.asItem();
@@ -76,12 +65,10 @@ public class ReplaceItemModifier extends LootModifier
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext lootContext) {
-        // Check if the modifier is enabled in the config. If not, return the generated loot as is.
         if (!CommonConfig.generateStructureLoot()) {
             return generatedLoot;
         }
 
-        // Delegate to the shared, loader-agnostic algorithm (single source of truth).
         SilverLootAlgorithms.applyReplaceItem(generatedLoot, lootContext, this.item, this.removedItems,
                 this.minStacks, this.maxStacks);
 
