@@ -9,6 +9,7 @@
 - Added the missing Silver Knife name in every language besides English.
 - Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
 - Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
+- Fixed the mod not loading on Fabric for Minecraft 1.21.9.
 
 
 # 1.3.3

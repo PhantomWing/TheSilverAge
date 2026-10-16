@@ -47,7 +47,24 @@ ext.manifestProps = { ->
     def mcFloor = rootProject.supported_minecraft_versions.tokenize(' ,').first()
     // major.minor of a version, ignoring any +build / -qualifier suffix.
     def mm = { String v -> def q = v.replaceAll(/[+\-].*$/, '').tokenize('.'); "${q[0]}.${q[1]}".toString() }
-    def fabricApiFloor = rootProject.fabric_api_version.replaceAll(/\+.*$/, '')   // 0.128.2+1.21.6 -> 0.128.2
+    // The declared fabric-api floor is an explicit property, not the build artifact's version:
+    // fabric-api numbers its per-MC lines independently, so the newest build for the LOWEST supported
+    // game version can be older than the one we compile against. See gradle.properties.
+    def fabricApiFloor = rootProject.fabric_api_min_version
+    def fabricApiBuild = rootProject.fabric_api_version.takeWhile { it != '+' }
+    def cmpVer = { String a, String b ->
+        def x = a.tokenize('.').collect { it as int }, y = b.tokenize('.').collect { it as int }
+        for (int i = 0; i < Math.max(x.size(), y.size()); i++) {
+            int diff = (i < x.size() ? x[i] : 0) <=> (i < y.size() ? y[i] : 0)
+            if (diff != 0) return diff
+        }
+        return 0
+    }
+    if (cmpVer(fabricApiFloor, fabricApiBuild) > 0) {
+        throw new GradleException("fabric_api_min_version (${fabricApiFloor}) is newer than the "
+                + "fabric-api being built against (${fabricApiBuild}). The declared floor has to be a "
+                + "version that actually exists for every supported game version, or the mod cannot load.")
+    }
     def homepage = rootProject.mod_homepage
     return [
             version                  : rootProject.mod_version,
