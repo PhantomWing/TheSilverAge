@@ -90,4 +90,14 @@ public final class CommonConfig {
     public static boolean silverOxidation() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
+
+    /**
+     * Gate for mobs spawning with silver gear
+     * ({@link com.phantomwing.thesilverage.armor.MonsterArmorHandler}): silver armor
+     * in place of golden, silver swords, axes and shovels in place of iron.
+     */
+    @ExpectPlatform
+    public static boolean mobSilverEquipment() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
 }

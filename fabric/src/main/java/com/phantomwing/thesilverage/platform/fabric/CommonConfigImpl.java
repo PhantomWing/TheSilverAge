@@ -44,4 +44,9 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);
     }
+
+    public static boolean mobSilverEquipment() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_MOB_SILVER_EQUIPMENT_ID);
+    }
 }

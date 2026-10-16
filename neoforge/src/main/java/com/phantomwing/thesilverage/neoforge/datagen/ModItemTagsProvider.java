@@ -106,6 +106,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.ORES).addTag(CommonTags.Items.ORES_SILVER);
         tag(Tags.Items.ORES_IN_GROUND_STONE).add(ModItems.SILVER_ORE.get());
         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(ModItems.DEEPSLATE_SILVER_ORE.get());
+
+        // Chains
+        tag(Tags.Items.CHAINS)
+                .add(ModItems.SILVER_CHAIN.get())
+                .add(ModItems.EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
     }
 
     protected void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
@@ -116,6 +127,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
+
+        // Every pickaxe gets an amethyst cluster's full four shards.
+        tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(ModItems.SILVER_PICKAXE.get());
 
         // Farmer's Delight compat — the Silver Knife. Added to FD's knife tag (the
         // Cutting Board's accepted tool) and the reserved c: convention tag. Both

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *
  * <p>NeoForge subscribes {@code EntityJoinLevelEvent} and forwards the real
  * {@code event.loadedFromDisk()} flag to
- * {@link MonsterArmorHandler#tryEquipSilverArmor(Entity, net.minecraft.world.level.Level, boolean)}.
+ * {@link MonsterArmorHandler#tryEquipSilverGear(Entity, net.minecraft.world.level.Level, boolean)}.
  * Architectury's {@code EntityEvent.ADD} (the Phase 1 Fabric shell) carries no
  * loaded-from-disk distinction, so disk-loaded mobs would re-roll silver armor
  * on every chunk load — a behavioural divergence from NeoForge.</p>
@@ -74,7 +74,7 @@ public abstract class PersistentEntitySectionManagerMixin {
         // net.minecraft.world.entity.Entity on the server level, and Entity
         // implements EntityAccess, so this cast is always safe at runtime.
         if (entityAccess instanceof Entity entity) {
-            MonsterArmorHandler.tryEquipSilverArmor(entity, entity.level(), loadedFromStorage);
+            MonsterArmorHandler.tryEquipSilverGear(entity, entity.level(), loadedFromStorage);
         }
     }
 }

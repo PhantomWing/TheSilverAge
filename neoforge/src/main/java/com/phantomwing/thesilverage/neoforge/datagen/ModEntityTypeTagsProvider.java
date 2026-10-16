@@ -20,10 +20,17 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
-            .add(EntityType.ZOMBIE) // Husks are not included, because the Desert is thematically more suitable for golden armor.
+            .add(EntityType.ZOMBIE)
             .add(EntityType.ZOMBIE_VILLAGER)
+            .add(EntityType.HUSK)
             .add(EntityType.SKELETON)
             .add(EntityType.STRAY)
             .add(EntityType.BOGGED);
+        // Mobs that can naturally spawn holding an iron sword, axe or shovel.
+        this.tag(ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)
+            .add(EntityType.ZOMBIE)
+            .add(EntityType.ZOMBIE_VILLAGER)
+            .add(EntityType.HUSK)
+            .add(EntityType.VINDICATOR);
     }
 }

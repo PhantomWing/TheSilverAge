@@ -27,6 +27,10 @@ public class Configuration {
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_OXIDATION;
 
+    // Mobs spawning with silver armor and tools.
+    public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
+    public static ModConfigSpec.BooleanValue ENABLE_MOB_SILVER_EQUIPMENT;
+
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
@@ -45,6 +49,7 @@ public class Configuration {
             case ENABLE_SILVER_SMITE_ID -> Configuration.ENABLE_SILVER_SMITE.get();
             case ENABLE_UNDEAD_PROTECTION_ID -> Configuration.ENABLE_UNDEAD_PROTECTION.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
+            case ENABLE_MOB_SILVER_EQUIPMENT_ID -> Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
             default -> throw new Error("Invalid setting ID: " + id);
         };
     }
@@ -61,6 +66,7 @@ public class Configuration {
         ENABLE_SILVER_SMITE = COMMON_BUILDER.define(ENABLE_SILVER_SMITE_ID, true);
         ENABLE_UNDEAD_PROTECTION = COMMON_BUILDER.define(ENABLE_UNDEAD_PROTECTION_ID, true);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);
+        ENABLE_MOB_SILVER_EQUIPMENT = COMMON_BUILDER.define(ENABLE_MOB_SILVER_EQUIPMENT_ID, true);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

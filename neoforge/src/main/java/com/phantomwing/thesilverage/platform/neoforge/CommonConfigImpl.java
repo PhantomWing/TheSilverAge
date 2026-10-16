@@ -36,4 +36,8 @@ public final class CommonConfigImpl {
     public static boolean silverOxidation() {
         return Configuration.ENABLE_SILVER_OXIDATION.get();
     }
+
+    public static boolean mobSilverEquipment() {
+        return Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
+    }
 }

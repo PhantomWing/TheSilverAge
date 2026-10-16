@@ -7,10 +7,21 @@
 - Silver armor now grants +1 Undead Protection per piece, reducing damage taken from undead mobs by 4% each (16% for a full set). Silver Horse Armor grants it too. Stacks with Protection. Can be turned off with the `enable_undead_protection` config option.
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
 - Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
+- Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
+- Silver tools and armor can now be found in more chests, including bastions and trial chambers
+- Added a config option for mobs spawning with silver gear
+- Updated tags for better compatibility with vanilla and other mods
+  - Added husks to the `thesilverage:can_wear_silver_armor` tag
+  - Added Silver Ore to the `minecraft:snaps_goat_horn` tag
+  - Added Silver Doors to the `minecraft:mob_interactable_doors` tag
+  - Added Silver Pickaxe to the `minecraft:cluster_max_harvestables` tag
+  - Added Silver Chain to the `c:chains` tag
+  - Moved Silver Ore from the `c:ore_rates/singular` tag to the `c:ore_rates/dense` tag
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5
 - Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
+- Silver Doors and Silver Trapdoors can now be opened by wind charges
 
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
@@ -19,6 +30,7 @@
 - Crafting Chiseled Silver from Cut Silver Slabs (and its variants) now yields 1 instead of 2
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing Silver Knife name in every language besides English.
+- Fixed jungle temples giving a Silver Ingot instead of Silver Horse Armor
 
 
 # 1.3.1

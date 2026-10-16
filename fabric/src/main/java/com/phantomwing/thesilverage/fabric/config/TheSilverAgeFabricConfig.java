@@ -43,6 +43,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public boolean enable_silver_oxidation = true;
 
+    public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
+    public boolean enable_mob_silver_equipment = true;
+
     public static TheSilverAgeFabricConfig get() {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
     }
@@ -73,6 +76,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_SILVER_SMITE_ID -> config.enable_silver_smite;
             case ENABLE_UNDEAD_PROTECTION_ID -> config.enable_undead_protection;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
+            case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
             default -> throw new Error("Invalid setting ID: " + id);
         };
     }

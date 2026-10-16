@@ -17,7 +17,7 @@ public final class MonsterArmorPlatform {
 
     /**
      * Subscribes the loader's entity-join event and dispatches to
-     * {@code MonsterArmorHandler.tryEquipSilverArmor(...)}.
+     * {@code MonsterArmorHandler.tryEquipSilverGear(...)}.
      *
      * <p>NeoForge: subscribes {@code EntityJoinLevelEvent} and forwards its real
      * {@code loadedFromDisk()} value (full behavioural parity).<br>

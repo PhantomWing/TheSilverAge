@@ -13,6 +13,8 @@ public class ModTags {
     // Entity type tags
     public static class EntityTypes {
         public static final TagKey<EntityType<?>> CAN_WEAR_SILVER_ARMOR = tag("can_wear_silver_armor");
+        /** Mobs whose naturally-spawned iron sword, axe or shovel may be swapped for the silver one. */
+        public static final TagKey<EntityType<?>> CAN_HOLD_SILVER_TOOLS = tag("can_hold_silver_tools");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));

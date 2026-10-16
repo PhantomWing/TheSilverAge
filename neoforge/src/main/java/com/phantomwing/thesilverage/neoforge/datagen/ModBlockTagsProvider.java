@@ -324,7 +324,19 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.ORES).addTag(CommonTags.Blocks.ORES_SILVER);
         tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(ModBlocks.SILVER_ORE.get());
         tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(ModBlocks.DEEPSLATE_SILVER_ORE.get());
-        tag(Tags.Blocks.ORE_RATES_SINGULAR).addTag(CommonTags.Blocks.ORES_SILVER);
+        // Silver ore drops 1-3 Raw Silver, so it is dense, as copper ore is.
+        tag(Tags.Blocks.ORE_RATES_DENSE).addTag(CommonTags.Blocks.ORES_SILVER);
+
+        // Chains
+        tag(Tags.Blocks.CHAINS)
+                .add(ModBlocks.SILVER_CHAIN.get())
+                .add(ModBlocks.EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN.get());
     }
 
     private void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
@@ -348,6 +360,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // redstone_torch / copper_torch here). Only the standing torch belongs; the
         // wall variant attaches to the side.
         tag(BlockTags.WALL_POST_OVERRIDE).add(ModBlocks.SILVER_TORCH.get());
+
+        // A goat ramming silver ore loses a horn, as on iron or copper ore (vanilla lists only the stone ores).
+        tag(BlockTags.SNAPS_GOAT_HORN).add(ModBlocks.SILVER_ORE.get());
 
         // Walls
         tag(BlockTags.WALLS)
@@ -400,6 +415,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Doors
         tag(BlockTags.DOORS)
+                .add(ModBlocks.SILVER_DOOR.get())
+                .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+        // Silver doors open by hand, so villagers open them too, as they do a copper door.
+        tag(BlockTags.MOB_INTERACTABLE_DOORS)
                 .add(ModBlocks.SILVER_DOOR.get())
                 .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
                 .add(ModBlocks.WEATHERED_SILVER_DOOR.get())

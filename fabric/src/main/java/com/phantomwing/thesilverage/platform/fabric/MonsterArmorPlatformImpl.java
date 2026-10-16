@@ -9,7 +9,7 @@ package com.phantomwing.thesilverage.platform.fabric;
  * registered in {@code thesilverage.mixins.json}). The mixin hooks the vanilla
  * {@code PersistentEntitySectionManager#addEntity(EntityAccess, boolean)} and
  * forwards the authoritative "loaded from storage" boolean to
- * {@code MonsterArmorHandler.tryEquipSilverArmor(...)} — giving Fabric the exact
+ * {@code MonsterArmorHandler.tryEquipSilverGear(...)} — giving Fabric the exact
  * same {@code loadedFromDisk} semantics NeoForge gets from
  * {@code EntityJoinLevelEvent.loadedFromDisk()}.</p>
  *
