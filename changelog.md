@@ -7,6 +7,7 @@
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing Silver Knife name in every language besides English.
+- Fixed the mod not loading on Fabric for Minecraft 1.21.7.
 
 
 # 1.3.3
