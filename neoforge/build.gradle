@@ -27,7 +27,29 @@ def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().cont
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
+    // Include the test-only source set in the dev mod so the game tests and their data load.
+    // Dev-runtime only: the production jar is still built from `main`, so test classes never ship.
+    // Added to Loom's own `main` group rather than a second group: two groups carrying the same
+    // mod make the loader keep one, and some FML releases keep the one without the tests (none run).
+    mods {
+        named('main') {
+            sourceSet sourceSets.test
+        }
+    }
+
     runs {
+        // Headless NeoForge game-test server: runs every test in GameTests, prints PASS/FAIL, and exits.
+        //   ./gradlew :neoforge:runGameTest
+        gameTest {
+            server()
+            name = "Game Test"
+            runDir "run/gametest"
+            source sourceSets.test
+            property 'neoforge.enableGameTest', 'true'
+            property 'neoforge.gameTestServer', 'true'
+            property 'neoforge.enabledGameTestNamespaces', 'thesilverage'
+        }
+
         // NeoForge data generation. Ported from the pre-Architectury single-loader
         // `runs.data` block. Output + existing-resource paths now point at the
         // relocated common source set (datagen output is shared across loaders).
@@ -63,6 +85,18 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
+// Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
+// structure ship in the production jar. The tests themselves are common/src/gametest; only the
+// registration is NeoForge's own.
+sourceSets {
+    test {
+        java.srcDir project(':common').file('src/gametest/java')
+        resources.srcDir project(':common').file('src/gametest/resources')
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
 // Recipe viewer / Create toggles, ported verbatim from the pre-Architectury
 // single-loader build so NeoForge keeps identical dev-runtime behaviour.
 //   ./gradlew :neoforge:runClient -Precipe_viewer=jei|emi|both|none
@@ -95,14 +129,14 @@ dependencies {
     // ---- Optional integrations (compile against these; load at runtime only when toggled) ----
 
     // JEI (runtime-only, toggled by -Precipe_viewer=jei|both).
-    if (loadJei) {
+    if (loadJei && !runningGameTest) {
         modLocalRuntime("mezz.jei:jei-1.21.1-neoforge:${rootProject.jei_version}")
     }
 
     // EMI: compileOnly always so compat/emi/ModEmiPlugin compiles; localRuntime
     // only when toggled in so the plugin class is never loaded when EMI is absent.
     modCompileOnly("dev.emi:emi-neoforge:${rootProject.emi_version}")
-    if (loadEmi) {
+    if (loadEmi && !runningGameTest) {
         modLocalRuntime("dev.emi:emi-neoforge:${rootProject.emi_version}")
     }
 
@@ -122,14 +156,14 @@ dependencies {
     // so the lunar-event tooltip can actually be exercised in game. Its own required
     // deps (CorgiLib + DataAnchor) have to come along or EC refuses to load, and both
     // versions of the mod want the same ones.
-    if (loadEnhancedCelestials) {
+    if (loadEnhancedCelestials && !runningGameTest) {
         modLocalRuntime "maven.modrinth:corgilib:${rootProject.corgilib_neoforge_version}"
         modLocalRuntime "maven.modrinth:data-anchor:${rootProject.data_anchor_neoforge_version}"
     }
-    if (enhancedCelestialsVersion == '1') {
+    if (enhancedCelestialsVersion == '1' && !runningGameTest) {
         modLocalRuntime "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_neoforge_version}"
     }
-    if (enhancedCelestialsVersion == '2') {
+    if (enhancedCelestialsVersion == '2' && !runningGameTest) {
         // The Core is a library with no events of its own, so the Default Lunar
         // Events mod has to come with it or there is nothing to see.
         //
@@ -146,7 +180,7 @@ dependencies {
     // true) so FD is present for dev testing + datagen (--existing-mod farmersdelight).
     // The mod never hard-depends on FD (conditional class), so it is never shipped.
     modCompileOnly "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
-    if (loadFD) {
+    if (loadFD && !runningGameTest) {
         modLocalRuntime "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
     }
 
@@ -154,7 +188,8 @@ dependencies {
     // localRuntime only when toggled on (so the classes are never loaded when Create is absent).
     modCompileOnly("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
     modCompileOnly("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    if (loadCreate) {
+    // Never on the game-test run: Create crashes the headless GameTestServer.
+    if (loadCreate && !runningGameTest) {
         modLocalRuntime("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
         modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")
         modLocalRuntime("dev.engine-room.flywheel:flywheel-neoforge-${rootProject.minecraft_version}:${rootProject.flywheel_version}")
