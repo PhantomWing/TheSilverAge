@@ -6,12 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Waxable;
 
-/**
- * Feeds the NeoForge {@code waxables} data map from the common
- * {@link SilverWeatheringSpec} (single source of truth, shared with the Fabric
- * runtime registration). The generated {@code waxables.json} is byte-identical
- * to the previously hand-written provider's output.
- */
+// Feeds the NeoForge waxables data map from the shared SilverWeatheringSpec.
 public class ModWaxables {
     public static void gather(DataMapProvider.Builder<Waxable, Block> b) {
         for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.waxablePairs()) {

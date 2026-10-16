@@ -18,7 +18,6 @@ public class ModCreativeModeTab {
                     .icon(() -> new ItemStack(ModItems.SILVER_INGOT.get()))
                     .title(Component.translatable(("item_group." + TheSilverAge.MOD_ID)))
                     .displayItems((parameters, output) -> {
-                        // Add items to this tab.
                         ModItems.CREATIVE_TAB_ITEMS.forEach((item) -> output.accept(item.get()));
                     })
                     .build());

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:exposed_silver",
+  "result": {
+    "id": "thesilverage:exposed_silver_pillar"
+  }
+}

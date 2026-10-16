@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/repeater_4tick",
+  "textures": {
+    "slab": "minecraft:block/repeater"
+  }
+}

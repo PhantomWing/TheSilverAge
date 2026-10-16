@@ -66,7 +66,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static void updateSignalStrength(BlockState state, Level level, BlockPos pos) {
         int signalStrength = LevelUtils.getMoonPhaseSignal(level);
 
-        // We want a Full Moon to give a maximum signal strength.
+        // A Full Moon should give maximum signal strength.
         if (!state.getValue(INVERTED)) {
             signalStrength = MAX_POWER - signalStrength;
         }
@@ -80,16 +80,14 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
 
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull BlockHitResult hitResult) {
         if (player.mayBuild()) {
-            if (level.isClientSide) {
+            if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             } else {
-                // Invert the block.
                 BlockState blockstate = state.cycle(INVERTED);
                 level.setBlock(pos, blockstate, 2);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(player, blockstate));
                 updateSignalStrength(blockstate, level, pos);
 
-                // Play a sound when the block is toggled.
                 level.playSound(null, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.PLAYERS, 0.3f, 0.7f);
 
                 return InteractionResult.CONSUME;
@@ -113,7 +111,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return !level.isClientSide && level.dimensionType().hasSkyLight() ? createTickerHelper(blockEntityType, ModBlockEntityTypes.MOON_PHASE_DETECTOR.get(), MoonPhaseDetectorBlock::tickEntity) : null;
+        return !level.isClientSide() && level.dimensionType().hasSkyLight() ? createTickerHelper(blockEntityType, ModBlockEntityTypes.MOON_PHASE_DETECTOR.get(), MoonPhaseDetectorBlock::tickEntity) : null;
     }
 
     private static void tickEntity(Level level, BlockPos pos, BlockState state, MoonPhaseDetectorBlockEntity blockEntity) {

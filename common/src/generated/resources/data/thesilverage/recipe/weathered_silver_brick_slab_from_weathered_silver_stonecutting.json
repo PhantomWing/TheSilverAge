@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:weathered_silver",
+  "result": {
+    "count": 8,
+    "id": "thesilverage:weathered_silver_brick_slab"
+  }
+}

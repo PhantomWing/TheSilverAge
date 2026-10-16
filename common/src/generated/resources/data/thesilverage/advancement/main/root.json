@@ -6,12 +6,11 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "thesilverage:textures/block/oxidized_cut_silver.png",
+    "background": "thesilverage:block/oxidized_cut_silver",
     "description": {
       "translate": "thesilverage.advancement.root.description"
     },
     "icon": {
-      "count": 1,
       "id": "thesilverage:raw_silver"
     },
     "show_toast": false,

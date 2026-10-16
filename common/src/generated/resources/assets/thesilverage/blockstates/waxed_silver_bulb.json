@@ -1,16 +1,16 @@
 {
   "variants": {
     "lit=false,powered=false": {
-      "model": "thesilverage:block/waxed_silver_bulb"
+      "model": "thesilverage:block/silver_bulb"
     },
     "lit=false,powered=true": {
-      "model": "thesilverage:block/waxed_silver_bulb_powered"
+      "model": "thesilverage:block/silver_bulb_powered"
     },
     "lit=true,powered=false": {
-      "model": "thesilverage:block/waxed_silver_bulb_lit"
+      "model": "thesilverage:block/silver_bulb_lit"
     },
     "lit=true,powered=true": {
-      "model": "thesilverage:block/waxed_silver_bulb_lit_powered"
+      "model": "thesilverage:block/silver_bulb_lit_powered"
     }
   }
 }

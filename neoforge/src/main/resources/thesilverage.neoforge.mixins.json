@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.phantomwing.thesilverage.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "client.PackSelectionModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

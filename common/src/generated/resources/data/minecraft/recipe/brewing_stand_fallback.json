@@ -9,7 +9,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "fabric:load_conditions": [
     {
       "condition": "fabric:not",
@@ -20,19 +19,14 @@
     }
   ],
   "key": {
-    "B": {
-      "item": "minecraft:blaze_rod"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    }
+    "B": "minecraft:blaze_rod",
+    "S": "minecraft:stone"
   },
   "pattern": [
     " B ",
     "SSS"
   ],
   "result": {
-    "count": 1,
     "id": "minecraft:brewing_stand"
   }
 }

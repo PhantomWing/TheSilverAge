@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/comparator",
+  "textures": {
+    "slab": "minecraft:block/comparator"
+  }
+}

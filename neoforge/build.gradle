@@ -1,5 +1,6 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    // loom-no-remap has no remapJar, so shadowJar is the primary mod artifact (bundles :common).
+    id 'com.gradleup.shadow' version '9.4.2'
 }
 
 architectury {
@@ -8,24 +9,64 @@ architectury {
     }
 }
 
-// Resolved outside the loom { runs { } } closures: inside the RunConfigSettings
-// delegate, `data()` shadows other resolutions, so these are hoisted here.
+// Hoisted out of the loom runs closures (inside the delegate, `data()` shadows these).
 def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
+
+// Dedicated source set for GameTests — kept out of `main` so it never ships or sits on the
+// runClient/runServer classpath; wired onto the `gameTest` run only.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+configurations {
+    // Let the gametest source set resolve the same dependencies as main.
+    gametestImplementation.extendsFrom implementation
+    gametestRuntimeOnly.extendsFrom runtimeOnly
+    gametestCompileOnly.extendsFrom compileOnly
+}
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
     runs {
-        // NeoForge data generation. Ported from the pre-Architectury single-loader
-        // `runs.data` block. Output + existing-resource paths now point at the
-        // relocated common source set (datagen output is shared across loaders).
-        //   ./gradlew :neoforge:runData
+        // Data generation: ./gradlew :neoforge:runData. clientData()'s environment is a
+        // superset, so one --all run emits both client and server data providers.
         data {
-            data()
+            clientData()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
+        }
+
+        // Give the dev server its own runDir so its config is separate from the client's
+        // (lets client/server hold different override_vanilla_recipes values).
+        server {
+            runDir "run/server"
+        }
+
+        // Automated GameTest server: ./gradlew :neoforge:runGameTest. loom has no
+        // gameTestServer() helper, so bind NeoForge's template directly via forgeTemplate.
+        gameTest {
+            // environment must equal the forge template name (loom derives launchTarget from it).
+            environment "gameTestServer"
+            forgeTemplate "gameTestServer"
+            name = "Game Test"
+            source sourceSets.gametest
+            // Declare both source sets as the mod for this run only, so NeoForge treats the
+            // gametest output as mod content (scans @EventBusSubscriber, loads test datapack).
+            mods {
+                "${rootProject.mod_id}" {
+                    sourceSet sourceSets.main
+                    sourceSet sourceSets.gametest
+                }
+            }
+            // --tests: run only this mod's tests; --report: JUnit-like XML for CI.
+            programArgs '--tests', "${rootProject.mod_id}:*", '--report', 'gametest-report.xml'
+            runDir "run/gametest"
         }
     }
 }
@@ -38,83 +79,57 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// Recipe viewer / Create toggles, ported verbatim from the pre-Architectury
-// single-loader build so NeoForge keeps identical dev-runtime behaviour.
-//   ./gradlew :neoforge:runClient -Precipe_viewer=jei|emi|both|none
-//   ./gradlew :neoforge:runClient -Penable_create=false
-def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
-if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
-    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, emi, both, none")
-}
-def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
-def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
-def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
-logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}")
-
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
-    // Architectury API (NeoForge).
-    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
+    // loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
+    api "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 
-    // ---- Optional integrations (compile against these; load at runtime only when toggled) ----
-
-    // JEI (runtime-only, toggled by -Precipe_viewer=jei|both).
-    if (loadJei) {
-        modLocalRuntime("mezz.jei:jei-1.21.1-neoforge:${rootProject.jei_version}")
-    }
-
-    // EMI: compileOnly always so compat/emi/ModEmiPlugin compiles; localRuntime
-    // only when toggled in so the plugin class is never loaded when EMI is absent.
-    modCompileOnly("dev.emi:emi-neoforge:${rootProject.emi_version}")
-    if (loadEmi) {
-        modLocalRuntime("dev.emi:emi-neoforge:${rootProject.emi_version}")
-    }
-
-    // AppleSkin / Jade — dev-runtime niceties (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
-    modLocalRuntime "curse.maven:jade-324717:7428884"
-
-    // Create — compileOnly always (so the datagen compat classes compile),
-    // localRuntime only when toggled on (so the classes are never loaded when Create is absent).
-    modCompileOnly("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
-    modCompileOnly("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    if (loadCreate) {
-        modLocalRuntime("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
-        modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")
-        modLocalRuntime("dev.engine-room.flywheel:flywheel-neoforge-${rootProject.minecraft_version}:${rootProject.flywheel_version}")
-        modLocalRuntime("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    }
+    // Jade + JEI — dev-runtime only (never compiled against, never shipped).
+    localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
 }
 
 processResources {
-    inputs.property 'version', project.version
+    def manifest = rootProject.ext.manifestProps()
+    inputs.properties(manifest)
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand 'version': project.version
+        expand(manifest)
+    }
+
+    // Copy common's built-in resource pack into the NeoForge resource output so it resolves in dev
+    // (common is on the classpath but not a mod-file resource root; shadowCommon handles production).
+    from(project(':common').file('src/main/resources/resourcepacks')) {
+        into 'resourcepacks'
     }
 }
 
+// shadowJar is built on top of the Loom-processed `jar` (marked `raw`) so :common is merged in;
+// shadowJar is the primary jar. The hand-maintained META-INF/accesstransformer.cfg (mirrors
+// common's AW, since there's no remapJar to auto-convert) ships via main resources.
+jar {
+    archiveClassifier = 'raw'
+}
+
 shadowJar {
+    dependsOn jar
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
+
     exclude 'fabric.mod.json'
     exclude 'architectury.common.json'
 
+    // Drop the compile-only Farmer's Delight KnifeItem stub (real FD class binds at runtime).
+    exclude 'vectorwing/**'
+
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = 'dev-shadow'
+    archiveClassifier = null
 }
 
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    // NOTE (Phase 0): the common access widener is currently empty and the NeoForge
-    // subproject ships an (intentionally empty) placeholder accesstransformer.cfg to
-    // preserve the AT concept. Converting the AW into an AT here
-    // (`atAccessWideners.add 'thesilverage.accesswidener'`) conflicts with that
-    // placeholder ("jar already contains an access transformer"), so AW->AT
-    // conversion is deferred until real entries exist in a later phase.
-}
+assemble.dependsOn shadowJar
 
 sourcesJar {
     def commonSources = project(':common').sourcesJar
@@ -122,9 +137,16 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
+// Redirect the java component's outgoing artifacts to shadowJar (the shippable jar) so
+// `from components.java` doesn't publish the classifier='raw' jar.
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
     }
 }
 
@@ -138,5 +160,36 @@ publishing {
 
     repositories {
         // Add repositories to publish to here.
+    }
+}
+
+// Publishing (NeoForge jar). ./gradlew :neoforge:publishMods (tokens via MODRINTH_TOKEN / CURSEFORGE_TOKEN env vars).
+apply plugin: 'me.modmuss50.mod-publish-plugin'
+
+publishMods {
+    file = shadowJar.archiveFile
+    version = rootProject.mod_version
+    displayName = "The Silver Age ${rootProject.mod_version}"
+    changelog = rootProject.ext.latestChangelog()
+    type = STABLE
+    modLoaders.add("neoforge")
+    dryRun = project.hasProperty("publishDryRun")
+
+    modrinth {
+        projectId = providers.gradleProperty("modrinth_project_id")
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
+        // Tag every supported game version on the upload, not just the build target.
+        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
+        // NeoForge only needs Architectury — fabric-api / cloth-config are Fabric-only.
+        requires("architectury-api")
+    }
+    curseforge {
+        projectId = providers.gradleProperty("curseforge_project_id")
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
+        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
+        // CurseForge requires explicit side flags (Modrinth infers them from the jar).
+        client = true
+        server = true
+        requires("architectury-api")
     }
 }

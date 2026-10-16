@@ -5,19 +5,29 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, TheSilverAge.MOD_ID, existingFileHelper);
+    // Sable (Create Aeronautics) tags, referenced by string id since Sable is not a compile dependency.
+    private static final TagKey<Block> SABLE_HEAVY =
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "heavy"));
+    private static final TagKey<Block> SABLE_SUPER_LIGHT =
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "super_light"));
+    private static final TagKey<Block> SABLE_QUARTER_VOLUME =
+            TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("sable", "quarter_volume"));
+
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, TheSilverAge.MOD_ID);
     }
 
     @Override
@@ -25,6 +35,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         addModTags(provider);
         addCommonTags(provider);
         addMinecraftTags(provider);
+        addSableTags(provider);
     }
 
     private void addModTags(HolderLookup.@NotNull Provider provider) {
@@ -34,116 +45,221 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Silver blocks
         tag(ModTags.Blocks.SILVER_BLOCKS)
-                .add(ModBlocks.SILVER_ORE.get())
-                .add(ModBlocks.DEEPSLATE_SILVER_ORE.get())
-                .add(ModBlocks.RAW_SILVER_BLOCK.get())
+                .add(ModBlocks.SILVER_ORE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.DEEPSLATE_SILVER_ORE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.RAW_SILVER_BLOCK.get().builtInRegistryHolder().key())
 
-                .add(ModBlocks.MOON_PHASE_DETECTOR.get())
+                .add(ModBlocks.MOON_PHASE_DETECTOR.get().builtInRegistryHolder().key())
 
                 // Block of Silver
-                .add(ModBlocks.SILVER_BLOCK.get())
-                .add(ModBlocks.EXPOSED_SILVER.get())
-                .add(ModBlocks.WEATHERED_SILVER.get())
-                .add(ModBlocks.OXIDIZED_SILVER.get())
-                .add(ModBlocks.WAXED_SILVER_BLOCK.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get())
+                .add(ModBlocks.SILVER_BLOCK.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BLOCK.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get().builtInRegistryHolder().key())
 
                 // Cut Silver
-                .add(ModBlocks.CUT_SILVER.get())
-                .add(ModBlocks.EXPOSED_CUT_SILVER.get())
-                .add(ModBlocks.WEATHERED_CUT_SILVER.get())
-                .add(ModBlocks.OXIDIZED_CUT_SILVER.get())
-                .add(ModBlocks.WAXED_CUT_SILVER.get())
-                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER.get())
-                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get())
+                .add(ModBlocks.CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get().builtInRegistryHolder().key())
+
+                // Silver Bricks
+                .add(ModBlocks.SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+
+                // Silver Brick Slab
+                .add(ModBlocks.SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+
+                // Silver Brick Stairs
+                .add(ModBlocks.SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
 
                 // Cut Silver Slab
-                .add(ModBlocks.CUT_SILVER_SLAB.get())
-                .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get())
+                .add(ModBlocks.CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
 
                 // Cut Silver Stairs
-                .add(ModBlocks.CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get())
+                .add(ModBlocks.CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
 
                 // Chiseled Silver
-                .add(ModBlocks.CHISELED_SILVER.get())
-                .add(ModBlocks.EXPOSED_CHISELED_SILVER.get())
-                .add(ModBlocks.WEATHERED_CHISELED_SILVER.get())
-                .add(ModBlocks.OXIDIZED_CHISELED_SILVER.get())
-                .add(ModBlocks.WAXED_CHISELED_SILVER.get())
-                .add(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get())
-                .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get())
+                .add(ModBlocks.CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+
+                // Silver Pillar
+                .add(ModBlocks.SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR.get().builtInRegistryHolder().key())
 
                 // Silver Grate
-                .add(ModBlocks.SILVER_GRATE.get())
-                .add(ModBlocks.EXPOSED_SILVER_GRATE.get())
-                .add(ModBlocks.WEATHERED_SILVER_GRATE.get())
-                .add(ModBlocks.OXIDIZED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get())
+                .add(ModBlocks.SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get().builtInRegistryHolder().key())
 
                 // Silver Bulb
-                .add(ModBlocks.SILVER_BULB.get())
-                .add(ModBlocks.EXPOSED_SILVER_BULB.get())
-                .add(ModBlocks.WEATHERED_SILVER_BULB.get())
-                .add(ModBlocks.OXIDIZED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_BULB.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get())
+                .add(ModBlocks.SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BULB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BULB.get().builtInRegistryHolder().key())
 
                 // Silver Trapdoor
-                .add(ModBlocks.SILVER_TRAPDOOR.get())
-                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get())
+                .add(ModBlocks.SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
 
                 // Silver Door
-                .add(ModBlocks.SILVER_DOOR.get())
-                .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
-                .add(ModBlocks.WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+                .add(ModBlocks.SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get().builtInRegistryHolder().key());
+
+        // Seven non-base variants; base SILVER_BLOCK excluded (already in #c:storage_blocks).
+        tag(ModTags.Blocks.WEATHERED_SILVER_BLOCKS)
+                .add(ModBlocks.EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BLOCK.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get().builtInRegistryHolder().key());
+
+        // Cut Silver
+        tag(ModTags.Blocks.CUT_SILVER_BLOCKS)
+                .add(ModBlocks.CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get().builtInRegistryHolder().key());
+
+        // Chiseled Silver
+        tag(ModTags.Blocks.CHISELED_SILVER_BLOCKS)
+                .add(ModBlocks.CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER.get().builtInRegistryHolder().key());
+
+        // Silver Bricks
+        tag(ModTags.Blocks.SILVER_BRICK_BLOCKS)
+                .add(ModBlocks.SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS.get().builtInRegistryHolder().key());
+
+        // Silver Pillar
+        tag(ModTags.Blocks.SILVER_PILLARS)
+                .add(ModBlocks.SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR.get().builtInRegistryHolder().key());
+
+        // Silver Grate
+        tag(ModTags.Blocks.SILVER_GRATES)
+                .add(ModBlocks.SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get().builtInRegistryHolder().key());
     }
 
     private void addCommonTags(HolderLookup.@NotNull Provider provider) {
         // Storage blocks
-        tag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER).add(ModBlocks.SILVER_BLOCK.get());
-        tag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER).add(ModBlocks.RAW_SILVER_BLOCK.get());
+        tag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER).add(ModBlocks.SILVER_BLOCK.get().builtInRegistryHolder().key());
+        tag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER).add(ModBlocks.RAW_SILVER_BLOCK.get().builtInRegistryHolder().key());
         tag(Tags.Blocks.STORAGE_BLOCKS)
                 .addTag(CommonTags.Blocks.STORAGE_BLOCKS_SILVER)
                 .addTag(CommonTags.Blocks.STORAGE_BLOCKS_RAW_SILVER);
 
         // Ores
-        tag(CommonTags.Blocks.ORES_SILVER).add(ModBlocks.SILVER_ORE.get(), ModBlocks.DEEPSLATE_SILVER_ORE.get());
+        tag(CommonTags.Blocks.ORES_SILVER).add(ModBlocks.SILVER_ORE.get().builtInRegistryHolder().key(), ModBlocks.DEEPSLATE_SILVER_ORE.get().builtInRegistryHolder().key());
         tag(Tags.Blocks.ORES).addTag(CommonTags.Blocks.ORES_SILVER);
-        tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(ModBlocks.SILVER_ORE.get());
-        tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(ModBlocks.DEEPSLATE_SILVER_ORE.get());
+        tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(ModBlocks.SILVER_ORE.get().builtInRegistryHolder().key());
+        tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(ModBlocks.DEEPSLATE_SILVER_ORE.get().builtInRegistryHolder().key());
         tag(Tags.Blocks.ORE_RATES_SINGULAR).addTag(CommonTags.Blocks.ORES_SILVER);
     }
 
@@ -154,57 +270,89 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // Beacon
         tag(BlockTags.BEACON_BASE_BLOCKS)
-                .add(ModBlocks.SILVER_BLOCK.get())
-                .add(ModBlocks.EXPOSED_SILVER.get())
-                .add(ModBlocks.WEATHERED_SILVER.get())
-                .add(ModBlocks.OXIDIZED_SILVER.get())
-                .add(ModBlocks.WAXED_SILVER_BLOCK.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get());
+                .add(ModBlocks.SILVER_BLOCK.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BLOCK.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER.get().builtInRegistryHolder().key());
 
         // Slabs
         tag(BlockTags.SLABS)
-                .add(ModBlocks.CUT_SILVER_SLAB.get())
-                .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
+                .add(ModBlocks.SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB.get().builtInRegistryHolder().key());
 
         // Stairs
         tag(BlockTags.STAIRS)
-                .add(ModBlocks.CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get())
-                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
+                .add(ModBlocks.SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get().builtInRegistryHolder().key());
 
         // Doors
         tag(BlockTags.DOORS)
-                .add(ModBlocks.SILVER_DOOR.get())
-                .add(ModBlocks.EXPOSED_SILVER_DOOR.get())
-                .add(ModBlocks.WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get());
+                .add(ModBlocks.SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_DOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get().builtInRegistryHolder().key());
 
         // Trapdoors
         tag(BlockTags.TRAPDOORS)
-                .add(ModBlocks.SILVER_TRAPDOOR.get())
-                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+                .add(ModBlocks.SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.EXPOSED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WEATHERED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.OXIDIZED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR.get().builtInRegistryHolder().key());
+    }
+
+    /** Sable weight/volume classifications; inert when Sable is absent, additively merged when present. */
+    private void addSableTags(HolderLookup.@NotNull Provider provider) {
+        tag(SABLE_HEAVY)
+                .addTag(ModTags.Blocks.WEATHERED_SILVER_BLOCKS)
+                .addTag(ModTags.Blocks.CUT_SILVER_BLOCKS)
+                .addTag(ModTags.Blocks.CHISELED_SILVER_BLOCKS)
+                .addTag(ModTags.Blocks.SILVER_BRICK_BLOCKS)
+                .addTag(ModTags.Blocks.SILVER_PILLARS);
+
+        tag(SABLE_SUPER_LIGHT)
+                .addTag(ModTags.Blocks.SILVER_GRATES);
+
+        tag(SABLE_QUARTER_VOLUME)
+                .addTag(ModTags.Blocks.SILVER_GRATES);
     }
 }

@@ -29,8 +29,14 @@ public class SilverfishDropsModifier extends LootModifier {
     private final int minAmount;
     private final int maxAmount;
 
+    // Datagen entry point; uses the default GLM priority 0.
     public SilverfishDropsModifier(LootItemCondition[] conditionsIn, Item item, int minAmount, int maxAmount) {
-        super(conditionsIn);
+        this(conditionsIn, 0, item, minAmount, maxAmount);
+    }
+
+    // The `priority` 2nd arg is required by LootModifier's codecStart.
+    public SilverfishDropsModifier(LootItemCondition[] conditionsIn, int priority, Item item, int minAmount, int maxAmount) {
+        super(conditionsIn, priority);
 
         this.item = item;
         this.minAmount = minAmount;
@@ -50,13 +56,11 @@ public class SilverfishDropsModifier extends LootModifier {
             }
         }
 
-        // Delegate the count roll + add to the shared, loader-agnostic algorithm.
         SilverLootAlgorithms.applySilverfishDrops(generatedLoot, context, this.item, this.minAmount, this.maxAmount);
 
         return generatedLoot;
     }
 
-    // Return our codec here.
     @Override
     public @NotNull MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;

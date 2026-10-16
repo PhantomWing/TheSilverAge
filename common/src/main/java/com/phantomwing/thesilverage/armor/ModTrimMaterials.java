@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
@@ -10,8 +10,11 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,6 +22,14 @@ import java.util.Map;
 public class ModTrimMaterials {
     public static final float SILVER_INDEX = 0.0039207F;
     public static final ResourceKey<TrimMaterial> SILVER = trimMaterialKey("silver");
+
+    /** The silver armor's equipment asset (matches ModArmorMaterials.SILVER_ARMOR_MATERIAL). */
+    public static final ResourceKey<EquipmentAsset> SILVER_EQUIPMENT_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation("silver"));
+
+    // Per-asset override renders silver-on-silver trim with a darker palette so it stays visible.
+    public static final MaterialAssetGroup SILVER_ASSETS =
+            MaterialAssetGroup.create("silver", Map.of(SILVER_EQUIPMENT_ASSET, "silver_darker"));
 
     public static final LinkedHashMap<ResourceKey<TrimMaterial>, Float> MOD_TRIM_MATERIALS = Util.make(new LinkedHashMap<>(), (map) -> {
         map.put(ModTrimMaterials.SILVER, ModTrimMaterials.SILVER_INDEX);
@@ -54,8 +65,9 @@ public class ModTrimMaterials {
     }
 
     private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
-        TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item, itemModelIndex,
-                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style), Map.of());
+        // `item`/`itemModelIndex` are unused by TrimMaterial now; kept to document legacy ordering.
+        TrimMaterial trimMaterial = new TrimMaterial(SILVER_ASSETS,
+                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.identifier())).withStyle(style));
         context.register(trimKey, trimMaterial);
     }
 }

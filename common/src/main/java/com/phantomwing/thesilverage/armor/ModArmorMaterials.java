@@ -2,59 +2,51 @@ package com.phantomwing.thesilverage.armor;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.tags.CommonTags;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.Map;
 
 public class ModArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS =
-            DeferredRegister.create(TheSilverAge.MOD_ID, Registries.ARMOR_MATERIAL);
-
-    public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIAL = register("silver",
-            2,
-            6,
-            7,
-            3,
-            8,
-            0,
-            0,
-            12,
-            Ingredient.of(CommonTags.Items.INGOTS_SILVER)
+    public static final ArmorMaterial SILVER_ARMOR_MATERIAL = create(
+            "silver",
+            10, // Durability factor (Iron is 15, Gold is 7)
+            2,  // Boots defense
+            6,  // Leggings defense
+            7,  // Chestplate defense
+            3,  // Helmet defense
+            8,  // Body defense (horse/wolf armor)
+            0f, // Toughness
+            0f, // Knockback resistance
+            12  // Enchantability
     );
 
-    private static Holder<ArmorMaterial> register(String name, int bootsProtection, int legsProtection, int chestProtection, int headProtection, int bodyProtection, float toughness, float knockbackResistance, int enchantmentValue, Ingredient repairIngredient) {
-        EnumMap<ArmorItem.Type, Integer> typeProtection = Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
-            attribute.put(ArmorItem.Type.BOOTS, bootsProtection);
-            attribute.put(ArmorItem.Type.LEGGINGS, legsProtection);
-            attribute.put(ArmorItem.Type.CHESTPLATE, chestProtection);
-            attribute.put(ArmorItem.Type.HELMET, headProtection);
-            attribute.put(ArmorItem.Type.BODY, bodyProtection); // Body is for Horse/Wolf armor
-        });
-
-        ResourceLocation location = TheSilverAge.resourceLocation(name);
+    private static ArmorMaterial create(String name, int durability,
+                                        int bootsDefense, int legsDefense, int chestDefense,
+                                        int headDefense, int bodyDefense,
+                                        float toughness, float knockbackResistance, int enchantmentValue) {
+        Map<ArmorType, Integer> defense = Map.of(
+                ArmorType.BOOTS, bootsDefense,
+                ArmorType.LEGGINGS, legsDefense,
+                ArmorType.CHESTPLATE, chestDefense,
+                ArmorType.HELMET, headDefense,
+                ArmorType.BODY, bodyDefense
+        );
         Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
-        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));
+        ResourceKey<EquipmentAsset> assetId =
+                ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation(name));
 
-        RegistrySupplier<ArmorMaterial> supplier = ARMOR_MATERIALS.register(name, () ->
-                new ArmorMaterial(typeProtection, enchantmentValue, equipSound, () -> repairIngredient, layers, toughness, knockbackResistance));
-        // RegistrySupplier implements Holder<ArmorMaterial>; expose it as a Holder so
-        // ArmorItem / AnimalArmorItem constructors keep their original signatures.
-        return supplier;
+        return new ArmorMaterial(durability, defense, enchantmentValue, equipSound,
+                toughness, knockbackResistance, CommonTags.Items.INGOTS_SILVER, assetId);
     }
 
+    // No-op: armor materials are not registry objects. Retained for call-site compatibility.
     public static void register() {
-        ARMOR_MATERIALS.register();
     }
-
 }

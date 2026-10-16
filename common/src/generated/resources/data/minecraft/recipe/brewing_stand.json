@@ -6,7 +6,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "fabric:load_conditions": [
     {
       "condition": "thesilverage:config_boolean",
@@ -14,19 +13,14 @@
     }
   ],
   "key": {
-    "B": {
-      "item": "minecraft:blaze_rod"
-    },
-    "S": {
-      "item": "thesilverage:silver_ingot"
-    }
+    "B": "minecraft:blaze_rod",
+    "S": "#c:ingots/silver"
   },
   "pattern": [
     " B ",
     "SSS"
   ],
   "result": {
-    "count": 1,
     "id": "minecraft:brewing_stand"
   }
 }

@@ -3,13 +3,21 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import dev.architectury.registry.registries.RegistrySupplier;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +31,6 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
     }
 
-    // Actually add our loot tables.
     @Override
     protected void generate() {
         dropOre(ModBlocks.SILVER_ORE, ModItems.RAW_SILVER);
@@ -52,6 +59,36 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_EXPOSED_CUT_SILVER);
         dropSelf(ModBlocks.WAXED_WEATHERED_CUT_SILVER);
         dropSelf(ModBlocks.WAXED_OXIDIZED_CUT_SILVER);
+
+        // Silver Bricks
+        dropSelf(ModBlocks.SILVER_BRICKS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICKS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICKS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICKS);
+
+        // Silver Brick Slab
+        dropSlab(ModBlocks.SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.OXIDIZED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
+        dropSlab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
+
+        // Silver Brick Stairs
+        dropSelf(ModBlocks.SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS);
 
         // Cut Silver Slab
         dropSlab(ModBlocks.CUT_SILVER_SLAB);
@@ -82,6 +119,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER);
         dropSelf(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER);
         dropSelf(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER);
+
+        // Silver Pillar
+        dropSelf(ModBlocks.SILVER_PILLAR);
+        dropSelf(ModBlocks.EXPOSED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WEATHERED_SILVER_PILLAR);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_PILLAR);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_PILLAR);
 
         // Silver Grate
         dropSelf(ModBlocks.SILVER_GRATE);
@@ -124,11 +171,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropDoor(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
     }
 
-    // The contents of this Iterable are used for validation.
-    // We return an Iterable over our block registry's values here.
     @Override
     protected @NotNull Iterable<Block> getKnownBlocks() {
-        // The contents of our (Architectury) DeferredRegister.
         List<Block> blocks = new ArrayList<>();
         for (RegistrySupplier<Block> entry : ModBlocks.BLOCKS) {
             blocks.add(entry.get());
@@ -149,6 +193,17 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     }
 
     private void dropOre(RegistrySupplier<Block> block, RegistrySupplier<Item> item) {
-        add(block.get(), (b) -> createOreDrop(b, item.get()));
+        add(block.get(), (b) -> createSilverOreDrop(b, item.get()));
+    }
+
+    /** Copper-style ore drop with a 1-3 count range (plus silk-touch and Fortune). */
+    private LootTable.Builder createSilverOreDrop(Block block, Item item) {
+        HolderLookup.RegistryLookup<Enchantment> enchantments =
+                this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        return this.createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
+                LootItem.lootTableItem(item)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                        .apply(ApplyBonusCount.addOreBonusCount(
+                                enchantments.getOrThrow(Enchantments.FORTUNE)))));
     }
 }

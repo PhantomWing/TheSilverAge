@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_special_firework_star",
+  "dye": "#minecraft:dyes",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "thesilverage:config_boolean",
+        "settingId": "override_vanilla_recipes"
+      }
+    }
+  ],
+  "fuel": "minecraft:gunpowder",
+  "result": {
+    "id": "minecraft:firework_star"
+  },
+  "shapes": {
+    "burst": "minecraft:feather",
+    "creeper": "#minecraft:skulls",
+    "large_ball": "minecraft:fire_charge",
+    "star": "minecraft:gold_nugget"
+  },
+  "trail": "minecraft:diamond",
+  "twinkle": "minecraft:glowstone_dust"
+}

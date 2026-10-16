@@ -5,7 +5,7 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -31,29 +31,12 @@ public class ModConfiguredFeatures {
         registerOverworldOre(context, ORE_SILVER_SMALL, ModBlocks.SILVER_ORE, ModBlocks.DEEPSLATE_SILVER_ORE, 5);
     }
 
-    /** Registers an overworld ore configured feature with both stone and deepslate variants.
-     *
-     * @param context The bootstrap context to register the feature in.
-     * @param key The resource key for the configured feature.
-     * @param stoneOre The block representing the stone variant of the ore.
-     * @param deepslateOre The block representing the deepslate variant of the ore.
-     * @param veinSize The size of the ore vein (number of blocks per vein).
-     * @param <T> The type of block being registered as an ore.
-     */
+    /** Registers an overworld ore configured feature with both stone and deepslate variants. */
     private static <T extends Block> void registerOverworldOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, RegistrySupplier<T> stoneOre, RegistrySupplier<T> deepslateOre, int veinSize) {
         registerOverworldOre(context, key, stoneOre, deepslateOre, veinSize, 0.0f);
     }
 
-    /** Registers an overworld ore configured feature with both stone and deepslate variants.
-     *
-     * @param context The bootstrap context to register the feature in.
-     * @param key The resource key for the configured feature.
-     * @param stoneOre The block representing the stone variant of the ore.
-     * @param deepslateOre The block representing the deepslate variant of the ore.
-     * @param veinSize The size of the ore vein (number of blocks per vein).
-     * @param airDiscardChance The chance (0.0 to 1.0) that an ore block will be discarded if exposed to air.
-     * @param <T> The type of block being registered as an ore.
-     */
+    /** As above, with an {@code airDiscardChance} (0.0–1.0) for ore exposed to air. */
     private static <T extends Block> void registerOverworldOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, RegistrySupplier<T> stoneOre, RegistrySupplier<T> deepslateOre, int veinSize, float airDiscardChance) {
         RuleTest stoneReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
@@ -66,7 +49,7 @@ public class ModConfiguredFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
     }
 
     private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
