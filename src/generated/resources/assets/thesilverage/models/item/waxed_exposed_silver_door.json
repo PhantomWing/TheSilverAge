@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "thesilverage:item/exposed_silver_door"
-  }
-}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "thesilverage:silver_bulb",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thesilverage:waxed_silver_bulb"
+  }
+}

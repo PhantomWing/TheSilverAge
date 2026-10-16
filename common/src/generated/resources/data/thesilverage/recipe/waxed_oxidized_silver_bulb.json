@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": "minecraft:blaze_rod",
+    "R": "minecraft:redstone",
+    "S": "thesilverage:waxed_oxidized_silver"
+  },
+  "pattern": [
+    " S ",
+    "SBS",
+    " R "
+  ],
+  "result": {
+    "id": "thesilverage:waxed_oxidized_silver_bulb"
+  }
+}

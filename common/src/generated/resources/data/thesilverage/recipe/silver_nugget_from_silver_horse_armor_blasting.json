@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:blasting",
+  "experience": 0.1,
+  "ingredient": "thesilverage:silver_horse_armor",
+  "result": {
+    "id": "thesilverage:silver_nugget"
+  }
+}

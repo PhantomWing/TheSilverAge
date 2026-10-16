@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:waxed_exposed_silver",
+  "result": {
+    "count": 8,
+    "id": "thesilverage:waxed_exposed_cut_silver_slab"
+  }
+}

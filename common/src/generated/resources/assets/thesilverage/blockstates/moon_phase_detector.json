@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "inverted=false": {
+      "model": "thesilverage:block/moon_phase_detector"
+    },
+    "inverted=true": {
+      "model": "thesilverage:block/moon_phase_detector_inverted"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "lit=false,powered=false": {
+      "model": "thesilverage:block/weathered_silver_bulb"
+    },
+    "lit=false,powered=true": {
+      "model": "thesilverage:block/weathered_silver_bulb_powered"
+    },
+    "lit=true,powered=false": {
+      "model": "thesilverage:block/weathered_silver_bulb_lit"
+    },
+    "lit=true,powered=true": {
+      "model": "thesilverage:block/weathered_silver_bulb_lit_powered"
+    }
+  }
+}

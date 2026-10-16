@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:oxidized_silver_bricks",
+  "result": {
+    "id": "thesilverage:oxidized_silver_brick_stairs"
+  }
+}

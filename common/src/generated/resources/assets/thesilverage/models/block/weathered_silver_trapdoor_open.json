@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_trapdoor_open",
+  "textures": {
+    "texture": "thesilverage:block/weathered_silver_trapdoor"
+  }
+}

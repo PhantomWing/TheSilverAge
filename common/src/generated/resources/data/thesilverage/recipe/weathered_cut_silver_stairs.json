@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "weathered_cut_silver",
+  "key": {
+    "#": "thesilverage:weathered_cut_silver"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "thesilverage:weathered_cut_silver_stairs"
+  }
+}

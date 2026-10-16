@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:cut_silver",
+  "result": {
+    "id": "thesilverage:cut_silver_stairs"
+  }
+}
