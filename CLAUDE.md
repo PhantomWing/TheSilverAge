@@ -50,6 +50,6 @@ on a rung where they have no build; that does not block the line.
 - Java 25, no mappings and no Parchment (Mojang names are the runtime names). `org.gradle.java.home` is pinned in `gradle.properties` to a JDK on this machine; if the daemon fails to start, check that path first.
 - Datagen: `:neoforge:runData`. Output: `common/src/generated/resources`, never hand-edited.
 - Game tests in `neoforge/src/gametest`, run with `:neoforge:runGameTest`.
-- Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`.
+- Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`, the NeoForge one from `neoforge_minecraft_versions` (26.1.2 alone: it needs NeoForge 26.1.2, which 26.1 and 26.1.1 don't have).
 - GitHub Actions: `build.yml` and `release.yml`.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.

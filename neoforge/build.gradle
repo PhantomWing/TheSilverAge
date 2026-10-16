@@ -178,15 +178,15 @@ publishMods {
     modrinth {
         projectId = providers.gradleProperty("modrinth_project_id")
         accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
-        // Tag every supported game version on the upload, not just the build target.
-        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
+        // Tag every game version NeoForge can load this on (neoforge_minecraft_versions), not just the build target.
+        rootProject.neoforge_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // NeoForge only needs Architectury — fabric-api / cloth-config are Fabric-only.
         requires("architectury-api")
     }
     curseforge {
         projectId = providers.gradleProperty("curseforge_project_id")
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
-        rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
+        rootProject.neoforge_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // CurseForge requires explicit side flags (Modrinth infers them from the jar).
         client = true
         server = true
