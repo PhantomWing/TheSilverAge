@@ -344,6 +344,27 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.NEEDS_IRON_TOOL).addTag(ModTags.Blocks.SILVER_BLOCKS);
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.SILVER_BLOCKS);
 
+        // Pressure plates. Like vanilla's weighted plates they take any pickaxe, so they stay out of
+        // SILVER_BLOCKS and its iron tool requirement; the tag also lets a wall keep its post under one.
+        tag(BlockTags.PRESSURE_PLATES)
+                .add(ModBlocks.SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE.get());
+
         // Beacon
         tag(BlockTags.BEACON_BASE_BLOCKS)
                 .add(ModBlocks.SILVER_BLOCK.get())

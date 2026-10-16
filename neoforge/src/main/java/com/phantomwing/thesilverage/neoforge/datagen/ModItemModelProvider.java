@@ -219,6 +219,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         trapdoorItem(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
         trapdoorItem(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
 
+        // Silver Pressure Plate
+        blockItem(ModBlocks.SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.WAXED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE);
+        blockItem(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE);
+
         // Silver Door
         blockItem2D(ModBlocks.SILVER_DOOR);
         blockItem2D(ModBlocks.EXPOSED_SILVER_DOOR);

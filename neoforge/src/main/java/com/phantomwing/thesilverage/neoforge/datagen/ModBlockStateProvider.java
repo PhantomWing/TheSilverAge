@@ -162,6 +162,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         trapdoorWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR, ModBlocks.WEATHERED_SILVER_TRAPDOOR);
         trapdoorWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR, ModBlocks.OXIDIZED_SILVER_TRAPDOOR);
 
+        // Silver Pressure Plate (textured with its stage's Block of Silver, as vanilla's weighted plates are)
+        pressurePlate(ModBlocks.SILVER_PRESSURE_PLATE, ModBlocks.SILVER_BLOCK);
+        pressurePlate(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE, ModBlocks.EXPOSED_SILVER);
+        pressurePlate(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE, ModBlocks.WEATHERED_SILVER);
+        pressurePlate(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE, ModBlocks.OXIDIZED_SILVER);
+        pressurePlate(ModBlocks.WAXED_SILVER_PRESSURE_PLATE, ModBlocks.SILVER_BLOCK);
+        pressurePlate(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE, ModBlocks.EXPOSED_SILVER);
+        pressurePlate(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE, ModBlocks.WEATHERED_SILVER);
+        pressurePlate(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE, ModBlocks.OXIDIZED_SILVER);
+
         // Silver Door
         door(ModBlocks.SILVER_DOOR);
         door(ModBlocks.EXPOSED_SILVER_DOOR);
@@ -308,6 +318,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
             return ConfiguredModel.builder().modelFile(model).build();
         });
+    }
+
+    private void pressurePlate(RegistrySupplier<Block> block, RegistrySupplier<Block> textureBlock) {
+        String name = BlockUtils.getName(block.get());
+        ResourceLocation texture = blockTexture(textureBlock.get());
+        ModelFile up = models().pressurePlate(name, texture);
+        ModelFile down = models().pressurePlateDown(name + "_down", texture);
+
+        getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(state.getValue(WeightedPressurePlateBlock.POWER) > 0 ? down : up)
+                .build());
     }
 
     private void door(RegistrySupplier<DoorBlock> doorBlock) {

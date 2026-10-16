@@ -64,7 +64,10 @@ public class ModFillingRecipeGen extends FillingRecipeGen {
             lk(ModBlocks.SILVER_TRAPDOOR), lk(ModBlocks.EXPOSED_SILVER_TRAPDOOR), lk(ModBlocks.WEATHERED_SILVER_TRAPDOOR), lk(ModBlocks.OXIDIZED_SILVER_TRAPDOOR))),
 
         SILVER_DOOR = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_DOOR), lk(ModBlocks.EXPOSED_SILVER_DOOR), lk(ModBlocks.WEATHERED_SILVER_DOOR), lk(ModBlocks.OXIDIZED_SILVER_DOOR)));
+            lk(ModBlocks.SILVER_DOOR), lk(ModBlocks.EXPOSED_SILVER_DOOR), lk(ModBlocks.WEATHERED_SILVER_DOOR), lk(ModBlocks.OXIDIZED_SILVER_DOOR))),
+
+        SILVER_PRESSURE_PLATE = oxidationChain(List.of(
+            lk(ModBlocks.SILVER_PRESSURE_PLATE), lk(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE)));
 
     public ModFillingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, TheSilverAge.MOD_ID);

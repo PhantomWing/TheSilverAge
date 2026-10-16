@@ -434,6 +434,13 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
 
+        // Silver Pressure Plate - two ingots side by side, as vanilla's weighted plates
+        pressurePlate(output, ModItems.SILVER_PRESSURE_PLATE.get(), SILVER_INGOTS);
+        waxable(oxidationGated, ModItems.SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_EXPOSED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_WEATHERED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE.get());
+
         // Silver Torch — mirrors the vanilla Copper Torch shape (nugget over coal over stick).
         silverTorch(output, ModItems.SILVER_TORCH.get(), SILVER_NUGGETS);
 
@@ -648,6 +655,12 @@ public class ModRecipeProvider extends RecipeProvider {
     private static void door(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
         doorBuilder(item, Ingredient.of(material))
                 .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    private static void pressurePlate(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
+        pressurePlateBuilder(RecipeCategory.REDSTONE, item, Ingredient.of(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }

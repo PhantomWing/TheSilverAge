@@ -109,6 +109,16 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_TRAPDOOR = registerBlock("waxed_weathered_silver_trapdoor", ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_TRAPDOOR = registerBlock("waxed_oxidized_silver_trapdoor", ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
 
+    // Silver Pressure Plate
+    public static final RegistrySupplier<Item> SILVER_PRESSURE_PLATE = registerBlock("silver_pressure_plate", ModBlocks.SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_PRESSURE_PLATE = registerBlock("exposed_silver_pressure_plate", ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_PRESSURE_PLATE = registerBlock("weathered_silver_pressure_plate", ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_PRESSURE_PLATE = registerBlock("oxidized_silver_pressure_plate", ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> WAXED_SILVER_PRESSURE_PLATE = registerBlock("waxed_silver_pressure_plate", ModBlocks.WAXED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_PRESSURE_PLATE = registerBlock("waxed_exposed_silver_pressure_plate", ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_PRESSURE_PLATE = registerBlock("waxed_weathered_silver_pressure_plate", ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_PRESSURE_PLATE = registerBlock("waxed_oxidized_silver_pressure_plate", ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE);
+
     // Silver blocks
     public static final RegistrySupplier<Item> SILVER_ORE = registerBlock("silver_ore", ModBlocks.SILVER_ORE);
     public static final RegistrySupplier<Item> DEEPSLATE_SILVER_ORE = registerBlock("deepslate_silver_ore", ModBlocks.DEEPSLATE_SILVER_ORE);

@@ -60,6 +60,9 @@
     "thesilverage:exposed_silver_pillar": {
       "waxed": "thesilverage:waxed_exposed_silver_pillar"
     },
+    "thesilverage:exposed_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_exposed_silver_pressure_plate"
+    },
     "thesilverage:exposed_silver_trapdoor": {
       "waxed": "thesilverage:waxed_exposed_silver_trapdoor"
     },
@@ -111,6 +114,9 @@
     "thesilverage:oxidized_silver_pillar": {
       "waxed": "thesilverage:waxed_oxidized_silver_pillar"
     },
+    "thesilverage:oxidized_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_oxidized_silver_pressure_plate"
+    },
     "thesilverage:oxidized_silver_trapdoor": {
       "waxed": "thesilverage:waxed_oxidized_silver_trapdoor"
     },
@@ -149,6 +155,9 @@
     },
     "thesilverage:silver_pillar": {
       "waxed": "thesilverage:waxed_silver_pillar"
+    },
+    "thesilverage:silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_silver_pressure_plate"
     },
     "thesilverage:silver_trapdoor": {
       "waxed": "thesilverage:waxed_silver_trapdoor"
@@ -200,6 +209,9 @@
     },
     "thesilverage:weathered_silver_pillar": {
       "waxed": "thesilverage:waxed_weathered_silver_pillar"
+    },
+    "thesilverage:weathered_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_weathered_silver_pressure_plate"
     },
     "thesilverage:weathered_silver_trapdoor": {
       "waxed": "thesilverage:waxed_weathered_silver_trapdoor"

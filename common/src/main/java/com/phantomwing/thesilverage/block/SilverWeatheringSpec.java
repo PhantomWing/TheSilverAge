@@ -117,6 +117,11 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.OXIDIZED_SILVER_DOOR::get);
 
+        // Silver Pressure Plate
+        ox(p, ModBlocks.SILVER_PRESSURE_PLATE::get, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get, ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE::get);
+
         // Silver Lantern
         ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.EXPOSED_SILVER_LANTERN::get);
         ox(p, ModBlocks.EXPOSED_SILVER_LANTERN::get, ModBlocks.WEATHERED_SILVER_LANTERN::get);
@@ -225,6 +230,12 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WAXED_EXPOSED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.WAXED_WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_DOOR::get, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR::get);
+
+        // Silver Pressure Plate
+        ox(p, ModBlocks.SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE::get);
 
         // Silver Lantern
         ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.WAXED_SILVER_LANTERN::get);

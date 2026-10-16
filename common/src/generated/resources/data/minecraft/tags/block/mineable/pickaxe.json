@@ -1,5 +1,13 @@
 {
   "values": [
-    "#thesilverage:silver_blocks"
+    "#thesilverage:silver_blocks",
+    "thesilverage:silver_pressure_plate",
+    "thesilverage:exposed_silver_pressure_plate",
+    "thesilverage:weathered_silver_pressure_plate",
+    "thesilverage:oxidized_silver_pressure_plate",
+    "thesilverage:waxed_silver_pressure_plate",
+    "thesilverage:waxed_exposed_silver_pressure_plate",
+    "thesilverage:waxed_weathered_silver_pressure_plate",
+    "thesilverage:waxed_oxidized_silver_pressure_plate"
   ]
 }

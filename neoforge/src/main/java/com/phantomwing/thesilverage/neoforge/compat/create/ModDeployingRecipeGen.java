@@ -65,7 +65,11 @@ public class ModDeployingRecipeGen extends DeployingRecipeGen {
 
         SILVER_DOOR = oxidizationChain(
             List.of(lk(ModBlocks.SILVER_DOOR), lk(ModBlocks.EXPOSED_SILVER_DOOR), lk(ModBlocks.WEATHERED_SILVER_DOOR), lk(ModBlocks.OXIDIZED_SILVER_DOOR)),
-            List.of(lk(ModBlocks.WAXED_SILVER_DOOR), lk(ModBlocks.WAXED_EXPOSED_SILVER_DOOR), lk(ModBlocks.WAXED_WEATHERED_SILVER_DOOR), lk(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR)));
+            List.of(lk(ModBlocks.WAXED_SILVER_DOOR), lk(ModBlocks.WAXED_EXPOSED_SILVER_DOOR), lk(ModBlocks.WAXED_WEATHERED_SILVER_DOOR), lk(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR))),
+
+        SILVER_PRESSURE_PLATE = oxidizationChain(
+            List.of(lk(ModBlocks.SILVER_PRESSURE_PLATE), lk(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE)),
+            List.of(lk(ModBlocks.WAXED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE)));
 
     public ModDeployingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, TheSilverAge.MOD_ID);

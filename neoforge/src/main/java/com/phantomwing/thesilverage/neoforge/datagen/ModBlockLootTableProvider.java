@@ -171,6 +171,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
         dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
 
+        // Silver Pressure Plate
+        dropSelf(ModBlocks.SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE);
+
         // Silver Door
         dropDoor(ModBlocks.SILVER_DOOR);
         dropDoor(ModBlocks.EXPOSED_SILVER_DOOR);
