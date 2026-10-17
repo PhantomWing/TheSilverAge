@@ -19,11 +19,14 @@ A vanilla-friendly expansion that introduces (oxidizable) silver, designed and p
 [[mixins]]
 config = "thesilverage.neoforge.mixins.json"
 
+# AFTER, so the Lodestone and Glistering Melon Slice overrides outrank NeoForge's own
+# copies of those recipes. Without an ordering, FML orders mods' data by a hash of
+# their ids, and NeoForge's won wherever fewer than about 25 mods were installed.
 [[dependencies.thesilverage]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.4,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.thesilverage]]
