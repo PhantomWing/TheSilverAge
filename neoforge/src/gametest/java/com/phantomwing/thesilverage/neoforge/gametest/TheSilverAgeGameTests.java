@@ -4,10 +4,12 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.item.ModItems;
+import dev.architectury.platform.Platform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.clock.WorldClock;
@@ -25,6 +27,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -50,6 +53,8 @@ public final class TheSilverAgeGameTests {
                     (Consumer<GameTestHelper>) TheSilverAgeGameTests::silverBulbLighting);
             helper.register(id("silverfish_drops_silver"),
                     (Consumer<GameTestHelper>) TheSilverAgeGameTests::silverfishDropsSilver);
+            helper.register(id("silver_data_outranks_neoforge"),
+                    (Consumer<GameTestHelper>) TheSilverAgeGameTests::silverDataOutranksNeoForge);
         });
     }
 
@@ -111,5 +116,19 @@ public final class TheSilverAgeGameTests {
                 .thenExecuteAfter(2, () ->
                         helper.assertItemEntityPresent(ModItems.SILVER_NUGGET.get()))
                 .thenSucceed();
+    }
+
+    /**
+     * The mod loads after NeoForge, so its Lodestone and Glistering Melon Slice overrides outrank NeoForge's
+     * own copies of those recipes. Mods' data is layered in load order, which without the mods.toml's
+     * ordering followed a hash of the mod ids.
+     */
+    private static void silverDataOutranksNeoForge(GameTestHelper helper) {
+        List<String> loadOrder = List.copyOf(Platform.getModIds());
+        int neoForge = loadOrder.indexOf("neoforge");
+        if (neoForge >= 0 && loadOrder.indexOf(TheSilverAge.MOD_ID) < neoForge) {
+            helper.fail(Component.literal("The Silver Age loads before NeoForge, so NeoForge's Lodestone and Glistering Melon Slice recipes replace its overrides"));
+        }
+        helper.succeed();
     }
 }
