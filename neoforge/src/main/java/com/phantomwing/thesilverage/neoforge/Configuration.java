@@ -1,6 +1,10 @@
 package com.phantomwing.thesilverage.neoforge;
 
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.neoforged.neoforge.common.ModConfigSpec;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class Configuration {
     public static ModConfigSpec COMMON_CONFIG;
@@ -11,6 +15,9 @@ public class Configuration {
 
     public static final String OVERRIDE_VANILLA_RECIPES_ID = "override_vanilla_recipes";
     public static ModConfigSpec.BooleanValue OVERRIDE_VANILLA_RECIPES;
+
+    // One option per vanilla recipe override, each also needing the master switch above.
+    public static final Map<RecipeOverride, ModConfigSpec.BooleanValue> RECIPE_OVERRIDES = new EnumMap<>(RecipeOverride.class);
 
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
     public static ModConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
@@ -50,7 +57,14 @@ public class Configuration {
             case ENABLE_UNDEAD_PROTECTION_ID -> Configuration.ENABLE_UNDEAD_PROTECTION.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
-            default -> throw new Error("Invalid setting ID: " + id);
+            default -> {
+                for (Map.Entry<RecipeOverride, ModConfigSpec.BooleanValue> entry : RECIPE_OVERRIDES.entrySet()) {
+                    if (entry.getKey().settingId().equals(id)) {
+                        yield entry.getValue().get();
+                    }
+                }
+                throw new Error("Invalid setting ID: " + id);
+            }
         };
     }
 
@@ -60,6 +74,9 @@ public class Configuration {
         // General settings
         SILVERFISH_DROP_SILVER = COMMON_BUILDER.define(SILVERFISH_DROP_SILVER_ID, true);
         OVERRIDE_VANILLA_RECIPES = COMMON_BUILDER.define(OVERRIDE_VANILLA_RECIPES_ID, true);
+        for (RecipeOverride override : RecipeOverride.values()) {
+            RECIPE_OVERRIDES.put(override, COMMON_BUILDER.define(override.settingId(), true));
+        }
         ENABLE_VILLAGER_TRADES = COMMON_BUILDER.define(ENABLE_VILLAGER_TRADES_ID, true);
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
         GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.define(GENERATE_STRUCTURE_LOOT_ID, true);

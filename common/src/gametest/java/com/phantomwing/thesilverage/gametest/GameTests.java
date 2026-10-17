@@ -27,7 +27,9 @@ public final class GameTests {
             test("silver_sword_in_bastions", SilverLootGameTest::silverSwordInBastions),
             test("mobs_hold_silver_tools", SilverGearGameTest::mobsHoldSilverTools),
             test("husks_wear_silver_armor", SilverGearGameTest::husksWearSilverArmor),
-            test("silver_joins_vanilla_tags", SilverTagsGameTest::silverJoinsVanillaTags));
+            test("silver_joins_vanilla_tags", SilverTagsGameTest::silverJoinsVanillaTags),
+            test("recipe_overrides_apply_by_default", SilverRecipesGameTest::recipeOverridesApplyByDefault),
+            test("silver_data_outranks_neoforge", SilverRecipesGameTest::silverDataOutranksNeoForge));
 
     private GameTests() {
     }

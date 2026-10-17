@@ -11,15 +11,19 @@ import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.conditions.AndCondition;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider {
@@ -513,8 +517,14 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(output);
     }
 
-    /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */
+    /**
+     * Overrides for vanilla recipes, saved under the vanilla recipe's own id so they replace it. Each
+     * applies while the master switch and its own option are both on; otherwise its {@code _fallback},
+     * the vanilla recipe as it was, takes its place, since the override's file hides vanilla's either way.
+     */
     private void buildRecipeOverrides(@NotNull RecipeOutput output) {
+        ICondition master = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
+
         // Glistering Melon Slice
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
                 .pattern("###")
@@ -523,14 +533,19 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('#', ModTags.Items.GLISTERING_NUGGETS)
                 .define('M', Items.MELON_SLICE)
                 .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
-                .save(output);
-
-        // Conditional overrides:
-        ICondition condition = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
-        RecipeOutput conditionalOutput = output.withConditions(condition);
-        RecipeOutput fallbackOutput = output.withConditions(new NotCondition(condition));
+                .save(overrideOutput(output, master, RecipeOverride.GLISTERING_MELON));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
+                .pattern("###")
+                .pattern("#M#")
+                .pattern("###")
+                .define('#', Items.GOLD_NUGGET)
+                .define('M', Items.MELON_SLICE)
+                .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
+                .save(fallbackOutput(output, master, RecipeOverride.GLISTERING_MELON), "minecraft:" + ItemUtils.getName(Items.GLISTERING_MELON_SLICE) + "_fallback");
 
         // Lodestone
+        RecipeOutput conditionalOutput = overrideOutput(output, master, RecipeOverride.LODESTONE);
+        RecipeOutput fallbackOutput = fallbackOutput(output, master, RecipeOverride.LODESTONE);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
                 .pattern("#S#")
@@ -549,6 +564,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
 
         // Brewing Stand
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.BREWING_STAND);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.BREWING_STAND);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
                 .pattern(" B ")
                 .pattern("SSS")
@@ -560,7 +577,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
-                .define('S', Items.STONE)
+                .define('S', ItemTags.STONE_CRAFTING_MATERIALS)
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");  // Original recipe if override is disabled
 
@@ -576,6 +593,8 @@ public class ModRecipeProvider extends RecipeProvider {
         // The S slot accepts any item in the #thesilverage:redstone_silver_components tag.
         // Currently populated with silver_ingot + silver_sheet (sheet is Create-only, but the
         // ingot path always works). Addons may contribute extra silver forms to the tag.
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.COMPARATOR);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.COMPARATOR);
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
@@ -597,6 +616,8 @@ public class ModRecipeProvider extends RecipeProvider {
 
         // Redstone Repeater
         // Same tag-based S slot as the Comparator override — see above.
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.REPEATER);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.REPEATER);
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
@@ -613,6 +634,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");  // Original recipe if override is disabled
+    }
+
+    private static ICondition overrideCondition(ICondition master, RecipeOverride override) {
+        return new AndCondition(List.of(master, new ConfigBooleanCondition(override.settingId())));
+    }
+
+    private static RecipeOutput overrideOutput(RecipeOutput output, ICondition master, RecipeOverride override) {
+        return output.withConditions(overrideCondition(master, override));
+    }
+
+    private static RecipeOutput fallbackOutput(RecipeOutput output, ICondition master, RecipeOverride override) {
+        return output.withConditions(new NotCondition(overrideCondition(master, override)));
     }
 
     private static void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {

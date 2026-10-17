@@ -1,4 +1,19 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "thesilverage:config_boolean",
+          "settingId": "override_vanilla_recipes"
+        },
+        {
+          "type": "thesilverage:config_boolean",
+          "settingId": "override_glistering_melon_recipe"
+        }
+      ]
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_melon_slice": {
@@ -18,6 +33,21 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "thesilverage:config_boolean",
+          "settingId": "override_vanilla_recipes"
+        },
+        {
+          "condition": "thesilverage:config_boolean",
+          "settingId": "override_glistering_melon_recipe"
+        }
+      ]
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",

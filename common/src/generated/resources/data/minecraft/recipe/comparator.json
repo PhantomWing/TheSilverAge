@@ -1,16 +1,34 @@
 {
   "neoforge:conditions": [
     {
-      "type": "thesilverage:config_boolean",
-      "settingId": "override_vanilla_recipes"
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "thesilverage:config_boolean",
+          "settingId": "override_vanilla_recipes"
+        },
+        {
+          "type": "thesilverage:config_boolean",
+          "settingId": "override_comparator_recipe"
+        }
+      ]
     }
   ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "fabric:load_conditions": [
     {
-      "condition": "thesilverage:config_boolean",
-      "settingId": "override_vanilla_recipes"
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "thesilverage:config_boolean",
+          "settingId": "override_vanilla_recipes"
+        },
+        {
+          "condition": "thesilverage:config_boolean",
+          "settingId": "override_comparator_recipe"
+        }
+      ]
     }
   ],
   "key": {

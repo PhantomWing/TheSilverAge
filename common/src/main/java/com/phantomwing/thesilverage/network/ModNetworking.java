@@ -3,11 +3,16 @@ package com.phantomwing.thesilverage.network;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.platform.CommonConfig;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload}.
@@ -49,7 +54,11 @@ public final class ModNetworking {
         // sending anyway would be silently dropped, but guarding is explicit and
         // avoids log noise on mixed setups.
         if (!NetworkManager.canPlayerReceive(player, RecipeOverrideSyncPayload.TYPE)) return;
-        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(CommonConfig.overrideVanillaRecipes()));
+        List<String> enabled = Arrays.stream(RecipeOverride.values())
+                .filter(CommonConfig::recipeOverride)
+                .map(RecipeOverride::settingId)
+                .toList();
+        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(enabled));
     }
 
     /**
@@ -63,8 +72,8 @@ public final class ModNetworking {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C,
                 RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.queue(() -> {
-                    ServerOverrideState.setFromServer(payload.enabled());
-                    TheSilverAge.LOGGER.debug("Server override_vanilla_recipes={}; syncing recipe-override texture pack.", payload.enabled());
+                    ServerOverrideState.setFromServer(Set.copyOf(payload.enabledSettingIds()));
+                    TheSilverAge.LOGGER.debug("Server recipe overrides on: {}; syncing their texture packs.", payload.enabledSettingIds());
                     refresh.run();
                 }));
     }

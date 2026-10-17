@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.platform;
 
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
 /**
@@ -56,6 +57,20 @@ public final class CommonConfig {
     @ExpectPlatform
     public static boolean overrideVanillaRecipes() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
+     * A boolean option by its id, as the {@code thesilverage:config_boolean} recipe condition names it.
+     * Throws for an id no option has.
+     */
+    @ExpectPlatform
+    public static boolean booleanSetting(String settingId) {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /** Whether a vanilla recipe override applies: the master switch and its own option are both on. */
+    public static boolean recipeOverride(RecipeOverride override) {
+        return overrideVanillaRecipes() && booleanSetting(override.settingId());
     }
 
     /**

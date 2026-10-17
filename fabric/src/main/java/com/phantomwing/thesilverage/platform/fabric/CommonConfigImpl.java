@@ -30,6 +30,10 @@ public final class CommonConfigImpl {
                 TheSilverAgeFabricConfig.OVERRIDE_VANILLA_RECIPES_ID);
     }
 
+    public static boolean booleanSetting(String settingId) {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(settingId);
+    }
+
     public static boolean silverSmite() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);

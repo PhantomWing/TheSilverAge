@@ -13,17 +13,20 @@ description = '''
 A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.
 '''
 
-# Client-only mixin that hides the mod-managed recipe-override resource pack
-# from Options → Resource Packs (the pack stays in the repository and is toggled
-# by config / server-sync; it just isn't a user-facing entry).
+# Client-only mixin that hides the mod-managed recipe-override resource packs
+# from Options → Resource Packs (the packs stay in the repository and are toggled
+# by config / server-sync; they just aren't user-facing entries).
 [[mixins]]
 config = "thesilverage.neoforge.mixins.json"
 
+# AFTER, so the Lodestone and Glistering Melon Slice overrides outrank NeoForge's own
+# copies of those recipes. Without an ordering, FML orders mods' data by a hash of
+# their ids, and NeoForge's won wherever fewer than about 25 mods were installed.
 [[dependencies.thesilverage]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.1.218,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.thesilverage]]

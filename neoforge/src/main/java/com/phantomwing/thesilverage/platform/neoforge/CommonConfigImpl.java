@@ -25,6 +25,10 @@ public final class CommonConfigImpl {
         return Configuration.OVERRIDE_VANILLA_RECIPES.get();
     }
 
+    public static boolean booleanSetting(String settingId) {
+        return Configuration.getBooleanConfigurationValue(settingId);
+    }
+
     public static boolean silverSmite() {
         return Configuration.ENABLE_SILVER_SMITE.get();
     }

@@ -13,6 +13,7 @@
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
 - Added a config option for mobs spawning with silver gear
+- Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Updated tags for better compatibility with vanilla and other mods
   - Added husks to the `thesilverage:can_wear_silver_armor` tag
   - Added Silver Ore to the `minecraft:snaps_goat_horn` tag
@@ -34,6 +35,9 @@
 - Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
 - Added the missing Silver Knife name in every language besides English.
 - Fixed jungle temples giving a Silver Ingot instead of Silver Horse Armor
+- Fixed Glistering Melon Slices accepting Silver Nuggets with `override_vanilla_recipes` turned off
+- Fixed the Brewing Stand needing Stone instead of Cobblestone with `override_vanilla_recipes` turned off
+- Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
 
 
 # 1.3.1

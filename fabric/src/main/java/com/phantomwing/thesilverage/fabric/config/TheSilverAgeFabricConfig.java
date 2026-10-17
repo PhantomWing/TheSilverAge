@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fabric config, backed by Cloth Config's AutoConfig (mirrors the
@@ -24,6 +25,13 @@ public class TheSilverAgeFabricConfig implements ConfigData {
 
     public static final String OVERRIDE_VANILLA_RECIPES_ID = "override_vanilla_recipes";
     public boolean override_vanilla_recipes = true;
+
+    // One per RecipeOverride, named by its settingId; each also needs override_vanilla_recipes.
+    public boolean override_lodestone_recipe = true;
+    public boolean override_brewing_stand_recipe = true;
+    public boolean override_comparator_recipe = true;
+    public boolean override_repeater_recipe = true;
+    public boolean override_glistering_melon_recipe = true;
 
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
     public boolean generate_structure_loot = true;
@@ -66,7 +74,16 @@ public class TheSilverAgeFabricConfig implements ConfigData {
      * above; throwing keeps Fabric/NeoForge behaviour identical).
      */
     public static boolean getBooleanConfigurationValue(String id) {
-        TheSilverAgeFabricConfig config = get();
+        Boolean value = booleanValueOf(get(), id);
+        if (value == null) {
+            throw new Error("Invalid setting ID: " + id);
+        }
+        return value;
+    }
+
+    /** A boolean option's value by its id, or null when no option has that id. */
+    @Nullable
+    public static Boolean booleanValueOf(TheSilverAgeFabricConfig config, String id) {
         return switch (id) {
             case SILVERFISH_DROP_SILVER_ID -> config.silverfish_drop_silver;
             case ENABLE_VILLAGER_TRADES_ID -> config.enable_villager_trades;
@@ -77,7 +94,12 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_UNDEAD_PROTECTION_ID -> config.enable_undead_protection;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
-            default -> throw new Error("Invalid setting ID: " + id);
+            case "override_lodestone_recipe" -> config.override_lodestone_recipe;
+            case "override_brewing_stand_recipe" -> config.override_brewing_stand_recipe;
+            case "override_comparator_recipe" -> config.override_comparator_recipe;
+            case "override_repeater_recipe" -> config.override_repeater_recipe;
+            case "override_glistering_melon_recipe" -> config.override_glistering_melon_recipe;
+            default -> null;
         };
     }
 }

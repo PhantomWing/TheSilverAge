@@ -139,7 +139,7 @@ processResources {
     // Architectury-Fabric dev the only roots are `fabric/build/{classes,resources}/main`;
     // common's source set is on the classpath (which is why normal asset loading
     // sees it) but NOT a root path. Without this copy, `findPath` returns empty
-    // for `resourcepacks/silver_recipe_overrides`, `registerBuiltinResourcePack`
+    // for the recipe-override packs in `resourcepacks/`, `registerBuiltinResourcePack`
     // silently returns false, and the pack never appears in Options → Resource Packs.
     //
     // Production unaffected: shadowJar already physically merges common into

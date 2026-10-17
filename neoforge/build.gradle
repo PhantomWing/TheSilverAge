@@ -206,7 +206,7 @@ processResources {
 
     // Copy the built-in resource pack from common into the NeoForge mod's
     // resource output so RecipeOverridePackHandler's
-    // ModFile.findResource("resourcepacks/silver_recipe_overrides") resolves in
+    // ModFile.findResource("resourcepacks/<pack>") resolves in
     // dev. As on Fabric, common's resources are on the dev classpath but are NOT
     // part of this mod file's resource roots, so without this copy
     // Pack.readMetaAndCreate finds no pack.mcmeta, returns null, and the handler

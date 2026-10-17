@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
@@ -52,16 +53,9 @@ public record ConfigBooleanResourceCondition(String settingId) implements Resour
 
     @Override
     public boolean test(@Nullable HolderLookup.Provider registryLookup) {
-        // Mirrors NeoForge Configuration.getBooleanConfigurationValue(settingId):
-        // the only settingId emitted into the shared generated data is
-        // override_vanilla_recipes (the conditional/fallback recipe pairs).
-        return switch (settingId) {
-            case "override_vanilla_recipes" -> CommonConfig.overrideVanillaRecipes();
-            // Defensive: an unknown id means the datapack referenced a setting the
-            // Fabric bridge doesn't expose yet. NeoForge's switch throws for
-            // unknown ids; here we fail the condition (recipe simply absent)
-            // rather than hard-crash datapack loading. No such id is generated.
-            default -> false;
-        };
+        // Any boolean option, as NeoForge's Configuration.getBooleanConfigurationValue reads it. An id
+        // no option has fails the condition (the recipe is simply absent) where NeoForge's throws.
+        Boolean value = TheSilverAgeFabricConfig.booleanValueOf(TheSilverAgeFabricConfig.get(), settingId);
+        return value != null && value;
     }
 }

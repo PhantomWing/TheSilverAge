@@ -8,6 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.entity.projectile.windcharge.AbstractWindCharge;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -30,6 +33,13 @@ public final class TestCompat {
     /** Kills an entity as {@code /kill} does, so it drops its loot. It takes the level from 1.21.2. */
     public static void kill(Entity entity) {
         entity.kill();
+    }
+
+    /** What a crafting grid makes, or an empty stack. Recipe lookups and assembly changed shape in 1.21.2 and 26.1. */
+    public static ItemStack craft(ServerLevel level, CraftingInput input) {
+        return level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, level)
+                .map(recipe -> recipe.value().assemble(input, level.registryAccess()))
+                .orElse(ItemStack.EMPTY);
     }
 
     /** A vanilla loot table by its path, e.g. {@code chests/bastion_other}. */

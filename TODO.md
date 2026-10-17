@@ -1,21 +1,4 @@
 
-### New items
-- Silver bars
-- Silver lanterns
-- Silver lamp
-- Moon Clock
-- Medium Weighted Pressure Plate?
-
-### Misc
-- Add silver items to loot tables
-- Add silver villager trades
-- 
-
-### Bugs
-- Fix armor trims
-    - Fix trim material for silver not having textures
-    - Fix silver armor sprites not showing trim
-
 ### Mod compatibility (1.21.1, explored May 2026)
 Already done: Create, Sable / Create Aeronautics.
 
