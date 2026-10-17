@@ -10,6 +10,7 @@
 - Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
 - Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
 - Fixed the mod not loading on Fabric for Minecraft 1.21.9.
+- Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
 
 
 # 1.3.3
