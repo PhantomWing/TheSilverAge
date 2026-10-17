@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "function": "thesilverage:silver_data_outranks_neoforge",
+  "structure": "thesilverage:silver_test_arena",
+  "environment": "minecraft:default",
+  "max_ticks": 20,
+  "setup_ticks": 0,
+  "required": true
+}
