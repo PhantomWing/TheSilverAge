@@ -13,6 +13,7 @@
 - Fixed the mod failing to load on NeoForge 26.3.0.37 and newer, with "ModConfig$Type does not have member field COMMON". It now needs NeoForge 26.3.0.48 or newer, with Architectury API 22.0.4 or newer, and keeps the settings you already have.
 - Fixed resources reloading every time you join or leave a world on NeoForge, which could add a long loading screen in large modpacks.
 - Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
+- Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
 
 
 # 1.3.3
