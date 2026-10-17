@@ -17,7 +17,29 @@ def datagenExisting = rootProject.file('common/src/main/resources/').absolutePat
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
+    // Include the test-only source set in the dev mod so the game tests and their data load.
+    // Dev-runtime only: the production jar is still built from `main`, so test classes never ship.
+    // Added to Loom's own `main` group rather than a second group: two groups carrying the same
+    // mod make the loader keep one, and some FML releases keep the one without the tests (none run).
+    mods {
+        named('main') {
+            sourceSet sourceSets.test
+        }
+    }
+
     runs {
+        // Headless NeoForge game-test server: runs every test in GameTests, prints PASS/FAIL, and exits.
+        //   ./gradlew :neoforge:runGameTest
+        gameTest {
+            server()
+            name = "Game Test"
+            runDir "run/gametest"
+            source sourceSets.test
+            property 'neoforge.enableGameTest', 'true'
+            property 'neoforge.gameTestServer', 'true'
+            property 'neoforge.enabledGameTestNamespaces', 'thesilverage'
+        }
+
         // NeoForge data generation. Ported from the pre-Architectury single-loader
         // `runs.data` block. Output + existing-resource paths now point at the
         // relocated common source set (datagen output is shared across loaders).
@@ -52,6 +74,18 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
+}
+
+// Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
+// structure ship in the production jar. The tests themselves are common/src/gametest; only the
+// registration is NeoForge's own.
+sourceSets {
+    test {
+        java.srcDir project(':common').file('src/gametest/java')
+        resources.srcDir project(':common').file('src/gametest/resources')
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
 }
 
 // NOTE (1.21.3 branch): the recipe-viewer (JEI/EMI) and Create toggles were
