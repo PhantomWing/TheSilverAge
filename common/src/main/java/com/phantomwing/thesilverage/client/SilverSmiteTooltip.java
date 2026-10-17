@@ -4,7 +4,6 @@ import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 import java.text.DecimalFormat;
@@ -14,8 +13,9 @@ import java.util.Locale;
 /**
  * Tooltip line for the innate anti-undead damage on silver tools.
  *
- * <p>Rendered as a single grey line, the same styling vanilla uses for
- * enchantment names, so the built-in bonus reads like a native item property.</p>
+ * <p>Blue with no leading space, as vanilla draws a bonus such as "+3 Armor", so
+ * the built-in bonus reads like a native item property. Only a weapon's own base
+ * lines (" 8 Attack Damage", dark green) are indented.</p>
  *
  * <p>Unlike the damage hook this needs no {@code @ExpectPlatform} bridge:
  * Architectury's {@code ClientTooltipEvent.ITEM} is implemented on both loaders.
@@ -44,11 +44,7 @@ public final class SilverSmiteTooltip {
                 return;
             }
 
-            // Leading space + blue, matching how vanilla renders an item's own
-            // attribute lines (e.g. armour's " +1 Armor") — see
-            // ItemStack#addModifierTooltip, which also prepends CommonComponents.space().
-            lines.add(CommonComponents.space()
-                    .append(Component.translatable("tooltip.thesilverage.silver_smite", FORMAT.format(bonus)))
+            lines.add(Component.translatable("tooltip.thesilverage.silver_smite", FORMAT.format(bonus))
                     .withStyle(ChatFormatting.BLUE));
         });
     }
