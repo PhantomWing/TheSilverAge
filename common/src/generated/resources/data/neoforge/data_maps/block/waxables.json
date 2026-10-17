@@ -57,6 +57,9 @@
     "thesilverage:exposed_silver_lantern": {
       "waxed": "thesilverage:waxed_exposed_silver_lantern"
     },
+    "thesilverage:exposed_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_exposed_silver_lightning_rod"
+    },
     "thesilverage:exposed_silver_pillar": {
       "waxed": "thesilverage:waxed_exposed_silver_pillar"
     },
@@ -111,6 +114,9 @@
     "thesilverage:oxidized_silver_lantern": {
       "waxed": "thesilverage:waxed_oxidized_silver_lantern"
     },
+    "thesilverage:oxidized_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_oxidized_silver_lightning_rod"
+    },
     "thesilverage:oxidized_silver_pillar": {
       "waxed": "thesilverage:waxed_oxidized_silver_pillar"
     },
@@ -152,6 +158,9 @@
     },
     "thesilverage:silver_lantern": {
       "waxed": "thesilverage:waxed_silver_lantern"
+    },
+    "thesilverage:silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_silver_lightning_rod"
     },
     "thesilverage:silver_pillar": {
       "waxed": "thesilverage:waxed_silver_pillar"
@@ -206,6 +215,9 @@
     },
     "thesilverage:weathered_silver_lantern": {
       "waxed": "thesilverage:waxed_weathered_silver_lantern"
+    },
+    "thesilverage:weathered_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_weathered_silver_lightning_rod"
     },
     "thesilverage:weathered_silver_pillar": {
       "waxed": "thesilverage:waxed_weathered_silver_pillar"

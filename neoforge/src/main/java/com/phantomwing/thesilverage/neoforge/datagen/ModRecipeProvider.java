@@ -468,6 +468,13 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(oxidationGated, ModItems.EXPOSED_SILVER_BARS.get(), ModItems.WAXED_EXPOSED_SILVER_BARS.get());
         waxable(oxidationGated, ModItems.WEATHERED_SILVER_BARS.get(), ModItems.WAXED_WEATHERED_SILVER_BARS.get());
         waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BARS.get(), ModItems.WAXED_OXIDIZED_SILVER_BARS.get());
+
+        // Silver Lightning Rod
+        lightningRod(output, ModItems.SILVER_LIGHTNING_ROD.get(), SILVER_INGOTS);
+        waxable(oxidationGated, ModItems.SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
     }
 
     /** Torch: nugget over coal/charcoal over a stick, yields 4 (vanilla Copper Torch shape). */
@@ -503,6 +510,17 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("N")
                 .define('I', ingot)
                 .define('N', nugget)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
+    }
+
+    /** Lightning rod: 3 ingots in a column (vanilla lightning rod shape). */
+    private static void lightningRod(RecipeOutput output, ItemLike result, TagKey<Item> ingot) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 1)
+                .pattern("I")
+                .pattern("I")
+                .pattern("I")
+                .define('I', ingot)
                 .unlockedBy(getHasName(ingot), has(ingot))
                 .save(output);
     }

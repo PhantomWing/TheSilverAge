@@ -270,6 +270,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         blockItem2DFromBlockTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
 
         blockItem2DFromBlockTexture(ModBlocks.SILVER_TORCH, ModBlocks.SILVER_TORCH);
+
+        // Silver Lightning Rod: the block model itself, as vanilla's rod
+        blockItemFromModel(ModBlocks.SILVER_LIGHTNING_ROD, ModBlocks.SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.WAXED_SILVER_LIGHTNING_ROD, ModBlocks.SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        blockItemFromModel(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
     }
 
     // item/generated sprite taken from the block texture (for blocks with no dedicated item sprite).
@@ -309,6 +319,10 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private <T extends Block> void blockItem(RegistrySupplier<T> block, String suffix) {
         this.withExistingParent(BlockUtils.getNameWithNamespace(block.get()), BlockUtils.getBlockResourceLocation(block.get(), suffix));
+    }
+
+    private <T extends Block> void blockItemFromModel(RegistrySupplier<T> block, RegistrySupplier<T> modelBlock) {
+        this.withExistingParent(BlockUtils.getNameWithNamespace(block.get()), BlockUtils.getBlockResourceLocation(modelBlock.get()));
     }
 
     private <T extends Block> void trapdoorItem(RegistrySupplier<T> block) {

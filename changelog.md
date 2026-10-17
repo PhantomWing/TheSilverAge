@@ -5,6 +5,7 @@
 - Added Silver Pressure Plate (including oxidized and waxed variants)
   - Can only be pressed by undead mobs
   - The more it tarnishes, the more undead it takes to give a full signal (1, 3, 5 or 15)
+- Added Silver Lightning Rod (including oxidized and waxed variants)
 - Added Silver Torch, crafted with a Silver Nugget. It burns with a violet flame.
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
 - Silver armor now grants +1 Undead Protection per piece, reducing damage taken from undead mobs by 4% each (16% for a full set). Silver Horse Armor grants it too. Stacks with Protection. Can be turned off with the `enable_undead_protection` config option.

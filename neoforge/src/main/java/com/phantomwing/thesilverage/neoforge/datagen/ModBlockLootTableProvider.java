@@ -211,6 +211,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN);
         dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN);
 
+        // Silver Lightning Rod
+        dropSelf(ModBlocks.SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD);
+
         // Silver Bars
         dropSelf(ModBlocks.SILVER_BARS);
         dropSelf(ModBlocks.EXPOSED_SILVER_BARS);

@@ -139,6 +139,14 @@
     "thesilverage:waxed_silver_bars",
     "thesilverage:waxed_exposed_silver_bars",
     "thesilverage:waxed_weathered_silver_bars",
-    "thesilverage:waxed_oxidized_silver_bars"
+    "thesilverage:waxed_oxidized_silver_bars",
+    "thesilverage:silver_lightning_rod",
+    "thesilverage:exposed_silver_lightning_rod",
+    "thesilverage:weathered_silver_lightning_rod",
+    "thesilverage:oxidized_silver_lightning_rod",
+    "thesilverage:waxed_silver_lightning_rod",
+    "thesilverage:waxed_exposed_silver_lightning_rod",
+    "thesilverage:waxed_weathered_silver_lightning_rod",
+    "thesilverage:waxed_oxidized_silver_lightning_rod"
   ]
 }

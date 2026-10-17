@@ -1,16 +1,22 @@
 package com.phantomwing.thesilverage.fabric;
 
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.fabric.compat.create.CreateFabricCompat;
 import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondition;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
+import com.phantomwing.thesilverage.fabric.mixin.PoiTypesAccessor;
 import com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades;
 import com.phantomwing.thesilverage.fabric.world.ModWorldGen;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
@@ -53,6 +59,8 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // BiomeModifications API so silver ore actually generates on Fabric.
         ModWorldGen.register();
 
+        registerLightningRods();
+
         // Parity twin of the NeoForge `thesilverage:config_boolean` recipe
         // condition. The shared generated data carries BOTH dialects in each
         // conditional file (NeoForge `neoforge:conditions` +
@@ -79,5 +87,15 @@ public final class TheSilverAgeFabric implements ModInitializer {
                         holder.thesilverage$setLootTableId(e.getKey().location());
                     }
                 }));
+    }
+
+    /**
+     * Lightning finds a rod by its point of interest, which 1.21.1 gives the vanilla rod alone. NeoForge adds
+     * the Silver Lightning Rods to it through {@code ExtendPoiTypesEvent}.
+     */
+    private static void registerLightningRods() {
+        Holder<PoiType> lightningRod = BuiltInRegistries.POINT_OF_INTEREST_TYPE.getHolderOrThrow(PoiTypes.LIGHTNING_ROD);
+        ModBlocks.silverLightningRods().forEach(rod -> rod.getStateDefinition().getPossibleStates()
+                .forEach(state -> PoiTypesAccessor.thesilverage$typeByState().put(state, lightningRod)));
     }
 }

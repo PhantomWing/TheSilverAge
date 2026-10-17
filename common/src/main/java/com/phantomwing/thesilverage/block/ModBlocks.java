@@ -18,6 +18,7 @@ import com.phantomwing.thesilverage.block.custom.WeatheringSilverDoorBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverBarsBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverChainBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverLanternBlock;
+import com.phantomwing.thesilverage.block.custom.WeatheringSilverLightningRodBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverPillarBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverWallBlock;
 import com.phantomwing.thesilverage.sound.ModSoundTypes;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class ModBlocks {
@@ -248,6 +250,17 @@ public class ModBlocks {
     public static final RegistrySupplier<IronBarsBlock> WAXED_WEATHERED_SILVER_BARS = registerSilverBars("waxed_weathered_silver_bars", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<IronBarsBlock> WAXED_OXIDIZED_SILVER_BARS = registerSilverBars("waxed_oxidized_silver_bars", WeatheringCopper.WeatherState.OXIDIZED);
 
+    // Silver Lightning Rod
+    public static final RegistrySupplier<LightningRodBlock> SILVER_LIGHTNING_ROD = registerWeatheringSilverLightningRod("silver_lightning_rod", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<LightningRodBlock> EXPOSED_SILVER_LIGHTNING_ROD = registerWeatheringSilverLightningRod("exposed_silver_lightning_rod", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<LightningRodBlock> WEATHERED_SILVER_LIGHTNING_ROD = registerWeatheringSilverLightningRod("weathered_silver_lightning_rod", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<LightningRodBlock> OXIDIZED_SILVER_LIGHTNING_ROD = registerWeatheringSilverLightningRod("oxidized_silver_lightning_rod", WeatheringCopper.WeatherState.OXIDIZED);
+
+    public static final RegistrySupplier<LightningRodBlock> WAXED_SILVER_LIGHTNING_ROD = registerSilverLightningRod("waxed_silver_lightning_rod", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<LightningRodBlock> WAXED_EXPOSED_SILVER_LIGHTNING_ROD = registerSilverLightningRod("waxed_exposed_silver_lightning_rod", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<LightningRodBlock> WAXED_WEATHERED_SILVER_LIGHTNING_ROD = registerSilverLightningRod("waxed_weathered_silver_lightning_rod", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<LightningRodBlock> WAXED_OXIDIZED_SILVER_LIGHTNING_ROD = registerSilverLightningRod("waxed_oxidized_silver_lightning_rod", WeatheringCopper.WeatherState.OXIDIZED);
+
     // Silver Torch (non-oxidizable; violet flame via the custom silver_flame particle)
     public static final RegistrySupplier<TorchBlock> SILVER_TORCH = registerSilverBlock("silver_torch",
             BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH),
@@ -385,6 +398,16 @@ public class ModBlocks {
         return registerSilverBlock(name, baseProps, ChainBlock::new);
     }
 
+    private static RegistrySupplier<LightningRodBlock> registerWeatheringSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD));
+        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLightningRodBlock(weatherState, props));
+    }
+
+    private static RegistrySupplier<LightningRodBlock> registerSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD));
+        return registerSilverBlock(name, baseProps, LightningRodBlock::new);
+    }
+
     private static RegistrySupplier<IronBarsBlock> registerWeatheringSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBarsBlock(weatherState, props));
@@ -438,6 +461,12 @@ public class ModBlocks {
     @SuppressWarnings("unused")
     private static BlockBehaviour.Properties getSilverProps() {
         return getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED);
+    }
+
+    /** Every Silver Lightning Rod, which lightning has to be told about: 1.21.1 only knows its own. */
+    public static List<LightningRodBlock> silverLightningRods() {
+        return List.of(SILVER_LIGHTNING_ROD.get(), EXPOSED_SILVER_LIGHTNING_ROD.get(), WEATHERED_SILVER_LIGHTNING_ROD.get(), OXIDIZED_SILVER_LIGHTNING_ROD.get(),
+                WAXED_SILVER_LIGHTNING_ROD.get(), WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get(), WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get(), WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
     }
 
     public static void register() {

@@ -224,7 +224,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_SILVER_BARS.get())
                 .add(ModBlocks.WAXED_EXPOSED_SILVER_BARS.get())
                 .add(ModBlocks.WAXED_WEATHERED_SILVER_BARS.get())
-                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get());
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get())
+
+                // Silver Lightning Rod
+                .add(ModBlocks.SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
         // NOTE: the Silver Torch is deliberately absent — it is instant-break
         // (no requiresCorrectToolForDrops), so it needs no tool/tier tags.
 

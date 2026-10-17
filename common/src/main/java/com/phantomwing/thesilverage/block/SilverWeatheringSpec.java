@@ -137,6 +137,11 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WEATHERED_SILVER_BARS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.OXIDIZED_SILVER_BARS::get);
 
+        // Silver Lightning Rod
+        ox(p, ModBlocks.SILVER_LIGHTNING_ROD::get, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD::get);
+
         return p;
     }
 
@@ -254,6 +259,12 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WAXED_EXPOSED_SILVER_BARS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.WAXED_WEATHERED_SILVER_BARS::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_BARS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BARS::get);
+
+        // Silver Lightning Rod
+        ox(p, ModBlocks.SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD::get);
 
         return p;
     }

@@ -84,6 +84,15 @@ public class ModItems {
     public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_BARS = registerBlock("waxed_exposed_silver_bars", ModBlocks.WAXED_EXPOSED_SILVER_BARS);
     public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_BARS = registerBlock("waxed_weathered_silver_bars", ModBlocks.WAXED_WEATHERED_SILVER_BARS);
     public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_BARS = registerBlock("waxed_oxidized_silver_bars", ModBlocks.WAXED_OXIDIZED_SILVER_BARS);
+    // Silver Lightning Rod
+    public static final RegistrySupplier<Item> SILVER_LIGHTNING_ROD = registerBlock("silver_lightning_rod", ModBlocks.SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> EXPOSED_SILVER_LIGHTNING_ROD = registerBlock("exposed_silver_lightning_rod", ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> WEATHERED_SILVER_LIGHTNING_ROD = registerBlock("weathered_silver_lightning_rod", ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> OXIDIZED_SILVER_LIGHTNING_ROD = registerBlock("oxidized_silver_lightning_rod", ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> WAXED_SILVER_LIGHTNING_ROD = registerBlock("waxed_silver_lightning_rod", ModBlocks.WAXED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> WAXED_EXPOSED_SILVER_LIGHTNING_ROD = registerBlock("waxed_exposed_silver_lightning_rod", ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> WAXED_WEATHERED_SILVER_LIGHTNING_ROD = registerBlock("waxed_weathered_silver_lightning_rod", ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD);
+    public static final RegistrySupplier<Item> WAXED_OXIDIZED_SILVER_LIGHTNING_ROD = registerBlock("waxed_oxidized_silver_lightning_rod", ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD);
 
     // Utility items
     public static final RegistrySupplier<Item> MOON_DIAL = register("moon_dial", MoonDialItem::new, baseItem());

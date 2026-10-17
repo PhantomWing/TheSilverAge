@@ -212,6 +212,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         barsWithTexture(ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
         barsWithTexture(ModBlocks.WAXED_OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
 
+        // Silver Lightning Rod
+        lightningRod(ModBlocks.SILVER_LIGHTNING_ROD);
+        lightningRod(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        lightningRod(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        lightningRod(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+        lightningRodWithModel(ModBlocks.WAXED_SILVER_LIGHTNING_ROD, ModBlocks.SILVER_LIGHTNING_ROD);
+        lightningRodWithModel(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        lightningRodWithModel(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        lightningRodWithModel(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+
         // Silver Torch (floor + wall)
         torch(ModBlocks.SILVER_TORCH, ModBlocks.SILVER_WALL_TORCH);
     }
@@ -235,6 +245,38 @@ public class ModBlockStateProvider extends BlockStateProvider {
         getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(state.getValue(LanternBlock.HANGING) ? hanging : standing)
                 .build());
+    }
+
+    /** Lightning rod: vanilla's rod geometry, pointing where it faces, glowing while powered. */
+    private void lightningRod(RegistrySupplier<LightningRodBlock> block) {
+        ResourceLocation texture = BlockUtils.getBlockResourceLocation(block.get());
+        this.models()
+                .withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/lightning_rod"))
+                .texture("texture", texture)
+                .texture("particle", texture);
+        // Struck, every stage glows vanilla's plain white.
+        this.models()
+                .withExistingParent(BlockUtils.getName(block.get(), "on"), ResourceLocation.withDefaultNamespace("block/lightning_rod"))
+                .texture("texture", ResourceLocation.withDefaultNamespace("block/lightning_rod_on"))
+                .texture("particle", texture);
+        lightningRodWithModel(block, block);
+    }
+
+    private void lightningRodWithModel(RegistrySupplier<LightningRodBlock> block, RegistrySupplier<LightningRodBlock> modelBlock) {
+        ModelFile off = this.models().getExistingFile(BlockUtils.getBlockResourceLocation(modelBlock.get()));
+        ModelFile on = this.models().getExistingFile(BlockUtils.getBlockResourceLocation(modelBlock.get(), "on"));
+
+        getVariantBuilder(block.get()).forAllStatesExcept(state -> {
+            ConfiguredModel.Builder<?> model = ConfiguredModel.builder().modelFile(state.getValue(LightningRodBlock.POWERED) ? on : off);
+            return switch (state.getValue(LightningRodBlock.FACING)) {
+                case DOWN -> model.rotationX(180).build();
+                case NORTH -> model.rotationX(90).build();
+                case SOUTH -> model.rotationX(90).rotationY(180).build();
+                case WEST -> model.rotationX(90).rotationY(270).build();
+                case EAST -> model.rotationX(90).rotationY(90).build();
+                default -> model.build();
+            };
+        }, LightningRodBlock.WATERLOGGED);
     }
 
     /** Chain: single model rotated per axis (matches vanilla's chain blockstate). */

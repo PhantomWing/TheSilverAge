@@ -2,16 +2,19 @@ package com.phantomwing.thesilverage.neoforge;
 
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.world.poi.ExtendPoiTypesEvent;
 
 /**
  * NeoForge entrypoint for The Silver Age.
@@ -54,6 +57,12 @@ public final class TheSilverAgeNeoForge {
         }
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(TheSilverAgeNeoForge::extendLightningRodPoi);
+    }
+
+    /** Lightning finds a rod by its point of interest, which 1.21.1 gives the vanilla rod alone. */
+    private static void extendLightningRodPoi(ExtendPoiTypesEvent event) {
+        ModBlocks.silverLightningRods().forEach(rod -> event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, rod));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
