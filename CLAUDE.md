@@ -41,6 +41,13 @@ check.
   mods almost entirely through `c:ingots/silver` and friends; keep new materials tagged there.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
+- **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
+  copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
+  A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
+  darker ones the two block shades just below those, about 23 lightness points in all - the whole ramp
+  read harsh, five neighbouring shades flat. An item sprite drawn apart from its block texture (the
+  chain, the lantern) uses that block's shades. A silver light (torch flame, lantern) is violet,
+  `#5137bf` to `#f5e7fa`, where vanilla's is orange. `kb/pixel-art.md` has vanilla's side of it.
 
 JEI, AppleSkin and Jade are runtime-only dev dependencies, not compiled against. They are free to drop
 on a rung where they have no build; that does not block the line.
