@@ -27,6 +27,7 @@
 - Silver Axe attack damage increased from 8 to 8.5
 - Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
 - Silver Doors and Silver Trapdoors can now be opened by wind charges
+- The Fabric version now also supports Minecraft 1.21
 
 ### Fixes
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
