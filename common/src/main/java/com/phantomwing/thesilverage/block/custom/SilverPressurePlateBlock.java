@@ -3,8 +3,8 @@ package com.phantomwing.thesilverage.block.custom;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.block.ModBlockSetTypes;
+import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A pressure plate only undead mobs press: whatever silver tools deal their bonus damage to
- * ({@code minecraft:sensitive_to_smite}). Fresh silver gives a full signal for one undead; the more
+ * ({@code thesilverage:sensitive_to_silver}). Fresh silver gives a full signal for one undead; the more
  * it has tarnished, the more undead it takes, so a tarnished plate counts them as a weighted plate
  * does. The waxed variants keep their stage's count and never tarnish.
  */
@@ -54,7 +54,7 @@ public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
     public static boolean pressesPlate(Entity entity) {
         return EntitySelector.NO_SPECTATORS.test(entity)
                 && !entity.isIgnoringBlockTriggers()
-                && entity.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE);
+                && entity.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER);
     }
 
     @Override

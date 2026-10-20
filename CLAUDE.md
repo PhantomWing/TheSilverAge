@@ -41,6 +41,12 @@ check.
   mods almost entirely through `c:ingots/silver` and friends; keep new materials tagged there.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
+- **Undead** - every silver effect on mobs (the tools' bonus, the armour's protection, the pressure plate, silver
+  floors) checks `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and lets a pack add
+  a mob Smite leaves alone. Never check the smite tag directly. Silver floors (`combat/SilverFloor`, the blocks in
+  `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
+  walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once
+  for every mob.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two

@@ -5,7 +5,6 @@ import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.platform.SmitePlatform;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -137,11 +136,11 @@ public final class SilverSmiteHandler {
             return 0.0f;
         }
 
-        if (!target.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE)) {
+        // Holds every mob vanilla Smite targets, so modded undead are covered too.
+        if (!target.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
             return 0.0f;
         }
 
-        // Same tag vanilla Smite targets, so modded undead are covered too.
         return getBonusFor(attacker.getItemBySlot(EquipmentSlot.MAINHAND));
     }
 }

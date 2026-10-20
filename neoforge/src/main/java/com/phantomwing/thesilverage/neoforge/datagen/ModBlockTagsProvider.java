@@ -2,14 +2,17 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -237,6 +240,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
         // NOTE: the Silver Torch is deliberately absent — it is instant-break
         // (no requiresCorrectToolForDrops), so it needs no tool/tier tags.
+
+        // Silver that hurts the mobs silver harms as they stand on it: every block made of refined silver, at every
+        // stage, waxed or not, which is what the weathering spec pairs. Not the pressure plates, which a mob stands in
+        // rather than on, nor the ores, Raw Silver Block or Moon Phase Detector.
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> silverFloors = tag(ModTags.Blocks.SILVER_FLOORS);
+        for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.waxablePairs()) {
+            if (!(pair.from().get() instanceof BasePressurePlateBlock)) {
+                silverFloors.add(pair.from().get(), pair.to().get());
+            }
+        }
 
         // Silver Block family aggregation — the seven non-base variants only.
         // The base SILVER_BLOCK is intentionally excluded: it is in

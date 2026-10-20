@@ -15,6 +15,12 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CAN_WEAR_SILVER_ARMOR = tag("can_wear_silver_armor");
         /** Mobs whose naturally-spawned iron sword, axe or shovel may be swapped for the silver one. */
         public static final TagKey<EntityType<?>> CAN_HOLD_SILVER_TOOLS = tag("can_hold_silver_tools");
+        /**
+         * Mobs silver harms: silver tools' bonus damage, silver armour's protection, the Silver Pressure Plate and
+         * {@link Blocks#SILVER_FLOORS}. Holds {@code #minecraft:sensitive_to_smite}, and a pack can add a mob that
+         * Smite leaves alone.
+         */
+        public static final TagKey<EntityType<?>> SENSITIVE_TO_SILVER = tag("sensitive_to_silver");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
@@ -36,6 +42,11 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_SILVER_TOOL = tag("needs_silver_tool");
         public static final TagKey<Block> INCORRECT_FOR_SILVER_TOOL = tag("incorrect_for_silver_tool");
         public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
+        /**
+         * Silver that hurts a {@link EntityTypes#SENSITIVE_TO_SILVER} mob standing on it, keeps one from spawning on
+         * it and is walked round by one ({@link com.phantomwing.thesilverage.combat.SilverFloor}).
+         */
+        public static final TagKey<Block> SILVER_FLOORS = tag("silver_floors");
 
         // Family aggregation tags. Used to keep the Sable compatibility entries
         // (sable:heavy / super_light / quarter_volume in this mod's generated

@@ -9,6 +9,10 @@
 - Added Silver Torch, crafted with a Silver Nugget. It burns with a violet flame.
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
 - Silver armor now grants +1 Undead Protection per piece, reducing damage taken from undead mobs by 4% each (16% for a full set). Silver Horse Armor grants it too. Stacks with Protection. Can be turned off with the `enable_undead_protection` config option.
+- Undead mobs now take damage while standing on silver blocks, and avoid walking over them
+  - The more the silver tarnishes, the slower it hurts
+  - Undead mobs can't spawn on silver blocks
+  - Can be turned off with the `enable_silver_floor_damage` config option
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
 - Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
@@ -16,6 +20,7 @@
 - Added a config option for mobs spawning with silver gear
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Updated tags for better compatibility with vanilla and other mods
+  - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
   - Added husks to the `thesilverage:can_wear_silver_armor` tag
   - Added Silver Ore to the `minecraft:snaps_goat_horn` tag
   - Added Silver Doors to the `minecraft:mob_interactable_doors` tag

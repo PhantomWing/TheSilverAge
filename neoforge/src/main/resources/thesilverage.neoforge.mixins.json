@@ -3,7 +3,12 @@
   "minVersion": "0.8",
   "package": "com.phantomwing.thesilverage.neoforge.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "BlockMixin",
+    "BlockStateBaseMixin",
+    "RandomPosMixin",
+    "WalkNodeEvaluatorMixin"
+  ],
   "client": [
     "client.PackSelectionModelMixin"
   ],

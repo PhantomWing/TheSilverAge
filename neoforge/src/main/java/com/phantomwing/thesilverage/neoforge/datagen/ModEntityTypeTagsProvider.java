@@ -5,6 +5,7 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -32,5 +33,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
             .add(EntityType.ZOMBIE_VILLAGER)
             .add(EntityType.HUSK)
             .add(EntityType.VINDICATOR);
+        // Every mob Smite targets; a pack adds others that silver should harm and Smite shouldn't.
+        this.tag(ModTags.EntityTypes.SENSITIVE_TO_SILVER)
+            .addTag(EntityTypeTags.SENSITIVE_TO_SMITE);
     }
 }

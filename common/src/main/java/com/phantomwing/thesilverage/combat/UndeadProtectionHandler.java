@@ -3,7 +3,6 @@ package com.phantomwing.thesilverage.combat;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -118,10 +117,11 @@ public final class UndeadProtectionHandler {
      * than the direct one, so a skeleton's arrow still counts — unlike the smite
      * bonus, which is deliberately melee-only.
      *
-     * <p>Same tag vanilla Smite targets, so modded undead are covered too.</p>
+     * <p>{@code thesilverage:sensitive_to_silver} holds every mob vanilla Smite targets, so modded undead are
+     * covered too.</p>
      */
     private static boolean isUndeadAttack(DamageSource source) {
         return source.getEntity() != null
-                && source.getEntity().getType().is(EntityTypeTags.SENSITIVE_TO_SMITE);
+                && source.getEntity().getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER);
     }
 }

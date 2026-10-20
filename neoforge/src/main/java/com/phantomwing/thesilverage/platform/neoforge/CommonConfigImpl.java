@@ -44,4 +44,8 @@ public final class CommonConfigImpl {
     public static boolean mobSilverEquipment() {
         return Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
     }
+
+    public static boolean silverFloorDamage() {
+        return Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
+    }
 }

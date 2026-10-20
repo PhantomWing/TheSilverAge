@@ -115,4 +115,13 @@ public final class CommonConfig {
     public static boolean mobSilverEquipment() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
+
+    /**
+     * Gate for silver floors ({@link com.phantomwing.thesilverage.combat.SilverFloor}): hurting the mobs silver harms
+     * as they stand on silver, keeping them from spawning on it and making them walk round it.
+     */
+    @ExpectPlatform
+    public static boolean silverFloorDamage() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
 }

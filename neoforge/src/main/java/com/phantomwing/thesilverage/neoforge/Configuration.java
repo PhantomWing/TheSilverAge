@@ -38,6 +38,10 @@ public class Configuration {
     public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
     public static ModConfigSpec.BooleanValue ENABLE_MOB_SILVER_EQUIPMENT;
 
+    // Silver floors: hurting undead standing on silver, keeping them from spawning on it, and their walking round it.
+    public static final String ENABLE_SILVER_FLOOR_DAMAGE_ID = "enable_silver_floor_damage";
+    public static ModConfigSpec.BooleanValue ENABLE_SILVER_FLOOR_DAMAGE;
+
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
@@ -57,6 +61,7 @@ public class Configuration {
             case ENABLE_UNDEAD_PROTECTION_ID -> Configuration.ENABLE_UNDEAD_PROTECTION.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
+            case ENABLE_SILVER_FLOOR_DAMAGE_ID -> Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
             default -> {
                 for (Map.Entry<RecipeOverride, ModConfigSpec.BooleanValue> entry : RECIPE_OVERRIDES.entrySet()) {
                     if (entry.getKey().settingId().equals(id)) {
@@ -84,6 +89,7 @@ public class Configuration {
         ENABLE_UNDEAD_PROTECTION = COMMON_BUILDER.define(ENABLE_UNDEAD_PROTECTION_ID, true);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);
         ENABLE_MOB_SILVER_EQUIPMENT = COMMON_BUILDER.define(ENABLE_MOB_SILVER_EQUIPMENT_ID, true);
+        ENABLE_SILVER_FLOOR_DAMAGE = COMMON_BUILDER.define(ENABLE_SILVER_FLOOR_DAMAGE_ID, true);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

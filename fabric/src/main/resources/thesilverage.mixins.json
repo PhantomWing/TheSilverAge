@@ -4,11 +4,15 @@
   "package": "com.phantomwing.thesilverage.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockMixin",
+    "BlockStateBaseMixin",
     "LightningBoltMixin",
     "LivingEntityMixin",
     "LootTableMixin",
     "PersistentEntitySectionManagerMixin",
-    "PoiTypesAccessor"
+    "PoiTypesAccessor",
+    "RandomPosMixin",
+    "WalkNodeEvaluatorMixin"
   ],
   "client": [
     "client.PackSelectionModelMixin"
