@@ -19,6 +19,7 @@
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
 - Added a config option for mobs spawning with silver gear
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
+- Added a config screen on Fabric (opened from Mod Menu)
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
   - Added husks to the `thesilverage:can_wear_silver_armor` tag

@@ -116,6 +116,10 @@ dependencies {
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
+    // Mod Menu opens that config's screen from its mod list (TheSilverAgeModMenu); compiled against only.
+    modCompileOnly("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
 
     // Jade (Fabric): intentionally NOT added. The NeoForge side pins a specific
     // CurseForge file id (curse.maven:jade-324717:7428884); no Fabric 1.21.1

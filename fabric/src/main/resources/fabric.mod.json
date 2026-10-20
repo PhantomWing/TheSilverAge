@@ -20,6 +20,9 @@
     ],
     "client": [
       "com.phantomwing.thesilverage.fabric.client.TheSilverAgeFabricClient"
+    ],
+    "modmenu": [
+      "com.phantomwing.thesilverage.fabric.config.TheSilverAgeModMenu"
     ]
   },
   "mixins": [
