@@ -8,11 +8,11 @@
     }
   },
   "pattern": [
-    "###",
-    "###"
+    "##",
+    "##"
   ],
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "thesilverage:silver_trapdoor"
   }
 }

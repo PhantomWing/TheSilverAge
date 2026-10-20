@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ingots_silver": {
+    "has_cut_silver": {
       "conditions": {
         "items": [
           {
-            "items": "#c:ingots/silver"
+            "items": "thesilverage:cut_silver"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thesilverage:silver_bricks_from_silver_ingot"
+        "recipe": "thesilverage:silver_bricks_from_cut_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_ingots_silver"
+      "has_cut_silver"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thesilverage:silver_bricks_from_silver_ingot"
+      "thesilverage:silver_bricks_from_cut_silver"
     ]
   }
 }

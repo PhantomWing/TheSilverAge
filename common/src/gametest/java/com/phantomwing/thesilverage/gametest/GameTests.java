@@ -34,6 +34,7 @@ public final class GameTests {
             test("undead_never_pick_silver_to_go_to", SilverFloorGameTest::undeadNeverPickSilverToGoTo),
             test("silver_harms_what_smite_does", SilverFloorGameTest::silverHarmsWhatSmiteDoes),
             test("recipe_overrides_apply_by_default", SilverRecipesGameTest::recipeOverridesApplyByDefault),
+            test("silver_bars_trapdoors_and_bricks_each_craft", SilverRecipesGameTest::silverBarsTrapdoorsAndBricksEachCraft),
             test("silver_data_outranks_neoforge", SilverRecipesGameTest::silverDataOutranksNeoForge));
 
     private GameTests() {

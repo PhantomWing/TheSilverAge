@@ -172,23 +172,24 @@ public class ModRecipeProvider extends RecipeProvider {
         waxable(oxidationGated, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
         waxable(oxidationGated, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
-        // Silver Bricks. Two crafting paths to the base block:
-        //   - Crafting table: 2x2 Silver Ingots -> 4 Silver Bricks. Silver
-        //     Ingot has no weather states, so this only produces the base
-        //     SILVER_BRICKS variant.
-        //   - Stonecutter: 1 Silver Block (any weather/waxed variant) -> 4
-        //     of the matching brick variant. Mirrors the Cut Silver pattern
-        //     and gives players a direct path to every brick variant without
-        //     waiting on natural oxidation.
+        // Silver Bricks, at every stage, waxed or not:
+        //   - Crafting table: 2x2 of the matching Cut Silver -> 4, as stone
+        //     bricks from stone. Not from ingots: 2x2 Silver Ingots is the
+        //     Silver Trapdoor's grid.
+        //   - Stonecutter: 1 of the matching Silver Block -> 4. Mirrors the
+        //     Cut Silver pattern.
         // Waxed brick variants are additionally obtainable via Honeycomb on
         // the matching unwaxed one (the waxable() chain below); placed
         // silver_bricks also still oxidize naturally over time.
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), 1)
-                .pattern("##")
-                .pattern("##")
-                .define('#', SILVER_INGOTS)
-                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
-                .save(output, getRecipeName(ModItems.SILVER_INGOT.get(), ModItems.SILVER_BRICKS.get()));
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 4);
+
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 4);
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
         stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
@@ -716,8 +717,12 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
+    // Four ingots in a square, as vanilla's iron and copper trapdoors: a wooden trapdoor's two rows of three are the bars' recipe.
     private static void trapdoor(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
-        trapdoorBuilder(item, Ingredient.of(material))
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, item)
+                .pattern("##")
+                .pattern("##")
+                .define('#', material)
                 .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);

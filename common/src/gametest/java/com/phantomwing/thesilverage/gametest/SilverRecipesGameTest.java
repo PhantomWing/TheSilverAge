@@ -44,6 +44,26 @@ public final class SilverRecipesGameTest {
     }
 
     /**
+     * Two rows of three Silver Ingots make Silver Bars, a square of four a Silver Trapdoor, and a square of Cut Silver
+     * Silver Bricks. Where two recipes took one grid, it crafted whichever the recipe map listed first, and the other
+     * couldn't be made at all: the trapdoor once took the bars' rows, and the bricks the trapdoor's square.
+     */
+    public static void silverBarsTrapdoorsAndBricksEachCraft(GameTestHelper helper) {
+        Item silver = ModItems.SILVER_INGOT.get();
+        Item cut = ModItems.CUT_SILVER.get();
+        expect(helper, ModItems.SILVER_BARS.get(), CraftingInput.of(3, 2, stacks(
+                silver, silver, silver,
+                silver, silver, silver)));
+        expect(helper, ModItems.SILVER_TRAPDOOR.get(), CraftingInput.of(2, 2, stacks(
+                silver, silver,
+                silver, silver)));
+        expect(helper, ModItems.SILVER_BRICKS.get(), CraftingInput.of(2, 2, stacks(
+                cut, cut,
+                cut, cut)));
+        helper.succeed();
+    }
+
+    /**
      * The mod loads after NeoForge, so its Lodestone and Glistering Melon Slice overrides outrank NeoForge's own
      * copies of those recipes. Mods' data is layered in load order, which without the mods.toml's ordering
      * followed a hash of the mod ids.
