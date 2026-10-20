@@ -39,7 +39,7 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_nugget"
+      "tag": "c:nuggets/gold"
     },
     "M": {
       "item": "minecraft:melon_slice"

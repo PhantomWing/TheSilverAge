@@ -442,6 +442,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         if (item.asItem() instanceof ArmorItem armorItem) {
             String armorItemPath = armorItem.toString();
 
+            // Another mod's trim material whose index falls between silver's and quartz's would otherwise reach
+            // silver's override and draw as silver: just past it, the piece draws untrimmed, as vanilla armour does
+            // for one it doesn't know.
+            var itemTexture = ItemUtils.getItemResourceLocation(armorItem);
+            var untrimmed = withExistingParent(armorItemPath + "_untrimmed", mcLoc("item/generated")).texture("layer0", itemTexture);
+            if (hasOverlay) {
+                untrimmed.texture("layer1", itemTexture + "_overlay");
+            }
+
             ModTrimMaterials.ALL_TRIM_MATERIALS.forEach((trimMaterial, trimValue) -> {
                 String trimModelName = ItemUtils.getArmorTrimModelName(armorItem, trimMaterial);
                 ResourceLocation trimModelResLoc = ResourceLocation.parse(trimModelName);
@@ -455,6 +464,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
                 if (hasOverlay) {
                     builder.texture("layer1", itemResLoc + "_overlay");
+                }
+                if (trimMaterial == ModTrimMaterials.SILVER) {
+                    builder.override().model(untrimmed).predicate(mcLoc("trim_type"), Math.nextUp(ModTrimMaterials.SILVER_INDEX)).end();
                 }
             });
         }

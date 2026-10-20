@@ -3,12 +3,14 @@ package com.phantomwing.thesilverage.armor;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
@@ -43,19 +45,26 @@ public class ModTrimMaterials {
     });
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
+        // The armour material through the bootstrap's lookup, a reference holder that serializes, not Architectury's.
+        Holder<ArmorMaterial> silverArmor = context.lookup(Registries.ARMOR_MATERIAL)
+                .getOrThrow(ResourceKey.create(Registries.ARMOR_MATERIAL, TheSilverAge.resourceLocation("silver")));
+
         registerMaterial(context, SILVER,
                 ModItems.SILVER_INGOT.get(),
                 Style.EMPTY.withColor(TextColor.parseColor("#7c9eb7").getOrThrow()),
-                SILVER_INDEX);
+                SILVER_INDEX,
+                // The darker palette on silver armour, as its icon has, or the trim nearly vanishes against the same
+                // colour: vanilla does the same for iron on iron, gold on gold.
+                Map.of(silverArmor, "silver_darker"));
     }
 
     private static ResourceKey<TrimMaterial> trimMaterialKey(String name) {
         return ResourceKey.create(Registries.TRIM_MATERIAL, TheSilverAge.resourceLocation(name));
     }
 
-    private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
+    private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex, Map<Holder<ArmorMaterial>, String> overrideArmorMaterials) {
         TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item, itemModelIndex,
-                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style), Map.of());
+                Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style), overrideArmorMaterials);
         context.register(trimKey, trimMaterial);
     }
 }

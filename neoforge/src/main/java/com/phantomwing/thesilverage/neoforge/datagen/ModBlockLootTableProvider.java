@@ -233,7 +233,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
         // Silver Torch — the wall variant drops the (single) torch item.
         dropSelf(ModBlocks.SILVER_TORCH);
-        dropOther(ModBlocks.SILVER_WALL_TORCH.get(), ModBlocks.SILVER_TORCH.get());
+        // The wall torch has no table of its own: it drops as the standing torch, as vanilla's does (dropsLike).
     }
 
     // The contents of this Iterable are used for validation.

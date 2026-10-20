@@ -265,9 +265,10 @@ public class ModBlocks {
     public static final RegistrySupplier<TorchBlock> SILVER_TORCH = registerSilverBlock("silver_torch",
             BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH),
             SilverTorchBlock::new);
-    public static final RegistrySupplier<WallTorchBlock> SILVER_WALL_TORCH = registerSilverBlock("silver_wall_torch",
-            BlockBehaviour.Properties.ofFullCopy(Blocks.WALL_TORCH),
-            SilverWallTorchBlock::new);
+    // dropsLike, as vanilla's wall torch has: the copy would otherwise carry its loot table, a torch's, which Fabric
+    // keeps where NeoForge doesn't. Inside the supplier, since the Silver Torch must be registered first.
+    public static final RegistrySupplier<WallTorchBlock> SILVER_WALL_TORCH = BLOCKS.register("silver_wall_torch",
+            () -> new SilverWallTorchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WALL_TORCH).dropsLike(SILVER_TORCH.get())));
 
     private static RegistrySupplier<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
         return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringSilverFullBlock(weatherState, props));

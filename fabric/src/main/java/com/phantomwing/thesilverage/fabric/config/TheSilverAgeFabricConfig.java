@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -65,21 +66,25 @@ public class TheSilverAgeFabricConfig implements ConfigData {
      * Registers the config holder + serializer. MUST be called before the first
      * {@link #get()} — i.e. at the very start of the Fabric entrypoint, ahead of
      * the loot mixin / {@code thesilverage:config_boolean} resource condition,
-     * both of which read config very early (datapack load).
+     * both of which read config very early (datapack load). The file is read again
+     * on every {@code /reload}, before the recipes' conditions are, as NeoForge reads
+     * its own whenever it changes: an edit to it takes without a restart.
      */
     public static void register() {
         AutoConfig.register(TheSilverAgeFabricConfig.class, GsonConfigSerializer::new);
+        ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, resources) ->
+                AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).load());
     }
 
     /**
-     * Mirrors NeoForge {@code Configuration.getBooleanConfigurationValue} exactly,
-     * including throwing on an unknown id (callers only ever pass the five ids
-     * above; throwing keeps Fabric/NeoForge behaviour identical).
+     * Mirrors NeoForge {@code Configuration.getBooleanConfigurationValue} exactly: an id no option has is false, with a
+     * warning, since a datapack's {@code thesilverage:config_boolean} condition can name anything.
      */
     public static boolean getBooleanConfigurationValue(String id) {
         Boolean value = booleanValueOf(get(), id);
         if (value == null) {
-            throw new Error("Invalid setting ID: " + id);
+            TheSilverAge.LOGGER.warn("thesilverage:config_boolean names no setting: {}", id);
+            return false;
         }
         return value;
     }

@@ -6,6 +6,7 @@ import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
+import com.phantomwing.thesilverage.item.custom.SilverArmorItem;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
@@ -261,7 +262,7 @@ public class ModItems {
     // Registry functions
     private static RegistrySupplier<Item> registerArmor(String name, Holder<ArmorMaterial> material, ArmorItem.Type armorItemType, int durabilityFactor) {
         Item.Properties baseProps = baseItem().durability(armorItemType.getDurability(durabilityFactor));
-        return register(name, (props) -> new ArmorItem(material, armorItemType, props), baseProps);
+        return register(name, (props) -> new SilverArmorItem(material, armorItemType, props), baseProps);
     }
 
 

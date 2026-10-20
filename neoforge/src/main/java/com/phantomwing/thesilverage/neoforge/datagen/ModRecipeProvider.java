@@ -16,6 +16,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.Tags;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.AndCondition;
@@ -557,7 +558,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .pattern("#M#")
                 .pattern("###")
-                .define('#', Items.GOLD_NUGGET)
+                // c:nuggets/gold, as NeoForge's own copy of the recipe, which the override hides, takes other mods' gold.
+                .define('#', Tags.Items.NUGGETS_GOLD)
                 .define('M', Items.MELON_SLICE)
                 .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
                 .save(fallbackOutput(output, master, RecipeOverride.GLISTERING_MELON), "minecraft:" + ItemUtils.getName(Items.GLISTERING_MELON_SLICE) + "_fallback");
@@ -578,7 +580,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("#S#")
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
-                .define('S', Items.NETHERITE_INGOT)
+                // c:ingots/netherite, as NeoForge's own copy of the recipe, which the fallback's id hides, takes it.
+                .define('S', Tags.Items.INGOTS_NETHERITE)
                 .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)) // TODO: Change fallback to IRON_INGOT once updated to later Minecraft version
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
 

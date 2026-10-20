@@ -46,6 +46,13 @@
 - Fixed Glistering Melon Slices accepting Silver Nuggets with `override_vanilla_recipes` turned off
 - Fixed the Brewing Stand needing Stone instead of Cobblestone with `override_vanilla_recipes` turned off
 - Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
+- Fixed the Glistering Melon Slice and Lodestone recipes not accepting gold nuggets and netherite from other mods on NeoForge
+- Fixed the Silver Wall Torch dropping a normal torch on Fabric
+- Fixed mobs losing their armor trims and names when their gear turns into silver gear
+- Fixed mobs getting another chance at silver gear each time they go through a portal
+- Fixed silver trims on worn silver armor using a lighter color than in the inventory
+- Fixed trims from other mods showing as silver on armor in the inventory
+- Fixed the Fabric config not reloading with /reload
 
 
 # 1.3.1

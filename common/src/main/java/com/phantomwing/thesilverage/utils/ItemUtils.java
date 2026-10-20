@@ -1,5 +1,7 @@
 package com.phantomwing.thesilverage.utils;
 
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -9,9 +11,17 @@ import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ItemUtils {
+    /**
+     * What the stack a swap replaces keeps beyond its wear and enchantments: what a player, a structure or a trial
+     * spawner gave it - a name, lore, a trim. Not its attribute modifiers, which would take the new item's own away.
+     */
+    private static final List<DataComponentType<?>> KEPT = List.of(DataComponents.CUSTOM_NAME, DataComponents.LORE,
+            DataComponents.TRIM, DataComponents.UNBREAKABLE, DataComponents.CUSTOM_DATA);
+
     public static ResourceLocation getResourceLocation(ItemLike item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
     }
@@ -57,15 +67,19 @@ public class ItemUtils {
         return item.toString() + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
     }
 
-    /** Change the item type of an ItemStack while preserving the count, durability, and enchantments (if applicable). */
+    /**
+     * Change the item type of an ItemStack while preserving the count, how worn it is as a share of its durability, the
+     * enchantments the new item supports, and its name, lore and trim.
+     */
     public static ItemStack tryTransmuteStack(ItemStack from, ItemLike item) {
         int count = Math.min(new ItemStack(item.asItem()).getMaxStackSize(), from.getCount());
         ItemStack to = new ItemStack(item.asItem(), count);
 
-        // Carry over the durability of the replaced item if both items are damageable.
-        if (from.isDamaged() && to.isDamageableItem()) {
-            int durability = Math.min(from.getDamageValue(), to.getMaxDamage());
-            to.setDamageValue(durability);
+        // The same share of durability used, not the same damage: loot wears iron by a share of its 250, and as much on
+        // a silver tool (208) leaves it nearer breaking. One use is always left, as loot's wear leaves one.
+        if (from.isDamaged() && from.isDamageableItem() && to.isDamageableItem()) {
+            float worn = from.getDamageValue() / (float) from.getMaxDamage();
+            to.setDamageValue(Math.min(Math.round(worn * to.getMaxDamage()), to.getMaxDamage() - 1));
         }
 
         // Carry over enchantments from the replaced item to the new item (if supported).
@@ -80,6 +94,16 @@ public class ItemUtils {
             });
         }
 
+        for (DataComponentType<?> type : KEPT) {
+            copy(from, to, type);
+        }
         return to;
+    }
+
+    private static <T> void copy(ItemStack from, ItemStack to, DataComponentType<T> type) {
+        T value = from.get(type);
+        if (value != null) {
+            to.set(type, value);
+        }
     }
 }

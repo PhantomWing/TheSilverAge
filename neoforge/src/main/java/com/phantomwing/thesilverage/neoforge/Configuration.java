@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.neoforge;
 
+import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -68,7 +69,9 @@ public class Configuration {
                         yield entry.getValue().get();
                     }
                 }
-                throw new Error("Invalid setting ID: " + id);
+                // A datapack's config_boolean condition can name anything: one that names no setting is false.
+                TheSilverAge.LOGGER.warn("thesilverage:config_boolean names no setting: {}", id);
+                yield false;
             }
         };
     }

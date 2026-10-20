@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -16,6 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+
+import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
 
 /** Game tests for silver blocks. Listed in {@link GameTests}. */
 public final class SilverBlocksGameTest {
@@ -36,6 +41,17 @@ public final class SilverBlocksGameTest {
         helper.startSequence()
                 .thenExecuteAfter(25, () -> helper.assertBlockProperty(CENTER, MoonPhaseDetectorBlock.POWER, 15))
                 .thenSucceed();
+    }
+
+    /** A silver torch on a wall drops a silver torch: the copy of vanilla's wall torch carried a torch's drop on Fabric. */
+    public static void silverWallTorchDropsASilverTorch(GameTestHelper helper) {
+        List<ItemStack> drops = Block.getDrops(ModBlocks.SILVER_WALL_TORCH.get().defaultBlockState(), helper.getLevel(),
+                helper.absolutePos(CENTER.above()), null);
+        if (drops.size() == 1 && drops.get(0).is(ModBlocks.SILVER_TORCH.get().asItem())) {
+            helper.succeed();
+        } else {
+            fail(helper, "A silver wall torch drops " + drops + ", not a silver torch");
+        }
     }
 
     /** Right-clicking an unwaxed Block of Silver with a Honeycomb waxes it. */

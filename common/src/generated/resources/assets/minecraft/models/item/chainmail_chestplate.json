@@ -8,6 +8,12 @@
       }
     },
     {
+      "model": "minecraft:item/chainmail_chestplate_untrimmed",
+      "predicate": {
+        "minecraft:trim_type": 0.0039207004
+      }
+    },
+    {
       "model": "minecraft:item/chainmail_chestplate_quartz_trim",
       "predicate": {
         "minecraft:trim_type": 0.1

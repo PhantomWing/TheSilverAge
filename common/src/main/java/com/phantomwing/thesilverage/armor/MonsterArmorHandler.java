@@ -31,6 +31,11 @@ import org.jetbrains.annotations.Nullable;
 public final class MonsterArmorHandler {
     private static final float ARMOR_REPLACE_CHANCE = 0.5f; // 50% chance per piece / full set
     private static final float TOOL_REPLACE_CHANCE = 0.1f;
+    /**
+     * The tag a mob gets once its gear has had its chance, which it keeps through a portal: a mob crossing one joins the
+     * other level as a new entity. A map maker summoning a mob with it keeps its iron and gold as given.
+     */
+    public static final String ROLLED_TAG = "thesilverage.rolled_silver_gear";
 
     private MonsterArmorHandler() {
     }
@@ -55,10 +60,15 @@ public final class MonsterArmorHandler {
         if (level.isClientSide() || loadedFromDisk || !(entity instanceof Mob mob) || !CommonConfig.mobSilverEquipment()) {
             return;
         }
-        if (entity.getType().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)) {
+        boolean armor = entity.getType().is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR);
+        boolean tools = entity.getType().is(ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS);
+        if (!armor && !tools || !mob.addTag(ROLLED_TAG)) {
+            return; // not one that wears silver, or its gear had its chance before a portal took it to this level
+        }
+        if (armor) {
             replaceArmor(mob);
         }
-        if (entity.getType().is(ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
+        if (tools) {
             replaceTool(mob);
         }
     }

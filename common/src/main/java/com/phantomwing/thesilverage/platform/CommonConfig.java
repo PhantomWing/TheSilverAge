@@ -61,7 +61,7 @@ public final class CommonConfig {
 
     /**
      * A boolean option by its id, as the {@code thesilverage:config_boolean} recipe condition names it.
-     * Throws for an id no option has.
+     * False, with a warning, for an id no option has.
      */
     @ExpectPlatform
     public static boolean booleanSetting(String settingId) {

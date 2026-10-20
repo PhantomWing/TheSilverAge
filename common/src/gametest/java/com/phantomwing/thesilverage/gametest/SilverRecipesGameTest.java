@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.gametest;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.platform.Platform;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -60,6 +61,14 @@ public final class SilverRecipesGameTest {
         expect(helper, ModItems.SILVER_BRICKS.get(), CraftingInput.of(2, 2, stacks(
                 cut, cut,
                 cut, cut)));
+        helper.succeed();
+    }
+
+    /** A config_boolean condition naming no setting is false rather than an error that stops the datapack reload. */
+    public static void configConditionNamingNoSettingIsFalse(GameTestHelper helper) {
+        if (CommonConfig.booleanSetting("no_such_setting")) {
+            fail(helper, "A config_boolean condition naming no setting is true");
+        }
         helper.succeed();
     }
 

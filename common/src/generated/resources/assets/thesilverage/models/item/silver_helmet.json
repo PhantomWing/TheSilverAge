@@ -8,6 +8,12 @@
       }
     },
     {
+      "model": "thesilverage:item/silver_helmet_untrimmed",
+      "predicate": {
+        "minecraft:trim_type": 0.0039207004
+      }
+    },
+    {
       "model": "thesilverage:item/silver_helmet_quartz_trim",
       "predicate": {
         "minecraft:trim_type": 0.1

@@ -40,9 +40,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     protected void addModTags(HolderLookup.@NotNull Provider provider) {
-        // Glistering nuggets (used for e.g. the Glistering Melon override recipe)
+        // Glistering nuggets (used for e.g. the Glistering Melon override recipe). c:nuggets/gold rather than
+        // the gold nugget alone, as NeoForge's own copy of that recipe takes it, so other mods' gold works too.
         tag(ModTags.Items.GLISTERING_NUGGETS)
-                .add(Items.GOLD_NUGGET)
+                .addTag(Tags.Items.NUGGETS_GOLD)
                 .addTag(CommonTags.Items.NUGGETS_SILVER);
 
         // Redstone silver components — all silver forms accepted as the "S" ingredient in the
