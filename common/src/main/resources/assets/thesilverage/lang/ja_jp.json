@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "行商人が白銀の時代のアイテムを販売するか?",
   "thesilverage.configuration.generate_structure_loot": "構造物の戦利品を生成",
   "thesilverage.configuration.generate_structure_loot.tooltip": "構造物に白銀の時代の戦利品を生成するか?",
+  "thesilverage.configuration.generate_silver_ore": "銀鉱石を生成",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "新しいチャンクに銀鉱石を生成しますか？他のModの銀鉱石を使う場合はオフにしてください。",
   "thesilverage.configuration.override_vanilla_recipes": "バニラのレシピを上書き",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "既存の一部のクラフトレシピを銀を使うように変更します(例: 醸造台、リピーター、コンパレーターなど)。",
   "thesilverage.configuration.override_lodestone_recipe": "ロードストーンのレシピ",

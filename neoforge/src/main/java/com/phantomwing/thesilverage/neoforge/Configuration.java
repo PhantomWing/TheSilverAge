@@ -23,6 +23,10 @@ public class Configuration {
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
     public static ModConfigSpec.BooleanValue GENERATE_STRUCTURE_LOOT;
 
+    // Silver ore in newly generated chunks, read by the ore's placement (thesilverage:config_boolean).
+    public static final String GENERATE_SILVER_ORE_ID = "generate_silver_ore";
+    public static ModConfigSpec.BooleanValue GENERATE_SILVER_ORE;
+
     // Innate anti-undead damage bonus on silver tools.
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_SMITE;
@@ -58,6 +62,7 @@ public class Configuration {
             case ENABLE_WANDERING_TRADER_TRADES_ID -> Configuration.ENABLE_WANDERING_TRADER_TRADES.get();
             case OVERRIDE_VANILLA_RECIPES_ID -> Configuration.OVERRIDE_VANILLA_RECIPES.get();
             case GENERATE_STRUCTURE_LOOT_ID -> Configuration.GENERATE_STRUCTURE_LOOT.get();
+            case GENERATE_SILVER_ORE_ID -> Configuration.GENERATE_SILVER_ORE.get();
             case ENABLE_SILVER_SMITE_ID -> Configuration.ENABLE_SILVER_SMITE.get();
             case ENABLE_UNDEAD_PROTECTION_ID -> Configuration.ENABLE_UNDEAD_PROTECTION.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
@@ -88,6 +93,7 @@ public class Configuration {
         ENABLE_VILLAGER_TRADES = COMMON_BUILDER.define(ENABLE_VILLAGER_TRADES_ID, true);
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
         GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.define(GENERATE_STRUCTURE_LOOT_ID, true);
+        GENERATE_SILVER_ORE = COMMON_BUILDER.define(GENERATE_SILVER_ORE_ID, true);
         ENABLE_SILVER_SMITE = COMMON_BUILDER.define(ENABLE_SILVER_SMITE_ID, true);
         ENABLE_UNDEAD_PROTECTION = COMMON_BUILDER.define(ENABLE_UNDEAD_PROTECTION_ID, true);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);

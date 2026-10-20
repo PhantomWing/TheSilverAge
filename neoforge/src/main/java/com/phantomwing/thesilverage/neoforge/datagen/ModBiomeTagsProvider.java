@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,8 +21,10 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
+        // c:is_overworld holds minecraft:is_overworld and the loader's own: it catches a mod that tags only that one.
         this.tag(ModTags.Biomes.HAS_SILVER_ORE)
-            .addTag(BiomeTags.IS_OVERWORLD);
+            .addTag(BiomeTags.IS_OVERWORLD)
+            .addOptionalTag(Tags.Biomes.IS_OVERWORLD);
 
         this.tag(ModTags.Biomes.HAS_EXTRA_SILVER_ORE)
             .add(Biomes.DEEP_DARK)

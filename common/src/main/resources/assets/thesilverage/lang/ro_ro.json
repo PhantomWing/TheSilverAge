@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Ar trebui Negustorul Rătăcitor să vândă obiecte din Era Argintului?",
   "thesilverage.configuration.generate_structure_loot": "Generează prada structurilor",
   "thesilverage.configuration.generate_structure_loot.tooltip": "Generează prada Erei Argintului în structuri?",
+  "thesilverage.configuration.generate_silver_ore": "Generează minereu de argint",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "Ar trebui să se genereze minereu de argint în chunk-urile noi? Dezactivează pentru a folosi în schimb minereul de argint al altui mod.",
   "thesilverage.configuration.override_vanilla_recipes": "Suprascrie rețetele originale",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifică unele rețete existente pentru a folosi argint (de ex. Stand de Băuturi, Repetor, Comparator, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Rețeta magnetitului",

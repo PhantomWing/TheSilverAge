@@ -14,10 +14,14 @@
   - Undead mobs can't spawn on silver blocks
   - Can be turned off with the `enable_silver_floor_damage` config option
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
+- Added compatibility with Werewolves: Become a Beast
+  - Werewolves are sensitive to silver, like undead mobs
+  - Silver tools and armor count as silver for the Werewolves mod
 - Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
 - Added a config option for mobs spawning with silver gear
+- Added the `generate_silver_ore` config option, for modpacks that use another mod's silver ore
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Added a config screen on Fabric (opened from Mod Menu)
 - Updated tags for better compatibility with vanilla and other mods
@@ -28,6 +32,7 @@
   - Added Silver Pickaxe to the `minecraft:cluster_max_harvestables` tag
   - Added Silver Chain to the `c:chains` tag
   - Moved Silver Ore from the `c:ore_rates/singular` tag to the `c:ore_rates/dense` tag
+  - Added the `c:is_overworld` biome tag to the `thesilverage:has_silver_ore` tag
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5

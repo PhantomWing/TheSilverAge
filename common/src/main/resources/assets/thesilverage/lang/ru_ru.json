@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Должен ли странствующий торговец продавать предметы Серебряного века?",
   "thesilverage.configuration.generate_structure_loot": "Генерировать добычу в структурах",
   "thesilverage.configuration.generate_structure_loot.tooltip": "Генерировать добычу Серебряного века в структурах?",
+  "thesilverage.configuration.generate_silver_ore": "Генерировать серебряную руду",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "Должна ли серебряная руда генерироваться в новых чанках? Отключите, чтобы использовать вместо неё серебряную руду другого мода.",
   "thesilverage.configuration.override_vanilla_recipes": "Заменить ванильные рецепты",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Изменяет некоторые существующие рецепты крафта, чтобы использовать серебро (например, варочная стойка, повторитель, компаратор, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Рецепт магнетита",

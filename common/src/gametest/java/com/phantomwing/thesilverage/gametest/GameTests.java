@@ -33,6 +33,8 @@ public final class GameTests {
             test("silver_wall_torch_drops_a_silver_torch", SilverBlocksGameTest::silverWallTorchDropsASilverTorch),
             test("config_condition_naming_no_setting_is_false", SilverRecipesGameTest::configConditionNamingNoSettingIsFalse),
             test("silver_joins_vanilla_tags", SilverTagsGameTest::silverJoinsVanillaTags),
+            test("silver_counts_as_silver_for_werewolves", SilverTagsGameTest::silverCountsAsSilverForWerewolves),
+            test("silver_ore_follows_its_config", SilverOreGameTest::silverOreFollowsItsConfig),
             test("silver_floors_hurt_the_undead", SilverFloorGameTest::silverFloorsHurtTheUndead).maxTicks(140),
             test("undead_cant_spawn_on_silver", SilverFloorGameTest::undeadCantSpawnOnSilver),
             test("undead_walk_round_silver", SilverFloorGameTest::undeadWalkRoundSilver),

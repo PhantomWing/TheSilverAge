@@ -22,6 +22,8 @@ public final class SilverTagsGameTest {
     private static final TagKey<Item> CHAIN_ITEMS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "chains"));
     private static final TagKey<Block> DENSE_ORES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_rates/dense"));
     private static final TagKey<Block> SINGULAR_ORES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_rates/singular"));
+    private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "tools/silver"));
+    private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "armor/silver"));
 
     private SilverTagsGameTest() {
     }
@@ -44,6 +46,21 @@ public final class SilverTagsGameTest {
         } else if (!EntityType.HUSK.is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
                 || !EntityType.VINDICATOR.is(ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
             fail(helper, "Husks or vindicators are missing from the silver gear tags");
+        } else {
+            helper.succeed();
+        }
+    }
+
+    /**
+     * Silver tools and armour are in Werewolves: Become a Beast's silver tags, so a werewolf hit with a silver weapon,
+     * or a werewolf player wearing silver, is weakened as by its own silver. The tags load whether or not it's installed.
+     */
+    public static void silverCountsAsSilverForWerewolves(GameTestHelper helper) {
+        if (!new ItemStack(ModItems.SILVER_SWORD.get()).is(WEREWOLVES_SILVER_TOOLS)
+                || !new ItemStack(ModItems.SILVER_KNIFE.get()).is(WEREWOLVES_SILVER_TOOLS)) {
+            fail(helper, "Silver tools aren't in werewolves:tools/silver");
+        } else if (!new ItemStack(ModItems.SILVER_CHESTPLATE.get()).is(WEREWOLVES_SILVER_ARMOR)) {
+            fail(helper, "Silver armor isn't in werewolves:armor/silver");
         } else {
             helper.succeed();
         }

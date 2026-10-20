@@ -26,7 +26,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
      *  harmless when FD is absent (the tag is simply never consulted). */
     private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
             TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("farmersdelight", "tools/knives"));
-
+    private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS =
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "tools/silver"));
+    private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR =
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "armor/silver"));
 
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID, existingFileHelper);
@@ -137,6 +140,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // are unconditional: ignored when FD isn't installed.
         tag(FARMERS_DELIGHT_KNIVES).add(ModItems.SILVER_KNIFE.get());
         tag(CommonTags.Items.TOOLS_KNIFE).add(ModItems.SILVER_KNIFE.get());
+
+        // Werewolves: Become a Beast compat. A weapon in its silver tools tag gives a werewolf it hits the Silver
+        // effect, and a werewolf player holding or wearing anything in its silver type tag (which takes these and the
+        // c: silver tags) is weakened. Ignored when Werewolves isn't installed.
+        tag(WEREWOLVES_SILVER_TOOLS).addTag(ModTags.Items.SILVER_SMITE_TOOLS);
+        tag(WEREWOLVES_SILVER_ARMOR)
+                .add(ModItems.SILVER_HELMET.get())
+                .add(ModItems.SILVER_CHESTPLATE.get())
+                .add(ModItems.SILVER_LEGGINGS.get())
+                .add(ModItems.SILVER_BOOTS.get());
 
         // Armor
         tag(ItemTags.HEAD_ARMOR).add(ModItems.SILVER_HELMET.get());

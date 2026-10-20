@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Moet de zwervende handelaar voorwerpen uit The Silver Age verkopen?",
   "thesilverage.configuration.generate_structure_loot": "Structuurbuit genereren",
   "thesilverage.configuration.generate_structure_loot.tooltip": "Moet er The Silver Age buit in structuren gegenereerd worden?",
+  "thesilverage.configuration.generate_silver_ore": "Zilvererts genereren",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "Moet zilvererts in nieuwe chunks genereren? Zet dit uit om in plaats daarvan het zilvererts van een andere mod te gebruiken.",
   "thesilverage.configuration.override_vanilla_recipes": "Standaardrecepten overschrijven",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Past enkele bestaande maakrecepten aan om zilver te gebruiken. (bijv. brouwsel, versterker, vergelijker, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Zeilsteenrecept",

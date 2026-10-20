@@ -17,8 +17,8 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CAN_HOLD_SILVER_TOOLS = tag("can_hold_silver_tools");
         /**
          * Mobs silver harms: silver tools' bonus damage, silver armour's protection, the Silver Pressure Plate and
-         * {@link Blocks#SILVER_FLOORS}. Holds {@code #minecraft:sensitive_to_smite}, and a pack can add a mob that
-         * Smite leaves alone.
+         * {@link Blocks#SILVER_FLOORS}. Holds {@code #minecraft:sensitive_to_smite} and, where Werewolves: Become a Beast
+         * is installed, its werewolves; a pack can add another mob that Smite leaves alone.
          */
         public static final TagKey<EntityType<?>> SENSITIVE_TO_SILVER = tag("sensitive_to_silver");
 

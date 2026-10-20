@@ -42,8 +42,9 @@ check.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
 - **Undead** - every silver effect on mobs (the tools' bonus, the armour's protection, the pressure plate, silver
-  floors) checks `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and lets a pack add
-  a mob Smite leaves alone. Never check the smite tag directly. Silver floors (`combat/SilverFloor`, the blocks in
+  floors) checks `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and, optionally,
+  Werewolves: Become a Beast's `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. Never check the
+  smite tag directly. Silver floors (`combat/SilverFloor`, the blocks in
   `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
   walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once
   for every mob.
@@ -64,4 +65,10 @@ on a rung where they have no build; that does not block the line.
 - Datagen: `:neoforge:runData`. Output: `common/src/generated/resources`, never hand-edited.
 - Game tests in `common/src/gametest`, run on NeoForge with `:neoforge:runGameTest`. Laid out with The Lead Age's test shim (`verification.md`): the test classes and `GameTests` read the same on every line, `TestCompat` holds the calls whose shape differs between versions, and `neoforge/src/test`'s `GameTestRegistration` registers them. They run in `silver_test_arena`, a 7x5x7 box with a stone floor and no walls. A test's positions count from the structure block a layer below the arena, so the floor is at y = 1 and what stands on it at y = 2: a mob spawned at y = 1 is inside the stone and plans no path.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. The Fabric upload is tagged from `supported_minecraft_versions`, 1.21 and 1.21.1, and the NeoForge one from `neoforge_minecraft_versions`, 1.21.1 alone, since NeoForge 21.1 exists for 1.21.1 only. The Fabric manifest asks for `fabric-api >=0.102.0`, the newest for 1.21: a change that needs a newer Fabric API raises that floor and drops 1.21 from the list.
+- Orevolution (NeoForge, 6.0.0 and up) compiles against two of this line's fields to give silver its tier and armour
+  powers: `tool.ModTiers.SILVER` (a `Tier`) and `armor.ModArmorMaterials.SILVER_ARMOR_MATERIAL` (a
+  `Holder<ArmorMaterial>`). Renaming, moving or retyping either crashes the game where both mods are installed.
+- Other mods' compatibility is mostly through the `c:` silver tags, which Silent Gear, Immersive Engineering, Goety,
+  Iron Furnaces, Modern Industrialization, Occultism and Werewolves all read; `TODO.md` has what was checked
+  (2026-10-20) and what is left.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.

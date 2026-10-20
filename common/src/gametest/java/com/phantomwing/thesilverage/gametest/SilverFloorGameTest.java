@@ -5,8 +5,11 @@ import com.phantomwing.thesilverage.combat.SilverFloor;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -140,19 +143,20 @@ public final class SilverFloorGameTest {
                 : null);
     }
 
-    /** Every mob Smite targets is sensitive to silver, and by default no other is. */
+    /** Every mob Smite targets is sensitive to silver, and so are Werewolves' werewolves where it's installed; no other is. */
     public static void silverHarmsWhatSmiteDoes(GameTestHelper helper) {
+        TagKey<EntityType<?>> werewolves = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("werewolves", "werewolf"));
         List<String> problems = new ArrayList<>();
         for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-            boolean smite = type.is(EntityTypeTags.SENSITIVE_TO_SMITE);
-            if (smite != type.is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
-                problems.add(BuiltInRegistries.ENTITY_TYPE.getKey(type) + (smite ? " isn't" : " is"));
+            boolean sensitive = type.is(EntityTypeTags.SENSITIVE_TO_SMITE) || type.is(werewolves);
+            if (sensitive != type.is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
+                problems.add(BuiltInRegistries.ENTITY_TYPE.getKey(type) + (sensitive ? " isn't" : " is"));
             }
         }
         if (problems.isEmpty()) {
             helper.succeed();
         } else {
-            fail(helper, "thesilverage:sensitive_to_silver differs from minecraft:sensitive_to_smite: " + String.join(", ", problems));
+            fail(helper, "thesilverage:sensitive_to_silver differs from minecraft:sensitive_to_smite and the werewolves: " + String.join(", ", problems));
         }
     }
 

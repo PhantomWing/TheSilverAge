@@ -37,6 +37,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String GENERATE_STRUCTURE_LOOT_ID = "generate_structure_loot";
     public boolean generate_structure_loot = true;
 
+    public static final String GENERATE_SILVER_ORE_ID = "generate_silver_ore";
+    public boolean generate_silver_ore = true;
+
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public boolean enable_villager_trades = true;
 
@@ -98,6 +101,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_WANDERING_TRADER_TRADES_ID -> config.enable_wandering_trader_trades;
             case OVERRIDE_VANILLA_RECIPES_ID -> config.override_vanilla_recipes;
             case GENERATE_STRUCTURE_LOOT_ID -> config.generate_structure_loot;
+            case GENERATE_SILVER_ORE_ID -> config.generate_silver_ore;
             case ENABLE_SILVER_SMITE_ID -> config.enable_silver_smite;
             case ENABLE_UNDEAD_PROTECTION_ID -> config.enable_undead_protection;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;

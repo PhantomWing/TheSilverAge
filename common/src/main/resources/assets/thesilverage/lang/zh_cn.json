@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "流浪商人是否出售白银时代物品？",
   "thesilverage.configuration.generate_structure_loot": "生成结构战利品",
   "thesilverage.configuration.generate_structure_loot.tooltip": "是否在结构中生成白银时代战利品？",
+  "thesilverage.configuration.generate_silver_ore": "生成银矿石",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "是否在新区块中生成银矿石？关闭后可改用其他模组的银矿石。",
   "thesilverage.configuration.override_vanilla_recipes": "覆盖原版配方",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "修改部分原版合成配方以使用银（如酿造台、中继器、比较器等）。",
   "thesilverage.configuration.override_lodestone_recipe": "磁石配方",

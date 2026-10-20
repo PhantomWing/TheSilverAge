@@ -1,5 +1,9 @@
 {
   "values": [
-    "#minecraft:sensitive_to_smite"
+    "#minecraft:sensitive_to_smite",
+    {
+      "id": "#werewolves:werewolf",
+      "required": false
+    }
   ]
 }

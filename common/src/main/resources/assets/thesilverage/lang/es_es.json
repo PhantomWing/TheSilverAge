@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "¿Debería el mercader errante vender objetos de La Edad de Plata?",
   "thesilverage.configuration.generate_structure_loot": "Generar botín en estructuras",
   "thesilverage.configuration.generate_structure_loot.tooltip": "¿Generar botín de La Edad de Plata en estructuras?",
+  "thesilverage.configuration.generate_silver_ore": "Generar mena de plata",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "¿Debería generarse mena de plata en los chunks nuevos? Desactívalo para usar en su lugar la mena de plata de otro mod.",
   "thesilverage.configuration.override_vanilla_recipes": "Sobrescribir recetas originales",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifica algunas recetas existentes para usar plata en su lugar (p. ej. Soporte para pociones, Repetidor, Comparador, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Receta de la magnetita",

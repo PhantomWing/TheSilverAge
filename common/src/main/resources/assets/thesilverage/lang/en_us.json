@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Should the Wandering Trader sell The Silver Age items?",
   "thesilverage.configuration.generate_structure_loot": "Generate structure loot",
   "thesilverage.configuration.generate_structure_loot.tooltip": "Generate The Silver Age loot in structures?",
+  "thesilverage.configuration.generate_silver_ore": "Generate silver ore",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "Should silver ore generate in new chunks? Turn it off to use another mod's silver ore instead.",
   "thesilverage.configuration.override_vanilla_recipes": "Override vanilla recipes",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Tweaks some existing crafting recipes to use Silver instead. (e.g. Brewing Stand, Repeater, Comparator, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Lodestone recipe",

@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "방랑상인이 은의 시대 아이템을 판매해야 합니까?",
   "thesilverage.configuration.generate_structure_loot": "구조물 전리품 생성",
   "thesilverage.configuration.generate_structure_loot.tooltip": "구조물에서 은의 시대 전리품을 생성하시겠습니까?",
+  "thesilverage.configuration.generate_silver_ore": "은 광석 생성",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "새 청크에 은 광석이 생성되어야 하나요? 다른 모드의 은 광석을 대신 사용하려면 끄세요.",
   "thesilverage.configuration.override_vanilla_recipes": "바닐라 제작법 덮어쓰기",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "기존의 일부 제작법을 은을 사용하도록 수정합니다(예: 양조기, 리피터, 비교기 등).",
   "thesilverage.configuration.override_lodestone_recipe": "자석석 제작법",

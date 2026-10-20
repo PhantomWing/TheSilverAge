@@ -231,6 +231,8 @@
   "thesilverage.configuration.enable_wandering_trader_trades.tooltip": "Le marchand ambulant doit-il vendre les objets de L'Âge d'argent ?",
   "thesilverage.configuration.generate_structure_loot": "Générer le butin des structures",
   "thesilverage.configuration.generate_structure_loot.tooltip": "Générer le butin de L'Âge d'argent dans les structures ?",
+  "thesilverage.configuration.generate_silver_ore": "Générer le minerai d'argent",
+  "thesilverage.configuration.generate_silver_ore.tooltip": "Le minerai d'argent doit-il apparaître dans les nouveaux chunks ? Désactivez-le pour utiliser à la place le minerai d'argent d'un autre mod.",
   "thesilverage.configuration.override_vanilla_recipes": "Remplacer les recettes d'origine",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifie certaines recettes existantes pour utiliser de l'argent à la place (p. ex. l'alambic, le répéteur, le comparateur, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Recette de la magnétite",
