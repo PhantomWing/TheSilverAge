@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 
 /** Game tests for silver blocks. Listed in {@link GameTests}. */
 public final class SilverBlocksGameTest {
-    /** The middle of the arena, one block above its stone floor. */
+    /** The middle of the arena's stone floor: a test's y counts from the structure block, a layer below the arena. */
     static final BlockPos CENTER = new BlockPos(3, 1, 3);
 
     private SilverBlocksGameTest() {

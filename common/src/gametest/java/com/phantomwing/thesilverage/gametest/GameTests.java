@@ -28,6 +28,11 @@ public final class GameTests {
             test("mobs_hold_silver_tools", SilverGearGameTest::mobsHoldSilverTools),
             test("husks_wear_silver_armor", SilverGearGameTest::husksWearSilverArmor),
             test("silver_joins_vanilla_tags", SilverTagsGameTest::silverJoinsVanillaTags),
+            test("silver_floors_hurt_the_undead", SilverFloorGameTest::silverFloorsHurtTheUndead).maxTicks(140),
+            test("undead_cant_spawn_on_silver", SilverFloorGameTest::undeadCantSpawnOnSilver),
+            test("undead_walk_round_silver", SilverFloorGameTest::undeadWalkRoundSilver),
+            test("undead_never_pick_silver_to_go_to", SilverFloorGameTest::undeadNeverPickSilverToGoTo),
+            test("silver_harms_what_smite_does", SilverFloorGameTest::silverHarmsWhatSmiteDoes),
             test("recipe_overrides_apply_by_default", SilverRecipesGameTest::recipeOverridesApplyByDefault),
             test("silver_data_outranks_neoforge", SilverRecipesGameTest::silverDataOutranksNeoForge));
 
