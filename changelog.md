@@ -59,6 +59,7 @@
 - Fixed silver trims on worn silver armor using a lighter color than in the inventory
 - Fixed trims from other mods showing as silver on armor in the inventory
 - Fixed the Fabric config not reloading with /reload
+- Fixed the mod icon missing in Mod Menu on Fabric
 
 
 # 1.3.1
