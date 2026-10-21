@@ -13,6 +13,7 @@
     "issues": "https://github.com/PhantomWing/TheSilverAge/issues"
   },
   "license": "MIT License",
+  "icon": "assets/thesilverage/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
