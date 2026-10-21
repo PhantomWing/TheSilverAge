@@ -11,6 +11,7 @@
 - Fixed the silver Brewing Stand, Comparator and Repeater textures not showing on NeoForge.
 - Fixed the mod not loading on Fabric for Minecraft 1.21.9.
 - Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
+- Fixed the mod icon missing in Mod Menu on Fabric
 
 
 # 1.3.3
