@@ -60,6 +60,7 @@
 - Fixed trims from other mods showing as silver on armor in the inventory
 - Fixed the Fabric config not reloading with /reload
 - Fixed the mod icon missing in Mod Menu on Fabric
+- Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 
 
 # 1.3.1
