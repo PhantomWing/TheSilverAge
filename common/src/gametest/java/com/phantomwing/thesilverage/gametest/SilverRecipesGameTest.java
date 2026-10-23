@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.gametest;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.platform.CommonConfig;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import dev.architectury.platform.Platform;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -23,9 +24,7 @@ public final class SilverRecipesGameTest {
 
     /**
      * With the default config every vanilla recipe override applies, the silver recipe taking the vanilla one's place.
-     * Lodestone and Glistering Melon Slice are left out: NeoForge ships its own copies of those two, and in a dev run
-     * the mod's generated data is a mod of its own that nothing orders after NeoForge's.
-     * {@link #silverDataOutranksNeoForge} checks the ordering that decides them in a real install.
+     * Lodestone and Glistering Melon Slice, which NeoForge ships copies of too, are {@link #silverDataOutranksNeoForge}'s.
      */
     public static void recipeOverridesApplyByDefault(GameTestHelper helper) {
         Item silver = ModItems.SILVER_INGOT.get();
@@ -73,15 +72,32 @@ public final class SilverRecipesGameTest {
     }
 
     /**
-     * The mod loads after NeoForge, so its Lodestone and Glistering Melon Slice overrides outrank NeoForge's own
-     * copies of those recipes. Mods' data is layered in load order, which without the mods.toml's ordering
-     * followed a hash of the mod ids.
+     * The Lodestone and Glistering Melon Slice overrides outrank NeoForge's own copies of those recipes. Mods' data is
+     * layered in load order, which without the mods.toml's ordering followed a hash of the mod ids, and in a NeoForge
+     * dev run common's jar was a mod of its own that nothing ordered, so the dev client crafted NeoForge's. An override
+     * the config turns off leaves its fallback, and nothing to outrank.
      */
     public static void silverDataOutranksNeoForge(GameTestHelper helper) {
         List<String> loadOrder = List.copyOf(Platform.getModIds());
         int neoForge = loadOrder.indexOf("neoforge");
         if (neoForge >= 0 && loadOrder.indexOf(TheSilverAge.MOD_ID) < neoForge) {
             fail(helper, "The Silver Age loads before NeoForge, so NeoForge's Lodestone and Glistering Melon Slice recipes replace its overrides");
+        }
+        Item silver = ModItems.SILVER_INGOT.get();
+        Item nugget = ModItems.SILVER_NUGGET.get();
+        Item bricks = Items.CHISELED_STONE_BRICKS;
+        Item melon = Items.MELON_SLICE;
+        if (CommonConfig.recipeOverride(RecipeOverride.LODESTONE)) {
+            expect(helper, Items.LODESTONE, CraftingInput.of(3, 3, stacks(
+                    bricks, bricks, bricks,
+                    bricks, silver, bricks,
+                    bricks, bricks, bricks)));
+        }
+        if (CommonConfig.recipeOverride(RecipeOverride.GLISTERING_MELON)) {
+            expect(helper, Items.GLISTERING_MELON_SLICE, CraftingInput.of(3, 3, stacks(
+                    nugget, nugget, nugget,
+                    nugget, melon, nugget,
+                    nugget, nugget, nugget)));
         }
         helper.succeed();
     }

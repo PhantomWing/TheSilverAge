@@ -61,6 +61,13 @@ loom {
             // FD's existing resources are only available when FD is on the run
             // classpath (loadFD); requesting them otherwise fails datagen.
             if (loadFD) programArgs('--existing-mod', 'farmersdelight')
+            // The mod without the test source set, which carries the datagen output into dev runs: datagen would
+            // otherwise load the output of the run before as the mod's own while it writes the new one.
+            mods {
+                register('main') {
+                    sourceSet sourceSets.main
+                }
+            }
         }
 
         // Give the dev server its own working directory so its COMMON config
@@ -88,13 +95,28 @@ configurations {
 // Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
 // structure ship in the production jar. The tests themselves are common/src/gametest; only the
 // registration is NeoForge's own.
+//
+// The datagen output is in it too, for dev runs only. There common's transformed jar is a mod of its own
+// (generated_<hash>) that nothing orders, so NeoForge's own Lodestone and Glistering Melon Slice recipes beat the
+// overrides. As part of this mod it loads after NeoForge, as the shipped jar's does.
 sourceSets {
     test {
         java.srcDir project(':common').file('src/gametest/java')
         resources.srcDir project(':common').file('src/gametest/resources')
+        resources.srcDir project(':common').file('src/generated/resources')
         compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
         runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
     }
+}
+
+processTestResources {
+    exclude '.cache/**'
+}
+
+// Every run but datagen's loads the test source set as part of the mod, but only the game-test run builds it: the
+// client and server would load whatever the last game tests copied.
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'runData' }.configureEach {
+    dependsOn tasks.named('processTestResources')
 }
 
 // Recipe viewer / Create toggles, ported verbatim from the pre-Architectury
