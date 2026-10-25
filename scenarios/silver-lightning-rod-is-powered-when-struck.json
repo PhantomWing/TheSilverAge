@@ -2,44 +2,15 @@
   "name": "Silver Lightning Rod is powered when struck",
   "gamemode": "creative",
   "steps": [
-    {
-      "setblock": [
-        0,
-        0,
-        0
-      ],
-      "block": "thesilverage:silver_lightning_rod"
-    },
-    {
-      "look": [
-        0,
-        0,
-        0
-      ]
-    },
-    {
-      "summon": "minecraft:lightning_bolt",
-      "at": [
-        0,
-        1,
-        0
-      ]
-    },
-    {
-      "expect": "block",
-      "at": [
-        0,
-        0,
-        0
-      ],
-      "is": "thesilverage:silver_lightning_rod",
-      "with": {
-        "powered": "true"
-      },
-      "within": 20
-    },
-    {
-      "screenshot": "struck_rod"
-    }
+    { "setblock": [0, 0, 0], "block": "thesilverage:silver_lightning_rod" },
+    { "setblock": [1, 0, 0], "block": "minecraft:copper_bulb" },
+    { "look": [0, 0, 0] },
+    { "expect": "block", "at": [1, 0, 0], "is": "minecraft:copper_bulb", "with": { "lit": "false" } },
+    { "summon": "minecraft:lightning_bolt", "at": [0, 1, 0] },
+    { "expect": "block", "at": [1, 0, 0], "is": "minecraft:copper_bulb", "with": { "lit": "true" }, "within": 20 },
+    { "wait": 30 },
+    { "expect": "block", "at": [0, 0, 0], "is": "thesilverage:silver_lightning_rod", "with": { "powered": "false" } },
+    { "expect": "block", "at": [1, 0, 0], "is": "minecraft:copper_bulb", "with": { "lit": "true", "powered": "false" } },
+    { "screenshot": "struck_rod" }
   ]
 }
