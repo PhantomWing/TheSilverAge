@@ -16,11 +16,17 @@ public class ModTags {
         /** Mobs whose naturally-spawned iron sword, axe or shovel may be swapped for the silver one. */
         public static final TagKey<EntityType<?>> CAN_HOLD_SILVER_TOOLS = tag("can_hold_silver_tools");
         /**
-         * Mobs silver harms: silver tools' bonus damage, silver armour's protection, the Silver Pressure Plate and
-         * {@link Blocks#SILVER_FLOORS}. Holds {@code #minecraft:sensitive_to_smite} and, where Werewolves: Become a Beast
-         * is installed, its werewolves; a pack can add another mob that Smite leaves alone.
+         * Mobs silver harms: silver tools' bonus damage, silver armour's protection and {@link Blocks#SILVER_FLOORS}, and
+         * through {@link #CANNOT_PRESS_SILVER_PRESSURE_PLATES} the Silver Pressure Plate. Holds
+         * {@code #minecraft:sensitive_to_smite} and, where Werewolves: Become a Beast is installed, its werewolves; a pack
+         * can add another mob that Smite leaves alone.
          */
         public static final TagKey<EntityType<?>> SENSITIVE_TO_SILVER = tag("sensitive_to_silver");
+        /**
+         * Mobs that can't press a Silver Pressure Plate besides the hostile ones, which never do: holds
+         * {@link #SENSITIVE_TO_SILVER}, and a pack can add another.
+         */
+        public static final TagKey<EntityType<?>> CANNOT_PRESS_SILVER_PRESSURE_PLATES = tag("cannot_press_silver_pressure_plates");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
@@ -43,10 +49,16 @@ public class ModTags {
         public static final TagKey<Block> INCORRECT_FOR_SILVER_TOOL = tag("incorrect_for_silver_tool");
         public static final TagKey<Block> SILVER_BLOCKS = tag("silver_blocks");
         /**
-         * Silver that hurts a {@link EntityTypes#SENSITIVE_TO_SILVER} mob standing on it, keeps one from spawning on
-         * it and is walked round by one ({@link com.phantomwing.thesilverage.combat.SilverFloor}).
+         * Silver that hurts a {@link EntityTypes#SENSITIVE_TO_SILVER} mob standing on it, or in it where it is a pressure
+         * plate, keeps one from spawning on it and is walked round by one
+         * ({@link com.phantomwing.thesilverage.combat.SilverFloor}).
          */
         public static final TagKey<Block> SILVER_FLOORS = tag("silver_floors");
+        /**
+         * Silver light, which a {@link EntityTypes#SENSITIVE_TO_SILVER} mob with nothing to fight keeps away from
+         * ({@link com.phantomwing.thesilverage.combat.AvoidSilverLightGoal}): the Silver Torch and Lantern.
+         */
+        public static final TagKey<Block> UNDEAD_REPELLENTS = tag("undead_repellents");
 
         // Family aggregation tags. Used to keep the Sable compatibility entries
         // (sable:heavy / super_light / quarter_volume in this mod's generated
@@ -91,13 +103,11 @@ public class ModTags {
         public static final TagKey<Item> SILVER_SMITE_TOOLS = tag("silver_smite_tools");
 
         /**
-         * Silver armour that carries the innate damage reduction against undead
-         * attackers (see
-         * {@link com.phantomwing.thesilverage.combat.UndeadProtectionHandler}).
-         * Datapacks and addons can add their own pieces here to grant the same
-         * protection; each piece in the tag is worth one point.
+         * Silver armour that burns the undead striking its wearer
+         * ({@link com.phantomwing.thesilverage.combat.SilverThornsHandler}). Datapacks and addons can add their own
+         * pieces; each adds a piece's chance, and animal armour a full set's.
          */
-        public static final TagKey<Item> UNDEAD_PROTECTION_ARMOR = tag("undead_protection_armor");
+        public static final TagKey<Item> SILVER_THORNS_ARMOR = tag("silver_thorns_armor");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));

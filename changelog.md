@@ -3,15 +3,19 @@
 - Added Silver Lantern, Silver Chain and Silver Bars (including oxidized and waxed variants)
 - Added Silver Brick Wall (including oxidized and waxed variants)
 - Added Silver Pressure Plate (including oxidized and waxed variants)
-  - Can only be pressed by undead mobs
-  - The more it tarnishes, the more undead it takes to give a full signal (1, 3, 5 or 15)
+  - Can't be pressed by hostile mobs
+  - Undead mobs take damage on it and avoid it, like other silver blocks
+  - The more it tarnishes, the more mobs it takes to give a full signal (1, 3, 5 or 15)
 - Added Silver Lightning Rod (including oxidized and waxed variants)
 - Added Silver Torch, crafted with a Silver Nugget. It burns with a violet flame.
+  - Undead mobs keep away from Silver Torches and Silver Lanterns when they have no target
+  - Can be turned off with the `undead_avoid_silver_light` config option
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
-- Silver armor now grants +1 Undead Protection per piece, reducing damage taken from undead mobs by 4% each (16% for a full set). Silver Horse Armor grants it too. Stacks with Protection. Can be turned off with the `enable_undead_protection` config option.
+- Silver armor now has a 20% chance per piece to burn undead mobs that hit you, dealing 1-2 damage (80% for a full set). Silver Horse Armor counts as a full set. Works like Thorns and stacks with it. Can be turned off with the `enable_silver_thorns` config option.
 - Undead mobs now take damage while standing on silver blocks, and avoid walking over them
   - The more the silver tarnishes, the slower it hurts
   - Undead mobs can't spawn on silver blocks
+  - Undead mobs walk off silver blocks when they have no target
   - Can be turned off with the `enable_silver_floor_damage` config option
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
 - Added compatibility with Werewolves: Become a Beast
@@ -26,6 +30,8 @@
 - Added a config screen on Fabric (opened from Mod Menu)
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
+  - Added the `thesilverage:cannot_press_silver_pressure_plates` tag, so modpacks can keep other mobs from pressing Silver Pressure Plates
+  - Added the `thesilverage:undead_repellents` tag, so modpacks can make other blocks keep undead mobs away
   - Added husks to the `thesilverage:can_wear_silver_armor` tag
   - Added Silver Ore to the `minecraft:snaps_goat_horn` tag
   - Added Silver Doors to the `minecraft:mob_interactable_doors` tag
@@ -61,6 +67,7 @@
 - Fixed the Fabric config not reloading with /reload
 - Fixed the mod icon missing in Mod Menu on Fabric
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
+- Fixed Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars missing from Create's Deployer waxing and scraping recipes
 
 
 # 1.3.1

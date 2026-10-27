@@ -49,8 +49,8 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public boolean enable_silver_smite = true;
 
-    public static final String ENABLE_UNDEAD_PROTECTION_ID = "enable_undead_protection";
-    public boolean enable_undead_protection = true;
+    public static final String ENABLE_SILVER_THORNS_ID = "enable_silver_thorns";
+    public boolean enable_silver_thorns = true;
 
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public boolean enable_silver_oxidation = true;
@@ -60,6 +60,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
 
     public static final String ENABLE_SILVER_FLOOR_DAMAGE_ID = "enable_silver_floor_damage";
     public boolean enable_silver_floor_damage = true;
+
+    public static final String UNDEAD_AVOID_SILVER_LIGHT_ID = "undead_avoid_silver_light";
+    public boolean undead_avoid_silver_light = true;
 
     public static TheSilverAgeFabricConfig get() {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
@@ -103,10 +106,11 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case GENERATE_STRUCTURE_LOOT_ID -> config.generate_structure_loot;
             case GENERATE_SILVER_ORE_ID -> config.generate_silver_ore;
             case ENABLE_SILVER_SMITE_ID -> config.enable_silver_smite;
-            case ENABLE_UNDEAD_PROTECTION_ID -> config.enable_undead_protection;
+            case ENABLE_SILVER_THORNS_ID -> config.enable_silver_thorns;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> config.enable_silver_floor_damage;
+            case UNDEAD_AVOID_SILVER_LIGHT_ID -> config.undead_avoid_silver_light;
             case "override_lodestone_recipe" -> config.override_lodestone_recipe;
             case "override_brewing_stand_recipe" -> config.override_brewing_stand_recipe;
             case "override_comparator_recipe" -> config.override_comparator_recipe;

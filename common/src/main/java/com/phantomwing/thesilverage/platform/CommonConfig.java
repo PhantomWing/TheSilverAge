@@ -85,13 +85,13 @@ public final class CommonConfig {
     }
 
     /**
-     * Gate for the innate anti-undead damage reduction on silver armour
-     * ({@link com.phantomwing.thesilverage.combat.UndeadProtectionHandler}).
-     * NeoForge: {@code Configuration.ENABLE_UNDEAD_PROTECTION.get()}. Fabric: the
+     * Gate for silver armour burning the undead that strike its wearer
+     * ({@link com.phantomwing.thesilverage.combat.SilverThornsHandler}).
+     * NeoForge: {@code Configuration.ENABLE_SILVER_THORNS.get()}. Fabric: the
      * AutoConfig value of the same name.
      */
     @ExpectPlatform
-    public static boolean undeadProtection() {
+    public static boolean silverThorns() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 
@@ -122,6 +122,15 @@ public final class CommonConfig {
      */
     @ExpectPlatform
     public static boolean silverFloorDamage() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
+     * Gate for idle undead keeping away from silver light
+     * ({@link com.phantomwing.thesilverage.combat.AvoidSilverLightGoal}): the Silver Torch and Lantern.
+     */
+    @ExpectPlatform
+    public static boolean undeadAvoidSilverLight() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 }

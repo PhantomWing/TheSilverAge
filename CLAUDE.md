@@ -41,13 +41,22 @@ check.
   mods almost entirely through `c:ingots/silver` and friends; keep new materials tagged there.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
-- **Undead** - every silver effect on mobs (the tools' bonus, the armour's protection, the pressure plate, silver
-  floors) checks `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and, optionally,
+- **Undead** - every silver effect on mobs (the tools' bonus, the armour's burn on undead attackers, silver floors) checks
+  `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and, optionally,
   Werewolves: Become a Beast's `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. Never check the
-  smite tag directly. Silver floors (`combat/SilverFloor`, the blocks in
+  smite tag directly. Silver armour's burn (`combat/SilverThornsHandler`, 20% a piece, Thorns damage) is called from
+  `LivingEntity#hurt`'s return by twin `LivingEntityMixin`s, so it fires only on a hit that landed. Silver floors (`combat/SilverFloor`, the blocks in
   `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
   walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once
-  for every mob.
+  for every mob. `SilverUndeadGoals` gives every such mob two goals as it joins a level (NeoForge's `EntityJoinLevelEvent`,
+  Fabric's `PersistentEntitySectionManagerMixin`, which Architectury's `EntityEvent.ADD` misses for chunk loads), both of
+  which give way to a target: `LeaveSilverFloorGoal` walks it off silver, and `AvoidSilverLightGoal` keeps it 6 blocks
+  from the blocks in `thesilverage:undead_repellents` (the Silver Torch and Lantern), The Lead Age's
+  `AvoidRepellentBlockGoal` with silver's rule. The floor's damage type is in `minecraft:no_knockback`, as magma's is, and
+  `SilverFloor` hops a mob itself, at most every 3 seconds. The Silver Pressure Plate is a silver floor a mob stands in rather than on: it hurts through its own
+  `entityInside`, and `SilverFloor` looks at the block a mob stands in for a plate. It is pressed by any living entity
+  but a hostile one (`Enemy`) or one in `thesilverage:cannot_press_silver_pressure_plates`, which holds
+  `sensitive_to_silver`.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two

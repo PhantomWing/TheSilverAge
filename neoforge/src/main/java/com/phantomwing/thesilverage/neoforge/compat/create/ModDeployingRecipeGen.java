@@ -1,11 +1,17 @@
 package com.phantomwing.thesilverage.neoforge.compat.create;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.simibubi.create.api.data.recipe.DeployingRecipeGen;
 
@@ -13,6 +19,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
@@ -26,57 +33,30 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
  * already handled by the NeoForge {@code WAXABLES}/{@code OXIDIZABLES} data maps
  * (see {@link com.phantomwing.thesilverage.neoforge.block.ModWaxables} and
  * {@link com.phantomwing.thesilverage.neoforge.block.ModOxidizables}).
+ * <p>
+ * Every family comes from {@link SilverWeatheringSpec}, which those data maps are built from too. A list of its own
+ * here fell behind: the bricks and pillar shipped without these recipes, and the lantern, chain, bars and brick wall
+ * were left out as they were added.
  */
 public class ModDeployingRecipeGen extends DeployingRecipeGen {
-
-    @SuppressWarnings("unused")
-    GeneratedRecipe
-        SILVER_BLOCK = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_BLOCK), lk(ModBlocks.EXPOSED_SILVER), lk(ModBlocks.WEATHERED_SILVER), lk(ModBlocks.OXIDIZED_SILVER)),
-            List.of(lk(ModBlocks.WAXED_SILVER_BLOCK), lk(ModBlocks.WAXED_EXPOSED_SILVER), lk(ModBlocks.WAXED_WEATHERED_SILVER), lk(ModBlocks.WAXED_OXIDIZED_SILVER))),
-
-        CUT_SILVER = oxidizationChain(
-            List.of(lk(ModBlocks.CUT_SILVER), lk(ModBlocks.EXPOSED_CUT_SILVER), lk(ModBlocks.WEATHERED_CUT_SILVER), lk(ModBlocks.OXIDIZED_CUT_SILVER)),
-            List.of(lk(ModBlocks.WAXED_CUT_SILVER), lk(ModBlocks.WAXED_EXPOSED_CUT_SILVER), lk(ModBlocks.WAXED_WEATHERED_CUT_SILVER), lk(ModBlocks.WAXED_OXIDIZED_CUT_SILVER))),
-
-        CUT_SILVER_SLAB = oxidizationChain(
-            List.of(lk(ModBlocks.CUT_SILVER_SLAB), lk(ModBlocks.EXPOSED_CUT_SILVER_SLAB), lk(ModBlocks.WEATHERED_CUT_SILVER_SLAB), lk(ModBlocks.OXIDIZED_CUT_SILVER_SLAB)),
-            List.of(lk(ModBlocks.WAXED_CUT_SILVER_SLAB), lk(ModBlocks.WAXED_EXPOSED_CUT_SILVER_SLAB), lk(ModBlocks.WAXED_WEATHERED_CUT_SILVER_SLAB), lk(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_SLAB))),
-
-        CUT_SILVER_STAIRS = oxidizationChain(
-            List.of(lk(ModBlocks.CUT_SILVER_STAIRS), lk(ModBlocks.EXPOSED_CUT_SILVER_STAIRS), lk(ModBlocks.WEATHERED_CUT_SILVER_STAIRS), lk(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS)),
-            List.of(lk(ModBlocks.WAXED_CUT_SILVER_STAIRS), lk(ModBlocks.WAXED_EXPOSED_CUT_SILVER_STAIRS), lk(ModBlocks.WAXED_WEATHERED_CUT_SILVER_STAIRS), lk(ModBlocks.WAXED_OXIDIZED_CUT_SILVER_STAIRS))),
-
-        CHISELED_SILVER = oxidizationChain(
-            List.of(lk(ModBlocks.CHISELED_SILVER), lk(ModBlocks.EXPOSED_CHISELED_SILVER), lk(ModBlocks.WEATHERED_CHISELED_SILVER), lk(ModBlocks.OXIDIZED_CHISELED_SILVER)),
-            List.of(lk(ModBlocks.WAXED_CHISELED_SILVER), lk(ModBlocks.WAXED_EXPOSED_CHISELED_SILVER), lk(ModBlocks.WAXED_WEATHERED_CHISELED_SILVER), lk(ModBlocks.WAXED_OXIDIZED_CHISELED_SILVER))),
-
-        SILVER_GRATE = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_GRATE), lk(ModBlocks.EXPOSED_SILVER_GRATE), lk(ModBlocks.WEATHERED_SILVER_GRATE), lk(ModBlocks.OXIDIZED_SILVER_GRATE)),
-            List.of(lk(ModBlocks.WAXED_SILVER_GRATE), lk(ModBlocks.WAXED_EXPOSED_SILVER_GRATE), lk(ModBlocks.WAXED_WEATHERED_SILVER_GRATE), lk(ModBlocks.WAXED_OXIDIZED_SILVER_GRATE))),
-
-        SILVER_BULB = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_BULB), lk(ModBlocks.EXPOSED_SILVER_BULB), lk(ModBlocks.WEATHERED_SILVER_BULB), lk(ModBlocks.OXIDIZED_SILVER_BULB)),
-            List.of(lk(ModBlocks.WAXED_SILVER_BULB), lk(ModBlocks.WAXED_EXPOSED_SILVER_BULB), lk(ModBlocks.WAXED_WEATHERED_SILVER_BULB), lk(ModBlocks.WAXED_OXIDIZED_SILVER_BULB))),
-
-        SILVER_TRAPDOOR = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_TRAPDOOR), lk(ModBlocks.EXPOSED_SILVER_TRAPDOOR), lk(ModBlocks.WEATHERED_SILVER_TRAPDOOR), lk(ModBlocks.OXIDIZED_SILVER_TRAPDOOR)),
-            List.of(lk(ModBlocks.WAXED_SILVER_TRAPDOOR), lk(ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR), lk(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR), lk(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR))),
-
-        SILVER_DOOR = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_DOOR), lk(ModBlocks.EXPOSED_SILVER_DOOR), lk(ModBlocks.WEATHERED_SILVER_DOOR), lk(ModBlocks.OXIDIZED_SILVER_DOOR)),
-            List.of(lk(ModBlocks.WAXED_SILVER_DOOR), lk(ModBlocks.WAXED_EXPOSED_SILVER_DOOR), lk(ModBlocks.WAXED_WEATHERED_SILVER_DOOR), lk(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR))),
-
-        SILVER_PRESSURE_PLATE = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_PRESSURE_PLATE), lk(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE)),
-            List.of(lk(ModBlocks.WAXED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE))),
-
-        SILVER_LIGHTNING_ROD = oxidizationChain(
-            List.of(lk(ModBlocks.SILVER_LIGHTNING_ROD), lk(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD), lk(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD), lk(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD)),
-            List.of(lk(ModBlocks.WAXED_SILVER_LIGHTNING_ROD), lk(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD), lk(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD), lk(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD)));
-
     public ModDeployingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, TheSilverAge.MOD_ID);
+
+        Map<Block, Block> waxedOf = new IdentityHashMap<>();
+        for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.waxablePairs()) {
+            waxedOf.put(pair.from().get(), pair.to().get());
+        }
+        for (List<Block> chain : weatheringChains()) {
+            List<Supplier<ItemLike>> waxed = new ArrayList<>();
+            for (Block stage : chain) {
+                Block waxedStage = waxedOf.get(stage);
+                if (waxedStage == null) {
+                    throw new IllegalStateException("No waxed form of " + stage + " in SilverWeatheringSpec");
+                }
+                waxed.add(lk(waxedStage));
+            }
+            oxidizationChain(chain.stream().map(ModDeployingRecipeGen::lk).toList(), waxed);
+        }
     }
 
     /**
@@ -97,8 +77,28 @@ public class ModDeployingRecipeGen extends DeployingRecipeGen {
                 new ConfigBooleanCondition(Configuration.ENABLE_SILVER_OXIDATION_ID)));
     }
 
-    /** Short alias for converting a {@code Supplier<? extends ItemLike>} into an {@code ItemLike} supplier. */
-    private static Supplier<ItemLike> lk(Supplier<? extends ItemLike> supplier) {
-        return supplier::get;
+    /** Each family's stages, fresh to oxidized: from every block nothing weathers into, along its oxidation steps. */
+    private static List<List<Block>> weatheringChains() {
+        Map<Block, Block> next = new LinkedHashMap<>();
+        for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.oxidationPairs()) {
+            next.put(pair.from().get(), pair.to().get());
+        }
+        Set<Block> weatheredInto = new HashSet<>(next.values());
+        List<List<Block>> chains = new ArrayList<>();
+        for (Block fresh : next.keySet()) {
+            if (weatheredInto.contains(fresh)) {
+                continue;
+            }
+            List<Block> chain = new ArrayList<>();
+            for (Block stage = fresh; stage != null; stage = next.get(stage)) {
+                chain.add(stage);
+            }
+            chains.add(chain);
+        }
+        return chains;
+    }
+
+    private static Supplier<ItemLike> lk(ItemLike item) {
+        return () -> item;
     }
 }

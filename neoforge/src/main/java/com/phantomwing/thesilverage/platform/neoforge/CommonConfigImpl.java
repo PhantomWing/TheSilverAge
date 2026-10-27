@@ -33,8 +33,8 @@ public final class CommonConfigImpl {
         return Configuration.ENABLE_SILVER_SMITE.get();
     }
 
-    public static boolean undeadProtection() {
-        return Configuration.ENABLE_UNDEAD_PROTECTION.get();
+    public static boolean silverThorns() {
+        return Configuration.ENABLE_SILVER_THORNS.get();
     }
 
     public static boolean silverOxidation() {
@@ -47,5 +47,9 @@ public final class CommonConfigImpl {
 
     public static boolean silverFloorDamage() {
         return Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
+    }
+
+    public static boolean undeadAvoidSilverLight() {
+        return Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
     }
 }

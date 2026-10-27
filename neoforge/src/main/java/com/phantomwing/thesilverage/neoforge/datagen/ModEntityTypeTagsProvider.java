@@ -41,6 +41,9 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         this.tag(ModTags.EntityTypes.SENSITIVE_TO_SILVER)
             .addTag(EntityTypeTags.SENSITIVE_TO_SMITE)
             .addOptionalTag(WEREWOLVES);
+        // Besides every hostile mob, which the plate leaves out in code.
+        this.tag(ModTags.EntityTypes.CANNOT_PRESS_SILVER_PRESSURE_PLATES)
+            .addTag(ModTags.EntityTypes.SENSITIVE_TO_SILVER);
     }
 
     private static final TagKey<EntityType<?>> WEREWOLVES =

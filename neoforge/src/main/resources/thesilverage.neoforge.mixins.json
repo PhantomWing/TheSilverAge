@@ -6,6 +6,7 @@
   "mixins": [
     "BlockMixin",
     "BlockStateBaseMixin",
+    "LivingEntityMixin",
     "RandomPosMixin",
     "WalkNodeEvaluatorMixin"
   ],

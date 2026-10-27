@@ -39,9 +39,9 @@ public final class CommonConfigImpl {
                 TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);
     }
 
-    public static boolean undeadProtection() {
+    public static boolean silverThorns() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                TheSilverAgeFabricConfig.ENABLE_UNDEAD_PROTECTION_ID);
+                TheSilverAgeFabricConfig.ENABLE_SILVER_THORNS_ID);
     }
 
     public static boolean silverOxidation() {
@@ -57,5 +57,10 @@ public final class CommonConfigImpl {
     public static boolean silverFloorDamage() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_FLOOR_DAMAGE_ID);
+    }
+
+    public static boolean undeadAvoidSilverLight() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.UNDEAD_AVOID_SILVER_LIGHT_ID);
     }
 }

@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric.mixin;
 
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
+import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
@@ -75,6 +76,19 @@ public abstract class PersistentEntitySectionManagerMixin {
         // implements EntityAccess, so this cast is always safe at runtime.
         if (entityAccess instanceof Entity entity) {
             MonsterArmorHandler.tryEquipSilverGear(entity, entity.level(), loadedFromStorage);
+        }
+    }
+
+    /** Every mob silver harms keeps away from silver when idle, those loaded with their chunk too, which Architectury's ADD misses. */
+    @Inject(
+            method = "addEntity(Lnet/minecraft/world/level/entity/EntityAccess;Z)Z",
+            at = @At("HEAD")
+    )
+    private void thesilverage$leaveSilverFloors(EntityAccess entityAccess,
+                                                boolean loadedFromStorage,
+                                                CallbackInfoReturnable<Boolean> cir) {
+        if (entityAccess instanceof Entity entity) {
+            SilverUndeadGoals.addTo(entity);
         }
     }
 }

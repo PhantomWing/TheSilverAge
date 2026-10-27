@@ -4,7 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
-import com.phantomwing.thesilverage.client.UndeadProtectionTooltip;
+import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
@@ -40,8 +40,8 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // tooltip event, so the same common class is called from the NeoForge client too.
         SilverSmiteTooltip.register();
 
-        // "+1 Undead Protection" line on silver armour. Same cross-loader event.
-        UndeadProtectionTooltip.register();
+        // "Thorns against Undead" line on silver armour. Same cross-loader event.
+        SilverThornsTooltip.register();
 
         // Map doors / trapdoors / grates to their cutout/translucent render
         // layers. NeoForge bakes this into the generated block-model JSON via

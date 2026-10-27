@@ -3,7 +3,7 @@ package com.phantomwing.thesilverage.neoforge.client;
 import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
-import com.phantomwing.thesilverage.client.UndeadProtectionTooltip;
+import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
@@ -56,8 +56,8 @@ public final class TheSilverAgeNeoForgeClient {
         // tooltip event, so the same common class is called from the Fabric client too.
         SilverSmiteTooltip.register();
 
-        // "+1 Undead Protection" line on silver armour. Same cross-loader event.
-        UndeadProtectionTooltip.register();
+        // "Thorns against Undead" line on silver armour. Same cross-loader event.
+        SilverThornsTooltip.register();
 
         // Recipe-override server-sync client receiver. MUST be registered during
         // mod construction, NOT in clientSetup: Architectury's NeoForge adaptor

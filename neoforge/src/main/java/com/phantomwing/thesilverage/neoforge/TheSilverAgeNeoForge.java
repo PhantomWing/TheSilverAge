@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.neoforge;
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
 import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
@@ -14,7 +15,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.poi.ExtendPoiTypesEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 /**
  * NeoForge entrypoint for The Silver Age.
@@ -58,6 +61,7 @@ public final class TheSilverAgeNeoForge {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(TheSilverAgeNeoForge::extendLightningRodPoi);
+        NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> SilverUndeadGoals.addTo(event.getEntity()));
     }
 
     /** Lightning finds a rod by its point of interest, which 1.21.1 gives the vanilla rod alone. */

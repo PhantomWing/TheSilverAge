@@ -23,3 +23,7 @@ accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_I
 mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
 accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
 mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
+
+# Mob.goalSelector (protected): LeaveSilverFloorGoal.addTo gives the mobs silver harms the goal as they join a level.
+# Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/entity/Mob	goalSelector	Lnet/minecraft/world/entity/ai/goal/GoalSelector;

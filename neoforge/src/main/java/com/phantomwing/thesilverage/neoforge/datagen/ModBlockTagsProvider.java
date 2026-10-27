@@ -12,7 +12,6 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -242,13 +241,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // (no requiresCorrectToolForDrops), so it needs no tool/tier tags.
 
         // Silver that hurts the mobs silver harms as they stand on it: every block made of refined silver, at every
-        // stage, waxed or not, which is what the weathering spec pairs. Not the pressure plates, which a mob stands in
-        // rather than on, nor the ores, Raw Silver Block or Moon Phase Detector.
+        // stage, waxed or not, which is what the weathering spec pairs. The pressure plates among them, which a mob
+        // stands in rather than on. Not the ores, Raw Silver Block or Moon Phase Detector.
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> silverFloors = tag(ModTags.Blocks.SILVER_FLOORS);
         for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.waxablePairs()) {
-            if (!(pair.from().get() instanceof BasePressurePlateBlock)) {
-                silverFloors.add(pair.from().get(), pair.to().get());
-            }
+            silverFloors.add(pair.from().get(), pair.to().get());
         }
 
         // Silver Block family aggregation — the seven non-base variants only.
@@ -404,6 +401,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // redstone_torch / copper_torch here). Only the standing torch belongs; the
         // wall variant attaches to the side.
         tag(BlockTags.WALL_POST_OVERRIDE).add(ModBlocks.SILVER_TORCH.get());
+
+        // Silver light idle undead keep away from: the torch, on the floor or a wall, and the lantern that holds one,
+        // at every stage and waxed or not, as vanilla's soul torch and soul lantern both turn piglins away.
+        tag(ModTags.Blocks.UNDEAD_REPELLENTS)
+                .add(ModBlocks.SILVER_TORCH.get(), ModBlocks.SILVER_WALL_TORCH.get())
+                .add(ModBlocks.SILVER_LANTERN.get(), ModBlocks.EXPOSED_SILVER_LANTERN.get(),
+                        ModBlocks.WEATHERED_SILVER_LANTERN.get(), ModBlocks.OXIDIZED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_SILVER_LANTERN.get(), ModBlocks.WAXED_EXPOSED_SILVER_LANTERN.get(),
+                        ModBlocks.WAXED_WEATHERED_SILVER_LANTERN.get(), ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN.get());
 
         // A goat ramming silver ore loses a horn, as on iron or copper ore (vanilla lists only the stone ores).
         tag(BlockTags.SNAPS_GOAT_HORN).add(ModBlocks.SILVER_ORE.get());

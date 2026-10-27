@@ -62,7 +62,8 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output, lookupProvider));
 
-        generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+        ModDatapackProvider datapackProvider = generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModDamageTypeTagsProvider(output, datapackProvider.getRegistryProvider(), existingFileHelper));
 
         // Create mod compat: generate create:deploying recipes for silver waxing/deoxidising
         // so JEI displays them in the Deployer category.

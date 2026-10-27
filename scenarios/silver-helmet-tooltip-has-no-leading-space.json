@@ -13,12 +13,12 @@
     },
     {
       "expect": "tooltip",
-      "line": "+1 Undead Protection",
+      "line": "Thorns against Undead",
       "color": "blue"
     },
     {
       "expect": "tooltip",
-      "lacks": " +1 Undead Protection"
+      "lacks": " Thorns against Undead"
     },
     {
       "screenshot": "silver_helmet_tooltip"
