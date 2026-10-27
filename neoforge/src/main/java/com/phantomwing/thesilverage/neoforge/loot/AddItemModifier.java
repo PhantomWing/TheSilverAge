@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
+import com.phantomwing.thesilverage.loot.SilverLootSpec;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -48,7 +49,7 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context) {
         // Check if the modifier is enabled in the config. If not, return the generated loot as is.
-        if (!CommonConfig.generateStructureLoot()) {
+        if (!CommonConfig.generateStructureLoot() || !SilverLootSpec.itemEnabled(this.item)) {
             return generatedLoot;
         }
 

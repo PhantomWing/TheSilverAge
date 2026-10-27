@@ -59,6 +59,10 @@ public class Configuration {
     public static final String UNDEAD_AVOID_SILVER_LIGHT_ID = "undead_avoid_silver_light";
     public static ModConfigSpec.BooleanValue UNDEAD_AVOID_SILVER_LIGHT;
 
+    // Silver Arrows: their recipe, the Fletcher's trade and their loot. Ones already made still fly as they did.
+    public static final String ENABLE_SILVER_ARROWS_ID = "enable_silver_arrows";
+    public static ModConfigSpec.BooleanValue ENABLE_SILVER_ARROWS;
+
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
@@ -83,6 +87,7 @@ public class Configuration {
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
+            case ENABLE_SILVER_ARROWS_ID -> Configuration.ENABLE_SILVER_ARROWS.get();
             default -> {
                 for (Map.Entry<RecipeOverride, ModConfigSpec.BooleanValue> entry : RECIPE_OVERRIDES.entrySet()) {
                     if (entry.getKey().settingId().equals(id)) {
@@ -117,6 +122,7 @@ public class Configuration {
         ENABLE_MOB_SILVER_EQUIPMENT = COMMON_BUILDER.define(ENABLE_MOB_SILVER_EQUIPMENT_ID, true);
         ENABLE_SILVER_FLOOR_DAMAGE = COMMON_BUILDER.define(ENABLE_SILVER_FLOOR_DAMAGE_ID, true);
         UNDEAD_AVOID_SILVER_LIGHT = COMMON_BUILDER.define(UNDEAD_AVOID_SILVER_LIGHT_ID, true);
+        ENABLE_SILVER_ARROWS = COMMON_BUILDER.define(ENABLE_SILVER_ARROWS_ID, true);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

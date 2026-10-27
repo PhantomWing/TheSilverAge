@@ -1,7 +1,8 @@
 package com.phantomwing.thesilverage.ui;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.block.SilverOxidation;
+import com.phantomwing.thesilverage.block.SilverOxidation;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.item.ModItems;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -23,8 +24,13 @@ public class ModCreativeModeTab {
                         // Add items to this tab. While oxidation is off the weathered and
                         // waxed variants are unobtainable in survival, so they are hidden
                         // and only the base silver blocks are listed.
+                        // Silver Arrows are hidden the same way while they can't be got.
                         boolean hideVariants = !SilverOxidation.enabled();
+                        boolean hideArrows = !CommonConfig.silverArrows();
                         ModItems.CREATIVE_TAB_ITEMS.forEach((item) -> {
+                            if (hideArrows && item.get() == ModItems.SILVER_ARROW.get()) {
+                                return;
+                            }
                             if (hideVariants && item.get() instanceof BlockItem blockItem
                                     && SilverOxidation.nonBaseVariants().contains(blockItem.getBlock())) {
                                 return;

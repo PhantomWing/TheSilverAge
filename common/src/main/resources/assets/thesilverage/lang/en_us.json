@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "The Silver Age Configuration",
   "thesilverage.configuration.undead_avoid_silver_light": "Undead avoid silver light",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Should undead mobs with no target keep away from Silver Torches and Silver Lanterns?",
+  "thesilverage.configuration.enable_silver_arrows": "Silver Arrows",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Can Silver Arrows be crafted, bought from Fletchers and found in loot? Arrows already made keep working.",
   "thesilverage.moon_phase.first_quarter": "First Quarter",
   "thesilverage.moon_phase.full": "Full Moon",
   "thesilverage.moon_phase.new": "New Moon",

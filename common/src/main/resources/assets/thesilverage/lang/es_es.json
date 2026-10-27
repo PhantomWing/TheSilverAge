@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "Configuración de La Edad de Plata",
   "thesilverage.configuration.undead_avoid_silver_light": "Los no muertos evitan la luz de plata",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "¿Deberían los no muertos sin objetivo mantenerse alejados de las antorchas y los faroles de plata?",
+  "thesilverage.configuration.enable_silver_arrows": "Flechas de plata",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "¿Se pueden fabricar flechas de plata, comprarlas a los flecheros y encontrarlas en el botín? Las flechas ya hechas siguen funcionando.",
   "thesilverage.moon_phase.first_quarter": "Cuarto creciente",
   "thesilverage.moon_phase.full": "Luna llena",
   "thesilverage.moon_phase.new": "Luna nueva",

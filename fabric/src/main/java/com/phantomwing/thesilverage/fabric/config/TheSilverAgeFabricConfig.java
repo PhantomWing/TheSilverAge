@@ -70,6 +70,9 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String UNDEAD_AVOID_SILVER_LIGHT_ID = "undead_avoid_silver_light";
     public boolean undead_avoid_silver_light = true;
 
+    public static final String ENABLE_SILVER_ARROWS_ID = "enable_silver_arrows";
+    public boolean enable_silver_arrows = true;
+
     public static TheSilverAgeFabricConfig get() {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
     }
@@ -119,6 +122,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> config.enable_silver_floor_damage;
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> config.undead_avoid_silver_light;
+            case ENABLE_SILVER_ARROWS_ID -> config.enable_silver_arrows;
             case "override_lodestone_recipe" -> config.override_lodestone_recipe;
             case "override_brewing_stand_recipe" -> config.override_brewing_stand_recipe;
             case "override_comparator_recipe" -> config.override_comparator_recipe;

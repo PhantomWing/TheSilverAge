@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "白银时代配置",
   "thesilverage.configuration.undead_avoid_silver_light": "亡灵回避银光",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "没有目标的亡灵生物是否远离银火把和银灯笼？",
+  "thesilverage.configuration.enable_silver_arrows": "银箭",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "是否可以合成银箭、向制箭师购买并在战利品中找到？已制作的箭仍可使用。",
   "thesilverage.moon_phase.first_quarter": "上弦月",
   "thesilverage.moon_phase.full": "满月",
   "thesilverage.moon_phase.new": "新月",

@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "Configurație Era Argintului",
   "thesilverage.configuration.undead_avoid_silver_light": "Nemorții evită lumina de argint",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Nemorții fără țintă ar trebui să stea departe de torțele și felinarele de argint?",
+  "thesilverage.configuration.enable_silver_arrows": "Săgeți de argint",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Se pot fabrica săgeți de argint, cumpăra de la săgetari și găsi în pradă? Săgețile deja făcute funcționează în continuare.",
   "thesilverage.moon_phase.first_quarter": "Primul pătrar",
   "thesilverage.moon_phase.full": "Lună plină",
   "thesilverage.moon_phase.new": "Lună nouă",

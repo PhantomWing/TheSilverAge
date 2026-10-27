@@ -133,4 +133,13 @@ public final class CommonConfig {
     public static boolean undeadAvoidSilverLight() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
+
+    /**
+     * Gate for getting Silver Arrows: the Fletcher's trade and their loot here, their recipe through its condition.
+     * Arrows already made still fly faster and burn the undead.
+     */
+    @ExpectPlatform
+    public static boolean silverArrows() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
 }

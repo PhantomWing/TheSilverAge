@@ -63,4 +63,9 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.UNDEAD_AVOID_SILVER_LIGHT_ID);
     }
+
+    public static boolean silverArrows() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_ARROWS_ID);
+    }
 }

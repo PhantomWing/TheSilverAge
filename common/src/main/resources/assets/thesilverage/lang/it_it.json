@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "Configurazione di L'Età dell'Argento",
   "thesilverage.configuration.undead_avoid_silver_light": "I non morti evitano la luce d'argento",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "I non morti senza un bersaglio devono tenersi lontani da torce e lanterne di argento?",
+  "thesilverage.configuration.enable_silver_arrows": "Frecce d'argento",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Si possono creare frecce d'argento, comprarle dagli arcieri e trovarle nel bottino? Le frecce già create continuano a funzionare.",
   "thesilverage.moon_phase.first_quarter": "Primo quarto",
   "thesilverage.moon_phase.full": "Luna piena",
   "thesilverage.moon_phase.new": "Luna nuova",

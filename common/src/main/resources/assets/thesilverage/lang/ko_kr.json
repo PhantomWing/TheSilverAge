@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "은의 시대 설정",
   "thesilverage.configuration.undead_avoid_silver_light": "언데드가 은빛을 피함",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "목표가 없는 언데드가 은 횃불과 은 랜턴에서 멀리 떨어져야 하나요?",
+  "thesilverage.configuration.enable_silver_arrows": "은 화살",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "은 화살을 제작하고, 화살 제작인에게서 사고, 전리품에서 얻을 수 있나요? 이미 만든 화살은 계속 작동합니다.",
   "thesilverage.moon_phase.first_quarter": "상현달",
   "thesilverage.moon_phase.full": "보름달",
   "thesilverage.moon_phase.new": "신월",

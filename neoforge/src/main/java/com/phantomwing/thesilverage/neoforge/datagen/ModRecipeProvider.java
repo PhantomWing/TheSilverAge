@@ -116,7 +116,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('A', Items.ARROW)
                 .define('I', SILVER_INGOTS)
                 .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
-                .save(output);
+                .save(output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)));
 
         // Silver Bulb
         bulb(output, ModItems.SILVER_BLOCK.get(), ModItems.SILVER_BULB.get());

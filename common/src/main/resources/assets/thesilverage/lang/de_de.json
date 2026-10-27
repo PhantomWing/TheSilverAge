@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "The Silver Age Konfiguration",
   "thesilverage.configuration.undead_avoid_silver_light": "Untote meiden Silberlicht",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Sollen Untote ohne Ziel Abstand zu Silberfackeln und Silberlaternen halten?",
+  "thesilverage.configuration.enable_silver_arrows": "Silberpfeile",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Können Silberpfeile hergestellt, bei Pfeilmachern gekauft und in Truhen gefunden werden? Bereits vorhandene Pfeile funktionieren weiter.",
   "thesilverage.moon_phase.first_quarter": "Erstes Viertel",
   "thesilverage.moon_phase.full": "Vollmond",
   "thesilverage.moon_phase.new": "Neumond",

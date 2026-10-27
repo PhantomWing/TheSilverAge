@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.loot;
 
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -60,6 +61,11 @@ public final class SilverLootSpec {
      */
     public record Entry(String id, ResourceLocation targetLootTable, float chance, Op op,
                         Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
+    }
+
+    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows have an option of their own. */
+    public static boolean itemEnabled(Item item) {
+        return item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows();
     }
 
     private static ResourceLocation mc(String path) {

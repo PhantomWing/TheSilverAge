@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "The Silver Age-configuratie",
   "thesilverage.configuration.undead_avoid_silver_light": "Ondoden mijden zilverlicht",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Moeten ondoden zonder doelwit uit de buurt blijven van zilverfakkels en zilveren lantaarns?",
+  "thesilverage.configuration.enable_silver_arrows": "Zilveren pijlen",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Kunnen zilveren pijlen worden gemaakt, bij pijlenmakers gekocht en in buit gevonden? Pijlen die al gemaakt zijn blijven werken.",
   "thesilverage.moon_phase.first_quarter": "Eerste kwartier",
   "thesilverage.moon_phase.full": "Volle maan",
   "thesilverage.moon_phase.new": "Nieuwe maan",

@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.villager;
 
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -52,10 +53,10 @@ public final class SilverVillagerTrades {
 
     /**
      * Fletcher, profession level 5: 2 Emeralds and 5 Arrows for 5 Silver Arrows (maxUses 12, villagerXp 30), as his
-     * tipped arrows are traded.
+     * tipped arrows are traded. No offer, which vanilla skips, while enable_silver_arrows is off.
      */
     public static VillagerTrades.ItemListing fletcherSilverArrows() {
-        return (trader, random) -> new MerchantOffer(
+        return (trader, random) -> !CommonConfig.silverArrows() ? null : new MerchantOffer(
                 new ItemCost(Items.EMERALD, 2),
                 Optional.of(new ItemCost(Items.ARROW, 5)),
                 new ItemStack(ModItems.SILVER_ARROW.get(), 5),

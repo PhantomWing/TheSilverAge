@@ -1,6 +1,18 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
   "key": {
     "A": {
       "item": "minecraft:arrow"

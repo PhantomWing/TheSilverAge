@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "Налаштування Срібної доби",
   "thesilverage.configuration.undead_avoid_silver_light": "Нежить уникає срібного світла",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Чи має нежить без цілі триматися подалі від срібних смолоскипів і ліхтарів?",
+  "thesilverage.configuration.enable_silver_arrows": "Срібні стріли",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Чи можна створювати срібні стріли, купувати їх у лучників і знаходити в здобичі? Уже створені стріли й надалі працюють.",
   "thesilverage.moon_phase.first_quarter": "Перша чверть",
   "thesilverage.moon_phase.full": "Повний місяць",
   "thesilverage.moon_phase.new": "Молодик",

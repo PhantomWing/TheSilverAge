@@ -52,4 +52,8 @@ public final class CommonConfigImpl {
     public static boolean undeadAvoidSilverLight() {
         return Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
     }
+
+    public static boolean silverArrows() {
+        return Configuration.ENABLE_SILVER_ARROWS.get();
+    }
 }

@@ -260,6 +260,8 @@
   "thesilverage.configuration.title": "Configuration de L'Âge d'argent",
   "thesilverage.configuration.undead_avoid_silver_light": "Les morts-vivants évitent la lumière d'argent",
   "thesilverage.configuration.undead_avoid_silver_light.tooltip": "Les morts-vivants sans cible doivent-ils se tenir à l'écart des torches et des lanternes en argent ?",
+  "thesilverage.configuration.enable_silver_arrows": "Flèches en argent",
+  "thesilverage.configuration.enable_silver_arrows.tooltip": "Les flèches en argent peuvent-elles être fabriquées, achetées aux archers et trouvées dans le butin ? Les flèches déjà faites fonctionnent toujours.",
   "thesilverage.moon_phase.first_quarter": "Premier quartier",
   "thesilverage.moon_phase.full": "Pleine lune",
   "thesilverage.moon_phase.new": "Nouvelle lune",
