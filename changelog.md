@@ -21,12 +21,15 @@
 - Added compatibility with Werewolves: Become a Beast
   - Werewolves are sensitive to silver, like undead mobs
   - Silver tools and armor count as silver for the Werewolves mod
+- Added compatibility with Create: Aquatic Ambitions. Channeling oxidizes silver blocks, like copper.
 - Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
 - Added a config option for mobs spawning with silver gear
 - Added the `generate_silver_ore` config option, for modpacks that use another mod's silver ore
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
+- Added the `enable_spout_oxidation` config option, to stop Create's Spout from oxidizing silver blocks with water
+- Added the `enable_silver_gear_recipes` config option, for modpacks where another mod's silver tools and armor take the same recipes, like Caverns & Chasms
 - Added a config screen on Fabric (opened from Mod Menu)
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
@@ -68,6 +71,7 @@
 - Fixed the mod icon missing in Mod Menu on Fabric
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 - Fixed Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars missing from Create's Deployer waxing and scraping recipes
+- Fixed Create's Spout not oxidizing Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars
 
 
 # 1.3.1

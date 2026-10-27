@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create_aquatic_ambitions"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "type": "create_aquatic_ambitions:channeling",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create_aquatic_ambitions"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thesilverage:cut_silver_stairs"
+    }
+  ],
+  "results": [
+    {
+      "id": "thesilverage:exposed_cut_silver_stairs"
+    }
+  ]
+}

@@ -1,6 +1,18 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
   "key": {
     "#": {
       "tag": "c:ingots/silver"

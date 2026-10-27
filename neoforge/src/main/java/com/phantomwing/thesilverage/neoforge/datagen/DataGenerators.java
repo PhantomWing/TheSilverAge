@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.neoforge.compat.create.ModDeployingRecipeGen;
+import com.phantomwing.thesilverage.neoforge.compat.create.ModChannelingRecipeGen;
 import com.phantomwing.thesilverage.neoforge.compat.create.ModFillingRecipeGen;
 import com.phantomwing.thesilverage.neoforge.compat.create.ModPressingRecipeGen;
 import net.minecraft.core.HolderLookup;
@@ -73,6 +74,9 @@ public class DataGenerators {
         // Create: Oxidized addon, advancing silver blocks through their weathering chain
         // when splashed with water via a Spout.
         generator.addProvider(event.includeServer(), new ModFillingRecipeGen(output, lookupProvider));
+
+        // Create: Aquatic Ambitions compat: its fan channeling weathers silver a stage, as it does copper.
+        generator.addProvider(event.includeServer(), new ModChannelingRecipeGen(output));
 
         // Create mod compat: generate create:pressing recipe for silver_ingot -> silver_sheet,
         // matching the pattern Create uses for its own iron/gold/copper/brass sheets.

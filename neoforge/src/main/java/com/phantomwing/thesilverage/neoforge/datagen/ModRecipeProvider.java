@@ -68,12 +68,15 @@ public class ModRecipeProvider extends RecipeProvider {
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET.get(), ModItems.SILVER_INGOT.get());
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
+        // Caverns & Chasms crafts its own silver tools and armor from the same grids and tag, so a pack can turn ours off.
+        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+
         // Tools
-        sword(output, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
-        pickaxe(output, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
-        axe(output, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
-        hoe(output, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
-        shovel(output, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
+        sword(gearGated, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
+        pickaxe(gearGated, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
+        axe(gearGated, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
+        hoe(gearGated, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
+        shovel(gearGated, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
 
         // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
         // Gated on FD being present — without FD the item is a hidden fallback,
@@ -88,10 +91,10 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fdGated);
 
         // Armor
-        helmet(output, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
-        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
-        leggings(output, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
-        boots(output, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
+        helmet(gearGated, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
+        chestplate(gearGated, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
+        leggings(gearGated, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
+        boots(gearGated, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
 
         // Smelting tools/armor into nuggets
         oreSmeltingRecipes(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);

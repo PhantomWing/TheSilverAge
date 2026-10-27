@@ -14,7 +14,7 @@ Works already, through the `c:` silver tags or their own code; nothing to add:
 - Almost Unified: has silver in its default materials, but unifies it only where a pack sets a priority.
 
 Open, for a decision:
-- Caverns & Chasms: its silver tools, armour and bars take the same grids and `c:ingots/silver` as ours, so only one mod's of each can be crafted with both installed. A config option for our gear recipes?
+- Caverns & Chasms: its silver bars take the same grid and `c:ingots/silver` as ours, so only one mod's can be crafted with both installed. Its tools and armour do too, which `enable_silver_gear_recipes` (1.4.0) lets a pack turn ours off for.
 - Silent Gear: its `holy` trait (extra damage to `#minecraft:undead`) suits silver. Override `silentgear:silver` (needs `ordering = "AFTER"` on an optional `silentgear` dependency), add a child material, or ask upstream.
 - Integrated Mining: ask its author to add The Silver Age as a silver choice beside Oreganized and Caverns & Chasms.
 

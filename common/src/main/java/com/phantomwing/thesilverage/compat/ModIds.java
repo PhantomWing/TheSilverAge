@@ -3,6 +3,8 @@ package com.phantomwing.thesilverage.compat;
 /** Mod IDs for optional dependencies used in compat checks and recipe conditions. */
 public final class ModIds {
     public static final String CREATE = "create";
+    /** Create: Aquatic Ambitions, whose fan channeling through a conduit weathers copper. */
+    public static final String CREATE_AQUATIC_AMBITIONS = "create_aquatic_ambitions";
     /** Farmer's Delight — same mod id on NeoForge (vectorwing) and Fabric (Refabricated). */
     public static final String FARMERS_DELIGHT = "farmersdelight";
     /** Adds lunar events (Blood Moon, Harvest Moon, ...) that the Moon Dial names. */

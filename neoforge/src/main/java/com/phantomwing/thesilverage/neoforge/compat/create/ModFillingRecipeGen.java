@@ -1,18 +1,15 @@
 package com.phantomwing.thesilverage.neoforge.compat.create;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.simibubi.create.api.data.recipe.FillingRecipeGen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
 import com.phantomwing.thesilverage.neoforge.Configuration;
 import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
@@ -30,86 +27,36 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
  * <em>uses</em> it, it doesn't provide it. That means silver spout-oxidation works
  * for any user who has Create installed, whether or not they also have Create:Oxidized.
  * <p>
- * This class mirrors the structure of {@link ModDeployingRecipeGen}.
+ * Every step comes from {@link SilverWeatheringSpec}, as {@link ModDeployingRecipeGen}'s do: a list of its own here
+ * left out the bricks, pillar, wall, bars, chain and lantern.
  */
 public class ModFillingRecipeGen extends FillingRecipeGen {
 
     /** Amount of water (in mB, matching Create's copper oxidation recipes from Create: Oxidized). */
     private static final int WATER_AMOUNT = 250;
 
-    @SuppressWarnings("unused")
-    GeneratedRecipe
-        SILVER_BLOCK = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_BLOCK), lk(ModBlocks.EXPOSED_SILVER), lk(ModBlocks.WEATHERED_SILVER), lk(ModBlocks.OXIDIZED_SILVER))),
-
-        CUT_SILVER = oxidationChain(List.of(
-            lk(ModBlocks.CUT_SILVER), lk(ModBlocks.EXPOSED_CUT_SILVER), lk(ModBlocks.WEATHERED_CUT_SILVER), lk(ModBlocks.OXIDIZED_CUT_SILVER))),
-
-        CUT_SILVER_SLAB = oxidationChain(List.of(
-            lk(ModBlocks.CUT_SILVER_SLAB), lk(ModBlocks.EXPOSED_CUT_SILVER_SLAB), lk(ModBlocks.WEATHERED_CUT_SILVER_SLAB), lk(ModBlocks.OXIDIZED_CUT_SILVER_SLAB))),
-
-        CUT_SILVER_STAIRS = oxidationChain(List.of(
-            lk(ModBlocks.CUT_SILVER_STAIRS), lk(ModBlocks.EXPOSED_CUT_SILVER_STAIRS), lk(ModBlocks.WEATHERED_CUT_SILVER_STAIRS), lk(ModBlocks.OXIDIZED_CUT_SILVER_STAIRS))),
-
-        CHISELED_SILVER = oxidationChain(List.of(
-            lk(ModBlocks.CHISELED_SILVER), lk(ModBlocks.EXPOSED_CHISELED_SILVER), lk(ModBlocks.WEATHERED_CHISELED_SILVER), lk(ModBlocks.OXIDIZED_CHISELED_SILVER))),
-
-        SILVER_GRATE = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_GRATE), lk(ModBlocks.EXPOSED_SILVER_GRATE), lk(ModBlocks.WEATHERED_SILVER_GRATE), lk(ModBlocks.OXIDIZED_SILVER_GRATE))),
-
-        SILVER_BULB = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_BULB), lk(ModBlocks.EXPOSED_SILVER_BULB), lk(ModBlocks.WEATHERED_SILVER_BULB), lk(ModBlocks.OXIDIZED_SILVER_BULB))),
-
-        SILVER_TRAPDOOR = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_TRAPDOOR), lk(ModBlocks.EXPOSED_SILVER_TRAPDOOR), lk(ModBlocks.WEATHERED_SILVER_TRAPDOOR), lk(ModBlocks.OXIDIZED_SILVER_TRAPDOOR))),
-
-        SILVER_DOOR = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_DOOR), lk(ModBlocks.EXPOSED_SILVER_DOOR), lk(ModBlocks.WEATHERED_SILVER_DOOR), lk(ModBlocks.OXIDIZED_SILVER_DOOR))),
-
-        SILVER_PRESSURE_PLATE = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_PRESSURE_PLATE), lk(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE), lk(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE), lk(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE))),
-
-        SILVER_LIGHTNING_ROD = oxidationChain(List.of(
-            lk(ModBlocks.SILVER_LIGHTNING_ROD), lk(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD), lk(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD), lk(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD)));
-
     public ModFillingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, TheSilverAge.MOD_ID);
-    }
 
-    /**
-     * Build a chain of {@code N-1} filling recipes that advance each block to the next
-     * weathering stage via a water spout, named {@code <next_stage>_from_oxidising}.
-     */
-    private GeneratedRecipe oxidationChain(List<Supplier<ItemLike>> chain) {
-        GeneratedRecipe last = null;
-        for (int i = 0; i < chain.size() - 1; i++) {
-            Supplier<ItemLike> from = chain.get(i);
-            Supplier<ItemLike> to = chain.get(i + 1);
-            last = createWithDeferredId(idWithSuffix(to, "_from_oxidising"), b -> b
+        // Named <next_stage>_from_oxidising.
+        for (SilverWeatheringSpec.Pair pair : SilverWeatheringSpec.oxidationPairs()) {
+            createWithDeferredId(idWithSuffix(() -> pair.to().get(), "_from_oxidising"), b -> b
                     .require(Fluids.WATER, WATER_AMOUNT)
-                    .require(from.get())
-                    .output(to.get()));
+                    .require(pair.from().get())
+                    .output(pair.to().get()));
         }
-        return last;
     }
 
     /**
-     * Wrap the recipe output so every generated recipe is gated on Create being loaded.
-     * That way, when Create is absent at runtime, Minecraft silently skips these recipes
-     * Spout oxidation advances the weathering stage, so it must also respect
-     * enable_silver_oxidation or Create would bypass the toggle entirely.
-     *
-     * instead of logging errors about the unknown {@code create:filling} serializer.
+     * Gated on Create being loaded, so a game without it skips these rather than logging errors about the unknown
+     * {@code create:filling} serializer; on {@code enable_silver_oxidation}, or Create would get round that toggle;
+     * and on {@code enable_spout_oxidation}, for packs that want silver to weather only with time.
      */
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
         super.buildRecipes(recipeOutput.withConditions(
                 new ModLoadedCondition(ModIds.CREATE),
-                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_OXIDATION_ID)));
-    }
-
-    /** Short alias for converting a {@code Supplier<? extends ItemLike>} into an {@code ItemLike} supplier. */
-    private static Supplier<ItemLike> lk(Supplier<? extends ItemLike> supplier) {
-        return supplier::get;
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_OXIDATION_ID),
+                new ConfigBooleanCondition(Configuration.ENABLE_SPOUT_OXIDATION_ID)));
     }
 }
