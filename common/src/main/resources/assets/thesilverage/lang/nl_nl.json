@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "Zilveren paardenharnas",
   "item.thesilverage.silver_ingot": "Zilverstaaf",
   "item.thesilverage.silver_knife": "Zilveren mes",
+  "item.thesilverage.silver_arrow": "Zilveren pijl",
+  "entity.thesilverage.silver_arrow": "Zilveren pijl",
   "item.thesilverage.silver_leggings": "Zilveren beenstukken",
   "item.thesilverage.silver_nugget": "Zilverklompje",
   "item.thesilverage.silver_pickaxe": "Zilveren houweel",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "Afnemende maan",
   "thesilverage.moon_phase.waxing_crescent": "Wassende sikkel",
   "thesilverage.moon_phase.waxing_gibbous": "Wassende maan",
+  "tooltip.thesilverage.flies_faster": "Vliegt sneller",
   "tooltip.thesilverage.silver_smite": "+%s schade tegen ondoden",
   "tooltip.thesilverage.silver_thorns": "Doornen tegen ondoden",
   "trim_material.thesilverage.silver": "Zilvermateriaal"

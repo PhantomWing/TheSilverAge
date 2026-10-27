@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.fabric.client;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.ModEntityRenderers;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
@@ -39,6 +40,8 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
         // tooltip event, so the same common class is called from the NeoForge client too.
         SilverSmiteTooltip.register();
+
+        ModEntityRenderers.register();
 
         // "Thorns against Undead" line on silver armour. Same cross-loader event.
         SilverThornsTooltip.register();

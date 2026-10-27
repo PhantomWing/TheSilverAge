@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "Armură de argint pentru cal",
   "item.thesilverage.silver_ingot": "Lingou de argint",
   "item.thesilverage.silver_knife": "Cuțit de argint",
+  "item.thesilverage.silver_arrow": "Săgeată de argint",
+  "entity.thesilverage.silver_arrow": "Săgeată de argint",
   "item.thesilverage.silver_leggings": "Jambiere de argint",
   "item.thesilverage.silver_nugget": "Pepită de argint",
   "item.thesilverage.silver_pickaxe": "Târnăcop de argint",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "Lună gheboasă descrescătoare",
   "thesilverage.moon_phase.waxing_crescent": "Seceră crescătoare",
   "thesilverage.moon_phase.waxing_gibbous": "Lună gheboasă crescătoare",
+  "tooltip.thesilverage.flies_faster": "Zboară mai repede",
   "tooltip.thesilverage.silver_smite": "+%s daune împotriva nemorților",
   "tooltip.thesilverage.silver_thorns": "Spini împotriva nemorților",
   "trim_material.thesilverage.silver": "Material de argint"

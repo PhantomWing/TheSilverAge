@@ -10,6 +10,10 @@
 - Added Silver Torch, crafted with a Silver Nugget. It burns with a violet flame.
   - Undead mobs keep away from Silver Torches and Silver Lanterns when they have no target
   - Can be turned off with the `undead_avoid_silver_light` config option
+- Added Silver Arrows, crafted from 8 arrows around a Silver Ingot
+  - They fly faster than normal arrows, so they hit harder
+  - They deal +2 extra damage to undead mobs. Can be turned off with the `enable_silver_smite` config option.
+  - Sold by master Fletchers, and found in pillager outposts and trial chambers
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
 - Silver armor now has a 20% chance per piece to burn undead mobs that hit you, dealing 1-2 damage (80% for a full set). Silver Horse Armor counts as a full set. Works like Thorns and stacks with it. Can be turned off with the `enable_silver_thorns` config option.
 - Undead mobs now take damage while standing on silver blocks, and avoid walking over them

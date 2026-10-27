@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "银马铠",
   "item.thesilverage.silver_ingot": "银锭",
   "item.thesilverage.silver_knife": "银刀",
+  "item.thesilverage.silver_arrow": "银箭",
+  "entity.thesilverage.silver_arrow": "银箭",
   "item.thesilverage.silver_leggings": "银护腿",
   "item.thesilverage.silver_nugget": "银粒",
   "item.thesilverage.silver_pickaxe": "银镐",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "亏凸月",
   "thesilverage.moon_phase.waxing_crescent": "蛾眉月",
   "thesilverage.moon_phase.waxing_gibbous": "盈凸月",
+  "tooltip.thesilverage.flies_faster": "飞行速度更快",
   "tooltip.thesilverage.silver_smite": "对亡灵生物造成+%s伤害",
   "tooltip.thesilverage.silver_thorns": "对亡灵生物的荆棘",
   "trim_material.thesilverage.silver": "银材料"

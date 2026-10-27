@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.combat;
 
+import com.phantomwing.thesilverage.entity.SilverArrow;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.platform.SmitePlatform;
@@ -42,6 +43,9 @@ public final class SilverSmiteHandler {
      */
     public static final float HOE_BONUS_DAMAGE = 0.5f;
 
+    /** A Silver Arrow's bonus: a shot is slower than a swing, and the arrow is used up. */
+    public static final float ARROW_BONUS_DAMAGE = 2.0f;
+
     private SilverSmiteHandler() {
     }
 
@@ -69,14 +73,22 @@ public final class SilverSmiteHandler {
     }
 
     /**
+     * The bonus a stack's tooltip names: a tool's when swung, a Silver Arrow's when fired. Kept apart from
+     * {@link #getBonusFor}, which the melee hit reads, so a punch with arrows in hand gets nothing.
+     */
+    public static float getTooltipBonusFor(ItemStack stack) {
+        return stack.is(ModItems.SILVER_ARROW.get()) ? ARROW_BONUS_DAMAGE : getBonusFor(stack);
+    }
+
+    /**
      * Handles an incoming attack: returns the bonus damage to add (or {@code 0}),
      * and emits vanilla's magic-crit particle when the bonus applies.
      *
      * <p>Both loaders funnel through this single method so the damage and the
      * particle can never diverge between them.</p>
      *
-     * <p>Only direct melee attacks count: {@code getDirectEntity() == getEntity()}
-     * excludes arrows and other projectiles, which carry their own damage and
+     * <p>Direct melee attacks count, and a Silver Arrow's hit: {@code getDirectEntity() == getEntity()}
+     * excludes every other projectile, which carries its own damage and
      * would otherwise inherit the wielder's held weapon bonus.</p>
      *
      * @param target the entity being hurt
@@ -85,7 +97,11 @@ public final class SilverSmiteHandler {
     public static float handleIncomingDamage(LivingEntity target, DamageSource source) {
         float bonus = getBonusDamage(target, source);
         if (bonus > 0.0f) {
-            spawnMagicCritParticle(target, source);
+            if (source.getDirectEntity() instanceof SilverArrow && target.level() instanceof ServerLevel serverLevel) {
+                SilverSparks.burst(serverLevel, target);
+            } else {
+                spawnMagicCritParticle(target, source);
+            }
         }
 
         return bonus;
@@ -130,14 +146,18 @@ public final class SilverSmiteHandler {
             return 0.0f;
         }
 
-        // Direct melee hit from a living attacker only.
-        if (source.getDirectEntity() != source.getEntity()
-                || !(source.getEntity() instanceof LivingEntity attacker)) {
+        // Holds every mob vanilla Smite targets, so modded undead are covered too.
+        if (!target.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
             return 0.0f;
         }
 
-        // Holds every mob vanilla Smite targets, so modded undead are covered too.
-        if (!target.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
+        if (source.getDirectEntity() instanceof SilverArrow) {
+            return ARROW_BONUS_DAMAGE;
+        }
+
+        // Otherwise a direct melee hit from a living attacker only.
+        if (source.getDirectEntity() != source.getEntity()
+                || !(source.getEntity() instanceof LivingEntity attacker)) {
             return 0.0f;
         }
 

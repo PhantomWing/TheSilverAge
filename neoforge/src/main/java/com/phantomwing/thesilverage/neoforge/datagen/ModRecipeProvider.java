@@ -108,6 +108,16 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_BOOTS.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
+        // Silver Arrows: eight arrows around an ingot, as tipped arrows are made around a potion.
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SILVER_ARROW.get(), 8)
+                .pattern("AAA")
+                .pattern("AIA")
+                .pattern("AAA")
+                .define('A', Items.ARROW)
+                .define('I', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(output);
+
         // Silver Bulb
         bulb(output, ModItems.SILVER_BLOCK.get(), ModItems.SILVER_BULB.get());
         bulb(oxidationGated, ModItems.EXPOSED_SILVER.get(), ModItems.EXPOSED_SILVER_BULB.get());

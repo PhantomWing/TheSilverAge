@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "Silberner Rossharnisch",
   "item.thesilverage.silver_ingot": "Silberbarren",
   "item.thesilverage.silver_knife": "Silbermesser",
+  "item.thesilverage.silver_arrow": "Silberpfeil",
+  "entity.thesilverage.silver_arrow": "Silberpfeil",
   "item.thesilverage.silver_leggings": "Silberbeinschutz",
   "item.thesilverage.silver_nugget": "Silberklumpen",
   "item.thesilverage.silver_pickaxe": "Silberspitzhacke",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "Abnehmender Mond",
   "thesilverage.moon_phase.waxing_crescent": "Zunehmende Sichel",
   "thesilverage.moon_phase.waxing_gibbous": "Zunehmender Mond",
+  "tooltip.thesilverage.flies_faster": "Fliegt schneller",
   "tooltip.thesilverage.silver_smite": "+%s Schaden gegen Untote",
   "tooltip.thesilverage.silver_thorns": "Dornen gegen Untote",
   "trim_material.thesilverage.silver": "Silbermaterial"

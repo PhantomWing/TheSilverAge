@@ -126,6 +126,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());
+        // What bows and crossbows fire.
+        tag(ItemTags.ARROWS).add(ModItems.SILVER_ARROW.get());
         tag(ItemTags.SHOVELS).add(ModItems.SILVER_SHOVEL.get());
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());

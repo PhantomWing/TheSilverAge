@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "銀の馬鎧",
   "item.thesilverage.silver_ingot": "銀インゴット",
   "item.thesilverage.silver_knife": "銀のナイフ",
+  "item.thesilverage.silver_arrow": "銀の矢",
+  "entity.thesilverage.silver_arrow": "銀の矢",
   "item.thesilverage.silver_leggings": "銀のレギンス",
   "item.thesilverage.silver_nugget": "銀塊",
   "item.thesilverage.silver_pickaxe": "銀のツルハシ",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "下弦凸月",
   "thesilverage.moon_phase.waxing_crescent": "三日月",
   "thesilverage.moon_phase.waxing_gibbous": "上弦凸月",
+  "tooltip.thesilverage.flies_faster": "より速く飛ぶ",
   "tooltip.thesilverage.silver_smite": "アンデッドに+%sのダメージ",
   "tooltip.thesilverage.silver_thorns": "対アンデッドの棘の鎧",
   "trim_material.thesilverage.silver": "銀の素材"

@@ -34,23 +34,11 @@ public final class ModVillagerTrades {
     }
 
     public static void register() {
-        VillagerTrades.ItemListing clericTrade = SilverVillagerTrades.clericSilverIngotForEmerald();
-
         // Cleric, profession level 2 — parity with the NeoForge
         // VillagerProfession.CLERIC / trades.get(2) branch.
-        TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 2, (factories, rebalanced) -> {
-            // Checked INSIDE the callback: TradeOfferHelper only sets up its trade maps
-            // when registerVillagerOffers is first called, so testing beforehand would
-            // read an uninitialised state and wrongly report the pools as distinct.
-            if (rebalanced && sharesRebalancedPool(VillagerProfession.CLERIC)) {
-                return;
-            }
-            factories.add((trader, random) ->
-                    TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                            TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
-                            ? clericTrade.getOffer(trader, random)
-                            : null);
-        });
+        registerOffer(VillagerProfession.CLERIC, 2, SilverVillagerTrades.clericSilverIngotForEmerald());
+        // Fletcher, profession level 5 — the NeoForge FLETCHER / trades.get(5) branch.
+        registerOffer(VillagerProfession.FLETCHER, 5, SilverVillagerTrades.fletcherSilverArrows());
 
         // NOTE for the wandering-trader trade below: if it is ever enabled, use the same
         // sharesRebalancedPool guard. Vanilla DOES rebalance the wandering trader, so its
@@ -64,6 +52,22 @@ public final class ModVillagerTrades {
         // trade is enabled on NeoForge; add the matching
         // TradeOfferHelper.registerWanderingTraderOffers(...) call in lockstep
         // when it is.
+    }
+
+    private static void registerOffer(VillagerProfession profession, int level, VillagerTrades.ItemListing trade) {
+        TradeOfferHelper.registerVillagerOffers(profession, level, (factories, rebalanced) -> {
+            // Checked INSIDE the callback: TradeOfferHelper only sets up its trade maps
+            // when registerVillagerOffers is first called, so testing beforehand would
+            // read an uninitialised state and wrongly report the pools as distinct.
+            if (rebalanced && sharesRebalancedPool(profession)) {
+                return;
+            }
+            factories.add((trader, random) ->
+                    TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                            TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
+                            ? trade.getOffer(trader, random)
+                            : null);
+        });
     }
 
     /**

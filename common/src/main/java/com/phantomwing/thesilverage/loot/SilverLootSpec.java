@@ -95,6 +95,7 @@ public final class SilverLootSpec {
     private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION_BARREL = mc("chests/trial_chambers/intersection_barrel");
     private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR = mc("chests/trial_chambers/corridor");
     private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR_POT = mc("pots/trial_chambers/corridor");
+    private static final ResourceLocation TRIAL_CHAMBERS_SUPPLY = mc("chests/trial_chambers/supply");
     private static final ResourceLocation BASTION_OTHER = mc("chests/bastion_other");
     private static final ResourceLocation ANCIENT_CITY = mc("chests/ancient_city");
     private static final ResourceLocation END_CITY_TREASURE = mc("chests/end_city_treasure");
@@ -221,6 +222,8 @@ public final class SilverLootSpec {
                 // Pillager Outpost
                 new Entry("silver_ingot_from_pillager_outpost", PILLAGER_OUTPOST, 1.0f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 2, List.of(vanilla(Items.IRON_INGOT))),
+                new Entry("silver_arrow_from_pillager_outpost", PILLAGER_OUTPOST, 0.5f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
 
                 // Trial Chambers
                 new Entry("silver_ingot_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
@@ -243,6 +246,11 @@ public final class SilverLootSpec {
                         ModItems.SILVER_PICKAXE::get, 1, 1, List.of(vanilla(Items.GOLDEN_PICKAXE))),
                 new Entry("silver_ingot_from_trial_chambers_corridor_pot", TRIAL_CHAMBERS_CORRIDOR_POT, 0.25f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 1, 1, List.of(vanilla(Items.IRON_INGOT))),
+                // Its undead are what Silver Arrows are for. The reward reaches reward_common's arrows.
+                new Entry("silver_arrow_from_trial_chambers_supply", TRIAL_CHAMBERS_SUPPLY, 0.5f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
+                new Entry("silver_arrow_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
 
                 // Ancient City
                 new Entry("silver_leggings_from_ancient_city", ANCIENT_CITY, 0.5f, Op.REPLACE,

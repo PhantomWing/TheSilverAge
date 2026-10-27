@@ -42,7 +42,11 @@ public final class GameTests {
             test("silver_harms_what_smite_does", SilverFloorGameTest::silverHarmsWhatSmiteDoes),
             test("recipe_overrides_apply_by_default", SilverRecipesGameTest::recipeOverridesApplyByDefault),
             test("silver_bars_trapdoors_and_bricks_each_craft", SilverRecipesGameTest::silverBarsTrapdoorsAndBricksEachCraft),
-            test("silver_data_outranks_neoforge", SilverRecipesGameTest::silverDataOutranksNeoForge));
+            test("silver_data_outranks_neoforge", SilverRecipesGameTest::silverDataOutranksNeoForge),
+            test("silver_arrows_hurt_the_undead_more", SilverArrowGameTest::silverArrowsHurtTheUndeadMore),
+            test("silver_arrows_fly_faster", SilverArrowGameTest::silverArrowsFlyFaster),
+            test("silver_arrows_are_arrows", SilverArrowGameTest::silverArrowsAreArrows),
+            test("dispensers_fire_silver_arrows", SilverArrowGameTest::dispensersFireSilverArrows));
 
     private GameTests() {
     }

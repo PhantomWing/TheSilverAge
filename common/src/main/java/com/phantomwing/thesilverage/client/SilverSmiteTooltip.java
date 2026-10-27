@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.client;
 
 import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
+import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import net.minecraft.ChatFormatting;
@@ -33,13 +34,18 @@ public final class SilverSmiteTooltip {
     /** Hooks the cross-loader item-tooltip event. Called from both client entrypoints. */
     public static void register() {
         ClientTooltipEvent.ITEM.register((stack, lines, context, flag) -> {
+            // Its speed isn't the smite toggle's, so it shows either way.
+            if (stack.is(ModItems.SILVER_ARROW.get())) {
+                lines.add(Component.translatable("tooltip.thesilverage.flies_faster").withStyle(ChatFormatting.BLUE));
+            }
+
             // Gated on the local config: with the bonus switched off the line
             // would be a lie. (Server-side value is authoritative for damage.)
             if (!CommonConfig.silverSmite()) {
                 return;
             }
 
-            float bonus = SilverSmiteHandler.getBonusFor(stack);
+            float bonus = SilverSmiteHandler.getTooltipBonusFor(stack);
             if (bonus <= 0.0f) {
                 return;
             }

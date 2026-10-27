@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "Срібна кінська броня",
   "item.thesilverage.silver_ingot": "Зливок срібла",
   "item.thesilverage.silver_knife": "Срібний ніж",
+  "item.thesilverage.silver_arrow": "Срібна стріла",
+  "entity.thesilverage.silver_arrow": "Срібна стріла",
   "item.thesilverage.silver_leggings": "Срібні поножі",
   "item.thesilverage.silver_nugget": "Самородок срібла",
   "item.thesilverage.silver_pickaxe": "Срібна кирка",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "Спадаючий місяць",
   "thesilverage.moon_phase.waxing_crescent": "Молодий серп",
   "thesilverage.moon_phase.waxing_gibbous": "Растучий місяць",
+  "tooltip.thesilverage.flies_faster": "Летить швидше",
   "tooltip.thesilverage.silver_smite": "+%s до шкоди по нежиті",
   "tooltip.thesilverage.silver_thorns": "Шипи проти нежиті",
   "trim_material.thesilverage.silver": "Срібний матеріал"

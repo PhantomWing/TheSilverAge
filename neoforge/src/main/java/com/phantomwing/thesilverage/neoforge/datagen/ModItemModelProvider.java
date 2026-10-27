@@ -44,6 +44,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.SILVER_HOE);
         handheldItem(ModItems.SILVER_KNIFE); // Farmer's Delight compat
 
+        // TODO: thesilverage:item/silver_arrow once it is drawn.
+        withExistingParent(ItemUtils.getName(ModItems.SILVER_ARROW.get()), ResourceLocation.withDefaultNamespace("item/generated"))
+                .texture("layer0", ResourceLocation.withDefaultNamespace("item/arrow"));
+
         // Silver armor
         armorItem(ModItems.SILVER_HELMET);
         armorItem(ModItems.SILVER_CHESTPLATE);

@@ -7,6 +7,7 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.SilverOxidation;
 import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
+import com.phantomwing.thesilverage.entity.ModEntityTypes;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
@@ -14,6 +15,8 @@ import com.phantomwing.thesilverage.platform.WeatheringPlatform;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
+import dev.architectury.event.events.common.LifecycleEvent;
+import net.minecraft.world.level.block.DispenserBlock;
 
 /**
  * Common (loader-agnostic) entrypoint for The Silver Age.
@@ -44,6 +47,7 @@ public final class TheSilverAgeCommon {
         ModBlocks.register();
         ModItems.register();
         ModBlockEntityTypes.register();
+        ModEntityTypes.register();
         ModParticles.register();
         ModCreativeModeTab.register();
         ModArmorMaterials.register();
@@ -56,6 +60,9 @@ public final class TheSilverAgeCommon {
         // reduction on silver armour (both built in, not enchantments). They share
         // one loader-specific hook, wired here.
         SilverSmiteHandler.register();
+
+        // A dispenser fires only the projectiles it has a behaviour for, which vanilla registers for its own arrows alone.
+        LifecycleEvent.SETUP.register(() -> DispenserBlock.registerProjectileBehavior(ModItems.SILVER_ARROW.get()));
 
         // Refuses honeycomb on silver while the oxidation config is off.
         SilverOxidation.register();

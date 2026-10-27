@@ -169,6 +169,8 @@
   "item.thesilverage.silver_horse_armor": "Серебряная конская броня",
   "item.thesilverage.silver_ingot": "Слиток серебра",
   "item.thesilverage.silver_knife": "Серебряный нож",
+  "item.thesilverage.silver_arrow": "Серебряная стрела",
+  "entity.thesilverage.silver_arrow": "Серебряная стрела",
   "item.thesilverage.silver_leggings": "Серебряные поножи",
   "item.thesilverage.silver_nugget": "Самородок серебра",
   "item.thesilverage.silver_pickaxe": "Серебряная кирка",
@@ -266,6 +268,7 @@
   "thesilverage.moon_phase.waning_gibbous": "Убывающая луна",
   "thesilverage.moon_phase.waxing_crescent": "Молодой месяц",
   "thesilverage.moon_phase.waxing_gibbous": "Прибывающая луна",
+  "tooltip.thesilverage.flies_faster": "Летит быстрее",
   "tooltip.thesilverage.silver_smite": "+%s к урону по нежити",
   "tooltip.thesilverage.silver_thorns": "Шипы против нежити",
   "trim_material.thesilverage.silver": "Серебряный материал"
