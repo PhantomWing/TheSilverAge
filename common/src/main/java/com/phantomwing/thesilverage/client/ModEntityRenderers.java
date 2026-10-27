@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.client;
 
+import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.entity.ModEntityTypes;
 import com.phantomwing.thesilverage.entity.SilverArrow;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -10,9 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 /** The mod's entity renderers, through Architectury's registry on both loaders. Called from each client entrypoint. */
 public final class ModEntityRenderers {
-    // TODO: thesilverage:textures/entity/projectiles/silver_arrow.png once it is drawn.
     private static final ResourceLocation SILVER_ARROW_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/entity/projectiles/arrow.png");
+            ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "textures/entity/projectiles/silver_arrow.png");
 
     private ModEntityRenderers() {
     }
