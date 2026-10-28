@@ -96,6 +96,24 @@ public final class SilverLootGameTest {
         expectIn(helper, "chests/bastion_other", List.of(ModItems.SILVER_SWORD));
     }
 
+    /** Silver Arrows stand in for a pillager outpost's arrows. */
+    public static void silverArrowsInPillagerOutposts(GameTestHelper helper) {
+        expectIn(helper, "chests/pillager_outpost", List.of(ModItems.SILVER_ARROW));
+    }
+
+    /** With enable_silver_arrows off, no chest that has them holds Silver Arrows. */
+    public static void silverArrowLootFollowsItsConfig(GameTestHelper helper) {
+        List<Item> arrows = List.of(ModItems.SILVER_ARROW.get());
+        for (String table : List.of("chests/pillager_outpost", "chests/trial_chambers/supply")) {
+            int found = TestSettings.with("enable_silver_arrows", false, () -> countIn(helper, table, arrows, ROLLS / 3));
+            if (found > 0) {
+                fail(helper, found + " of " + ROLLS / 3 + " rolls of " + table + " held Silver Arrows with enable_silver_arrows off");
+                return;
+            }
+        }
+        helper.succeed();
+    }
+
     /** A swap that takes every stack takes two lying side by side too: the one after each swapped stack was skipped. */
     public static void replacingTakesNeighbouringStacks(GameTestHelper helper) {
         ObjectArrayList<ItemStack> loot = ObjectArrayList.of(new ItemStack(Items.ARROW, 4), new ItemStack(Items.ARROW, 4),
@@ -112,18 +130,27 @@ public final class SilverLootGameTest {
 
     /** Succeeds when one of {@value #ROLLS} rolls of a vanilla chest holds one of {@code wanted}. */
     private static void expectIn(GameTestHelper helper, String table, List<RegistrySupplier<Item>> wanted) {
-        ServerLevel level = helper.getLevel();
         List<Item> items = wanted.stream().map(RegistrySupplier::get).toList();
+        if (countIn(helper, table, items, ROLLS) > 0) {
+            helper.succeed();
+        } else {
+            fail(helper, "None of " + items + " in " + ROLLS + " rolls of " + table);
+        }
+    }
+
+    /** How many of {@code rolls} rolls of a vanilla chest hold one of {@code items}. */
+    private static int countIn(GameTestHelper helper, String table, List<Item> items, int rolls) {
+        ServerLevel level = helper.getLevel();
         LootTable loot = TestCompat.lootTable(level, table);
         LootParams params = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))
                 .create(LootContextParamSets.CHEST);
-        for (int i = 0; i < ROLLS; i++) {
+        int found = 0;
+        for (int i = 0; i < rolls; i++) {
             if (loot.getRandomItems(params).stream().anyMatch(stack -> items.contains(stack.getItem()))) {
-                helper.succeed();
-                return;
+                found++;
             }
         }
-        fail(helper, "None of " + items + " in " + ROLLS + " rolls of " + table);
+        return found;
     }
 }

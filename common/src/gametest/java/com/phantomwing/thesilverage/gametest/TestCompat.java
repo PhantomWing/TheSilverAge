@@ -6,6 +6,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +47,16 @@ public final class TestCompat {
     public static LootTable lootTable(ServerLevel level, String path) {
         return level.getServer().reloadableRegistries()
                 .getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace(path)));
+    }
+
+    /** A player in the test's level who can click blocks as a real one does, through its game mode. */
+    public static ServerPlayer serverPlayer(GameTestHelper helper) {
+        return helper.makeMockServerPlayerInLevel();
+    }
+
+    /** Takes a player made by {@link #serverPlayer} out of the game again, so no test's mob goes after it. */
+    public static void removePlayer(ServerPlayer player) {
+        player.server.getPlayerList().remove(player);
     }
 
     /** A wind charge bursting at {@code at}, as a thrown one does: it triggers blocks and breaks none. */

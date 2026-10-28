@@ -162,9 +162,12 @@ dependencies {
         modLocalRuntime("dev.emi:emi-neoforge:${rootProject.emi_version}")
     }
 
-    // AppleSkin / Jade — dev-runtime niceties (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
-    modLocalRuntime "curse.maven:jade-324717:7428884"
+    // AppleSkin / Jade — dev-runtime niceties (runtime-only). Never on the game-test run: both send their packets to a
+    // test's mock player, whose connection has none of them, and crash the server.
+    if (!runningGameTest) {
+        modLocalRuntime("squeek.appleskin:appleskin-neoforge:mc1.21-${rootProject.appleskin_version}")
+        modLocalRuntime "curse.maven:jade-324717:7428884"
+    }
 
     // The Lead Age (sibling mod) from CurseForge, for side-by-side comparison —
     // the mirror of how The Lead Age pulls in The Silver Age. Skipped for the

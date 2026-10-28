@@ -49,7 +49,20 @@ public final class GameTests {
             test("silver_arrows_hurt_the_undead_more", SilverArrowGameTest::silverArrowsHurtTheUndeadMore),
             test("silver_arrows_fly_faster", SilverArrowGameTest::silverArrowsFlyFaster),
             test("silver_arrows_are_arrows", SilverArrowGameTest::silverArrowsAreArrows),
-            test("dispensers_fire_silver_arrows", SilverArrowGameTest::dispensersFireSilverArrows));
+            test("dispensers_fire_silver_arrows", SilverArrowGameTest::dispensersFireSilverArrows),
+            test("silver_arrows_in_pillager_outposts", SilverLootGameTest::silverArrowsInPillagerOutposts),
+            test("silver_arrow_loot_follows_its_config", SilverLootGameTest::silverArrowLootFollowsItsConfig),
+            test("silver_armor_burns_undead_attackers", SilverArmorGameTest::silverArmorBurnsUndeadAttackers),
+            test("silver_horse_armor_counts_as_a_full_set", SilverArmorGameTest::silverHorseArmorCountsAsAFullSet),
+            test("hostile_mobs_dont_press_silver_plates", SilverPressurePlateGameTest::hostileMobsDontPressSilverPlates),
+            test("tarnished_plates_need_more_mobs", SilverPressurePlateGameTest::tarnishedPlatesNeedMoreMobs),
+            test("undead_keep_away_from_silver_torches", SilverLightGameTest::undeadKeepAwayFromSilverTorches),
+            test("undead_keep_away_from_silver_lanterns", SilverLightGameTest::undeadKeepAwayFromSilverLanterns),
+            test("silver_doesnt_tarnish_with_oxidation_off", SilverOxidationGameTest::silverDoesntTarnishWithOxidationOff),
+            test("honeycomb_doesnt_wax_with_oxidation_off", SilverOxidationGameTest::honeycombDoesntWaxWithOxidationOff),
+            test("clerics_buy_silver_ingots_once", SilverTradesGameTest::clericsBuySilverIngotsOnce),
+            test("master_fletchers_sell_silver_arrows", SilverTradesGameTest::masterFletchersSellSilverArrows),
+            test("options_guard_their_recipes", SilverRecipeConditionsGameTest::optionsGuardTheirRecipes));
 
     private GameTests() {
     }

@@ -120,6 +120,12 @@ public class AvoidSilverLightGoal extends Goal {
         }
     }
 
+    /** The silver light being kept away from, or null while none is known near by. */
+    @Nullable
+    public BlockPos light() {
+        return light;
+    }
+
     /** Whether silver light is in range: the known one checked again cheaply, the full search behind it throttled. */
     private boolean lightNearby() {
         if (light != null && light.closerToCenterThan(mob.position(), RANGE) && isLight(light)) {
