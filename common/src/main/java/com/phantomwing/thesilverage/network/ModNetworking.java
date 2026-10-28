@@ -4,11 +4,15 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
-import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
+import dev.architectury.registry.ReloadListenerRegistry;
 import dev.architectury.utils.Env;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +28,9 @@ import java.util.Set;
  * the physical client.</p>
  */
 public final class ModNetworking {
+    /** Set by a datapack reload, which is when the overridden recipes change; the next server tick tells every player. */
+    private static volatile boolean overridesReloaded;
+
     private ModNetworking() {
     }
 
@@ -47,6 +54,17 @@ public final class ModNetworking {
         // local player on the integrated server too, so single-player flows
         // through the same path (no special-casing).
         PlayerEvent.PLAYER_JOIN.register(ModNetworking::onPlayerJoin);
+
+        // And again after /reload, or an option changed in a world: the recipes follow the config at each datapack
+        // reload, and the textures sent on join stayed until the player rejoined.
+        ReloadListenerRegistry.register(PackType.SERVER_DATA,
+                (ResourceManagerReloadListener) manager -> overridesReloaded = true);
+        TickEvent.SERVER_POST.register(server -> {
+            if (overridesReloaded) {
+                overridesReloaded = false;
+                server.getPlayerList().getPlayers().forEach(ModNetworking::onPlayerJoin);
+            }
+        });
     }
 
     private static void onPlayerJoin(ServerPlayer player) {

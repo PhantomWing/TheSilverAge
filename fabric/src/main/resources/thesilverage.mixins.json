@@ -8,6 +8,7 @@
     "BlockStateBaseMixin",
     "LightningBoltMixin",
     "LivingEntityMixin",
+    "MobMixin",
     "LootTableMixin",
     "PersistentEntitySectionManagerMixin",
     "PoiTypesAccessor",

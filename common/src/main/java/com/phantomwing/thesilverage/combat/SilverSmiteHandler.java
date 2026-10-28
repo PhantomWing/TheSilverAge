@@ -7,6 +7,7 @@ import com.phantomwing.thesilverage.platform.SmitePlatform;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -136,6 +137,11 @@ public final class SilverSmiteHandler {
         player.magicCrit(target);
     }
 
+    private static boolean isMelee(DamageSource source) {
+        return source.is(DamageTypes.PLAYER_ATTACK) || source.is(DamageTypes.MOB_ATTACK)
+                || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO);
+    }
+
     /** Pure calculation of the bonus for this hit, with no side effects. */
     private static float getBonusDamage(LivingEntity target, DamageSource source) {
         // Server-authoritative only. LivingEntity#hurt also runs client-side (hurt
@@ -155,8 +161,9 @@ public final class SilverSmiteHandler {
             return ARROW_BONUS_DAMAGE;
         }
 
-        // Otherwise a direct melee hit from a living attacker only.
-        if (source.getDirectEntity() != source.getEntity()
+        // Otherwise a melee hit from a living attacker only. Thorns names the wearer as both its entities too, so
+        // without the type a burn from silver or Thorns armour took the bonus of the weapon its wearer held.
+        if (!isMelee(source) || source.getDirectEntity() != source.getEntity()
                 || !(source.getEntity() instanceof LivingEntity attacker)) {
             return 0.0f;
         }

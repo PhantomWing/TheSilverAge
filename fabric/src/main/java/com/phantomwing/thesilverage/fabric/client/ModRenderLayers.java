@@ -58,5 +58,34 @@ public final class ModRenderLayers {
                 ModBlocks.WAXED_EXPOSED_SILVER_GRATE.get(),
                 ModBlocks.WAXED_WEATHERED_SILVER_GRATE.get(),
                 ModBlocks.WAXED_OXIDIZED_SILVER_GRATE.get());
+
+        // Lanterns, chains, bars and the torch - cutout, as NeoForge's blockstates have them.
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(),
+                ModBlocks.SILVER_LANTERN.get(),
+                ModBlocks.EXPOSED_SILVER_LANTERN.get(),
+                ModBlocks.WEATHERED_SILVER_LANTERN.get(),
+                ModBlocks.OXIDIZED_SILVER_LANTERN.get(),
+                ModBlocks.WAXED_SILVER_LANTERN.get(),
+                ModBlocks.WAXED_EXPOSED_SILVER_LANTERN.get(),
+                ModBlocks.WAXED_WEATHERED_SILVER_LANTERN.get(),
+                ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN.get(),
+                ModBlocks.SILVER_CHAIN.get(),
+                ModBlocks.EXPOSED_SILVER_CHAIN.get(),
+                ModBlocks.WEATHERED_SILVER_CHAIN.get(),
+                ModBlocks.OXIDIZED_SILVER_CHAIN.get(),
+                ModBlocks.WAXED_SILVER_CHAIN.get(),
+                ModBlocks.WAXED_EXPOSED_SILVER_CHAIN.get(),
+                ModBlocks.WAXED_WEATHERED_SILVER_CHAIN.get(),
+                ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN.get(),
+                ModBlocks.SILVER_BARS.get(),
+                ModBlocks.EXPOSED_SILVER_BARS.get(),
+                ModBlocks.WEATHERED_SILVER_BARS.get(),
+                ModBlocks.OXIDIZED_SILVER_BARS.get(),
+                ModBlocks.WAXED_SILVER_BARS.get(),
+                ModBlocks.WAXED_EXPOSED_SILVER_BARS.get(),
+                ModBlocks.WAXED_WEATHERED_SILVER_BARS.get(),
+                ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get(),
+                ModBlocks.SILVER_TORCH.get(),
+                ModBlocks.SILVER_WALL_TORCH.get());
     }
 }

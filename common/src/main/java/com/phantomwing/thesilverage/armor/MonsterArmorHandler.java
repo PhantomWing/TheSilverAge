@@ -40,6 +40,18 @@ public final class MonsterArmorHandler {
     private MonsterArmorHandler() {
     }
 
+    /**
+     * A mob converting - a husk drowning into a zombie, a skeleton freezing into a stray - is replaced by a new one
+     * that keeps its gear but not its tags, and joins as a fresh spawn: without its old roll it had another chance at
+     * silver. Called by each loader's {@code MobMixin} as {@code Mob#convertTo} adds the new mob.
+     */
+    public static Entity carryRoll(Mob from, Entity to) {
+        if (from.getTags().contains(ROLLED_TAG)) {
+            to.addTag(ROLLED_TAG);
+        }
+        return to;
+    }
+
     /** Wires the loader-specific entity-join hook. Called from {@code TheSilverAgeCommon.init()}. */
     public static void register() {
         MonsterArmorPlatform.registerMobSpawnHandler();

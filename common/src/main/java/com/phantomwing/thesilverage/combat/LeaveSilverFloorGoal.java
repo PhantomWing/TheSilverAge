@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,10 +25,13 @@ public class LeaveSilverFloorGoal extends Goal {
     /** How far a place off silver is looked for, across and up or down: a panicking animal's. */
     private static final int RANGE = 5;
     private static final int HEIGHT = 4;
+    /** Goal ticks before another path is planned after one that couldn't get off: a mob penned on silver kept planning. */
+    private static final int STUCK_INTERVAL = 10;
 
     private final PathfinderMob mob;
     @Nullable
-    private Vec3 safety;
+    private Path path;
+    private int stuckCooldown;
 
     public LeaveSilverFloorGoal(PathfinderMob mob) {
         this.mob = mob;
@@ -39,15 +43,26 @@ public class LeaveSilverFloorGoal extends Goal {
         if (mob.getTarget() != null || !SilverFloor.isHurting(mob)) {
             return false;
         }
-        safety = findSafety();
-        return safety != null;
+        if (stuckCooldown > 0) {
+            stuckCooldown--;
+            return false;
+        }
+        Vec3 safety = findSafety();
+        if (safety == null) {
+            return false;
+        }
+        path = mob.getNavigation().createPath(safety.x, safety.y, safety.z, 0);
+        if (path == null || !path.canReach()) {
+            path = null;
+            stuckCooldown = STUCK_INTERVAL;
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void start() {
-        if (safety != null) {
-            mob.getNavigation().moveTo(safety.x, safety.y, safety.z, SPEED);
-        }
+        mob.getNavigation().moveTo(path, SPEED);
     }
 
     @Override
@@ -57,7 +72,7 @@ public class LeaveSilverFloorGoal extends Goal {
 
     @Override
     public void stop() {
-        safety = null;
+        path = null;
     }
 
     /** A place near by off silver, if one is found: the places a mob picks at random already score silver worst for it. */

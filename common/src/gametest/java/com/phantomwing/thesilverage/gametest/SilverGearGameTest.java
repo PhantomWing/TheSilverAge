@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.ItemUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -116,6 +117,49 @@ public final class SilverGearGameTest {
         }
         zombie.discard();
         helper.succeed();
+    }
+
+    /**
+     * A mob that converts keeps its roll: a husk drowning into a zombie is replaced by a new mob, which joined as a
+     * fresh spawn and had another chance at silver.
+     */
+    public static void convertedMobsKeepTheirRoll(GameTestHelper helper) {
+        Mob husk = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(3, 2, 3));
+        husk.addTag(MonsterArmorHandler.ROLLED_TAG);
+        Mob zombie = husk.convertTo(EntityType.ZOMBIE, true);
+        if (zombie == null) {
+            fail(helper, "The husk didn't convert into a zombie");
+        } else if (!zombie.getTags().contains(MonsterArmorHandler.ROLLED_TAG)) {
+            fail(helper, "A husk that converted into a zombie lost its silver gear roll, so it rolls again");
+        } else {
+            helper.succeed();
+        }
+    }
+
+    /**
+     * Thorns damage takes no bonus from the weapon its armour's wearer holds: Thorns names the wearer as both its
+     * entities, as a melee hit does, and silver armour's burn added its wearer's Silver Sword's bonus.
+     */
+    public static void thornsTakeNoWeaponBonus(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        Mob armed = EntityType.ZOMBIE.create(level);
+        armed.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.SILVER_SWORD.get()));
+        Mob unarmed = EntityType.ZOMBIE.create(level);
+        Mob burnedByArmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(1, 2, 1));
+        Mob burnedByUnarmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(5, 2, 1));
+        float armedLoss = burnedByArmed.getHealth();
+        burnedByArmed.hurt(level.damageSources().thorns(armed), 2.0f);
+        armedLoss -= burnedByArmed.getHealth();
+        float unarmedLoss = burnedByUnarmed.getHealth();
+        burnedByUnarmed.hurt(level.damageSources().thorns(unarmed), 2.0f);
+        unarmedLoss -= burnedByUnarmed.getHealth();
+        armed.discard();
+        unarmed.discard();
+        if (armedLoss != unarmedLoss) {
+            fail(helper, "Thorns from a wearer holding a Silver Sword dealt " + armedLoss + ", from one holding nothing " + unarmedLoss);
+        } else {
+            helper.succeed();
+        }
     }
 
     /**

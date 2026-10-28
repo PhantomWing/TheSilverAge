@@ -28,6 +28,8 @@ public final class GameTests {
             test("mobs_hold_silver_tools", SilverGearGameTest::mobsHoldSilverTools),
             test("husks_wear_silver_armor", SilverGearGameTest::husksWearSilverArmor),
             test("mob_rolls_once", SilverGearGameTest::mobRollsOnce),
+            test("converted_mobs_keep_their_roll", SilverGearGameTest::convertedMobsKeepTheirRoll),
+            test("thorns_take_no_weapon_bonus", SilverGearGameTest::thornsTakeNoWeaponBonus),
             test("swapped_gear_keeps_its_wear", SilverGearGameTest::swappedGearKeepsItsWear),
             test("silver_trim_darkens_on_silver_armor", SilverGearGameTest::silverTrimDarkensOnSilverArmor),
             test("silver_wall_torch_drops_a_silver_torch", SilverBlocksGameTest::silverWallTorchDropsASilverTorch),

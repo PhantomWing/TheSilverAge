@@ -46,7 +46,9 @@ public final class SilverOxidation {
      */
     public static void register() {
         InteractionEvent.RIGHT_CLICK_BLOCK.register((player, hand, pos, face) -> {
-            if (enabled() || !player.getItemInHand(hand).is(Items.HONEYCOMB)) {
+            // The server's option decides. Refused by a client's own config, Fabric never sent the click, so a
+            // player with oxidation off couldn't wax on a server that has it on.
+            if (player.level().isClientSide() || enabled() || !player.getItemInHand(hand).is(Items.HONEYCOMB)) {
                 return EventResult.pass();
             }
 

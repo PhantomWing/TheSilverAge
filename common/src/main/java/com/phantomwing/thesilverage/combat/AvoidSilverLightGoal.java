@@ -51,6 +51,8 @@ public class AvoidSilverLightGoal extends Goal {
     private static final double HURRY_WITHIN_SQR = 16.0;
     private static final double WALK_SPEED = 1.0;
     private static final double HURRY_SPEED = 1.2;
+    /** Goal ticks before another path is planned after one that couldn't get away: a mob penned in kept planning. */
+    private static final int STUCK_INTERVAL = 10;
 
     private final PathfinderMob mob;
     /** The light being kept away from, kept between tries so a retry costs no search. */
@@ -59,6 +61,7 @@ public class AvoidSilverLightGoal extends Goal {
     @Nullable
     private Path fleePath;
     private int scanCooldown;
+    private int stuckCooldown;
 
     public AvoidSilverLightGoal(PathfinderMob mob) {
         this.mob = mob;
@@ -73,14 +76,24 @@ public class AvoidSilverLightGoal extends Goal {
         if (mob.getTarget() != null || !CommonConfig.undeadAvoidSilverLight() || !lightNearby()) {
             return false;
         }
+        if (stuckCooldown > 0) {
+            stuckCooldown--;
+            return false;
+        }
         Vec3 threat = Vec3.atBottomCenterOf(light);
         Vec3 escape = DefaultRandomPos.getPosAway(mob, FLEE_RANGE, FLEE_HEIGHT, threat);
         // Somewhere no further from the light than the mob already is is no escape.
         if (escape == null || threat.distanceToSqr(escape) < threat.distanceToSqr(mob.position())) {
             return false;
         }
+        // A path that stops short is a wall in the way, not an escape.
         fleePath = mob.getNavigation().createPath(escape.x, escape.y, escape.z, 0);
-        return fleePath != null;
+        if (fleePath == null || !fleePath.canReach()) {
+            fleePath = null;
+            stuckCooldown = STUCK_INTERVAL;
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -77,6 +77,7 @@
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 - Fixed Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars missing from Create's Deployer waxing and scraping recipes
 - Fixed Create's Spout not oxidizing Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars
+- Fixed the silver textures of overridden vanilla recipes not updating after /reload until rejoining the world
 
 
 # 1.3.1
