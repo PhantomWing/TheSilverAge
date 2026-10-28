@@ -25,6 +25,7 @@ public final class GameTests {
             test("silver_axe_in_trial_chamber_corridors", SilverLootGameTest::silverAxeInTrialChamberCorridors),
             test("silver_gear_in_trial_vaults", SilverLootGameTest::silverGearInTrialVaults),
             test("silver_sword_in_bastions", SilverLootGameTest::silverSwordInBastions),
+            test("replacing_takes_neighbouring_stacks", SilverLootGameTest::replacingTakesNeighbouringStacks),
             test("mobs_hold_silver_tools", SilverGearGameTest::mobsHoldSilverTools),
             test("husks_wear_silver_armor", SilverGearGameTest::husksWearSilverArmor),
             test("mob_rolls_once", SilverGearGameTest::mobRollsOnce),

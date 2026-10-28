@@ -82,30 +82,30 @@ public final class SilverSmiteHandler {
     }
 
     /**
-     * Handles an incoming attack: returns the bonus damage to add (or {@code 0}),
-     * and emits vanilla's magic-crit particle when the bonus applies.
-     *
-     * <p>Both loaders funnel through this single method so the damage and the
-     * particle can never diverge between them.</p>
+     * The bonus damage to add to an incoming attack, or {@code 0}. Both loaders add it before armour and resistance.
      *
      * <p>Direct melee attacks count, and a Silver Arrow's hit: {@code getDirectEntity() == getEntity()}
      * excludes every other projectile, which carries its own damage and
      * would otherwise inherit the wielder's held weapon bonus.</p>
-     *
-     * @param target the entity being hurt
-     * @param source the damage source
      */
     public static float handleIncomingDamage(LivingEntity target, DamageSource source) {
-        float bonus = getBonusDamage(target, source);
-        if (bonus > 0.0f) {
-            if (source.getDirectEntity() instanceof SilverArrow && target.level() instanceof ServerLevel serverLevel) {
-                SilverSparks.burst(serverLevel, target);
-            } else {
-                spawnMagicCritParticle(target, source);
-            }
-        }
+        return getBonusDamage(target, source);
+    }
 
-        return bonus;
+    /**
+     * Shows the bonus once a hit has landed: vanilla's magic-crit particle, or sparks for a Silver Arrow. Called by
+     * each loader's {@code LivingEntityMixin} where {@code hurt} answers true, since shown as the damage was added it
+     * sparked on hits a shield or invulnerability then refused.
+     */
+    public static void onHurt(LivingEntity target, DamageSource source) {
+        if (getBonusDamage(target, source) <= 0.0f) {
+            return;
+        }
+        if (source.getDirectEntity() instanceof SilverArrow && target.level() instanceof ServerLevel serverLevel) {
+            SilverSparks.burst(serverLevel, target);
+        } else {
+            spawnMagicCritParticle(target, source);
+        }
     }
 
     /**

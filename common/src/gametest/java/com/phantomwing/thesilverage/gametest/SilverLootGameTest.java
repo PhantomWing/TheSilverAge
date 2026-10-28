@@ -1,8 +1,10 @@
 package com.phantomwing.thesilverage.gametest;
 
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
 import com.phantomwing.thesilverage.loot.SilverLootSpec;
 import dev.architectury.registry.registries.RegistrySupplier;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -10,6 +12,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -90,6 +94,20 @@ public final class SilverLootGameTest {
     /** A Silver Sword stands in for a bastion's iron one. */
     public static void silverSwordInBastions(GameTestHelper helper) {
         expectIn(helper, "chests/bastion_other", List.of(ModItems.SILVER_SWORD));
+    }
+
+    /** A swap that takes every stack takes two lying side by side too: the one after each swapped stack was skipped. */
+    public static void replacingTakesNeighbouringStacks(GameTestHelper helper) {
+        ObjectArrayList<ItemStack> loot = ObjectArrayList.of(new ItemStack(Items.ARROW, 4), new ItemStack(Items.ARROW, 4),
+                new ItemStack(Items.STONE), new ItemStack(Items.ARROW, 4));
+        // With no maximum the context's random is never drawn.
+        SilverLootAlgorithms.applyReplaceItem(loot, null, ModItems.SILVER_ARROW.get(), List.of(Items.ARROW), 0, 0);
+        long silver = loot.stream().filter(stack -> stack.is(ModItems.SILVER_ARROW.get())).count();
+        if (silver != 3 || loot.size() != 4) {
+            fail(helper, "Expected 3 stacks of Silver Arrows among 4, found " + loot);
+            return;
+        }
+        helper.succeed();
     }
 
     /** Succeeds when one of {@value #ROLLS} rolls of a vanilla chest holds one of {@code wanted}. */

@@ -41,7 +41,7 @@ public abstract class LivingEntityMixin {
     }
 
     /**
-     * Silver armour's burn on undead attackers, once a hit has landed: {@code hurt} answers true when it did, as it
+     * Silver armour's burn on undead attackers, and the tools' bonus shown, once a hit has landed: {@code hurt} answers true when it did, as it
      * does for Thorns, and false for a hit a shield took whole. NeoForge's twin mixin is the same, so the loaders agree
      * on which hits count. All the gating lives in {@link SilverThornsHandler}.
      */
@@ -49,6 +49,7 @@ public abstract class LivingEntityMixin {
     private void thesilverage$silverThorns(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ()) {
             SilverThornsHandler.onHurt((LivingEntity) (Object) this, source);
+            SilverSmiteHandler.onHurt((LivingEntity) (Object) this, source);
         }
     }
 }

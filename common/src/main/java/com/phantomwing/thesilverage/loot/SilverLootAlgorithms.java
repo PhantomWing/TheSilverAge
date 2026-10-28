@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -80,26 +81,26 @@ public final class SilverLootAlgorithms {
         int numberOfStacksToAdd = maxStacks > 0
                 ? UniformGenerator.between(minStacks, maxStacks).getInt(lootContext)
                 : Integer.MAX_VALUE;
-        final int[] stacksToAdd = {numberOfStacksToAdd};
+        int stacksToAdd = numberOfStacksToAdd;
 
-        // Check if there are any items to replace. If not, return the generated loot as is.
         // Keep the replaced item's count, but cap it at the max stack size of the added item.
-        if (numberOfStacksToAdd > 0) {
-            generatedLoot.forEach((stack) -> {
-                if (removedItems.stream().anyMatch(stack::is) && stacksToAdd[0] > 0) {
-                    try {
-                        ItemStack toAdd = ItemUtils.tryTransmuteStack(stack, item);
+        // Removed through the iterator: removing from the list while walking it skipped the stack after each one replaced.
+        Iterator<ItemStack> stacks = generatedLoot.iterator();
+        while (stacksToAdd > 0 && stacks.hasNext()) {
+            ItemStack stack = stacks.next();
+            if (removedItems.stream().anyMatch(stack::is)) {
+                try {
+                    ItemStack toAdd = ItemUtils.tryTransmuteStack(stack, item);
 
-                        generatedLoot.remove(stack);
-                        lootArray.add(toAdd);
-                    } catch (Exception ignored) {
-                        // If something goes wrong with the item replacement (e.g. invalid item),
-                        // just skip it and keep the original item in the loot.
-                    }
-
-                    stacksToAdd[0] = stacksToAdd[0] - 1;
+                    stacks.remove();
+                    lootArray.add(toAdd);
+                } catch (Exception ignored) {
+                    // If something goes wrong with the item replacement (e.g. invalid item),
+                    // just skip it and keep the original item in the loot.
                 }
-            });
+
+                stacksToAdd--;
+            }
         }
 
         // Add the new items to the generated loot.
