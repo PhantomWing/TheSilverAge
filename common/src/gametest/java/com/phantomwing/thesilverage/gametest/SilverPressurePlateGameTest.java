@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +19,7 @@ import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
 /**
  * Game tests for the Silver Pressure Plate: no hostile mob presses it, the undead are hurt standing in it, and the more
  * it has tarnished the less each mob on it adds to its signal. The plates lie on the arena's floor, at y = 2, and the
- * mobs on them are kept from walking off. Listed in {@link GameTests}.
+ * mobs on them have no AI, which a plate doesn't ask about. Listed in {@link GameTests}.
  */
 public final class SilverPressurePlateGameTest {
     /** Ticks the mobs stand on their plates before the plates are read. */
@@ -30,9 +30,9 @@ public final class SilverPressurePlateGameTest {
 
     /** A villager presses a plate to a full signal; a husk and a creeper press nothing, and the husk is hurt. */
     public static void hostileMobsDontPressSilverPlates(GameTestHelper helper) {
-        BlockPos villagerPlate = new BlockPos(1, 2, 3);
-        BlockPos huskPlate = new BlockPos(3, 2, 3);
-        BlockPos creeperPlate = new BlockPos(5, 2, 3);
+        BlockPos villagerPlate = new BlockPos(1, 2, 1);
+        BlockPos huskPlate = new BlockPos(5, 2, 5);
+        BlockPos creeperPlate = new BlockPos(1, 2, 5);
         LivingEntity villager = standOn(helper, villagerPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.VILLAGER);
         LivingEntity husk = standOn(helper, huskPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.HUSK);
         LivingEntity creeper = standOn(helper, creeperPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.CREEPER);
@@ -71,12 +71,13 @@ public final class SilverPressurePlateGameTest {
         });
     }
 
-    /** A {@code type} standing on {@code plate}, placed at {@code at}, that doesn't walk off it. */
-    private static LivingEntity standOn(GameTestHelper helper, BlockPos at, Block plate, EntityType<? extends LivingEntity> type) {
+    /**
+     * A {@code type} standing on {@code plate}, placed at {@code at}, with no AI: a villager left to itself flees a husk off
+     * its plate, and a husk the silver hops lands among the others.
+     */
+    private static LivingEntity standOn(GameTestHelper helper, BlockPos at, Block plate, EntityType<? extends Mob> type) {
         helper.setBlock(at, plate);
-        LivingEntity mob = helper.spawn(type, at);
-        mob.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
-        return mob;
+        return helper.spawnWithNoFreeWill(type, at);
     }
 
     private static void expectPower(GameTestHelper helper, List<String> problems, BlockPos at, String who, int power) {
