@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage;
 
+import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
@@ -49,6 +50,7 @@ public final class TheSilverAgeCommon {
         ModBlockEntityTypes.register();
         ModEntityTypes.register();
         ModParticles.register();
+        ModCriteriaTriggers.register();
         ModCreativeModeTab.register();
         ModArmorMaterials.register();
         ModPlacementModifiers.register();

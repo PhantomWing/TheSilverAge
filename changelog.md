@@ -36,6 +36,7 @@
 - Added the `enable_spout_oxidation` config option, to stop Create's Spout from oxidizing silver blocks with water
 - Added the `enable_silver_gear_recipes` config option, for modpacks where another mod's silver tools and armor take the same recipes, like Caverns & Chasms
 - Added a config screen on Fabric (opened from Mod Menu)
+- Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
   - Added the `thesilverage:cannot_press_silver_pressure_plates` tag, so modpacks can keep other mobs from pressing Silver Pressure Plates

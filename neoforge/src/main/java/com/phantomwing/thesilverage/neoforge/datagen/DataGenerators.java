@@ -49,6 +49,7 @@ public class DataGenerators {
                         List.of(new ModAdvancementProvider())
                 )
         );
+        generator.addProvider(event.includeServer(), new AdvancementConditionsProvider(output));
 
         generator.addProvider(event.includeServer(), new ModDataMapProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new ModSpriteSourceProvider(output, lookupProvider, existingFileHelper));

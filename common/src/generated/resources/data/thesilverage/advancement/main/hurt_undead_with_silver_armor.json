@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_thorns"
+    }
+  ],
+  "parent": "thesilverage:main/obtain_silver_ingot",
+  "criteria": {
+    "hurt_undead": {
+      "trigger": "thesilverage:silver_armor_hurt"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "thesilverage.advancement.hurt_undead_with_silver_armor.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "thesilverage:silver_chestplate"
+    },
+    "title": {
+      "translate": "thesilverage.advancement.hurt_undead_with_silver_armor"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_thorns"
+    }
+  ],
+  "requirements": [
+    [
+      "hurt_undead"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

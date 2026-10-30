@@ -1,8 +1,10 @@
 package com.phantomwing.thesilverage.combat;
 
+import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -71,6 +73,9 @@ public final class SilverThornsHandler {
         if (attacker.hurt(level.damageSources().thorns(wearer), damage)) {
             SilverSparks.burst(level, attacker);
             level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.THORNS_HIT, attacker.getSoundSource(), 1.0F, 1.0F);
+            if (wearer instanceof ServerPlayer player) {
+                ModCriteriaTriggers.SILVER_ARMOR_HURT.get().trigger(player);
+            }
         }
     }
 }

@@ -1,25 +1,47 @@
 package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.advancement.SilverArmorHurtTrigger;
+import com.phantomwing.thesilverage.entity.ModEntityTypes;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
+import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.critereon.DamageSourcePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.KilledTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ModAdvancementProvider implements AdvancementProvider.AdvancementGenerator {
+    static final String KILL_UNDEAD_WITH_SILVER_ARROW = "kill_undead_with_silver_arrow";
+    static final String HURT_UNDEAD_WITH_SILVER_ARMOR = "hurt_undead_with_silver_armor";
+
+    /**
+     * The advancements that load only while a config option is on, so none is left that nothing can grant.
+     * {@link AdvancementConditionsProvider} writes them in, since an advancement generator can't.
+     */
+    static final Map<ResourceLocation, List<ICondition>> CONDITIONS = Map.of(
+            ResourceLocation.parse(getNameId(KILL_UNDEAD_WITH_SILVER_ARROW)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)),
+            ResourceLocation.parse(getNameId(HURT_UNDEAD_WITH_SILVER_ARMOR)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID)));
+
     @Override
     public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer, @NotNull ExistingFileHelper existingFileHelper) {
         // Root tab
@@ -35,6 +57,14 @@ public class ModAdvancementProvider implements AdvancementProvider.AdvancementGe
         // Obtain Silver
         AdvancementHolder obtainSilverIngot = obtainItemAdvancement(consumer, theSilverAge, ModItems.SILVER_INGOT.get());
         AdvancementHolder obtainMoonDial = obtainItemAdvancement(consumer, obtainSilverIngot, ModItems.MOON_DIAL.get());
+
+        // Silver against the undead
+        getAdvancement(consumer, obtainSilverIngot, KILL_UNDEAD_WITH_SILVER_ARROW, ModItems.SILVER_ARROW.get(), AdvancementType.TASK,
+                builder -> builder.addCriterion("killed_undead", KilledTrigger.TriggerInstance.playerKilledEntity(
+                        EntityPredicate.Builder.entity().of(ModTags.EntityTypes.SENSITIVE_TO_SILVER),
+                        DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity().of(ModEntityTypes.SILVER_ARROW.get())))));
+        getAdvancement(consumer, obtainSilverIngot, HURT_UNDEAD_WITH_SILVER_ARMOR, ModItems.SILVER_CHESTPLATE.get(), AdvancementType.TASK,
+                builder -> builder.addCriterion("hurt_undead", SilverArmorHurtTrigger.TriggerInstance.hurtUndead()));
     }
 
     protected static AdvancementHolder obtainItemAdvancement(Consumer<AdvancementHolder> consumer, AdvancementHolder parent, ItemLike item) {
