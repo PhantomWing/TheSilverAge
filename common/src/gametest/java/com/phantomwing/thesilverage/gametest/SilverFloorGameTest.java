@@ -90,7 +90,10 @@ public final class SilverFloorGameTest {
         });
     }
 
-    /** No zombie or skeleton spawns on silver, waxed or tarnished; one spawns on stone, and a cow spawns on silver. */
+    /**
+     * No zombie or skeleton spawns on silver, waxed or tarnished; one spawns on stone, and a cow spawns on silver. With
+     * {@code silver_affects_undead} off a zombie spawns on silver too.
+     */
     public static void undeadCantSpawnOnSilver(GameTestHelper helper) {
         BlockPos silver = floor(1, 1);
         BlockPos tarnished = floor(3, 1);
@@ -103,6 +106,8 @@ public final class SilverFloorGameTest {
                 : !spawnsOn(helper, EntityType.ZOMBIE, stone) ? "The test's setup failed, not the mod: a zombie can't spawn on stone ("
                         + whatIsAt(helper, stone) + ")"
                 : !spawnsOn(helper, EntityType.COW, silver) ? "a cow can't spawn on a Block of Silver"
+                : !TestSettings.with("silver_affects_undead", false, () -> spawnsOn(helper, EntityType.ZOMBIE, silver))
+                        ? "a zombie can't spawn on a Block of Silver with silver_affects_undead off"
                 : null);
     }
 

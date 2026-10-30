@@ -34,14 +34,31 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(settingId);
     }
 
-    public static boolean silverSmite() {
+    public static boolean silverAffectsUndead() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.SILVER_AFFECTS_UNDEAD_ID);
+    }
+
+    public static boolean silverSmite() {
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);
     }
 
+    public static float silverSmiteDamage() {
+        return (float) TheSilverAgeFabricConfig.get().silver_smite_damage;
+    }
+
+    public static float silverArrowSmiteDamage() {
+        return (float) TheSilverAgeFabricConfig.get().silver_arrow_smite_damage;
+    }
+
     public static boolean silverThorns() {
-        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_THORNS_ID);
+    }
+
+    public static float silverThornsChance() {
+        return (float) TheSilverAgeFabricConfig.get().silver_thorns_chance;
     }
 
     public static boolean silverOxidation() {
@@ -55,12 +72,12 @@ public final class CommonConfigImpl {
     }
 
     public static boolean silverFloorDamage() {
-        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_FLOOR_DAMAGE_ID);
     }
 
     public static boolean undeadAvoidSilverLight() {
-        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.UNDEAD_AVOID_SILVER_LIGHT_ID);
     }
 

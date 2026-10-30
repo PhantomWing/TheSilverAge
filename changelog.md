@@ -35,6 +35,8 @@
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Added the `enable_spout_oxidation` config option, to stop Create's Spout from oxidizing silver blocks with water
 - Added the `enable_silver_gear_recipes` config option, for modpacks where another mod's silver tools and armor take the same recipes, like Caverns & Chasms
+- Added the `silver_affects_undead` config option, which turns off everything silver does to undead mobs at once
+- Added config options for how much extra damage silver tools and Silver Arrows deal to undead mobs (`silver_smite_damage`, `silver_arrow_smite_damage`), and for each piece of Silver Armor's chance to hurt undead mobs that hit you (`silver_thorns_chance`)
 - Added a config screen on Fabric (opened from Mod Menu)
 - Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
 - Updated tags for better compatibility with vanilla and other mods

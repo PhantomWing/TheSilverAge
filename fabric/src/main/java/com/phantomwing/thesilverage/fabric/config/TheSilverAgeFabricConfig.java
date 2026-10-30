@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric.config;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -46,11 +47,22 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_WANDERING_TRADER_TRADES_ID = "enable_wandering_trader_trades";
     public boolean enable_wandering_trader_trades = true;
 
+    // Off turns off everything silver does to the undead, whatever the options after it say.
+    public static final String SILVER_AFFECTS_UNDEAD_ID = "silver_affects_undead";
+    public boolean silver_affects_undead = true;
+
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public boolean enable_silver_smite = true;
 
+    // Written out rather than widened from the handlers' floats, which the file would show as 0.20000000298023224.
+    public double silver_smite_damage = 1.0;
+
+    public double silver_arrow_smite_damage = 2.0;
+
     public static final String ENABLE_SILVER_THORNS_ID = "enable_silver_thorns";
     public boolean enable_silver_thorns = true;
+
+    public double silver_thorns_chance = 0.2;
 
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
     public boolean enable_silver_oxidation = true;
@@ -72,6 +84,14 @@ public class TheSilverAgeFabricConfig implements ConfigData {
 
     public static final String ENABLE_SILVER_ARROWS_ID = "enable_silver_arrows";
     public boolean enable_silver_arrows = true;
+
+    /** Keeps the numbers in NeoForge's ranges, which a hand-edited file can step out of. */
+    @Override
+    public void validatePostLoad() {
+        silver_smite_damage = Math.clamp(silver_smite_damage, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
+        silver_arrow_smite_damage = Math.clamp(silver_arrow_smite_damage, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
+        silver_thorns_chance = Math.clamp(silver_thorns_chance, 0.0, 1.0);
+    }
 
     public static TheSilverAgeFabricConfig get() {
         return AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).getConfig();
@@ -114,6 +134,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case OVERRIDE_VANILLA_RECIPES_ID -> config.override_vanilla_recipes;
             case GENERATE_STRUCTURE_LOOT_ID -> config.generate_structure_loot;
             case GENERATE_SILVER_ORE_ID -> config.generate_silver_ore;
+            case SILVER_AFFECTS_UNDEAD_ID -> config.silver_affects_undead;
             case ENABLE_SILVER_SMITE_ID -> config.enable_silver_smite;
             case ENABLE_SILVER_THORNS_ID -> config.enable_silver_thorns;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;

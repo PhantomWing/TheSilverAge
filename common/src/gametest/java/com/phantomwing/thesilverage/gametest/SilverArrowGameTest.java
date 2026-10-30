@@ -33,15 +33,21 @@ public final class SilverArrowGameTest {
     private SilverArrowGameTest() {
     }
 
-    /** A Silver Arrow hurts an undead mob 2 more than a plain arrow of the same damage, and any other mob no more. */
+    /**
+     * A Silver Arrow hurts an undead mob 2 more than a plain arrow of the same damage, and any other mob no more, nor an
+     * undead mob with {@code silver_affects_undead} off.
+     */
     public static void silverArrowsHurtTheUndeadMore(GameTestHelper helper) {
         float zombie = extraDamage(helper, EntityType.ZOMBIE, 1);
         float pig = extraDamage(helper, EntityType.PIG, 4);
+        float zombieOff = TestSettings.with("silver_affects_undead", false, () -> extraDamage(helper, EntityType.ZOMBIE, 6));
         if (Math.abs(zombie - SilverSmiteHandler.ARROW_BONUS_DAMAGE) > 0.5f) {
             fail(helper, "A Silver Arrow hurt a zombie " + zombie + " more than a plain arrow, where it should be about "
                     + SilverSmiteHandler.ARROW_BONUS_DAMAGE + " (before the zombie's armour)");
         } else if (pig != 0.0f) {
             fail(helper, "A Silver Arrow hurt a pig " + pig + " more than a plain arrow");
+        } else if (zombieOff != 0.0f) {
+            fail(helper, "A Silver Arrow hurt a zombie " + zombieOff + " more than a plain arrow with silver_affects_undead off");
         } else {
             helper.succeed();
         }

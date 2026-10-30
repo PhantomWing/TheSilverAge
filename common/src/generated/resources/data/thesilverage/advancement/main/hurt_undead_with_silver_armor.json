@@ -2,6 +2,10 @@
   "neoforge:conditions": [
     {
       "type": "thesilverage:config_boolean",
+      "settingId": "silver_affects_undead"
+    },
+    {
+      "type": "thesilverage:config_boolean",
       "settingId": "enable_silver_thorns"
     }
   ],
@@ -24,6 +28,10 @@
     }
   },
   "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "silver_affects_undead"
+    },
     {
       "condition": "thesilverage:config_boolean",
       "settingId": "enable_silver_thorns"

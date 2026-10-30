@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.fabric.client;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.client.ModEntityRenderers;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
@@ -68,6 +69,7 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         ModNetworking.registerClientReceiver(RecipeOverridePack::refresh);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ServerOverrideState.clear();
+            ServerUndeadSettings.clear();
             client.execute(RecipeOverridePack::refresh);
         });
 

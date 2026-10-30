@@ -1,8 +1,8 @@
 package com.phantomwing.thesilverage.client;
 
 import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
+import com.phantomwing.thesilverage.combat.SilverUndeadSettings;
 import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -39,13 +39,13 @@ public final class SilverSmiteTooltip {
                 lines.add(Component.translatable("tooltip.thesilverage.flies_faster").withStyle(ChatFormatting.BLUE));
             }
 
-            // Gated on the local config: with the bonus switched off the line
-            // would be a lie. (Server-side value is authoritative for damage.)
-            if (!CommonConfig.silverSmite()) {
+            // The server's settings where it sent them: with the bonus off or set otherwise there, the line would lie.
+            SilverUndeadSettings settings = ServerUndeadSettings.current();
+            if (!settings.smite()) {
                 return;
             }
 
-            float bonus = SilverSmiteHandler.getTooltipBonusFor(stack);
+            float bonus = SilverSmiteHandler.getTooltipBonusFor(stack, settings);
             if (bonus <= 0.0f) {
                 return;
             }

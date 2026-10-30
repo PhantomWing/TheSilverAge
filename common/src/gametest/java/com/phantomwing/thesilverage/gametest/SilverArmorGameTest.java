@@ -45,6 +45,8 @@ public final class SilverArmorGameTest {
         expect(problems, "a full set struck by a cow", burns(helper, wearer, fullSet, cow), 0, 0);
         expect(problems, "a full set struck by a husk with enable_silver_thorns off",
                 TestSettings.with("enable_silver_thorns", false, () -> burns(helper, wearer, fullSet, husk)), 0, 0);
+        expect(problems, "a full set struck by a husk with silver_affects_undead off",
+                TestSettings.with("silver_affects_undead", false, () -> burns(helper, wearer, fullSet, husk)), 0, 0);
         finish(helper, problems, husk, cow, wearer);
     }
 

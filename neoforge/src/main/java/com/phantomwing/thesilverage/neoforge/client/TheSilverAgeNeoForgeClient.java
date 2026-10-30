@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.client;
 
 import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.client.ModEntityRenderers;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
@@ -72,6 +73,7 @@ public final class TheSilverAgeNeoForgeClient {
         ModNetworking.registerClientReceiver(RecipeOverridePackHandler::syncFromState);
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut e) -> {
             ServerOverrideState.clear();
+            ServerUndeadSettings.clear();
             RecipeOverridePackHandler.syncFromState();
         });
         // The sync above is deferred; this tick applies it once it's safe to reload

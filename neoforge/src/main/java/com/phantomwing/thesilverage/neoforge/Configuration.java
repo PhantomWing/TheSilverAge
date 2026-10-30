@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.neoforge;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -27,13 +28,23 @@ public class Configuration {
     public static final String GENERATE_SILVER_ORE_ID = "generate_silver_ore";
     public static ModConfigSpec.BooleanValue GENERATE_SILVER_ORE;
 
-    // Innate anti-undead damage bonus on silver tools.
+    // Off turns off everything silver does to the undead, whatever the options after it say.
+    public static final String SILVER_AFFECTS_UNDEAD_ID = "silver_affects_undead";
+    public static ModConfigSpec.BooleanValue SILVER_AFFECTS_UNDEAD;
+
+    // Innate anti-undead damage bonus on silver tools and Silver Arrows, and how much.
     public static final String ENABLE_SILVER_SMITE_ID = "enable_silver_smite";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_SMITE;
+    public static final String SILVER_SMITE_DAMAGE_ID = "silver_smite_damage";
+    public static ModConfigSpec.DoubleValue SILVER_SMITE_DAMAGE;
+    public static final String SILVER_ARROW_SMITE_DAMAGE_ID = "silver_arrow_smite_damage";
+    public static ModConfigSpec.DoubleValue SILVER_ARROW_SMITE_DAMAGE;
 
-    // Silver armour burning the undead that strike its wearer.
+    // Silver armour hurting the undead that strike its wearer, and each piece's chance of it.
     public static final String ENABLE_SILVER_THORNS_ID = "enable_silver_thorns";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_THORNS;
+    public static final String SILVER_THORNS_CHANCE_ID = "silver_thorns_chance";
+    public static ModConfigSpec.DoubleValue SILVER_THORNS_CHANCE;
 
     // Silver weathering: oxidation over time + honeycomb waxing.
     public static final String ENABLE_SILVER_OXIDATION_ID = "enable_silver_oxidation";
@@ -79,6 +90,7 @@ public class Configuration {
             case OVERRIDE_VANILLA_RECIPES_ID -> Configuration.OVERRIDE_VANILLA_RECIPES.get();
             case GENERATE_STRUCTURE_LOOT_ID -> Configuration.GENERATE_STRUCTURE_LOOT.get();
             case GENERATE_SILVER_ORE_ID -> Configuration.GENERATE_SILVER_ORE.get();
+            case SILVER_AFFECTS_UNDEAD_ID -> Configuration.SILVER_AFFECTS_UNDEAD.get();
             case ENABLE_SILVER_SMITE_ID -> Configuration.ENABLE_SILVER_SMITE.get();
             case ENABLE_SILVER_THORNS_ID -> Configuration.ENABLE_SILVER_THORNS.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
@@ -114,8 +126,12 @@ public class Configuration {
         ENABLE_WANDERING_TRADER_TRADES = COMMON_BUILDER.define(ENABLE_WANDERING_TRADER_TRADES_ID, true);
         GENERATE_STRUCTURE_LOOT = COMMON_BUILDER.define(GENERATE_STRUCTURE_LOOT_ID, true);
         GENERATE_SILVER_ORE = COMMON_BUILDER.define(GENERATE_SILVER_ORE_ID, true);
+        SILVER_AFFECTS_UNDEAD = COMMON_BUILDER.define(SILVER_AFFECTS_UNDEAD_ID, true);
         ENABLE_SILVER_SMITE = COMMON_BUILDER.define(ENABLE_SILVER_SMITE_ID, true);
+        SILVER_SMITE_DAMAGE = COMMON_BUILDER.defineInRange(SILVER_SMITE_DAMAGE_ID, 1.0, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
+        SILVER_ARROW_SMITE_DAMAGE = COMMON_BUILDER.defineInRange(SILVER_ARROW_SMITE_DAMAGE_ID, 2.0, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
         ENABLE_SILVER_THORNS = COMMON_BUILDER.define(ENABLE_SILVER_THORNS_ID, true);
+        SILVER_THORNS_CHANCE = COMMON_BUILDER.defineInRange(SILVER_THORNS_CHANCE_ID, 0.2, 0.0, 1.0);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);
         ENABLE_SPOUT_OXIDATION = COMMON_BUILDER.define(ENABLE_SPOUT_OXIDATION_ID, true);
         ENABLE_SILVER_GEAR_RECIPES = COMMON_BUILDER.define(ENABLE_SILVER_GEAR_RECIPES_ID, true);

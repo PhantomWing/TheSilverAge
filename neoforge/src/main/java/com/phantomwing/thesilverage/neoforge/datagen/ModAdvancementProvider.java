@@ -40,7 +40,9 @@ public class ModAdvancementProvider implements AdvancementProvider.AdvancementGe
      */
     static final Map<ResourceLocation, List<ICondition>> CONDITIONS = Map.of(
             ResourceLocation.parse(getNameId(KILL_UNDEAD_WITH_SILVER_ARROW)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)),
-            ResourceLocation.parse(getNameId(HURT_UNDEAD_WITH_SILVER_ARMOR)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID)));
+            ResourceLocation.parse(getNameId(HURT_UNDEAD_WITH_SILVER_ARMOR)), List.of(
+                    new ConfigBooleanCondition(Configuration.SILVER_AFFECTS_UNDEAD_ID),
+                    new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID)));
 
     @Override
     public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer, @NotNull ExistingFileHelper existingFileHelper) {

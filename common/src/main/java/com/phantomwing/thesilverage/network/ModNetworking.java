@@ -2,16 +2,18 @@ package com.phantomwing.thesilverage.network;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.ServerUndeadSettings;
+import com.phantomwing.thesilverage.combat.SilverUndeadSettings;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
-import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import dev.architectury.utils.Env;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 import java.util.Arrays;
@@ -19,7 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload}.
+ * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload} and {@link UndeadSettingsSyncPayload},
+ * both sent on join and after each datapack reload.
  *
  * <p>{@link #register()} is called from {@code TheSilverAgeCommon.init()} (both
  * physical sides). Each loader's <em>client</em> entrypoint additionally calls
@@ -47,6 +50,8 @@ public final class ModNetworking {
         if (Platform.getEnvironment() == Env.SERVER) {
             NetworkManager.registerS2CPayloadType(
                     RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC);
+            NetworkManager.registerS2CPayloadType(
+                    UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC);
         }
 
         // On join, tell the player whether this server overrides vanilla recipes
@@ -68,6 +73,9 @@ public final class ModNetworking {
     }
 
     private static void onPlayerJoin(ServerPlayer player) {
+        if (NetworkManager.canPlayerReceive(player, UndeadSettingsSyncPayload.TYPE)) {
+            NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
+        }
         // Skip clients that can't decode the packet (no mod / older version):
         // sending anyway would be silently dropped, but guarding is explicit and
         // avoids log noise on mixed setups.
@@ -94,5 +102,8 @@ public final class ModNetworking {
                     TheSilverAge.LOGGER.debug("Server recipe overrides on: {}; syncing their texture packs.", payload.enabledSettingIds());
                     refresh.run();
                 }));
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C,
+                UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings())));
     }
 }

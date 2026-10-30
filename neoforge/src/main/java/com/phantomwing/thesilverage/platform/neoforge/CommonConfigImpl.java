@@ -29,12 +29,28 @@ public final class CommonConfigImpl {
         return Configuration.getBooleanConfigurationValue(settingId);
     }
 
+    public static boolean silverAffectsUndead() {
+        return Configuration.SILVER_AFFECTS_UNDEAD.get();
+    }
+
     public static boolean silverSmite() {
-        return Configuration.ENABLE_SILVER_SMITE.get();
+        return silverAffectsUndead() && Configuration.ENABLE_SILVER_SMITE.get();
+    }
+
+    public static float silverSmiteDamage() {
+        return Configuration.SILVER_SMITE_DAMAGE.get().floatValue();
+    }
+
+    public static float silverArrowSmiteDamage() {
+        return Configuration.SILVER_ARROW_SMITE_DAMAGE.get().floatValue();
     }
 
     public static boolean silverThorns() {
-        return Configuration.ENABLE_SILVER_THORNS.get();
+        return silverAffectsUndead() && Configuration.ENABLE_SILVER_THORNS.get();
+    }
+
+    public static float silverThornsChance() {
+        return Configuration.SILVER_THORNS_CHANCE.get().floatValue();
     }
 
     public static boolean silverOxidation() {
@@ -46,11 +62,11 @@ public final class CommonConfigImpl {
     }
 
     public static boolean silverFloorDamage() {
-        return Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
+        return silverAffectsUndead() && Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
     }
 
     public static boolean undeadAvoidSilverLight() {
-        return Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
+        return silverAffectsUndead() && Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
     }
 
     public static boolean silverArrows() {

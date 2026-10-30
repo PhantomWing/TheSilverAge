@@ -2,7 +2,6 @@ package com.phantomwing.thesilverage.combat;
 
 import com.phantomwing.thesilverage.entity.SilverArrow;
 import com.phantomwing.thesilverage.item.ModItems;
-import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.platform.SmitePlatform;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
@@ -32,20 +31,22 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
  */
 public final class SilverSmiteHandler {
     /**
-     * Extra damage dealt to undead targets. Vanilla Smite is 2.5 per level, so
-     * this sits deliberately below Smite I and leaves room for the real
-     * enchantment on top.
+     * Extra damage dealt to undead targets by default ({@code silver_smite_damage}). Vanilla Smite is 2.5 per level,
+     * so this sits deliberately below Smite I and leaves room for the real enchantment on top.
      */
     public static final float BONUS_DAMAGE = 1.0f;
 
     /**
-     * The Silver Hoe gets a reduced bonus: hoes swing fast enough that the full
+     * The Silver Hoe's share of the bonus: hoes swing fast enough that the full
      * bonus would make it the strongest anti-undead option in the set.
      */
-    public static final float HOE_BONUS_DAMAGE = 0.5f;
+    public static final float HOE_SHARE = 0.5f;
 
-    /** A Silver Arrow's bonus: a shot is slower than a swing, and the arrow is used up. */
+    /** A Silver Arrow's bonus by default ({@code silver_arrow_smite_damage}): a shot is slower than a swing, and the arrow is used up. */
     public static final float ARROW_BONUS_DAMAGE = 2.0f;
+
+    /** The most either bonus can be set to: Smite V's 12.5, and some. */
+    public static final double MAX_BONUS_DAMAGE = 20.0;
 
     private SilverSmiteHandler() {
     }
@@ -65,20 +66,20 @@ public final class SilverSmiteHandler {
      * of truth for both the damage hook and the tooltip, so the number shown is
      * always the number dealt.
      */
-    public static float getBonusFor(ItemStack stack) {
+    public static float getBonusFor(ItemStack stack, SilverUndeadSettings settings) {
         if (!appliesTo(stack)) {
             return 0.0f;
         }
 
-        return stack.is(ModItems.SILVER_HOE.get()) ? HOE_BONUS_DAMAGE : BONUS_DAMAGE;
+        return stack.is(ModItems.SILVER_HOE.get()) ? settings.smiteDamage() * HOE_SHARE : settings.smiteDamage();
     }
 
     /**
      * The bonus a stack's tooltip names: a tool's when swung, a Silver Arrow's when fired. Kept apart from
      * {@link #getBonusFor}, which the melee hit reads, so a punch with arrows in hand gets nothing.
      */
-    public static float getTooltipBonusFor(ItemStack stack) {
-        return stack.is(ModItems.SILVER_ARROW.get()) ? ARROW_BONUS_DAMAGE : getBonusFor(stack);
+    public static float getTooltipBonusFor(ItemStack stack, SilverUndeadSettings settings) {
+        return stack.is(ModItems.SILVER_ARROW.get()) ? settings.arrowSmiteDamage() : getBonusFor(stack, settings);
     }
 
     /**
@@ -148,7 +149,11 @@ public final class SilverSmiteHandler {
         // animation / knockback prediction); the Fabric mixin sits on that method,
         // so without this the client would compute a different number than the
         // server. Health is synced from the server either way.
-        if (target.level().isClientSide() || !CommonConfig.silverSmite()) {
+        if (target.level().isClientSide()) {
+            return 0.0f;
+        }
+        SilverUndeadSettings settings = SilverUndeadSettings.fromConfig();
+        if (!settings.smite()) {
             return 0.0f;
         }
 
@@ -158,7 +163,7 @@ public final class SilverSmiteHandler {
         }
 
         if (source.getDirectEntity() instanceof SilverArrow) {
-            return ARROW_BONUS_DAMAGE;
+            return settings.arrowSmiteDamage();
         }
 
         // Otherwise a melee hit from a living attacker only. Thorns names the wearer as both its entities too, so
@@ -168,6 +173,6 @@ public final class SilverSmiteHandler {
             return 0.0f;
         }
 
-        return getBonusFor(attacker.getItemBySlot(EquipmentSlot.MAINHAND));
+        return getBonusFor(attacker.getItemBySlot(EquipmentSlot.MAINHAND), settings);
     }
 }

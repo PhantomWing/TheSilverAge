@@ -1,7 +1,6 @@
 package com.phantomwing.thesilverage.combat;
 
 import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
-import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
  * has landed.</p>
  */
 public final class SilverThornsHandler {
-    /** A worn piece's share of the chance a strike is burned. */
+    /** A worn piece's share of the chance a strike is burned, by default ({@code silver_thorns_chance}). */
     public static final float CHANCE_PER_PIECE = 0.2F;
     /** The pieces of a full set, which animal armour counts as. */
     private static final int FULL_SET = 4;
@@ -38,19 +37,19 @@ public final class SilverThornsHandler {
     }
 
     /** The chance {@code stack} adds when worn, for the burn and the tooltip alike. */
-    public static float chanceFor(ItemStack stack) {
+    public static float chanceFor(ItemStack stack, SilverUndeadSettings settings) {
         if (!stack.is(ModTags.Items.SILVER_THORNS_ARMOR)) {
             return 0.0F;
         }
-        return CHANCE_PER_PIECE * (stack.getItem() instanceof AnimalArmorItem ? FULL_SET : 1);
+        return settings.thornsChance() * (stack.getItem() instanceof AnimalArmorItem ? FULL_SET : 1);
     }
 
     /** The chance from everything {@code wearer} wears: its armour slots and the body slot horse armour goes in. */
-    public static float chanceOf(LivingEntity wearer) {
+    public static float chanceOf(LivingEntity wearer, SilverUndeadSettings settings) {
         float chance = 0.0F;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (slot.getType() != EquipmentSlot.Type.HAND) {
-                chance += chanceFor(wearer.getItemBySlot(slot));
+                chance += chanceFor(wearer.getItemBySlot(slot), settings);
             }
         }
         return Math.min(chance, 1.0F);
@@ -61,10 +60,14 @@ public final class SilverThornsHandler {
         // A burn is Thorns damage itself, so one silver wearer burning another can't answer it.
         if (!(wearer.level() instanceof ServerLevel level) || !(source.getEntity() instanceof LivingEntity attacker)
                 || source.getDirectEntity() != attacker || source.is(DamageTypes.THORNS)
-                || !attacker.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER) || !CommonConfig.silverThorns()) {
+                || !attacker.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
             return;
         }
-        float chance = chanceOf(wearer);
+        SilverUndeadSettings settings = SilverUndeadSettings.fromConfig();
+        if (!settings.thorns()) {
+            return;
+        }
+        float chance = chanceOf(wearer, settings);
         RandomSource random = wearer.getRandom();
         if (chance <= 0.0F || random.nextFloat() >= chance) {
             return;

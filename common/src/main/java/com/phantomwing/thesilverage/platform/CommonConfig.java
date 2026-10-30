@@ -74,24 +74,50 @@ public final class CommonConfig {
     }
 
     /**
-     * Gate for the innate anti-undead damage on silver tools
-     * ({@link com.phantomwing.thesilverage.combat.SilverSmiteHandler}). NeoForge:
-     * {@code Configuration.ENABLE_SILVER_SMITE.get()}. Fabric: {@code true} until the
-     * Phase 5 Fabric config exists (matches the NeoForge default).
+     * Master switch for everything silver does to the undead: with it off, {@link #silverSmite()},
+     * {@link #silverThorns()}, {@link #silverFloorDamage()} and {@link #undeadAvoidSilverLight()} are all off, whatever
+     * their own options say.
+     */
+    @ExpectPlatform
+    public static boolean silverAffectsUndead() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
+     * Gate for the innate anti-undead damage on silver tools and Silver Arrows
+     * ({@link com.phantomwing.thesilverage.combat.SilverSmiteHandler}): {@code enable_silver_smite}, and
+     * {@link #silverAffectsUndead()}.
      */
     @ExpectPlatform
     public static boolean silverSmite() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 
+    /** A silver tool's extra damage to the undead, {@code silver_smite_damage}; the Silver Hoe deals half. */
+    @ExpectPlatform
+    public static float silverSmiteDamage() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /** A Silver Arrow's extra damage to the undead, {@code silver_arrow_smite_damage}. */
+    @ExpectPlatform
+    public static float silverArrowSmiteDamage() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
     /**
-     * Gate for silver armour burning the undead that strike its wearer
-     * ({@link com.phantomwing.thesilverage.combat.SilverThornsHandler}).
-     * NeoForge: {@code Configuration.ENABLE_SILVER_THORNS.get()}. Fabric: the
-     * AutoConfig value of the same name.
+     * Gate for silver armour hurting the undead that strike its wearer
+     * ({@link com.phantomwing.thesilverage.combat.SilverThornsHandler}): {@code enable_silver_thorns}, and
+     * {@link #silverAffectsUndead()}.
      */
     @ExpectPlatform
     public static boolean silverThorns() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /** Each worn piece of silver armour's chance of hurting an undead attacker, {@code silver_thorns_chance}. */
+    @ExpectPlatform
+    public static float silverThornsChance() {
         throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
     }
 
@@ -118,7 +144,8 @@ public final class CommonConfig {
 
     /**
      * Gate for silver floors ({@link com.phantomwing.thesilverage.combat.SilverFloor}): hurting the mobs silver harms
-     * as they stand on silver, keeping them from spawning on it and making them walk round it.
+     * as they stand on silver, keeping them from spawning on it and making them walk round it. Also off with
+     * {@link #silverAffectsUndead()}.
      */
     @ExpectPlatform
     public static boolean silverFloorDamage() {
@@ -127,7 +154,8 @@ public final class CommonConfig {
 
     /**
      * Gate for idle undead keeping away from silver light
-     * ({@link com.phantomwing.thesilverage.combat.AvoidSilverLightGoal}): the Silver Torch and Lantern.
+     * ({@link com.phantomwing.thesilverage.combat.AvoidSilverLightGoal}): the Silver Torch and Lantern. Also off with
+     * {@link #silverAffectsUndead()}.
      */
     @ExpectPlatform
     public static boolean undeadAvoidSilverLight() {

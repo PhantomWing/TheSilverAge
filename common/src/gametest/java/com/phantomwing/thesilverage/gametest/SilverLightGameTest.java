@@ -56,6 +56,9 @@ public final class SilverLightGameTest {
         if (TestSettings.with("undead_avoid_silver_light", false, () -> lightFound(helper, false)) != null) {
             problems.add("a husk beside it kept away from it with undead_avoid_silver_light off");
         }
+        if (TestSettings.with("silver_affects_undead", false, () -> lightFound(helper, false)) != null) {
+            problems.add("a husk beside it kept away from it with silver_affects_undead off");
+        }
         if (problems.isEmpty()) {
             helper.succeed();
         } else {
