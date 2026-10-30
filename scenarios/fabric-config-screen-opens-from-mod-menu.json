@@ -24,7 +24,7 @@
     { "expect": "widget", "label": "text.autoconfig.", "exists": false },
     { "scroll": 2 },
     { "hover": "Silver thorns" },
-    { "expect": "tooltip", "line": "Should silver armor burn undead mobs that hit its wearer?" },
+    { "expect": "tooltip", "line": "Should silver armor hurt undead mobs that hit its wearer?" },
     { "expect": "widget", "label": "Save & Quit", "active": false },
     { "click": "Silver floor damage" },
     { "expect": "widget", "label": "Save & Quit", "active": true },

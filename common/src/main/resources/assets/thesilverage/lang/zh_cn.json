@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "白银亡灵杀手",
   "thesilverage.configuration.enable_silver_smite.tooltip": "银制工具是否对亡灵生物造成额外伤害？",
   "thesilverage.configuration.enable_silver_thorns": "白银荆棘",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "银制盔甲是否灼伤攻击穿戴者的亡灵生物？",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "银制盔甲是否伤害攻击穿戴者的亡灵生物？",
   "thesilverage.configuration.silver_affects_undead": "白银影响亡灵",
   "thesilverage.configuration.silver_affects_undead.tooltip": "白银是否对亡灵生物起作用？关闭后，“白银亡灵杀手”“白银荆棘”“银地板伤害”和“亡灵回避银光”也会关闭。",
   "thesilverage.configuration.silver_smite_damage": "白银亡灵杀手伤害",

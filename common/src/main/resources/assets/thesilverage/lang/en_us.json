@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Silver smite",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Should silver tools deal extra damage to undead mobs?",
   "thesilverage.configuration.enable_silver_thorns": "Silver thorns",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Should silver armor burn undead mobs that hit its wearer?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Should silver armor hurt undead mobs that hit its wearer?",
   "thesilverage.configuration.silver_affects_undead": "Silver affects undead",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Should silver affect undead mobs at all? Turning it off also turns off Silver smite, Silver thorns, Silver floor damage and Undead avoid silver light.",
   "thesilverage.configuration.silver_smite_damage": "Silver smite damage",

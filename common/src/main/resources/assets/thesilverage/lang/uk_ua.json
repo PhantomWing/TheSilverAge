@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Срібна кара",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Чи мають срібні інструменти завдавати додаткової шкоди нежиті?",
   "thesilverage.configuration.enable_silver_thorns": "Срібні шипи",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Чи має срібна броня обпікати нежить, яка б'є її власника?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Чи має срібна броня ранити нежить, яка б'є її власника?",
   "thesilverage.configuration.silver_affects_undead": "Срібло діє на нежить",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Чи має срібло діяти на нежить? Вимкнення також вимикає «Срібна кара», «Срібні шипи», «Шкода від срібних підлог» і «Нежить уникає срібного світла».",
   "thesilverage.configuration.silver_smite_damage": "Шкода срібної кари",

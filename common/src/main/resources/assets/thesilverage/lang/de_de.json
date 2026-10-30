@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Silber-Bann",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Sollen Silberwerkzeuge zusätzlichen Schaden gegen Untote verursachen?",
   "thesilverage.configuration.enable_silver_thorns": "Silber-Dornen",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Soll Silberrüstung Untote verbrennen, die ihren Träger treffen?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Soll Silberrüstung Untote verletzen, die ihren Träger treffen?",
   "thesilverage.configuration.silver_affects_undead": "Silber wirkt auf Untote",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Soll Silber überhaupt auf Untote wirken? Ausgeschaltet schaltet es auch Silber-Bann, Silber-Dornen, Schaden durch Silberböden und Untote meiden Silberlicht aus.",
   "thesilverage.configuration.silver_smite_damage": "Schaden des Silber-Banns",

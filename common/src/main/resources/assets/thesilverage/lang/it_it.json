@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Anatema d'argento",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Gli strumenti d'argento devono infliggere danni extra ai non morti?",
   "thesilverage.configuration.enable_silver_thorns": "Spine d'argento",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "L'armatura d'argento deve bruciare i non morti che colpiscono chi la indossa?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "L'armatura d'argento deve ferire i non morti che colpiscono chi la indossa?",
   "thesilverage.configuration.silver_affects_undead": "L'argento colpisce i non morti",
   "thesilverage.configuration.silver_affects_undead.tooltip": "L'argento deve avere effetto sui non morti? Disattivandolo si disattivano anche Anatema d'argento, Spine d'argento, Danno dei pavimenti d'argento e I non morti evitano la luce d'argento.",
   "thesilverage.configuration.silver_smite_damage": "Danno dell'anatema d'argento",

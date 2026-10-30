@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "銀のアンデッド特効",
   "thesilverage.configuration.enable_silver_smite.tooltip": "銀の道具はアンデッドに追加ダメージを与えますか？",
   "thesilverage.configuration.enable_silver_thorns": "銀の棘",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "銀の防具は着用者を攻撃したアンデッドを焼きますか？",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "銀の防具は着用者を攻撃したアンデッドを傷つけますか？",
   "thesilverage.configuration.silver_affects_undead": "銀がアンデッドに作用する",
   "thesilverage.configuration.silver_affects_undead.tooltip": "銀はアンデッドに作用しますか？オフにすると「銀のアンデッド特効」「銀の棘」「銀の床のダメージ」「アンデッドが銀の光を避ける」もオフになります。",
   "thesilverage.configuration.silver_smite_damage": "銀のアンデッド特効のダメージ",

@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Izbire de argint",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Uneltele de argint ar trebui să provoace daune suplimentare nemorților?",
   "thesilverage.configuration.enable_silver_thorns": "Spini de argint",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Armura de argint ar trebui să ardă nemorții care îl lovesc pe purtător?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Armura de argint ar trebui să rănească nemorții care îl lovesc pe purtător?",
   "thesilverage.configuration.silver_affects_undead": "Argintul afectează nemorții",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Ar trebui argintul să afecteze nemorții? Dezactivarea dezactivează și Izbire de argint, Spini de argint, Daune de la podelele de argint și Nemorții evită lumina de argint.",
   "thesilverage.configuration.silver_smite_damage": "Daunele izbirii de argint",

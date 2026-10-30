@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Zilveren kastijding",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Moeten zilveren gereedschappen extra schade toebrengen aan ondoden?",
   "thesilverage.configuration.enable_silver_thorns": "Zilveren doornen",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Moet zilveren harnas ondoden verbranden die de drager raken?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Moet zilveren harnas ondoden verwonden die de drager raken?",
   "thesilverage.configuration.silver_affects_undead": "Zilver werkt op ondoden",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Moet zilver werken op ondoden? Uitgeschakeld schakelt het ook Zilveren kastijding, Zilveren doornen, Schade door zilveren vloeren en Ondoden mijden zilverlicht uit.",
   "thesilverage.configuration.silver_smite_damage": "Schade van zilveren kastijding",

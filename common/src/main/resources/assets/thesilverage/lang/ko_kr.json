@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "은 강타",
   "thesilverage.configuration.enable_silver_smite.tooltip": "은 도구가 언데드에게 추가 피해를 입혀야 하나요?",
   "thesilverage.configuration.enable_silver_thorns": "은 가시",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "은 갑옷이 착용자를 공격한 언데드를 태워야 하나요?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "은 갑옷이 착용자를 공격한 언데드에게 피해를 입혀야 하나요?",
   "thesilverage.configuration.silver_affects_undead": "은이 언데드에게 작용함",
   "thesilverage.configuration.silver_affects_undead.tooltip": "은이 언데드에게 작용해야 하나요? 끄면 은 강타, 은 가시, 은 바닥 피해, 언데드가 은빛을 피함도 꺼집니다.",
   "thesilverage.configuration.silver_smite_damage": "은 강타 피해",

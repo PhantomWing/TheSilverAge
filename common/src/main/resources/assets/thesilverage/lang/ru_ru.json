@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Серебряная кара",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Должны ли серебряные инструменты наносить дополнительный урон нежити?",
   "thesilverage.configuration.enable_silver_thorns": "Серебряные шипы",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "Должна ли серебряная броня обжигать нежить, которая бьёт её владельца?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "Должна ли серебряная броня ранить нежить, которая бьёт её владельца?",
   "thesilverage.configuration.silver_affects_undead": "Серебро действует на нежить",
   "thesilverage.configuration.silver_affects_undead.tooltip": "Должно ли серебро действовать на нежить? Выключение также выключает «Серебряная кара», «Серебряные шипы», «Урон от серебряных полов» и «Нежить избегает серебряного света».",
   "thesilverage.configuration.silver_smite_damage": "Урон серебряной кары",

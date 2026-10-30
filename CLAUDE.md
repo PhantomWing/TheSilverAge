@@ -41,10 +41,12 @@ check.
   mods almost entirely through `c:ingots/silver` and friends; keep new materials tagged there.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
-- **Undead** - every silver effect on mobs (the tools' bonus, the armour's burn on undead attackers, silver floors) checks
+- **Undead** - every silver effect on mobs (the tools' bonus, the armour hurting undead attackers, silver floors) checks
   `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and, optionally,
   Werewolves: Become a Beast's `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. Never check the
-  smite tag directly. Silver armour's burn (`combat/SilverThornsHandler`, 20% a piece, Thorns damage) is called from
+  smite tag directly. The `silver_affects_undead` option turns every one of them off: each loader's `CommonConfigImpl`
+  folds it into the getter of each effect's own option, so a new effect's getter needs it too. The tooltips read the
+  server's settings, sent on join (`SilverUndeadSettings`). Silver armour's hurt (`combat/SilverThornsHandler`, `silver_thorns_chance` a piece, 20% by default, Thorns damage) is called from
   `LivingEntity#hurt`'s return by twin `LivingEntityMixin`s, so it fires only on a hit that landed. Silver floors (`combat/SilverFloor`, the blocks in
   `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
   walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once

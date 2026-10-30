@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Châtiment de l'argent",
   "thesilverage.configuration.enable_silver_smite.tooltip": "Les outils en argent doivent-ils infliger des dégâts supplémentaires aux morts-vivants ?",
   "thesilverage.configuration.enable_silver_thorns": "Épines d'argent",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "L'armure en argent doit-elle brûler les morts-vivants qui frappent son porteur ?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "L'armure en argent doit-elle blesser les morts-vivants qui frappent son porteur ?",
   "thesilverage.configuration.silver_affects_undead": "L'argent affecte les morts-vivants",
   "thesilverage.configuration.silver_affects_undead.tooltip": "L'argent doit-il affecter les morts-vivants ? Le désactiver désactive aussi Châtiment de l'argent, Épines d'argent, Dégâts des sols en argent et Les morts-vivants évitent la lumière d'argent.",
   "thesilverage.configuration.silver_smite_damage": "Dégâts du châtiment de l'argent",

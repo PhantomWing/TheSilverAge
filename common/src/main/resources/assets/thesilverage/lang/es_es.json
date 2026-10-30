@@ -236,7 +236,7 @@
   "thesilverage.configuration.enable_silver_smite": "Golpeo de plata",
   "thesilverage.configuration.enable_silver_smite.tooltip": "¿Deberían las herramientas de plata infligir daño adicional a los no muertos?",
   "thesilverage.configuration.enable_silver_thorns": "Espinas de plata",
-  "thesilverage.configuration.enable_silver_thorns.tooltip": "¿Debería la armadura de plata quemar a los no muertos que golpeen a quien la lleva?",
+  "thesilverage.configuration.enable_silver_thorns.tooltip": "¿Debería la armadura de plata herir a los no muertos que golpeen a quien la lleva?",
   "thesilverage.configuration.silver_affects_undead": "La plata afecta a los no muertos",
   "thesilverage.configuration.silver_affects_undead.tooltip": "¿Debería la plata afectar a los no muertos? Al desactivarlo también se desactivan Golpeo de plata, Espinas de plata, Daño de los suelos de plata y Los no muertos evitan la luz de plata.",
   "thesilverage.configuration.silver_smite_damage": "Daño del golpeo de plata",
