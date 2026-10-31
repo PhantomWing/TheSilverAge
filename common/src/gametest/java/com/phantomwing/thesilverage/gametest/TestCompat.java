@@ -41,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * The calls a test makes whose shape differs between Minecraft versions, each behind a signature every
@@ -108,14 +109,18 @@ public final class TestCompat {
                 .getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace(path)));
     }
 
-    /** A player in the test's level who can click blocks as a real one does, through its game mode. */
-    public static ServerPlayer serverPlayer(GameTestHelper helper) {
-        return helper.makeMockServerPlayerInLevel();
-    }
-
-    /** Takes a player made by {@link #serverPlayer} out of the game again, so no test's mob goes after it. */
-    public static void removePlayer(ServerPlayer player) {
-        player.server.getPlayerList().remove(player);
+    /**
+     * Runs {@code body} with a player in the test's level who can click blocks as a real one does, through its game
+     * mode, then takes the player out of the game again, so no test's mob goes after it. On 1.21.6 to 1.21.8 the player
+     * can only be made once the entities around the world spawn have loaded, so the body may run some ticks later.
+     */
+    public static void withServerPlayer(GameTestHelper helper, Consumer<ServerPlayer> body) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        try {
+            body.accept(player);
+        } finally {
+            player.server.getPlayerList().remove(player);
+        }
     }
 
     /**
