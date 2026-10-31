@@ -1,7 +1,7 @@
 package com.phantomwing.thesilverage.ui;
 
 import com.phantomwing.thesilverage.TheSilverAge;
-import com.phantomwing.thesilverage.block.SilverOxidation;
+import com.phantomwing.thesilverage.block.SilverOxidation;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import com.phantomwing.thesilverage.item.ModItems;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeModeTab {
@@ -20,26 +21,27 @@ public class ModCreativeModeTab {
             CREATIVE_MODE_TABS.register(TheSilverAge.MOD_ID + "_tab", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(ModItems.SILVER_INGOT.get()))
                     .title(Component.translatable(("item_group." + TheSilverAge.MOD_ID)))
-                    .displayItems((parameters, output) -> {
-                        // Add items to this tab. While oxidation is off the weathered and
-                        // waxed variants are unobtainable in survival, so they are hidden
-                        // and only the base silver blocks are listed.
-                        // Silver Arrows are hidden the same way while they can't be got.
-                        boolean hideVariants = !SilverOxidation.enabled();
-                        boolean hideArrows = !CommonConfig.silverArrows();
-                        ModItems.CREATIVE_TAB_ITEMS.forEach((item) -> {
-                            if (hideArrows && item.get() == ModItems.SILVER_ARROW.get()) {
-                                return;
-                            }
-                            if (hideVariants && item.get() instanceof BlockItem blockItem
-                                    && SilverOxidation.nonBaseVariants().contains(blockItem.getBlock())) {
-                                return;
-                            }
-
+                    .displayItems((parameters, output) -> ModItems.CREATIVE_TAB_ITEMS.forEach(item -> {
+                        if (isShown(item.get())) {
                             output.accept(item.get());
-                        });
-                    })
+                        }
+                    }))
                     .build());
+
+    /**
+     * Whether the creative tabs list {@code item}: one of the mod's tab items, but not the weathered and waxed variants
+     * while oxidation is off, which are unobtainable in survival then, nor Silver Arrows while they can't be got.
+     */
+    public static boolean isShown(Item item) {
+        if (ModItems.CREATIVE_TAB_ITEMS.stream().noneMatch(entry -> entry.get() == item)) {
+            return false;
+        }
+        if (item == ModItems.SILVER_ARROW.get() && !CommonConfig.silverArrows()) {
+            return false;
+        }
+        return SilverOxidation.enabledOnClient() || !(item instanceof BlockItem blockItem)
+                || !SilverOxidation.nonBaseVariants().contains(blockItem.getBlock());
+    }
 
     public static void register() {
         CREATIVE_MODE_TABS.register();

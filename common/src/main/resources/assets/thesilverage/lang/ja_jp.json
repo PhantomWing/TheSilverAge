@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "より速く飛ぶ",
   "tooltip.thesilverage.silver_smite": "アンデッドに+%sのダメージ",
   "tooltip.thesilverage.silver_thorns": "対アンデッドの棘の鎧",
-  "trim_material.thesilverage.silver": "銀の素材"
+  "trim_material.thesilverage.silver": "銀の素材",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "銀の電球が点く",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "銀の電球が消える",
+  "subtitles.thesilverage.item.armor.equip_silver": "銀の防具が装着される",
+  "thesilverage.info.silver_pressure_plate": "敵対的モブは銀の感圧板を押せず、その上に立つアンデッドはダメージを受けます。風化が進むほど、最大の信号を出すのに必要なモブの数が増えます（1、3、5、15体）。",
+  "thesilverage.info.silver_light": "アンデッドは標的がいないとき、銀の松明と銀のランタンに近づきません。",
+  "thesilverage.info.silver_arrow": "銀の矢は通常の矢より速く飛ぶため威力が高く、アンデッドに追加ダメージを与えます。"
 }

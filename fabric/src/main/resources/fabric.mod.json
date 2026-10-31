@@ -24,6 +24,12 @@
     ],
     "modmenu": [
       "com.phantomwing.thesilverage.fabric.config.TheSilverAgeModMenu"
+    ],
+    "emi": [
+      "com.phantomwing.thesilverage.compat.emi.TheSilverAgeEmiPlugin"
+    ],
+    "jei_mod_plugin": [
+      "com.phantomwing.thesilverage.compat.jei.TheSilverAgeJeiPlugin"
     ]
   },
   "mixins": [
@@ -38,6 +44,8 @@
   },
   "suggests": {
     "enhancedcelestials": ">=6.0",
-    "enhancedcelestials2core": ">=1.0"
+    "enhancedcelestials2core": ">=1.0",
+    "jei": "*",
+    "emi": "*"
   }
 }

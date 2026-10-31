@@ -30,6 +30,11 @@ dependencies {
     // Architectury API (common).
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
+    // JEI plugin API and EMI's xplat artifact, compile-time only, for the info pages' plugins in common: each is only
+    // ever classloaded by its viewer, so neither is required or shipped.
+    modCompileOnly "mezz.jei:jei-1.21.1-common-api:${rootProject.jei_version}"
+    modCompileOnly "dev.emi:emi-xplat-intermediary:${rootProject.emi_version}"
+
     // Enhanced Celestials (optional Moon Dial compat). compileOnly: the API classes are
     // identical on both loaders (EC is Architectury-based), so common compiles against
     // the intermediary-mapped Fabric jar and neither jar is ever shipped.

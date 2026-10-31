@@ -31,4 +31,9 @@ public class WeatheringSilverBulbBlock extends WeatheringCopperBulbBlock {
 
         super.randomTick(state, level, pos, random);
     }
+
+    @Override
+    public void checkAndFlip(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos) {
+        SilverBulbBlock.flip(state, level, pos);
+    }
 }

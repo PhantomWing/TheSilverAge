@@ -19,7 +19,7 @@
 - Silver armor now has a 20% chance per piece to hurt undead mobs that hit you, dealing 1-2 damage (80% for a full set). Silver Horse Armor counts as a full set. Works like Thorns and stacks with it. Can be turned off with the `enable_silver_thorns` config option.
 - Undead mobs now take damage while standing on silver blocks, and avoid walking over them
   - The more the silver tarnishes, the slower it hurts
-  - Undead mobs can't spawn on silver blocks
+  - Undead mobs can't spawn on silver blocks, except from monster spawners
   - Undead mobs walk off silver blocks when they have no target
   - Can be turned off with the `enable_silver_floor_damage` config option
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
@@ -38,6 +38,10 @@
 - Added the `silver_affects_undead` config option, which turns off everything silver does to undead mobs at once
 - Added config options for how much extra damage silver tools and Silver Arrows deal to undead mobs (`silver_smite_damage`, `silver_arrow_smite_damage`), and for each piece of Silver Armor's chance to hurt undead mobs that hit you (`silver_thorns_chance`)
 - Added a config screen on Fabric (opened from Mod Menu)
+- Added compatibility with JEI and EMI. Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
+- Added Create washing of Crushed Raw Silver into Silver Nuggets
+- Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
+- Silver items now also show up in the vanilla creative tabs
 - Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
@@ -50,6 +54,7 @@
   - Added Silver Chain to the `c:chains` tag
   - Moved Silver Ore from the `c:ore_rates/singular` tag to the `c:ore_rates/dense` tag
   - Added the `c:is_overworld` biome tag to the `thesilverage:has_silver_ore` tag
+  - Added Silver Chains, Silver Lanterns and Silver Brick Walls to Sable's tags
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5
@@ -57,6 +62,8 @@
 - Silver Doors and Silver Trapdoors can now be opened by wind charges
 - Silver Trapdoors are now crafted from 4 Silver Ingots, like iron trapdoors
 - Silver Bricks are now crafted from 4 Cut Silver (including oxidized and waxed variants)
+- Silver Bricks, Silver Brick Stairs, Silver Brick Slabs and Silver Brick Walls can now be cut from Cut Silver in a stonecutter
+- Silver Bulbs and Silver Armor now have their own subtitles
 - The Fabric version now also supports Minecraft 1.21
 
 ### Fixes

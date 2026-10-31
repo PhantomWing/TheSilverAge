@@ -3,6 +3,10 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmersdelight"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
     }
   ],
   "type": "minecraft:crafting_shaped",
@@ -13,6 +17,10 @@
       "values": [
         "farmersdelight"
       ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
     }
   ],
   "key": {

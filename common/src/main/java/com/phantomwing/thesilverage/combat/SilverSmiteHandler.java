@@ -7,11 +7,11 @@ import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 /**
  * Innate anti-undead damage for silver tools ("silver burns the undead").
@@ -20,14 +20,10 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
  * to the stack, cannot be removed at a grindstone, and stacks additively on top
  * of a real Smite enchantment.</p>
  *
- * <p>The bonus is added before armour/resistance reduction, which is exactly
- * where vanilla applies the Smite enchantment's damage (see
- * {@code Player#attack}), so it scales identically against armoured undead.</p>
- *
- * <p>The LOGIC is loader-agnostic and lives here; the damage hook itself is
- * loader-specific (NeoForge {@code LivingIncomingDamageEvent}, Fabric mixin)
- * and is bridged through {@link SmitePlatform} — mirroring
- * {@link com.phantomwing.thesilverage.armor.MonsterArmorHandler}.</p>
+ * <p>A player's swing takes it where it takes Smite's, in {@code ServerPlayer#getEnchantedDamage} (each loader's
+ * {@code ServerPlayerMixin}), so it is scaled by how charged the swing was and shown with vanilla's magic-crit burst. Every
+ * other hit takes it as it comes in, before armour and resistance: NeoForge's {@code LivingIncomingDamageEvent} and a
+ * Fabric mixin, bridged through {@link SmitePlatform}.</p>
  */
 public final class SilverSmiteHandler {
     /**
@@ -90,52 +86,29 @@ public final class SilverSmiteHandler {
      * would otherwise inherit the wielder's held weapon bonus.</p>
      */
     public static float handleIncomingDamage(LivingEntity target, DamageSource source) {
-        return getBonusDamage(target, source);
+        return isPlayerSwing(source) ? 0.0f : getBonusDamage(target, source);
+    }
+
+    /** The bonus a player's swing at {@code target} adds to its enchanted damage, or {@code 0}. */
+    public static float getSwingBonus(Entity target, DamageSource source) {
+        return target instanceof LivingEntity living && isPlayerSwing(source) ? getBonusDamage(living, source) : 0.0f;
     }
 
     /**
-     * Shows the bonus once a hit has landed: vanilla's magic-crit particle, or sparks for a Silver Arrow. Called by
-     * each loader's {@code LivingEntityMixin} where {@code hurt} answers true, since shown as the damage was added it
-     * sparked on hits a shield or invulnerability then refused.
+     * Sparks for a Silver Arrow's bonus once its hit has landed. Called by each loader's {@code LivingEntityMixin}
+     * where {@code hurt} answers true, so a hit a shield or invulnerability refused shows nothing. A swing's bonus is
+     * part of its enchanted damage, which vanilla's magic crit already shows.
      */
     public static void onHurt(LivingEntity target, DamageSource source) {
-        if (getBonusDamage(target, source) <= 0.0f) {
-            return;
-        }
-        if (source.getDirectEntity() instanceof SilverArrow && target.level() instanceof ServerLevel serverLevel) {
+        if (source.getDirectEntity() instanceof SilverArrow && target.level() instanceof ServerLevel serverLevel
+                && getBonusDamage(target, source) > 0.0f) {
             SilverSparks.burst(serverLevel, target);
-        } else {
-            spawnMagicCritParticle(target, source);
         }
     }
 
-    /**
-     * Vanilla's "magic crit" effect (the {@code ENCHANTED_HIT} particle burst
-     * Smite produces), via the same {@code Player#magicCrit} path vanilla uses in
-     * {@code Player#attack}.
-     *
-     * <p>Vanilla ALREADY fires that effect whenever an enchantment added damage to
-     * the hit, so calling it again for an enchanted silver tool would double the
-     * particles. The check below probes the weapon's enchantments against this
-     * exact target: if they contribute any damage (Smite on undead, Sharpness on
-     * anything, ...), vanilla has it covered and this does nothing.</p>
-     */
-    private static void spawnMagicCritParticle(LivingEntity target, DamageSource source) {
-        // Vanilla only emits this for player attacks; mobs swinging silver get no particle.
-        if (!(source.getEntity() instanceof Player player)
-                || !(target.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-
-        ItemStack weapon = player.getItemBySlot(EquipmentSlot.MAINHAND);
-
-        // Probe value is arbitrary: we only care whether enchantments raise it.
-        float probe = 1.0f;
-        if (EnchantmentHelper.modifyDamage(serverLevel, weapon, target, source, probe) > probe) {
-            return;
-        }
-
-        player.magicCrit(target);
+    private static boolean isPlayerSwing(DamageSource source) {
+        return source.is(DamageTypes.PLAYER_ATTACK) && source.getEntity() instanceof Player
+                && source.getDirectEntity() == source.getEntity();
     }
 
     private static boolean isMelee(DamageSource source) {

@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Vola più veloce",
   "tooltip.thesilverage.silver_smite": "+%s danni contro i non morti",
   "tooltip.thesilverage.silver_thorns": "Spine contro i non morti",
-  "trim_material.thesilverage.silver": "Materiale d'argento"
+  "trim_material.thesilverage.silver": "Materiale d'argento",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Lampadina di argento si accende",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Lampadina di argento si spegne",
+  "subtitles.thesilverage.item.armor.equip_silver": "Armatura d'argento sferraglia",
+  "thesilverage.info.silver_pressure_plate": "Le creature ostili non possono premere una piastra a pressione di argento, e i non morti che ci stanno sopra subiscono danni. Più è ossidata, più creature servono per dare un segnale pieno: 1, 3, 5 o 15.",
+  "thesilverage.info.silver_light": "I non morti si tengono lontani dalle torce di argento e dalle lanterne di argento quando non hanno un bersaglio.",
+  "thesilverage.info.silver_arrow": "Le frecce d'argento volano più veloci delle frecce normali, quindi colpiscono più forte, e infliggono danni extra ai non morti."
 }

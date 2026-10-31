@@ -45,7 +45,7 @@ public class ModEmiPlugin implements EmiPlugin {
         // obtainable, so none of these belong in a recipe viewer — including the
         // axe ones, even though scraping itself still works in-world for anyone
         // holding leftover blocks.
-        if (!SilverOxidation.enabled()) {
+        if (!SilverOxidation.enabledOnClient()) {
             return;
         }
 

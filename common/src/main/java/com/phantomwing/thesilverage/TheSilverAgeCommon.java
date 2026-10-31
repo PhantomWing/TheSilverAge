@@ -14,7 +14,9 @@ import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.WeatheringPlatform;
 import com.phantomwing.thesilverage.particle.ModParticles;
+import com.phantomwing.thesilverage.sound.ModSounds;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
+import com.phantomwing.thesilverage.ui.VanillaTabs;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
 import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -50,8 +52,10 @@ public final class TheSilverAgeCommon {
         ModBlockEntityTypes.register();
         ModEntityTypes.register();
         ModParticles.register();
+        ModSounds.register();
         ModCriteriaTriggers.register();
         ModCreativeModeTab.register();
+        VanillaTabs.register();
         ModArmorMaterials.register();
         ModPlacementModifiers.register();
 

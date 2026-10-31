@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.block;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
+import com.phantomwing.thesilverage.block.custom.SilverBulbBlock;
 import com.phantomwing.thesilverage.block.custom.SilverTorchBlock;
 import com.phantomwing.thesilverage.block.custom.SilverWallTorchBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverHorizontalFacingBlock;
@@ -301,7 +302,7 @@ public class ModBlocks {
 
     private static RegistrySupplier<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
         BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
-        return registerSilverBlock(name, baseProps, CopperBulbBlock::new);
+        return registerSilverBlock(name, baseProps, SilverBulbBlock::new);
     }
 
     private static RegistrySupplier<SlabBlock> registerWeatheringSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {

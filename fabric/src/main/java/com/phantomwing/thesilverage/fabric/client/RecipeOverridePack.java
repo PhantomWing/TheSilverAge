@@ -5,10 +5,12 @@ import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import me.shedaniel.autoconfig.AutoConfig;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -30,6 +32,8 @@ import java.util.List;
  * with the default config; the sync right after registration covers a config that has some off.</p>
  */
 public final class RecipeOverridePack {
+    private static volatile boolean syncPending;
+
     private RecipeOverridePack() {
     }
 
@@ -46,6 +50,8 @@ public final class RecipeOverridePack {
             }
         });
 
+        ClientTickEvents.END_CLIENT_TICK.register(RecipeOverridePack::clientTick);
+
         // Sync once after registration in case the saved config differs from DEFAULT_ENABLED.
         Minecraft mc = Minecraft.getInstance();
         if (mc != null) mc.execute(RecipeOverridePack::refresh);
@@ -61,11 +67,23 @@ public final class RecipeOverridePack {
     /**
      * Select each pack whose override is on and deselect the rest, then reload once if anything
      * changed. A pack that isn't in the repository is left out, so it can't cause a reload. Called
-     * on init, on config save, on server-sync receipt and on disconnect.
+     * on init, on config save, on server-sync receipt and on disconnect, and applied on the next client tick
+     * once it is safe, as NeoForge's: a reload while the client was still joining a world, where the server's
+     * overrides arrive, could freeze it.
      */
     public static void refresh() {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc == null) return;
+        syncPending = true;
+    }
+
+    private static void clientTick(Minecraft mc) {
+        if (!syncPending) return;
+        if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
+        if (mc.screen instanceof ReceivingLevelScreen) return; // still joining a world
+        syncPending = false;
+        apply(mc);
+    }
+
+    private static void apply(Minecraft mc) {
         PackRepository repo = mc.getResourcePackRepository();
 
         List<String> selected = new ArrayList<>(repo.getSelectedIds());

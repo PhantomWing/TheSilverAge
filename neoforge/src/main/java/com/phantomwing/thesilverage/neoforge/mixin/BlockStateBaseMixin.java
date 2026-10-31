@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * No mob silver harms spawns on silver ({@link SilverFloor#allowsSpawn}): the check magma keeps the mobs fire harms off
- * it with, which natural spawning, spawners and trial spawners all ask.
+ * it with, which natural spawning and trial spawners ask. A monster spawner spawns on anything, as it does on magma.
  * The Fabric twin is the identically-named mixin in the {@code fabric} source set.
  */
 @Mixin(BlockBehaviour.BlockStateBase.class)

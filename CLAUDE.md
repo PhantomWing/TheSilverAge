@@ -46,8 +46,12 @@ check.
   Werewolves: Become a Beast's `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. Never check the
   smite tag directly. The `silver_affects_undead` option turns every one of them off: each loader's `CommonConfigImpl`
   folds it into the getter of each effect's own option, so a new effect's getter needs it too. The tooltips read the
-  server's settings, sent on join (`SilverUndeadSettings`). Silver armour's hurt (`combat/SilverThornsHandler`, `silver_thorns_chance` a piece, 20% by default, Thorns damage) is called from
-  `LivingEntity#hurt`'s return by twin `LivingEntityMixin`s, so it fires only on a hit that landed. Silver floors (`combat/SilverFloor`, the blocks in
+  server's settings, sent on join and whenever the config changes (`SilverUndeadSettings`, `ModNetworking.configChanged`). A
+  player's swing takes the tools' bonus in `ServerPlayer#getEnchantedDamage` (twin `ServerPlayerMixin`s), where Smite's goes, so the
+  swing's charge scales it; every other hit takes it as it comes in. Silver armour's hurt (`combat/SilverThornsHandler`,
+  `silver_thorns_chance` a piece, 20% by default, Thorns damage) is called from `LivingEntity#hurt`'s return by twin
+  `LivingEntityMixin`s, so it fires only on a hit that landed, and puts back the attacker's damage cooldown after, or
+  vanilla's Thorns, which hurts later in the same strike, lost the burn's damage. Silver floors (`combat/SilverFloor`, the blocks in
   `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
   walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once
   for every mob. `SilverUndeadGoals` gives every such mob two goals as it joins a level (NeoForge's `EntityJoinLevelEvent`,
@@ -59,6 +63,10 @@ check.
   `entityInside`, and `SilverFloor` looks at the block a mob stands in for a plate. It is pressed by any living entity
   but a hostile one (`Enemy`) or one in `thesilverage:cannot_press_silver_pressure_plates`, which holds
   `sensitive_to_silver`.
+- **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
+  to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
+- **`enable_silver_oxidation`** is sent to clients (`OxidationSyncPayload`), so the creative tabs, EMI and honeycomb
+  follow the server's; a dispenser's honeycomb is refused too (`SilverOxidation`).
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two

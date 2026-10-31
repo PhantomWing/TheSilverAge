@@ -301,14 +301,52 @@ public class ModBlockStateProvider extends BlockStateProvider {
         });
     }
 
-    /** Bars: vanilla pane multipart (post/post_ends/cap/side), cutout render type. */
+    /**
+     * Bars: vanilla's iron bars multipart over its own models, cutout. The glass pane's, which this took before, drew a
+     * lone bar as a thick post and a run of them with the texture along its edges.
+     */
     private void bars(RegistrySupplier<IronBarsBlock> block) {
         barsWithTexture(block, block);
     }
 
     private void barsWithTexture(RegistrySupplier<IronBarsBlock> block, RegistrySupplier<IronBarsBlock> textureBlock) {
+        String name = textureBlock.getId().getPath();
         ResourceLocation texture = BlockUtils.getBlockResourceLocation(textureBlock.get());
-        paneBlockWithRenderType(block.get(), texture, texture, RenderType.cutout().name);
+        ModelFile postEnds = barsModel(name, "post_ends", texture);
+        ModelFile post = barsModel(name, "post", texture);
+        ModelFile cap = barsModel(name, "cap", texture);
+        ModelFile capAlt = barsModel(name, "cap_alt", texture);
+        ModelFile side = barsModel(name, "side", texture);
+        ModelFile sideAlt = barsModel(name, "side_alt", texture);
+        getMultipartBuilder(block.get())
+                .part().modelFile(postEnds).addModel().end()
+                .part().modelFile(post).addModel()
+                .condition(CrossCollisionBlock.NORTH, false).condition(CrossCollisionBlock.EAST, false)
+                .condition(CrossCollisionBlock.SOUTH, false).condition(CrossCollisionBlock.WEST, false).end()
+                .part().modelFile(cap).addModel()
+                .condition(CrossCollisionBlock.NORTH, true).condition(CrossCollisionBlock.EAST, false)
+                .condition(CrossCollisionBlock.SOUTH, false).condition(CrossCollisionBlock.WEST, false).end()
+                .part().modelFile(cap).rotationY(90).addModel()
+                .condition(CrossCollisionBlock.NORTH, false).condition(CrossCollisionBlock.EAST, true)
+                .condition(CrossCollisionBlock.SOUTH, false).condition(CrossCollisionBlock.WEST, false).end()
+                .part().modelFile(capAlt).addModel()
+                .condition(CrossCollisionBlock.NORTH, false).condition(CrossCollisionBlock.EAST, false)
+                .condition(CrossCollisionBlock.SOUTH, true).condition(CrossCollisionBlock.WEST, false).end()
+                .part().modelFile(capAlt).rotationY(90).addModel()
+                .condition(CrossCollisionBlock.NORTH, false).condition(CrossCollisionBlock.EAST, false)
+                .condition(CrossCollisionBlock.SOUTH, false).condition(CrossCollisionBlock.WEST, true).end()
+                .part().modelFile(side).addModel().condition(CrossCollisionBlock.NORTH, true).end()
+                .part().modelFile(side).rotationY(90).addModel().condition(CrossCollisionBlock.EAST, true).end()
+                .part().modelFile(sideAlt).addModel().condition(CrossCollisionBlock.SOUTH, true).end()
+                .part().modelFile(sideAlt).rotationY(90).addModel().condition(CrossCollisionBlock.WEST, true).end();
+    }
+
+    private ModelFile barsModel(String name, String part, ResourceLocation texture) {
+        return models().withExistingParent(name + "_" + part, mcLoc("block/iron_bars_" + part))
+                .renderType(RenderType.cutout().name)
+                .texture("particle", texture)
+                .texture("bars", texture)
+                .texture("edge", texture);
     }
 
     /** Torch: floor model + wall model, both cutout. The wall torch has no item. */

@@ -5,6 +5,7 @@ import com.phantomwing.thesilverage.neoforge.compat.create.ModDeployingRecipeGen
 import com.phantomwing.thesilverage.neoforge.compat.create.ModChannelingRecipeGen;
 import com.phantomwing.thesilverage.neoforge.compat.create.ModFillingRecipeGen;
 import com.phantomwing.thesilverage.neoforge.compat.create.ModPressingRecipeGen;
+import com.phantomwing.thesilverage.neoforge.compat.create.ModWashingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -82,6 +83,9 @@ public class DataGenerators {
         // Create mod compat: generate create:pressing recipe for silver_ingot -> silver_sheet,
         // matching the pattern Create uses for its own iron/gold/copper/brass sheets.
         generator.addProvider(event.includeServer(), new ModPressingRecipeGen(output, lookupProvider));
+
+        // Create mod compat: create:splashing of Create's crushed raw silver into Silver Nuggets.
+        generator.addProvider(event.includeServer(), new ModWashingRecipeGen(output, lookupProvider));
 
         // MUST be registered LAST. NeoForge's DataGenerator.run() executes
         // providers sequentially in registration order (each future .join()-ed

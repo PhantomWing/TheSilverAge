@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Vliegt sneller",
   "tooltip.thesilverage.silver_smite": "+%s schade tegen ondoden",
   "tooltip.thesilverage.silver_thorns": "Doornen tegen ondoden",
-  "trim_material.thesilverage.silver": "Zilvermateriaal"
+  "trim_material.thesilverage.silver": "Zilvermateriaal",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Zilveren lamp gaat aan",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Zilveren lamp gaat uit",
+  "subtitles.thesilverage.item.armor.equip_silver": "Zilveren harnas rammelt",
+  "thesilverage.info.silver_pressure_plate": "Vijandige mobs kunnen een zilveren drukplaat niet indrukken, en ondoden die erop staan krijgen schade. Hoe verder hij geoxideerd is, hoe meer mobs er nodig zijn voor een volledig signaal: 1, 3, 5 of 15.",
+  "thesilverage.info.silver_light": "Ondoden blijven uit de buurt van zilverfakkels en zilveren lantaarns als ze geen doelwit hebben.",
+  "thesilverage.info.silver_arrow": "Zilveren pijlen vliegen sneller dan normale pijlen, raken daardoor harder, en doen extra schade aan ondoden."
 }

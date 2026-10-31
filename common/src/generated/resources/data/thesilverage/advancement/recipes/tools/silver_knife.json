@@ -3,6 +3,10 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmersdelight"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -30,6 +34,10 @@
       "values": [
         "farmersdelight"
       ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
     }
   ],
   "requirements": [

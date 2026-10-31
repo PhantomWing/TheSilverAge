@@ -9,7 +9,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import com.phantomwing.thesilverage.sound.ModSounds;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -43,7 +43,7 @@ public class ModArmorMaterials {
         });
 
         ResourceLocation location = TheSilverAge.resourceLocation(name);
-        Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
+        Holder<SoundEvent> equipSound = ModSounds.ARMOR_EQUIP_SILVER;
         List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));
 
         RegistrySupplier<ArmorMaterial> supplier = ARMOR_MATERIALS.register(name, () ->

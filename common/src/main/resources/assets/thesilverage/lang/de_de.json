@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Fliegt schneller",
   "tooltip.thesilverage.silver_smite": "+%s Schaden gegen Untote",
   "tooltip.thesilverage.silver_thorns": "Dornen gegen Untote",
-  "trim_material.thesilverage.silver": "Silbermaterial"
+  "trim_material.thesilverage.silver": "Silbermaterial",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Silberleuchte schaltet ein",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Silberleuchte schaltet aus",
+  "subtitles.thesilverage.item.armor.equip_silver": "Silberrüstung klimpert",
+  "thesilverage.info.silver_pressure_plate": "Feindliche Mobs können eine Silberdruckplatte nicht auslösen, und Untote, die darauf stehen, nehmen Schaden. Je weiter sie oxidiert ist, desto mehr Mobs braucht sie für ein volles Signal: 1, 3, 5 oder 15.",
+  "thesilverage.info.silver_light": "Untote halten sich von Silberfackeln und Silberlaternen fern, wenn sie kein Ziel haben.",
+  "thesilverage.info.silver_arrow": "Silberpfeile fliegen schneller als normale Pfeile, treffen deshalb härter und fügen Untoten zusätzlichen Schaden zu."
 }

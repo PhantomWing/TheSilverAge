@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Vole plus vite",
   "tooltip.thesilverage.silver_smite": "+%s de dégâts contre les morts-vivants",
   "tooltip.thesilverage.silver_thorns": "Épines contre les morts-vivants",
-  "trim_material.thesilverage.silver": "Matériau en argent"
+  "trim_material.thesilverage.silver": "Matériau en argent",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Ampoule en argent qui s'allume",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Ampoule en argent qui s'éteint",
+  "subtitles.thesilverage.item.armor.equip_silver": "Tintement d'armure en argent",
+  "thesilverage.info.silver_pressure_plate": "Les créatures hostiles ne peuvent pas actionner une plaque de pression en argent, et les morts-vivants qui se tiennent dessus subissent des dégâts. Plus elle est oxydée, plus il faut de créatures pour obtenir un signal complet : 1, 3, 5 ou 15.",
+  "thesilverage.info.silver_light": "Les morts-vivants se tiennent à l'écart des torches en argent et des lanternes en argent quand ils n'ont pas de cible.",
+  "thesilverage.info.silver_arrow": "Les flèches en argent volent plus vite que les flèches normales, frappent donc plus fort, et infligent des dégâts supplémentaires aux morts-vivants."
 }

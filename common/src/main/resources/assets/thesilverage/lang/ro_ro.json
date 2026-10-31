@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Zboară mai repede",
   "tooltip.thesilverage.silver_smite": "+%s daune împotriva nemorților",
   "tooltip.thesilverage.silver_thorns": "Spini împotriva nemorților",
-  "trim_material.thesilverage.silver": "Material de argint"
+  "trim_material.thesilverage.silver": "Material de argint",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Becul de argint se aprinde",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Becul de argint se stinge",
+  "subtitles.thesilverage.item.armor.equip_silver": "Armura de argint clincăne",
+  "thesilverage.info.silver_pressure_plate": "Creaturile ostile nu pot apăsa o placă de presiune de argint, iar nemorții care stau pe ea primesc daune. Cu cât e mai oxidată, cu atât e nevoie de mai multe creaturi pentru un semnal complet: 1, 3, 5 sau 15.",
+  "thesilverage.info.silver_light": "Nemorții se țin departe de torțele de argint și de felinarele de argint când nu au o țintă.",
+  "thesilverage.info.silver_arrow": "Săgețile de argint zboară mai repede decât săgețile obișnuite, așa că lovesc mai tare, și provoacă daune suplimentare nemorților."
 }

@@ -73,12 +73,27 @@ public final class SilverThornsHandler {
             return;
         }
         float damage = MIN_DAMAGE + random.nextInt(MAX_DAMAGE - MIN_DAMAGE + 1);
-        if (attacker.hurt(level.damageSources().thorns(wearer), damage)) {
+        if (hurtLeavingCooldown(attacker, level.damageSources().thorns(wearer), damage)) {
             SilverSparks.burst(level, attacker);
             level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.THORNS_HIT, attacker.getSoundSource(), 1.0F, 1.0F);
             if (wearer instanceof ServerPlayer player) {
                 ModCriteriaTriggers.SILVER_ARMOR_HURT.get().trigger(player);
             }
         }
+    }
+
+    /**
+     * Hurts {@code attacker} and leaves its damage cooldown as it was. The burn runs inside the wearer's {@code hurt},
+     * before the strike's post-attack effects where vanilla's Thorns hurts the attacker too; the cooldown a burn left
+     * took the burn's damage off Thorns', so the two didn't stack.
+     */
+    private static boolean hurtLeavingCooldown(LivingEntity attacker, DamageSource source, float damage) {
+        int invulnerableTime = attacker.invulnerableTime;
+        float lastHurt = attacker.lastHurt;
+        attacker.invulnerableTime = 0;
+        boolean hurt = attacker.hurt(source, damage);
+        attacker.invulnerableTime = invulnerableTime;
+        attacker.lastHurt = lastHurt;
+        return hurt;
     }
 }

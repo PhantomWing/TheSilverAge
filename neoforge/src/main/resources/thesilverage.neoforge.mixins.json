@@ -8,8 +8,11 @@
     "BlockStateBaseMixin",
     "LivingEntityMixin",
     "MobMixin",
+    "ServerPlayerMixin",
     "RandomPosMixin",
-    "WalkNodeEvaluatorMixin"
+    "WalkNodeEvaluatorMixin",
+    "WorldGenRegionMixin",
+    "ZombieMixin"
   ],
   "client": [
     "client.PackSelectionModelMixin"

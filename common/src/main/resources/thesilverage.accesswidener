@@ -27,3 +27,11 @@ mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDI
 # Mob.goalSelector (protected): LeaveSilverFloorGoal.addTo gives the mobs silver harms the goal as they join a level.
 # Mirrored in NeoForge's accesstransformer.cfg.
 accessible	field	net/minecraft/world/entity/Mob	goalSelector	Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+
+# LivingEntity.lastHurt (protected): SilverThornsHandler puts back the attacker's damage cooldown after a burn, so
+# Thorns still hurts in full. Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/entity/LivingEntity	lastHurt	F
+
+# CreativeModeTabs.CACHED_PARAMETERS (private): ModNetworking drops it when the server's enable_silver_oxidation
+# changes what the tab hides, so the tab is built again. Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/item/CreativeModeTabs	CACHED_PARAMETERS	Lnet/minecraft/world/item/CreativeModeTab$ItemDisplayParameters;

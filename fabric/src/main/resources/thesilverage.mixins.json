@@ -11,9 +11,12 @@
     "MobMixin",
     "LootTableMixin",
     "PersistentEntitySectionManagerMixin",
+    "ServerPlayerMixin",
     "PoiTypesAccessor",
     "RandomPosMixin",
-    "WalkNodeEvaluatorMixin"
+    "WalkNodeEvaluatorMixin",
+    "WorldGenRegionMixin",
+    "ZombieMixin"
   ],
   "client": [
     "client.PackSelectionModelMixin"

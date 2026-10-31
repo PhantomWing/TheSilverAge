@@ -70,7 +70,11 @@ public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
     @Override
     protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, level, pos, entity);
-        SilverFloor.stepOn(level, state, entity);
+        // Asked of every block a mob's box reaches, so a zombie beside the plate was hurt, and never walked off, since
+        // its goal looks only at the block it stands in.
+        if (entity.blockPosition().equals(pos)) {
+            SilverFloor.stepOn(level, state, entity);
+        }
     }
 
     // A plate that tarnished, or was waxed or scraped, while pressed stayed powered for good without

@@ -1,5 +1,6 @@
 {
   "values": [
-    "#c:ores/silver"
+    "thesilverage:silver_ore",
+    "thesilverage:deepslate_silver_ore"
   ]
 }

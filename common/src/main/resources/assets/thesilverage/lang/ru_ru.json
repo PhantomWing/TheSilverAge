@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Летит быстрее",
   "tooltip.thesilverage.silver_smite": "+%s к урону по нежити",
   "tooltip.thesilverage.silver_thorns": "Шипы против нежити",
-  "trim_material.thesilverage.silver": "Серебряный материал"
+  "trim_material.thesilverage.silver": "Серебряный материал",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Серебряная лампа включается",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Серебряная лампа выключается",
+  "subtitles.thesilverage.item.armor.equip_silver": "Звон серебряной брони",
+  "thesilverage.info.silver_pressure_plate": "Враждебные мобы не могут нажать серебряную нажимную плиту, а нежить, стоящая на ней, получает урон. Чем сильнее она потускнела, тем больше мобов нужно для полного сигнала: 1, 3, 5 или 15.",
+  "thesilverage.info.silver_light": "Нежить держится подальше от серебряных факелов и серебряных фонарей, когда у неё нет цели.",
+  "thesilverage.info.silver_arrow": "Серебряные стрелы летят быстрее обычных, поэтому бьют сильнее, и наносят нежити дополнительный урон."
 }

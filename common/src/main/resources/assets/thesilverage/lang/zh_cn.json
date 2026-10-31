@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "飞行速度更快",
   "tooltip.thesilverage.silver_smite": "对亡灵生物造成+%s伤害",
   "tooltip.thesilverage.silver_thorns": "对亡灵生物的荆棘",
-  "trim_material.thesilverage.silver": "银材料"
+  "trim_material.thesilverage.silver": "银材料",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "银灯泡：亮起",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "银灯泡：熄灭",
+  "subtitles.thesilverage.item.armor.equip_silver": "银盔甲：叮当",
+  "thesilverage.info.silver_pressure_plate": "敌对生物无法压下银压力板，站在上面的亡灵生物会受到伤害。氧化程度越高，输出最大信号所需的生物就越多：1、3、5或15个。",
+  "thesilverage.info.silver_light": "亡灵生物在没有目标时会远离银火把和银灯笼。",
+  "thesilverage.info.silver_arrow": "银箭飞得比普通的箭更快，因此威力更大，并对亡灵生物造成额外伤害。"
 }

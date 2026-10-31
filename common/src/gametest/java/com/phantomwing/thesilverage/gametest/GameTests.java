@@ -62,7 +62,21 @@ public final class GameTests {
             test("honeycomb_doesnt_wax_with_oxidation_off", SilverOxidationGameTest::honeycombDoesntWaxWithOxidationOff),
             test("clerics_buy_silver_ingots_once", SilverTradesGameTest::clericsBuySilverIngotsOnce),
             test("master_fletchers_sell_silver_arrows", SilverTradesGameTest::masterFletchersSellSilverArrows),
-            test("options_guard_their_recipes", SilverRecipeConditionsGameTest::optionsGuardTheirRecipes));
+            test("options_guard_their_recipes", SilverRecipeConditionsGameTest::optionsGuardTheirRecipes),
+            test("silver_ore_drops_raw_silver", SilverMaterialGameTest::silverOreDropsRawSilver),
+            test("silk_touch_keeps_silver_ore", SilverMaterialGameTest::silkTouchKeepsSilverOre),
+            test("silver_storage_recipes_round_trip", SilverMaterialGameTest::silverStorageRecipesRoundTrip),
+            test("silver_gear_smelts_into_a_nugget", SilverMaterialGameTest::silverGearSmeltsIntoANugget),
+            test("silver_blocks_need_an_iron_pickaxe", SilverMaterialGameTest::silverBlocksNeedAnIronPickaxe),
+            test("silver_fittings_drop_to_any_pickaxe", SilverMaterialGameTest::silverFittingsDropToAnyPickaxe),
+            test("the_stonecutter_cuts_silver_bricks_from_cut_silver", SilverMaterialGameTest::theStonecutterCutsSilverBricksFromCutSilver),
+            test("silver_bulb_toggles_on_each_pulse", SilverMaterialGameTest::silverBulbTogglesOnEachPulse),
+            test("horse_armor_has_no_durability", SilverMaterialGameTest::horseArmorHasNoDurability),
+            test("blocks_are_named_by_their_own_keys", SilverMaterialGameTest::blocksAreNamedByTheirOwnKeys),
+            test("dispensers_dont_wax_with_oxidation_off", SilverMaterialGameTest::dispensersDontWaxWithOxidationOff),
+            test("silver_armor_stacks_with_thorns", SilverCombatGameTest::silverArmorStacksWithThorns),
+            test("silver_swings_scale_with_their_charge", SilverCombatGameTest::silverSwingsScaleWithTheirCharge),
+            test("silver_plates_hurt_only_what_stands_in_them", SilverCombatGameTest::silverPlatesHurtOnlyWhatStandsInThem));
 
     private GameTests() {
     }

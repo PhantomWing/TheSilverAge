@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Vuela más rápido",
   "tooltip.thesilverage.silver_smite": "+%s de daño a los no muertos",
   "tooltip.thesilverage.silver_thorns": "Espinas contra los no muertos",
-  "trim_material.thesilverage.silver": "Material de plata"
+  "trim_material.thesilverage.silver": "Material de plata",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Bombilla de plata se enciende",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Bombilla de plata se apaga",
+  "subtitles.thesilverage.item.armor.equip_silver": "Armadura de plata tintinea",
+  "thesilverage.info.silver_pressure_plate": "Las criaturas hostiles no pueden activar una placa de presión de plata, y los no muertos que estén sobre ella reciben daño. Cuanto más oxidada esté, más criaturas hacen falta para dar una señal completa: 1, 3, 5 o 15.",
+  "thesilverage.info.silver_light": "Los no muertos se mantienen alejados de las antorchas de plata y los faroles de plata cuando no tienen objetivo.",
+  "thesilverage.info.silver_arrow": "Las flechas de plata vuelan más rápido que las flechas normales, así que golpean más fuerte, e infligen daño adicional a los no muertos."
 }

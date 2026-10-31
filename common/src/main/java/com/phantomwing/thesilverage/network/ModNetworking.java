@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.network;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.block.SilverOxidation;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.combat.SilverUndeadSettings;
@@ -15,14 +16,16 @@ import dev.architectury.utils.Env;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.item.CreativeModeTabs;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload} and {@link UndeadSettingsSyncPayload},
- * both sent on join and after each datapack reload.
+ * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload}, {@link UndeadSettingsSyncPayload} and
+ * {@link OxidationSyncPayload}, sent on join and after each datapack reload, and the last two whenever the config
+ * changes ({@link #configChanged()}).
  *
  * <p>{@link #register()} is called from {@code TheSilverAgeCommon.init()} (both
  * physical sides). Each loader's <em>client</em> entrypoint additionally calls
@@ -33,6 +36,13 @@ import java.util.Set;
 public final class ModNetworking {
     /** Set by a datapack reload, which is when the overridden recipes change; the next server tick tells every player. */
     private static volatile boolean overridesReloaded;
+    /** Set when the config changes, which the undead settings and oxidation follow at once; the next server tick tells every player. */
+    private static volatile boolean settingsChanged;
+    /**
+     * The recipe overrides the loaded recipes were made with, at the last datapack reload. The config can change
+     * before the next one, and the textures sent on join then matched recipes that weren't loaded.
+     */
+    private static volatile List<String> overridesInForce;
 
     private ModNetworking() {
     }
@@ -52,6 +62,8 @@ public final class ModNetworking {
                     RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC);
             NetworkManager.registerS2CPayloadType(
                     UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC);
+            NetworkManager.registerS2CPayloadType(
+                    OxidationSyncPayload.TYPE, OxidationSyncPayload.STREAM_CODEC);
         }
 
         // On join, tell the player whether this server overrides vanilla recipes
@@ -62,29 +74,54 @@ public final class ModNetworking {
 
         // And again after /reload, or an option changed in a world: the recipes follow the config at each datapack
         // reload, and the textures sent on join stayed until the player rejoined.
-        ReloadListenerRegistry.register(PackType.SERVER_DATA,
-                (ResourceManagerReloadListener) manager -> overridesReloaded = true);
+        ReloadListenerRegistry.register(PackType.SERVER_DATA, (ResourceManagerReloadListener) manager -> {
+            overridesInForce = configuredOverrides();
+            overridesReloaded = true;
+        });
         TickEvent.SERVER_POST.register(server -> {
             if (overridesReloaded) {
                 overridesReloaded = false;
+                settingsChanged = false;
                 server.getPlayerList().getPlayers().forEach(ModNetworking::onPlayerJoin);
+            } else if (settingsChanged) {
+                settingsChanged = false;
+                server.getPlayerList().getPlayers().forEach(ModNetworking::sendSettings);
             }
         });
     }
 
+    /**
+     * Tells every player the undead settings and oxidation again on the next server tick. Called by each loader when
+     * its config changes: the tooltips kept the numbers sent on join until a {@code /reload} or a rejoin.
+     */
+    public static void configChanged() {
+        settingsChanged = true;
+    }
+
+    private static List<String> configuredOverrides() {
+        return Arrays.stream(RecipeOverride.values())
+                .filter(CommonConfig::recipeOverride)
+                .map(RecipeOverride::settingId)
+                .toList();
+    }
+
     private static void onPlayerJoin(ServerPlayer player) {
-        if (NetworkManager.canPlayerReceive(player, UndeadSettingsSyncPayload.TYPE)) {
-            NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
-        }
+        sendSettings(player);
         // Skip clients that can't decode the packet (no mod / older version):
         // sending anyway would be silently dropped, but guarding is explicit and
         // avoids log noise on mixed setups.
         if (!NetworkManager.canPlayerReceive(player, RecipeOverrideSyncPayload.TYPE)) return;
-        List<String> enabled = Arrays.stream(RecipeOverride.values())
-                .filter(CommonConfig::recipeOverride)
-                .map(RecipeOverride::settingId)
-                .toList();
-        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(enabled));
+        List<String> enabled = overridesInForce;
+        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(enabled != null ? enabled : configuredOverrides()));
+    }
+
+    private static void sendSettings(ServerPlayer player) {
+        if (NetworkManager.canPlayerReceive(player, UndeadSettingsSyncPayload.TYPE)) {
+            NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
+        }
+        if (NetworkManager.canPlayerReceive(player, OxidationSyncPayload.TYPE)) {
+            NetworkManager.sendToPlayer(player, new OxidationSyncPayload(SilverOxidation.enabled()));
+        }
     }
 
     /**
@@ -105,5 +142,24 @@ public final class ModNetworking {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C,
                 UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings())));
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C,
+                OxidationSyncPayload.TYPE, OxidationSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.queue(() -> setOxidationFromServer(payload.enabled())));
+    }
+
+    /**
+     * The server's {@code enable_silver_oxidation} on the client, or {@code null} on disconnect for the client's own.
+     * Where that changes what the creative tab hides, the tab is built again the next time it opens.
+     */
+    public static void setOxidationFromServer(Boolean enabled) {
+        boolean before = SilverOxidation.enabledOnClient();
+        if (enabled == null) {
+            SilverOxidation.clearFromServer();
+        } else {
+            SilverOxidation.setFromServer(enabled);
+        }
+        if (SilverOxidation.enabledOnClient() != before) {
+            CreativeModeTabs.CACHED_PARAMETERS = null;
+        }
     }
 }

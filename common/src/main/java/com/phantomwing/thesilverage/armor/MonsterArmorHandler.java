@@ -52,6 +52,25 @@ public final class MonsterArmorHandler {
         return to;
     }
 
+    /**
+     * A zombie villager a zombie made of a villager is given its gear after it has joined the level, where its roll
+     * found nothing to replace. Called by each loader's {@code ZombieMixin} once a conversion's {@code finalizeSpawn}
+     * has equipped it, which only that conversion calls.
+     */
+    public static void rollAfterConversion(Mob converted) {
+        converted.removeTag(ROLLED_TAG);
+        tryEquipSilverGear(converted, converted.level(), false);
+    }
+
+    /**
+     * A mob world generation places - a mansion's vindicators, an igloo's zombie villager - is saved with its chunk and
+     * joins the level as loaded from disk, so its roll is taken as the structure adds it. Called by each loader's
+     * {@code WorldGenRegionMixin}.
+     */
+    public static void rollForStructure(Entity entity) {
+        tryEquipSilverGear(entity, entity.level(), false);
+    }
+
     /** Wires the loader-specific entity-join hook. Called from {@code TheSilverAgeCommon.init()}. */
     public static void register() {
         MonsterArmorPlatform.registerMobSpawnHandler();

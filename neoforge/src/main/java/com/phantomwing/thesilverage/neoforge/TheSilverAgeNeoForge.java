@@ -1,7 +1,9 @@
 package com.phantomwing.thesilverage.neoforge;
 
 import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
@@ -13,6 +15,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
@@ -60,6 +63,11 @@ public final class TheSilverAgeNeoForge {
         }
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener((ModConfigEvent.Reloading event) -> {
+            if (event.getConfig().getModId().equals(TheSilverAge.MOD_ID)) {
+                ModNetworking.configChanged();
+            }
+        });
         modEventBus.addListener(TheSilverAgeNeoForge::extendLightningRodPoi);
         NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> SilverUndeadGoals.addTo(event.getEntity()));
     }

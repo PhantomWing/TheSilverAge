@@ -45,11 +45,11 @@ public final class CommonConfigImpl {
     }
 
     public static float silverSmiteDamage() {
-        return (float) TheSilverAgeFabricConfig.get().silver_smite_damage;
+        return (float) TheSilverAgeFabricConfig.get().smiteDamage();
     }
 
     public static float silverArrowSmiteDamage() {
-        return (float) TheSilverAgeFabricConfig.get().silver_arrow_smite_damage;
+        return (float) TheSilverAgeFabricConfig.get().arrowSmiteDamage();
     }
 
     public static boolean silverThorns() {
@@ -58,7 +58,7 @@ public final class CommonConfigImpl {
     }
 
     public static float silverThornsChance() {
-        return (float) TheSilverAgeFabricConfig.get().silver_thorns_chance;
+        return (float) TheSilverAgeFabricConfig.get().thornsChance();
     }
 
     public static boolean silverOxidation() {

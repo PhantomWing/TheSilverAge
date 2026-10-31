@@ -2,11 +2,14 @@ package com.phantomwing.thesilverage.fabric.config;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.combat.SilverSmiteHandler;
+import com.phantomwing.thesilverage.combat.SilverThornsHandler;
+import com.phantomwing.thesilverage.network.ModNetworking;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.world.InteractionResult;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -88,9 +91,27 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     /** Keeps the numbers in NeoForge's ranges, which a hand-edited file can step out of. */
     @Override
     public void validatePostLoad() {
-        silver_smite_damage = Math.clamp(silver_smite_damage, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
-        silver_arrow_smite_damage = Math.clamp(silver_arrow_smite_damage, 0.0, SilverSmiteHandler.MAX_BONUS_DAMAGE);
-        silver_thorns_chance = Math.clamp(silver_thorns_chance, 0.0, 1.0);
+        silver_smite_damage = smiteDamage();
+        silver_arrow_smite_damage = arrowSmiteDamage();
+        silver_thorns_chance = thornsChance();
+    }
+
+    // Read through these rather than the fields: Mod Menu's screen saves without validating, and a NaN in the file
+    // passed the clamp and every check against it, so silver armour hurt on every undead hit.
+    public double smiteDamage() {
+        return inRange(silver_smite_damage, SilverSmiteHandler.MAX_BONUS_DAMAGE, SilverSmiteHandler.BONUS_DAMAGE);
+    }
+
+    public double arrowSmiteDamage() {
+        return inRange(silver_arrow_smite_damage, SilverSmiteHandler.MAX_BONUS_DAMAGE, SilverSmiteHandler.ARROW_BONUS_DAMAGE);
+    }
+
+    public double thornsChance() {
+        return inRange(silver_thorns_chance, 1.0, SilverThornsHandler.CHANCE_PER_PIECE);
+    }
+
+    private static double inRange(double value, double max, double fallback) {
+        return Double.isFinite(value) ? Math.clamp(value, 0.0, max) : fallback;
     }
 
     public static TheSilverAgeFabricConfig get() {
@@ -107,6 +128,10 @@ public class TheSilverAgeFabricConfig implements ConfigData {
      */
     public static void register() {
         AutoConfig.register(TheSilverAgeFabricConfig.class, GsonConfigSerializer::new);
+        AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).registerSaveListener((holder, config) -> {
+            ModNetworking.configChanged();
+            return InteractionResult.PASS;
+        });
         ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, resources) ->
                 AutoConfig.getConfigHolder(TheSilverAgeFabricConfig.class).load());
     }

@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Летить швидше",
   "tooltip.thesilverage.silver_smite": "+%s до шкоди по нежиті",
   "tooltip.thesilverage.silver_thorns": "Шипи проти нежиті",
-  "trim_material.thesilverage.silver": "Срібний матеріал"
+  "trim_material.thesilverage.silver": "Срібний матеріал",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Срібна лампа вмикається",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Срібна лампа вимикається",
+  "subtitles.thesilverage.item.armor.equip_silver": "Срібна броня бряжчить",
+  "thesilverage.info.silver_pressure_plate": "Ворожі моби не можуть натиснути срібну натискну плиту, а нежить, що стоїть на ній, отримує шкоду. Що сильніше вона потускніла, то більше мобів потрібно для повного сигналу: 1, 3, 5 або 15.",
+  "thesilverage.info.silver_light": "Нежить тримається подалі від срібних смолоскипів і срібних ліхтарів, коли не має цілі.",
+  "thesilverage.info.silver_arrow": "Срібні стріли летять швидше за звичайні, тож б'ють сильніше, і завдають нежиті додаткової шкоди."
 }

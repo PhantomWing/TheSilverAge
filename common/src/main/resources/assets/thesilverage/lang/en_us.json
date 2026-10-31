@@ -285,5 +285,11 @@
   "tooltip.thesilverage.flies_faster": "Flies Faster",
   "tooltip.thesilverage.silver_smite": "+%s Damage to Undead",
   "tooltip.thesilverage.silver_thorns": "Thorns against Undead",
-  "trim_material.thesilverage.silver": "Silver Material"
+  "trim_material.thesilverage.silver": "Silver Material",
+  "subtitles.thesilverage.block.silver_bulb.turn_on": "Silver Bulb turns on",
+  "subtitles.thesilverage.block.silver_bulb.turn_off": "Silver Bulb turns off",
+  "subtitles.thesilverage.item.armor.equip_silver": "Silver armor clinks",
+  "thesilverage.info.silver_pressure_plate": "Hostile mobs can't press a Silver Pressure Plate, and undead mobs standing in it take damage. The more it has tarnished, the more mobs it takes to give a full signal: 1, 3, 5 or 15.",
+  "thesilverage.info.silver_light": "Undead mobs keep away from Silver Torches and Silver Lanterns when they have no target.",
+  "thesilverage.info.silver_arrow": "Silver Arrows fly faster than normal arrows, so they hit harder, and deal extra damage to undead mobs."
 }
