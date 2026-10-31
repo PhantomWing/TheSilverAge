@@ -1,0 +1,54 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "parent": "thesilverage:main/obtain_silver_ingot",
+  "criteria": {
+    "killed_undead": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "#thesilverage:sensitive_to_silver"
+            }
+          }
+        ],
+        "killing_blow": {
+          "direct_entity": {
+            "type": "thesilverage:silver_arrow"
+          }
+        }
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "thesilverage.advancement.kill_undead_with_silver_arrow.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "thesilverage:silver_arrow"
+    },
+    "title": {
+      "translate": "thesilverage.advancement.kill_undead_with_silver_arrow"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "requirements": [
+    [
+      "killed_undead"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

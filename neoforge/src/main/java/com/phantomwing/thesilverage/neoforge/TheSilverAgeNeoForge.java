@@ -1,16 +1,29 @@
 package com.phantomwing.thesilverage.neoforge;
 
+import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.network.ModNetworking;
+import com.phantomwing.thesilverage.block.ModBlocks;
+import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.registries.GameData;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 /**
  * NeoForge entrypoint for The Silver Age.
@@ -53,12 +66,29 @@ public final class TheSilverAgeNeoForge {
         }
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener((ModConfigEvent.Reloading event) -> {
+            if (event.getConfig().getModId().equals(TheSilverAge.MOD_ID)) {
+                ModNetworking.configChanged();
+            }
+        });
+        NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> SilverUndeadGoals.addTo(event.getEntity()));
+    }
+
+    /**
+     * Lightning finds a rod by its point of interest, which vanilla gives its own rod alone. NeoForge 21.3 and 21.4 have no
+     * ExtendPoiTypesEvent, so the Silver Lightning Rods' states go in the map it looks a state's point of interest up in.
+     */
+    private static void extendLightningRodPoi() {
+        Holder<PoiType> lightningRod = BuiltInRegistries.POINT_OF_INTEREST_TYPE.getOrThrow(PoiTypes.LIGHTNING_ROD);
+        ModBlocks.silverLightningRods().forEach(rod -> rod.getStateDefinition().getPossibleStates()
+                .forEach(state -> GameData.getBlockStatePointOfInterestTypeMap().put(state, lightningRod)));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             // Register Firework Star Recipes (mutates the AT-exposed static fields).
             ModFireworks.register();
+            extendLightningRodPoi();
         });
     }
 }

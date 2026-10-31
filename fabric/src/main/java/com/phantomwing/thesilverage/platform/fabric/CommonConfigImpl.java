@@ -29,4 +29,60 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.OVERRIDE_VANILLA_RECIPES_ID);
     }
+
+    public static boolean booleanSetting(String settingId) {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(settingId);
+    }
+
+    public static boolean silverAffectsUndead() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.SILVER_AFFECTS_UNDEAD_ID);
+    }
+
+    public static boolean silverSmite() {
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_SMITE_ID);
+    }
+
+    public static float silverSmiteDamage() {
+        return (float) TheSilverAgeFabricConfig.get().smiteDamage();
+    }
+
+    public static float silverArrowSmiteDamage() {
+        return (float) TheSilverAgeFabricConfig.get().arrowSmiteDamage();
+    }
+
+    public static boolean silverThorns() {
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_THORNS_ID);
+    }
+
+    public static float silverThornsChance() {
+        return (float) TheSilverAgeFabricConfig.get().thornsChance();
+    }
+
+    public static boolean silverOxidation() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);
+    }
+
+    public static boolean mobSilverEquipment() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_MOB_SILVER_EQUIPMENT_ID);
+    }
+
+    public static boolean silverFloorDamage() {
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_FLOOR_DAMAGE_ID);
+    }
+
+    public static boolean undeadAvoidSilverLight() {
+        return silverAffectsUndead() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.UNDEAD_AVOID_SILVER_LIGHT_ID);
+    }
+
+    public static boolean silverArrows() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                TheSilverAgeFabricConfig.ENABLE_SILVER_ARROWS_ID);
+    }
 }

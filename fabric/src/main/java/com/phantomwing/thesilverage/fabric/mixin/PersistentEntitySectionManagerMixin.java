@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric.mixin;
 
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
+import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *
  * <p>NeoForge subscribes {@code EntityJoinLevelEvent} and forwards the real
  * {@code event.loadedFromDisk()} flag to
- * {@link MonsterArmorHandler#tryEquipSilverArmor(Entity, net.minecraft.world.level.Level, boolean)}.
+ * {@link MonsterArmorHandler#tryEquipSilverGear(Entity, net.minecraft.world.level.Level, boolean)}.
  * Architectury's {@code EntityEvent.ADD} (the Phase 1 Fabric shell) carries no
  * loaded-from-disk distinction, so disk-loaded mobs would re-roll silver armor
  * on every chunk load — a behavioural divergence from NeoForge.</p>
@@ -74,7 +75,20 @@ public abstract class PersistentEntitySectionManagerMixin {
         // net.minecraft.world.entity.Entity on the server level, and Entity
         // implements EntityAccess, so this cast is always safe at runtime.
         if (entityAccess instanceof Entity entity) {
-            MonsterArmorHandler.tryEquipSilverArmor(entity, entity.level(), loadedFromStorage);
+            MonsterArmorHandler.tryEquipSilverGear(entity, entity.level(), loadedFromStorage);
+        }
+    }
+
+    /** Every mob silver harms keeps away from silver when idle, those loaded with their chunk too, which Architectury's ADD misses. */
+    @Inject(
+            method = "addEntity(Lnet/minecraft/world/level/entity/EntityAccess;Z)Z",
+            at = @At("HEAD")
+    )
+    private void thesilverage$leaveSilverFloors(EntityAccess entityAccess,
+                                                boolean loadedFromStorage,
+                                                CallbackInfoReturnable<Boolean> cir) {
+        if (entityAccess instanceof Entity entity) {
+            SilverUndeadGoals.addTo(entity);
         }
     }
 }

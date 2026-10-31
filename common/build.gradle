@@ -29,6 +29,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     // Architectury API (common).
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // JEI's plugin API, compile-time only, for the info pages' plugin in common: it is only ever classloaded by JEI,
+    // so JEI is neither required nor shipped. JEI has a NeoForge build for 1.21.5 and no Fabric one; EMI has neither.
+    modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_neoforge_version}"
 }
 
 publishing {

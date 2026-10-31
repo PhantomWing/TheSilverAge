@@ -27,11 +27,17 @@
     "thesilverage:exposed_silver": {
       "waxed": "thesilverage:waxed_exposed_silver"
     },
+    "thesilverage:exposed_silver_bars": {
+      "waxed": "thesilverage:waxed_exposed_silver_bars"
+    },
     "thesilverage:exposed_silver_brick_slab": {
       "waxed": "thesilverage:waxed_exposed_silver_brick_slab"
     },
     "thesilverage:exposed_silver_brick_stairs": {
       "waxed": "thesilverage:waxed_exposed_silver_brick_stairs"
+    },
+    "thesilverage:exposed_silver_brick_wall": {
+      "waxed": "thesilverage:waxed_exposed_silver_brick_wall"
     },
     "thesilverage:exposed_silver_bricks": {
       "waxed": "thesilverage:waxed_exposed_silver_bricks"
@@ -39,14 +45,26 @@
     "thesilverage:exposed_silver_bulb": {
       "waxed": "thesilverage:waxed_exposed_silver_bulb"
     },
+    "thesilverage:exposed_silver_chain": {
+      "waxed": "thesilverage:waxed_exposed_silver_chain"
+    },
     "thesilverage:exposed_silver_door": {
       "waxed": "thesilverage:waxed_exposed_silver_door"
     },
     "thesilverage:exposed_silver_grate": {
       "waxed": "thesilverage:waxed_exposed_silver_grate"
     },
+    "thesilverage:exposed_silver_lantern": {
+      "waxed": "thesilverage:waxed_exposed_silver_lantern"
+    },
+    "thesilverage:exposed_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_exposed_silver_lightning_rod"
+    },
     "thesilverage:exposed_silver_pillar": {
       "waxed": "thesilverage:waxed_exposed_silver_pillar"
+    },
+    "thesilverage:exposed_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_exposed_silver_pressure_plate"
     },
     "thesilverage:exposed_silver_trapdoor": {
       "waxed": "thesilverage:waxed_exposed_silver_trapdoor"
@@ -66,11 +84,17 @@
     "thesilverage:oxidized_silver": {
       "waxed": "thesilverage:waxed_oxidized_silver"
     },
+    "thesilverage:oxidized_silver_bars": {
+      "waxed": "thesilverage:waxed_oxidized_silver_bars"
+    },
     "thesilverage:oxidized_silver_brick_slab": {
       "waxed": "thesilverage:waxed_oxidized_silver_brick_slab"
     },
     "thesilverage:oxidized_silver_brick_stairs": {
       "waxed": "thesilverage:waxed_oxidized_silver_brick_stairs"
+    },
+    "thesilverage:oxidized_silver_brick_wall": {
+      "waxed": "thesilverage:waxed_oxidized_silver_brick_wall"
     },
     "thesilverage:oxidized_silver_bricks": {
       "waxed": "thesilverage:waxed_oxidized_silver_bricks"
@@ -78,17 +102,32 @@
     "thesilverage:oxidized_silver_bulb": {
       "waxed": "thesilverage:waxed_oxidized_silver_bulb"
     },
+    "thesilverage:oxidized_silver_chain": {
+      "waxed": "thesilverage:waxed_oxidized_silver_chain"
+    },
     "thesilverage:oxidized_silver_door": {
       "waxed": "thesilverage:waxed_oxidized_silver_door"
     },
     "thesilverage:oxidized_silver_grate": {
       "waxed": "thesilverage:waxed_oxidized_silver_grate"
     },
+    "thesilverage:oxidized_silver_lantern": {
+      "waxed": "thesilverage:waxed_oxidized_silver_lantern"
+    },
+    "thesilverage:oxidized_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_oxidized_silver_lightning_rod"
+    },
     "thesilverage:oxidized_silver_pillar": {
       "waxed": "thesilverage:waxed_oxidized_silver_pillar"
     },
+    "thesilverage:oxidized_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_oxidized_silver_pressure_plate"
+    },
     "thesilverage:oxidized_silver_trapdoor": {
       "waxed": "thesilverage:waxed_oxidized_silver_trapdoor"
+    },
+    "thesilverage:silver_bars": {
+      "waxed": "thesilverage:waxed_silver_bars"
     },
     "thesilverage:silver_block": {
       "waxed": "thesilverage:waxed_silver_block"
@@ -99,11 +138,17 @@
     "thesilverage:silver_brick_stairs": {
       "waxed": "thesilverage:waxed_silver_brick_stairs"
     },
+    "thesilverage:silver_brick_wall": {
+      "waxed": "thesilverage:waxed_silver_brick_wall"
+    },
     "thesilverage:silver_bricks": {
       "waxed": "thesilverage:waxed_silver_bricks"
     },
     "thesilverage:silver_bulb": {
       "waxed": "thesilverage:waxed_silver_bulb"
+    },
+    "thesilverage:silver_chain": {
+      "waxed": "thesilverage:waxed_silver_chain"
     },
     "thesilverage:silver_door": {
       "waxed": "thesilverage:waxed_silver_door"
@@ -111,8 +156,17 @@
     "thesilverage:silver_grate": {
       "waxed": "thesilverage:waxed_silver_grate"
     },
+    "thesilverage:silver_lantern": {
+      "waxed": "thesilverage:waxed_silver_lantern"
+    },
+    "thesilverage:silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_silver_lightning_rod"
+    },
     "thesilverage:silver_pillar": {
       "waxed": "thesilverage:waxed_silver_pillar"
+    },
+    "thesilverage:silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_silver_pressure_plate"
     },
     "thesilverage:silver_trapdoor": {
       "waxed": "thesilverage:waxed_silver_trapdoor"
@@ -132,11 +186,17 @@
     "thesilverage:weathered_silver": {
       "waxed": "thesilverage:waxed_weathered_silver"
     },
+    "thesilverage:weathered_silver_bars": {
+      "waxed": "thesilverage:waxed_weathered_silver_bars"
+    },
     "thesilverage:weathered_silver_brick_slab": {
       "waxed": "thesilverage:waxed_weathered_silver_brick_slab"
     },
     "thesilverage:weathered_silver_brick_stairs": {
       "waxed": "thesilverage:waxed_weathered_silver_brick_stairs"
+    },
+    "thesilverage:weathered_silver_brick_wall": {
+      "waxed": "thesilverage:waxed_weathered_silver_brick_wall"
     },
     "thesilverage:weathered_silver_bricks": {
       "waxed": "thesilverage:waxed_weathered_silver_bricks"
@@ -144,14 +204,26 @@
     "thesilverage:weathered_silver_bulb": {
       "waxed": "thesilverage:waxed_weathered_silver_bulb"
     },
+    "thesilverage:weathered_silver_chain": {
+      "waxed": "thesilverage:waxed_weathered_silver_chain"
+    },
     "thesilverage:weathered_silver_door": {
       "waxed": "thesilverage:waxed_weathered_silver_door"
     },
     "thesilverage:weathered_silver_grate": {
       "waxed": "thesilverage:waxed_weathered_silver_grate"
     },
+    "thesilverage:weathered_silver_lantern": {
+      "waxed": "thesilverage:waxed_weathered_silver_lantern"
+    },
+    "thesilverage:weathered_silver_lightning_rod": {
+      "waxed": "thesilverage:waxed_weathered_silver_lightning_rod"
+    },
     "thesilverage:weathered_silver_pillar": {
       "waxed": "thesilverage:waxed_weathered_silver_pillar"
+    },
+    "thesilverage:weathered_silver_pressure_plate": {
+      "waxed": "thesilverage:waxed_weathered_silver_pressure_plate"
     },
     "thesilverage:weathered_silver_trapdoor": {
       "waxed": "thesilverage:waxed_weathered_silver_trapdoor"
