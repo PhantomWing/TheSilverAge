@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_ingots_silver": {
@@ -18,6 +24,12 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",

@@ -37,6 +37,9 @@ public class ModVillagerTrades {
         if (event.getType() == VillagerProfession.CLERIC) {
             trades.get(2).add(SilverVillagerTrades.clericSilverIngotForEmerald());
         }
+        else if (event.getType() == VillagerProfession.FLETCHER) {
+            trades.get(5).add(SilverVillagerTrades.fletcherSilverArrows());
+        }
         else if (event.getType() == VillagerProfession.LIBRARIAN) {
             // TODO: Add trade for moon clock (define it in the shared
             //       SilverVillagerTrades, then add it here + on Fabric).
