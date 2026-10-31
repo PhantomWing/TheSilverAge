@@ -78,32 +78,32 @@ public final class SilverCombatGameTest {
      * right after another deals almost none of it, as Smite's is scaled.
      */
     public static void silverSwingsScaleWithTheirCharge(GameTestHelper helper) {
-        ServerPlayer player = TestCompat.serverPlayer(helper);
-        LivingEntity zombie = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(3, 2, 3));
-        try {
-            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.SILVER_SWORD.get()));
-            float chargedOn = swing(player, zombie, true);
-            float chargedOff = TestSettings.with("enable_silver_smite", false, () -> swing(player, zombie, true));
-            float quickOn = swing(player, zombie, false);
-            float quickOff = TestSettings.with("enable_silver_smite", false, () -> swing(player, zombie, false));
-            float charged = chargedOn - chargedOff;
-            float quick = quickOn - quickOff;
-            List<String> problems = new ArrayList<>();
-            if (charged < 0.8F || charged > 1.1F) {
-                problems.add("a charged swing's bonus was " + charged + " (" + chargedOn + " against " + chargedOff + "), not about 1");
+        TestCompat.withServerPlayer(helper, player -> {
+            LivingEntity zombie = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(3, 2, 3));
+            try {
+                player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.SILVER_SWORD.get()));
+                float chargedOn = swing(player, zombie, true);
+                float chargedOff = TestSettings.with("enable_silver_smite", false, () -> swing(player, zombie, true));
+                float quickOn = swing(player, zombie, false);
+                float quickOff = TestSettings.with("enable_silver_smite", false, () -> swing(player, zombie, false));
+                float charged = chargedOn - chargedOff;
+                float quick = quickOn - quickOff;
+                List<String> problems = new ArrayList<>();
+                if (charged < 0.8F || charged > 1.1F) {
+                    problems.add("a charged swing's bonus was " + charged + " (" + chargedOn + " against " + chargedOff + "), not about 1");
+                }
+                if (quick > 0.2F) {
+                    problems.add("a swing right after another took " + quick + " of the bonus (" + quickOn + " against " + quickOff + "), not almost none");
+                }
+                if (problems.isEmpty()) {
+                    helper.succeed();
+                } else {
+                    fail(helper, "Silver Sword swings: " + String.join("; ", problems));
+                }
+            } finally {
+                zombie.discard();
             }
-            if (quick > 0.2F) {
-                problems.add("a swing right after another took " + quick + " of the bonus (" + quickOn + " against " + quickOff + "), not almost none");
-            }
-            if (problems.isEmpty()) {
-                helper.succeed();
-            } else {
-                fail(helper, "Silver Sword swings: " + String.join("; ", problems));
-            }
-        } finally {
-            zombie.discard();
-            TestCompat.removePlayer(player);
-        }
+        });
     }
 
     /** A husk whose box reaches into a Silver Pressure Plate's block from beside it isn't hurt; one standing in it is. */
