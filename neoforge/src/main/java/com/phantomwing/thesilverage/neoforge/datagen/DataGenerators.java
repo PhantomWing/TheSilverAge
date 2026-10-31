@@ -48,6 +48,7 @@ public class DataGenerators {
                         List.of(new ModAdvancementProvider())
                 )
         );
+        generator.addProvider(event.includeServer(), new AdvancementConditionsProvider(output));
 
         generator.addProvider(event.includeServer(), new ModDataMapProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new ModSpriteSourceProvider(output, lookupProvider, existingFileHelper));
@@ -62,7 +63,8 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(output, lookupProvider));
 
-        generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+        ModDatapackProvider datapackProvider = generator.addProvider(event.includeServer(), new ModDatapackProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModDamageTypeTagsProvider(output, datapackProvider.getRegistryProvider(), existingFileHelper));
 
         // MUST be registered LAST. NeoForge's DataGenerator.run() executes
         // providers sequentially in registration order (each future .join()-ed

@@ -1,0 +1,91 @@
+{
+  "name": "Recipe override textures follow the server's option after /reload (neoforge)",
+  "loader": "neoforge",
+  "steps": [
+    {
+      "setblock": [
+        0,
+        0,
+        -3
+      ],
+      "block": "minecraft:repeater"
+    },
+    {
+      "setblock": [
+        1,
+        0,
+        -3
+      ],
+      "block": "minecraft:comparator"
+    },
+    {
+      "look": [
+        0,
+        0,
+        -3
+      ]
+    },
+    {
+      "wait": 60
+    },
+    {
+      "screenshot": "overrides-on"
+    },
+    {
+      "server_config": "config/thesilverage-common.toml",
+      "set": {
+        "override_vanilla_recipes": false
+      }
+    },
+    {
+      "wait": 40
+    },
+    {
+      "command": "reload"
+    },
+    {
+      "wait": 300
+    },
+    {
+      "reload": true
+    },
+    {
+      "look": [
+        0,
+        0,
+        -3
+      ]
+    },
+    {
+      "screenshot": "overrides-off"
+    },
+    {
+      "server_config": "config/thesilverage-common.toml",
+      "set": {
+        "override_vanilla_recipes": true
+      }
+    },
+    {
+      "wait": 40
+    },
+    {
+      "command": "reload"
+    },
+    {
+      "wait": 300
+    },
+    {
+      "reload": true
+    },
+    {
+      "look": [
+        0,
+        0,
+        -3
+      ]
+    },
+    {
+      "screenshot": "overrides-back-on"
+    }
+  ]
+}

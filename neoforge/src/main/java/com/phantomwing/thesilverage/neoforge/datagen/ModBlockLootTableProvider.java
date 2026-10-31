@@ -81,6 +81,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSlab(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_SLAB);
         dropSlab(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_SLAB);
 
+        // Silver Brick Wall
+        dropSelf(ModBlocks.SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL);
+
         // Silver Brick Stairs
         dropSelf(ModBlocks.SILVER_BRICK_STAIRS);
         dropSelf(ModBlocks.EXPOSED_SILVER_BRICK_STAIRS);
@@ -161,6 +171,16 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR);
         dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR);
 
+        // Silver Pressure Plate
+        dropSelf(ModBlocks.SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE);
+
         // Silver Door
         dropDoor(ModBlocks.SILVER_DOOR);
         dropDoor(ModBlocks.EXPOSED_SILVER_DOOR);
@@ -170,6 +190,50 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropDoor(ModBlocks.WAXED_EXPOSED_SILVER_DOOR);
         dropDoor(ModBlocks.WAXED_WEATHERED_SILVER_DOOR);
         dropDoor(ModBlocks.WAXED_OXIDIZED_SILVER_DOOR);
+
+        // Silver Lantern
+        dropSelf(ModBlocks.SILVER_LANTERN);
+        dropSelf(ModBlocks.EXPOSED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WEATHERED_SILVER_LANTERN);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN);
+
+        // Silver Chain
+        dropSelf(ModBlocks.SILVER_CHAIN);
+        dropSelf(ModBlocks.EXPOSED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WEATHERED_SILVER_CHAIN);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN);
+
+        // Silver Lightning Rod
+        dropSelf(ModBlocks.SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD);
+
+        // Silver Bars
+        dropSelf(ModBlocks.SILVER_BARS);
+        dropSelf(ModBlocks.EXPOSED_SILVER_BARS);
+        dropSelf(ModBlocks.WEATHERED_SILVER_BARS);
+        dropSelf(ModBlocks.OXIDIZED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_EXPOSED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_WEATHERED_SILVER_BARS);
+        dropSelf(ModBlocks.WAXED_OXIDIZED_SILVER_BARS);
+
+        // Silver Torch — the wall variant drops the (single) torch item.
+        dropSelf(ModBlocks.SILVER_TORCH);
+        // The wall torch has no table of its own: it drops as the standing torch, as vanilla's does (dropsLike).
     }
 
     // The contents of this Iterable are used for validation.

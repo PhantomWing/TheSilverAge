@@ -7,27 +7,28 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.List;
+
 /**
- * Server → client packet carrying the server's {@code override_vanilla_recipes}
- * config value, sent once on player join.
+ * Server → client packet carrying the setting ids of the vanilla recipe overrides the server has
+ * on (master switch and own option both on), sent once on player join.
  *
- * <p>The recipe overrides themselves are already server-driven (the
- * {@code config_boolean} resource condition gates them at datapack-load time on
- * the server). The matching <em>texture</em> overrides, however, live in a
- * client resource pack toggled by each client's own config — so without this
- * sync a player whose local config says {@code true} would keep seeing the
- * silver brewing-stand / comparator / repeater textures even on a server that
- * has the recipe overrides switched off. This packet lets the client match the
- * texture pack to the server it is actually connected to; the value is
- * connection-scoped and never written to the client's own config file.</p>
+ * <p>The recipe overrides themselves are server-driven (the {@code config_boolean} condition gates
+ * them at datapack-load time on the server). Their <em>texture</em> packs, however, are client
+ * resource packs, so without this sync a player whose own config has an override on would keep
+ * seeing its silver textures on a server that has it off. The value is connection-scoped and never
+ * written to the client's own config file.</p>
+ *
+ * <p>Named apart from the single-boolean packet of 1.3.x, so neither side sends the other a
+ * packet it can't read: a client that doesn't know this id is skipped and keeps its own config.</p>
  */
-public record RecipeOverrideSyncPayload(boolean enabled) implements CustomPacketPayload {
-    public static final ResourceLocation ID = TheSilverAge.resourceLocation("recipe_override_sync");
+public record RecipeOverrideSyncPayload(List<String> enabledSettingIds) implements CustomPacketPayload {
+    public static final ResourceLocation ID = TheSilverAge.resourceLocation("recipe_overrides_sync");
     public static final Type<RecipeOverrideSyncPayload> TYPE = new Type<>(ID);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RecipeOverrideSyncPayload> STREAM_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.BOOL, RecipeOverrideSyncPayload::enabled,
+                    ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), RecipeOverrideSyncPayload::enabledSettingIds,
                     RecipeOverrideSyncPayload::new);
 
     @Override

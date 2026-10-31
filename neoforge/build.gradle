@@ -14,6 +14,9 @@ def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
 
+// The dev niceties are useless in the headless game-test run, and some crash it.
+def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
@@ -52,6 +55,13 @@ loom {
             // past MC 1.21.1, so it is absent from the datagen classpath on this
             // branch. The FD-gated Silver Knife recipe is still emitted (gated via
             // ModLoadedCondition, written to disk regardless of FD's presence).
+            // The mod without the test source set, which carries the datagen output into dev runs: datagen would
+            // otherwise load the output of the run before as the mod's own while it writes the new one.
+            mods {
+                register('main') {
+                    sourceSet sourceSets.main
+                }
+            }
         }
 
         // Give the dev server its own working directory so its COMMON config
@@ -79,13 +89,28 @@ configurations {
 // Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
 // structure ship in the production jar. The tests themselves are common/src/gametest; only the
 // registration is NeoForge's own.
+//
+// The datagen output is in it too, for dev runs only. There common's transformed jar is a mod of its own
+// (generated_<hash>) that nothing orders, so NeoForge's own Lodestone and Glistering Melon Slice recipes beat the
+// overrides. As part of this mod it loads after NeoForge, as the shipped jar's does.
 sourceSets {
     test {
         java.srcDir project(':common').file('src/gametest/java')
         resources.srcDir project(':common').file('src/gametest/resources')
+        resources.srcDir project(':common').file('src/generated/resources')
         compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
         runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
     }
+}
+
+processTestResources {
+    exclude '.cache/**'
+}
+
+// Every run but datagen's loads the test source set as part of the mod, but only the game-test run builds it: the
+// client and server would load whatever the last game tests copied.
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'runData' }.configureEach {
+    dependsOn tasks.named('processTestResources')
 }
 
 // NOTE (1.21.3 branch): the recipe-viewer (JEI/EMI) and Create toggles were
@@ -104,9 +129,12 @@ dependencies {
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency). ----
 
-    // AppleSkin / Jade — dev-runtime niceties (runtime-only).
-    modLocalRuntime("squeek.appleskin:appleskin-neoforge:${rootProject.appleskin_neoforge_version}")
-    modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    // AppleSkin / Jade — dev-runtime niceties (runtime-only). Never on the game-test run: both send their packets to a
+    // test's mock player, whose connection has none of them, and crash the server.
+    if (!runningGameTest) {
+        modLocalRuntime("squeek.appleskin:appleskin-neoforge:${rootProject.appleskin_neoforge_version}")
+        modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    }
 
     // NOTE (1.21.3 branch): JEI/EMI, Create + Registrate, and Farmer's Delight
     // are NOT yet published past MC 1.21.1, so their dev-runtime / compileOnly
@@ -127,7 +155,7 @@ processResources {
 
     // Copy the built-in resource pack from common into the NeoForge mod's
     // resource output so RecipeOverridePackHandler's
-    // ModFile.findResource("resourcepacks/silver_recipe_overrides") resolves in
+    // ModFile.findResource("resourcepacks/<pack>") resolves in
     // dev. As on Fabric, common's resources are on the dev classpath but are NOT
     // part of this mod file's resource roots, so without this copy
     // Pack.readMetaAndCreate finds no pack.mcmeta, returns null, and the handler

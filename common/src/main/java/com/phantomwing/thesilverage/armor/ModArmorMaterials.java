@@ -5,7 +5,7 @@ import com.phantomwing.thesilverage.tags.CommonTags;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import com.phantomwing.thesilverage.sound.ModSounds;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 
@@ -46,7 +46,7 @@ public class ModArmorMaterials {
                 ArmorType.HELMET, headDefense,
                 ArmorType.BODY, bodyDefense
         );
-        Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
+        Holder<SoundEvent> equipSound = ModSounds.ARMOR_EQUIP_SILVER;
         ResourceLocation modelId = TheSilverAge.resourceLocation(name);
 
         // ArmorMaterial(int durability, Map<ArmorType,Integer> defense, int enchantmentValue,

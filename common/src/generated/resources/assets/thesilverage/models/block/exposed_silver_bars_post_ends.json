@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/iron_bars_post_ends",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bars": "thesilverage:block/exposed_silver_bars",
+    "edge": "thesilverage:block/exposed_silver_bars",
+    "particle": "thesilverage:block/exposed_silver_bars"
+  }
+}

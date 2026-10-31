@@ -26,7 +26,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
      *  harmless when FD is absent (the tag is simply never consulted). */
     private static final TagKey<Item> FARMERS_DELIGHT_KNIVES =
             TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("farmersdelight", "tools/knives"));
-
+    private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS =
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "tools/silver"));
+    private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR =
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "armor/silver"));
 
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, TheSilverAge.MOD_ID, existingFileHelper);
@@ -40,9 +43,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     protected void addModTags(HolderLookup.@NotNull Provider provider) {
-        // Glistering nuggets (used for e.g. the Glistering Melon override recipe)
+        // Glistering nuggets (used for e.g. the Glistering Melon override recipe). c:nuggets/gold rather than
+        // the gold nugget alone, as NeoForge's own copy of that recipe takes it, so other mods' gold works too.
         tag(ModTags.Items.GLISTERING_NUGGETS)
-                .add(Items.GOLD_NUGGET)
+                .addTag(Tags.Items.NUGGETS_GOLD)
                 .addTag(CommonTags.Items.NUGGETS_SILVER);
 
         // Redstone silver components — all silver forms accepted as the "S" ingredient in the
@@ -51,6 +55,26 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_SILVER_COMPONENTS)
                 .addTag(CommonTags.Items.INGOTS_SILVER)
                 .addTag(CommonTags.Items.PLATES_SILVER);
+
+        // Silver tools carrying the innate anti-undead damage bonus. The Silver
+        // Knife is included: it is registered on both loaders (a Farmer's Delight
+        // KnifeItem when FD is present, a plain fallback otherwise).
+        tag(ModTags.Items.SILVER_SMITE_TOOLS)
+                .add(ModItems.SILVER_SWORD.get())
+                .add(ModItems.SILVER_AXE.get())
+                .add(ModItems.SILVER_PICKAXE.get())
+                .add(ModItems.SILVER_SHOVEL.get())
+                .add(ModItems.SILVER_HOE.get())
+                .add(ModItems.SILVER_KNIFE.get());
+
+        // Silver armour burning the undead that strike its wearer: a piece's chance each, and a full set's for
+        // Silver Horse Armor, all the silver a horse wears.
+        tag(ModTags.Items.SILVER_THORNS_ARMOR)
+                .add(ModItems.SILVER_HELMET.get())
+                .add(ModItems.SILVER_CHESTPLATE.get())
+                .add(ModItems.SILVER_LEGGINGS.get())
+                .add(ModItems.SILVER_BOOTS.get())
+                .add(ModItems.SILVER_HORSE_ARMOR.get());
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -85,22 +109,48 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.ORES).addTag(CommonTags.Items.ORES_SILVER);
         tag(Tags.Items.ORES_IN_GROUND_STONE).add(ModItems.SILVER_ORE.get());
         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(ModItems.DEEPSLATE_SILVER_ORE.get());
+
+        // Chains
+        tag(Tags.Items.CHAINS)
+                .add(ModItems.SILVER_CHAIN.get())
+                .add(ModItems.EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
     }
 
     protected void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
 
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());
+        // What bows and crossbows fire.
+        tag(ItemTags.ARROWS).add(ModItems.SILVER_ARROW.get());
         tag(ItemTags.SHOVELS).add(ModItems.SILVER_SHOVEL.get());
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
+
+        // Every pickaxe gets an amethyst cluster's full four shards.
+        tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(ModItems.SILVER_PICKAXE.get());
 
         // Farmer's Delight compat — the Silver Knife. Added to FD's knife tag (the
         // Cutting Board's accepted tool) and the reserved c: convention tag. Both
         // are unconditional: ignored when FD isn't installed.
         tag(FARMERS_DELIGHT_KNIVES).add(ModItems.SILVER_KNIFE.get());
         tag(CommonTags.Items.TOOLS_KNIFE).add(ModItems.SILVER_KNIFE.get());
+
+        // Werewolves: Become a Beast compat. A weapon in its silver tools tag gives a werewolf it hits the Silver
+        // effect, and a werewolf player holding or wearing anything in its silver type tag (which takes these and the
+        // c: silver tags) is weakened. Ignored when Werewolves isn't installed.
+        tag(WEREWOLVES_SILVER_TOOLS).addTag(ModTags.Items.SILVER_SMITE_TOOLS);
+        tag(WEREWOLVES_SILVER_ARMOR)
+                .add(ModItems.SILVER_HELMET.get())
+                .add(ModItems.SILVER_CHESTPLATE.get())
+                .add(ModItems.SILVER_LEGGINGS.get())
+                .add(ModItems.SILVER_BOOTS.get());
 
         // Armor
         tag(ItemTags.HEAD_ARMOR).add(ModItems.SILVER_HELMET.get());
@@ -119,6 +169,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         // Beacon
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(ModItems.SILVER_INGOT.get());
+
+        // Walls
+        tag(ItemTags.WALLS)
+                .add(ModItems.SILVER_BRICK_WALL.get())
+                .add(ModItems.EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModItems.OXIDIZED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get());
 
         // Slabs
         tag(ItemTags.SLABS)

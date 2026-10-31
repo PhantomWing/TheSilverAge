@@ -1,0 +1,95 @@
+{
+  "name": "Silver lanterns, torches, chains and bars draw see-through",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        -2,
+        0,
+        0
+      ],
+      "block": "thesilverage:silver_lantern"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "thesilverage:silver_torch"
+    },
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "thesilverage:silver_bars"
+    },
+    {
+      "setblock": [
+        0,
+        1,
+        0
+      ],
+      "block": "thesilverage:silver_bars"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        1
+      ],
+      "block": "thesilverage:oxidized_silver_bars"
+    },
+    {
+      "setblock": [
+        1,
+        0,
+        1
+      ],
+      "block": "thesilverage:oxidized_silver_bars"
+    },
+    {
+      "setblock": [
+        1,
+        0,
+        0
+      ],
+      "block": "thesilverage:silver_chain"
+    },
+    {
+      "setblock": [
+        1,
+        1,
+        0
+      ],
+      "block": "thesilverage:silver_chain"
+    },
+    {
+      "setblock": [
+        2,
+        0,
+        0
+      ],
+      "block": "minecraft:lantern"
+    },
+    {
+      "move": [
+        0,
+        0,
+        -3
+      ]
+    },
+    {
+      "look": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "screenshot": "lights_chains_and_bars"
+    }
+  ]
+}

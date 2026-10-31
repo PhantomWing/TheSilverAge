@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "hanging=false,waterlogged=false": {
+      "model": "thesilverage:block/weathered_silver_lantern"
+    },
+    "hanging=false,waterlogged=true": {
+      "model": "thesilverage:block/weathered_silver_lantern"
+    },
+    "hanging=true,waterlogged=false": {
+      "model": "thesilverage:block/weathered_silver_lantern_hanging"
+    },
+    "hanging=true,waterlogged=true": {
+      "model": "thesilverage:block/weathered_silver_lantern_hanging"
+    }
+  }
+}
