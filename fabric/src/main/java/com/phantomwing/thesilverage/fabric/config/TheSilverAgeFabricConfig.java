@@ -60,7 +60,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     // Written out rather than widened from the handlers' floats, which the file would show as 0.20000000298023224.
     public double silver_smite_damage = 1.0;
 
-    public double silver_arrow_smite_damage = 2.0;
+    public double silver_arrow_smite_damage = SilverSmiteHandler.ARROW_BONUS_DAMAGE;
 
     public static final String ENABLE_SILVER_THORNS_ID = "enable_silver_thorns";
     public boolean enable_silver_thorns = true;

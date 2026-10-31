@@ -38,8 +38,11 @@ public final class SilverSmiteHandler {
      */
     public static final float HOE_SHARE = 0.5f;
 
-    /** A Silver Arrow's bonus by default ({@code silver_arrow_smite_damage}): a shot is slower than a swing, and the arrow is used up. */
-    public static final float ARROW_BONUS_DAMAGE = 2.0f;
+    /**
+     * A Silver Arrow's bonus by default ({@code silver_arrow_smite_damage}), a tool's: its speed already makes it hit
+     * harder, and at 2 a crossbow's bolt killed a zombie in two every time.
+     */
+    public static final float ARROW_BONUS_DAMAGE = 1.0f;
 
     /** The most either bonus can be set to: Smite V's 12.5, and some. */
     public static final double MAX_BONUS_DAMAGE = 20.0;

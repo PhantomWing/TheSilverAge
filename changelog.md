@@ -12,7 +12,7 @@
   - Can be turned off with the `undead_avoid_silver_light` config option
 - Added Silver Arrows, crafted from 8 arrows around a Silver Ingot
   - They fly faster than normal arrows, so they hit harder
-  - They deal +2 extra damage to undead mobs. Can be turned off with the `enable_silver_smite` config option.
+  - They deal +1 extra damage to undead mobs. Can be turned off with the `enable_silver_smite` config option.
   - Sold by master Fletchers, and found in pillager outposts and trial chambers
   - Can be turned off with the `enable_silver_arrows` config option, which stops them from being crafted, traded or found
 - Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
