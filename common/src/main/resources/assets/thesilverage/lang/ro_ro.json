@@ -229,7 +229,7 @@
   "thesilverage.configuration.enable_silver_floor_damage.tooltip": "Ar trebui blocurile de argint să rănească nemorții care stau pe ele, să-i împiedice să apară acolo și să-i facă să le ocolească?",
   "thesilverage.configuration.enable_silver_oxidation": "Activează oxidarea argintului",
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Blocurile de argint ar trebui să se oxideze în timp și să poată fi ceruite cu fagure? Blocurile existente pot fi în continuare răzuite cu un topor.",
-  "thesilverage.configuration.enable_create_spout_oxidation": "Oxidare cu pâlnia",
+  "thesilverage.configuration.enable_create_spout_oxidation": "Oxidare cu pâlnia din Create",
   "thesilverage.configuration.enable_create_spout_oxidation.tooltip": "Ar trebui pâlnia din Create să oxideze blocurile de argint cu apă? Necesită oxidarea argintului.",
   "thesilverage.configuration.enable_silver_gear_recipes": "Rețete pentru echipament de argint",
   "thesilverage.configuration.enable_silver_gear_recipes.tooltip": "Se pot fabrica unelte și armuri de argint? Dezactivează-l când uneltele și armurile de argint ale altui mod folosesc aceleași rețete.",

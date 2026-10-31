@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.ui;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.SilverOxidation;
-import com.phantomwing.thesilverage.platform.CommonConfig;
+import com.phantomwing.thesilverage.client.ServerContentSettings;
 import com.phantomwing.thesilverage.item.ModItems;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -36,7 +36,7 @@ public class ModCreativeModeTab {
         if (ModItems.CREATIVE_TAB_ITEMS.stream().noneMatch(entry -> entry.get() == item)) {
             return false;
         }
-        if (item == ModItems.SILVER_ARROW.get() && !CommonConfig.silverArrows()) {
+        if (item == ModItems.SILVER_ARROW.get() && !ServerContentSettings.arrows()) {
             return false;
         }
         return SilverOxidation.enabledOnClient() || !(item instanceof BlockItem blockItem)

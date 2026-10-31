@@ -48,7 +48,7 @@ public final class SilverOxidation {
 
     /**
      * Whether silver oxidizes where {@code level} is: on a client, the server's option, sent on join
-     * ({@code OxidationSyncPayload}), else its own config. A client reading its own config hid the weathered blocks
+     * ({@code ContentSyncPayload}), else its own config. A client reading its own config hid the weathered blocks
      * from its creative tab on a server where they can be had, and took a honeycomb the server then refused.
      */
     public static boolean enabled(Level level) {

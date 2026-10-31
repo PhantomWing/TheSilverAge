@@ -229,7 +229,7 @@
   "thesilverage.configuration.enable_silver_floor_damage.tooltip": "I blocchi d'argento devono ferire i non morti che ci stanno sopra, impedire che vi compaiano e farli girare intorno?",
   "thesilverage.configuration.enable_silver_oxidation": "Attiva l'ossidazione dell'argento",
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "I blocchi d'argento devono ossidarsi nel tempo ed essere cerabili con il favo? I blocchi esistenti possono ancora essere raschiati con un'ascia.",
-  "thesilverage.configuration.enable_create_spout_oxidation": "Ossidazione con beccuccio",
+  "thesilverage.configuration.enable_create_spout_oxidation": "Ossidazione con beccuccio di Create",
   "thesilverage.configuration.enable_create_spout_oxidation.tooltip": "Il beccuccio di Create deve ossidare i blocchi d'argento con l'acqua? Richiede l'ossidazione dell'argento.",
   "thesilverage.configuration.enable_silver_gear_recipes": "Ricette dell'equipaggiamento d'argento",
   "thesilverage.configuration.enable_silver_gear_recipes.tooltip": "Si possono creare strumenti e armature d'argento? Disattivalo quando strumenti e armature d'argento di un'altra mod usano le stesse ricette.",

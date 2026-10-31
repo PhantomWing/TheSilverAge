@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.network;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.SilverOxidation;
+import com.phantomwing.thesilverage.client.ServerContentSettings;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.combat.SilverUndeadSettings;
@@ -24,7 +25,7 @@ import java.util.Set;
 
 /**
  * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload}, {@link UndeadSettingsSyncPayload} and
- * {@link OxidationSyncPayload}, sent on join and after each datapack reload, and the last two whenever the config
+ * {@link ContentSyncPayload}, sent on join and after each datapack reload, and the last two whenever the config
  * changes ({@link #configChanged()}).
  *
  * <p>{@link #register()} is called from {@code TheSilverAgeCommon.init()} (both
@@ -63,7 +64,7 @@ public final class ModNetworking {
             NetworkManager.registerS2CPayloadType(
                     UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC);
             NetworkManager.registerS2CPayloadType(
-                    OxidationSyncPayload.TYPE, OxidationSyncPayload.STREAM_CODEC);
+                    ContentSyncPayload.TYPE, ContentSyncPayload.STREAM_CODEC);
         }
 
         // On join, tell the player whether this server overrides vanilla recipes
@@ -119,8 +120,8 @@ public final class ModNetworking {
         if (NetworkManager.canPlayerReceive(player, UndeadSettingsSyncPayload.TYPE)) {
             NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
         }
-        if (NetworkManager.canPlayerReceive(player, OxidationSyncPayload.TYPE)) {
-            NetworkManager.sendToPlayer(player, new OxidationSyncPayload(SilverOxidation.enabled()));
+        if (NetworkManager.canPlayerReceive(player, ContentSyncPayload.TYPE)) {
+            NetworkManager.sendToPlayer(player, new ContentSyncPayload(SilverOxidation.enabled(), CommonConfig.silverArrows()));
         }
     }
 
@@ -143,22 +144,25 @@ public final class ModNetworking {
                 UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings())));
         NetworkManager.registerReceiver(NetworkManager.Side.S2C,
-                OxidationSyncPayload.TYPE, OxidationSyncPayload.STREAM_CODEC,
-                (payload, context) -> context.queue(() -> setOxidationFromServer(payload.enabled())));
+                ContentSyncPayload.TYPE, ContentSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.queue(() -> setContentFromServer(payload.oxidation(), payload.arrows())));
     }
 
     /**
-     * The server's {@code enable_silver_oxidation} on the client, or {@code null} on disconnect for the client's own.
-     * Where that changes what the creative tab hides, the tab is built again the next time it opens.
+     * The server's {@code enable_silver_oxidation} and {@code enable_silver_arrows} on the client, or {@code null}s on
+     * disconnect for the client's own. Where that changes what the creative tabs hide, they are built again the next
+     * time one opens.
      */
-    public static void setOxidationFromServer(Boolean enabled) {
-        boolean before = SilverOxidation.enabledOnClient();
-        if (enabled == null) {
+    public static void setContentFromServer(Boolean oxidation, Boolean arrows) {
+        boolean oxidationBefore = SilverOxidation.enabledOnClient();
+        boolean arrowsBefore = ServerContentSettings.arrows();
+        if (oxidation == null) {
             SilverOxidation.clearFromServer();
         } else {
-            SilverOxidation.setFromServer(enabled);
+            SilverOxidation.setFromServer(oxidation);
         }
-        if (SilverOxidation.enabledOnClient() != before) {
+        ServerContentSettings.setArrowsFromServer(arrows);
+        if (SilverOxidation.enabledOnClient() != oxidationBefore || ServerContentSettings.arrows() != arrowsBefore) {
             CreativeModeTabs.CACHED_PARAMETERS = null;
         }
     }

@@ -65,8 +65,8 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation`** is sent to clients (`OxidationSyncPayload`), so the creative tabs, EMI and honeycomb
-  follow the server's; a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
+  tabs, the recipe viewers and honeycomb follow the server's; a dispenser's honeycomb is refused too (`SilverOxidation`).
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two

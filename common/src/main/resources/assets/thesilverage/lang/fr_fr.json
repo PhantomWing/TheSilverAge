@@ -229,7 +229,7 @@
   "thesilverage.configuration.enable_silver_floor_damage.tooltip": "Les blocs d'argent doivent-ils blesser les morts-vivants qui se tiennent dessus, les empêcher d'y apparaître et les faire les contourner ?",
   "thesilverage.configuration.enable_silver_oxidation": "Activer l'oxydation de l'argent",
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Les blocs d'argent doivent-ils s'oxyder avec le temps et pouvoir être cirés avec un rayon de miel ? Les blocs existants peuvent toujours être grattés avec une hache.",
-  "thesilverage.configuration.enable_create_spout_oxidation": "Oxydation par bec verseur",
+  "thesilverage.configuration.enable_create_spout_oxidation": "Oxydation par bec verseur de Create",
   "thesilverage.configuration.enable_create_spout_oxidation.tooltip": "Le bec verseur de Create doit-il oxyder les blocs d'argent avec de l'eau ? Nécessite l'oxydation de l'argent.",
   "thesilverage.configuration.enable_silver_gear_recipes": "Recettes d'équipement en argent",
   "thesilverage.configuration.enable_silver_gear_recipes.tooltip": "Les outils et armures en argent peuvent-ils être fabriqués ? Désactivez-le quand les outils et armures en argent d'un autre mod utilisent les mêmes recettes.",

@@ -229,7 +229,7 @@
   "thesilverage.configuration.enable_silver_floor_damage.tooltip": "Moeten zilveren blokken ondoden die erop staan verwonden, voorkomen dat ze er spawnen en ze eromheen laten lopen?",
   "thesilverage.configuration.enable_silver_oxidation": "Zilveroxidatie inschakelen",
   "thesilverage.configuration.enable_silver_oxidation.tooltip": "Moeten zilveren blokken na verloop van tijd oxideren en met honingraat ingewassen kunnen worden? Bestaande blokken kunnen nog steeds met een bijl worden afgeschraapt.",
-  "thesilverage.configuration.enable_create_spout_oxidation": "Oxidatie door tuit",
+  "thesilverage.configuration.enable_create_spout_oxidation": "Oxidatie door tuit van Create",
   "thesilverage.configuration.enable_create_spout_oxidation.tooltip": "Moet de tuit van Create zilveren blokken met water laten oxideren? Vereist zilveroxidatie.",
   "thesilverage.configuration.enable_silver_gear_recipes": "Recepten voor zilveren uitrusting",
   "thesilverage.configuration.enable_silver_gear_recipes.tooltip": "Kunnen zilveren gereedschappen en harnassen worden gemaakt? Zet dit uit als de zilveren gereedschappen en harnassen van een andere mod dezelfde recepten gebruiken.",

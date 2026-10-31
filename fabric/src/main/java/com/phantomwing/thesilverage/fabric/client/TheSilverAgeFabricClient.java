@@ -70,7 +70,7 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ServerOverrideState.clear();
             ServerUndeadSettings.clear();
-            ModNetworking.setOxidationFromServer(null);
+            ModNetworking.setContentFromServer(null, null);
             client.execute(RecipeOverridePack::refresh);
         });
 

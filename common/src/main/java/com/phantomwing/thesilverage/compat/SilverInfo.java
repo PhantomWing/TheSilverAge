@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.compat;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.client.ServerContentSettings;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -32,7 +33,7 @@ public record SilverInfo(String name, List<Item> items) {
             lights.addAll(everyStage("silver_lantern"));
             pages.add(new SilverInfo("silver_light", lights));
         }
-        if (CommonConfig.silverArrows()) {
+        if (ServerContentSettings.arrows()) {
             pages.add(new SilverInfo("silver_arrow", List.of(item("silver_arrow"))));
         }
         return pages;
