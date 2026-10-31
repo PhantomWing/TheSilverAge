@@ -72,8 +72,10 @@ check.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
   darker ones the two block shades just below those, about 23 lightness points in all - the whole ramp
   read harsh, five neighbouring shades flat. An item sprite drawn apart from its block texture (the
-  chain, the lantern) uses that block's shades. A silver light (torch flame, lantern) is violet,
-  `#5137bf` to `#f5e7fa`, where vanilla's is orange. `kb/pixel-art.md` has vanilla's side of it.
+  chain, the lantern) uses that block's shades. A silver light (torch flame, lantern) is a mystical
+  bright purple to pink, where vanilla's is orange: the torch's flame `#a141ff` to `#ffe0ff`, the lantern's
+  `#8e2fd8`, `#b44cff`, `#dc65ff`, `#f28bff`, `#fdb2ff`, `#ffe0ff`, recoloured onto the torch's family from a bluer
+  violet that read off beside it, which the developer picked (2026-10-31). `kb/pixel-art.md` has vanilla's side of it.
 
 JEI, AppleSkin and Jade are runtime-only dev dependencies, not compiled against. They are free to drop
 on a rung where they have no build; that does not block the line.
