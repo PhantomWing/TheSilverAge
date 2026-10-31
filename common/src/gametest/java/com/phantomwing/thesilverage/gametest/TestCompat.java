@@ -13,6 +13,11 @@ import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -162,5 +167,15 @@ public final class TestCompat {
         level.explode(null, null, AbstractWindCharge.EXPLOSION_DAMAGE_CALCULATOR, at.x, at.y, at.z, 1.2f, false,
                 Level.ExplosionInteraction.TRIGGER, ParticleTypes.GUST_EMITTER_SMALL, ParticleTypes.GUST_EMITTER_LARGE,
                 SoundEvents.WIND_CHARGE_BURST);
+    }
+
+    /** The block entity at {@code pos} in the test, or null. {@code GameTestHelper.getBlockEntity} takes its class from 1.21.5. */
+    public static BlockEntity blockEntity(GameTestHelper helper, BlockPos pos) {
+        return helper.getBlockEntity(pos);
+    }
+
+    /** The trades of vanilla's profession of that name by level. The trade lists are keyed by the profession's key from 1.21.5. */
+    public static Int2ObjectMap<VillagerTrades.ItemListing[]> villagerTrades(String profession) {
+        return VillagerTrades.TRADES.get(BuiltInRegistries.VILLAGER_PROFESSION.get(ResourceLocation.withDefaultNamespace(profession)));
     }
 }
