@@ -105,8 +105,7 @@ public final class SilverOxidationGameTest {
      * see it.
      */
     public static void honeycombDoesntWaxWithOxidationOff(GameTestHelper helper) {
-        ServerPlayer player = TestCompat.serverPlayer(helper);
-        try {
+        TestCompat.withServerPlayer(helper, player -> {
             List<String> problems = TestSettings.with(OPTION, false, () -> {
                 List<String> found = new ArrayList<>();
                 expectUse(helper, player, ModBlocks.SILVER_BLOCK.get(), Items.HONEYCOMB, ModBlocks.SILVER_BLOCK.get(), found);
@@ -123,9 +122,7 @@ public final class SilverOxidationGameTest {
             } else {
                 fail(helper, "With " + OPTION + " off, " + String.join("; ", problems));
             }
-        } finally {
-            TestCompat.removePlayer(player);
-        }
+        });
     }
 
     private static void expectUse(GameTestHelper helper, ServerPlayer player, Block block, Item item, Block expected, List<String> problems) {
