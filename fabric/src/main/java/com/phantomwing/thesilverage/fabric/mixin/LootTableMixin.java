@@ -158,7 +158,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
             boolean enabled = entry.op() == SilverLootSpec.Op.SILVERFISH
                     ? silverfishEnabled
                     : structureLootEnabled;
-            if (!enabled) {
+            if (!enabled || !SilverLootSpec.itemEnabled(entry.item().get())) {
                 continue;
             }
 

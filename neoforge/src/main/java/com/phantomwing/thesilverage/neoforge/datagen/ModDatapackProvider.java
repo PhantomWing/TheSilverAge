@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModTrimMaterials;
+import com.phantomwing.thesilverage.combat.ModDamageTypes;
 import com.phantomwing.thesilverage.neoforge.world.ModBiomeModifiers;
 import com.phantomwing.thesilverage.world.ModConfiguredFeatures;
 import com.phantomwing.thesilverage.world.ModPlacedFeatures;
@@ -18,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModDatapackProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap)
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);

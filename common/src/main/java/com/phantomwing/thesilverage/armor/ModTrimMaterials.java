@@ -9,7 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 
@@ -46,21 +48,22 @@ public class ModTrimMaterials {
         registerMaterial(context, SILVER,
                 ModItems.SILVER_INGOT.get(),
                 Style.EMPTY.withColor(TextColor.parseColor("#7c9eb7").getOrThrow()),
-                SILVER_INDEX);
+                SILVER_INDEX,
+                // The darker palette on silver armour, as its icon has, or the trim nearly vanishes against the same
+                // colour: vanilla does the same for iron on iron, gold on gold. Keyed by the armour's equipment asset.
+                Map.of(ModArmorMaterials.SILVER_ARMOR_MATERIAL.assetId(), "silver_darker"));
     }
 
     private static ResourceKey<TrimMaterial> trimMaterialKey(String name) {
         return ResourceKey.create(Registries.TRIM_MATERIAL, TheSilverAge.resourceLocation(name));
     }
 
-    private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex) {
-        // 1.21.4: TrimMaterial.create dropped the itemModelIndex float (item models are
-        // data-driven now) and its override map is keyed by ResourceKey<EquipmentAsset>.
-        // itemModelIndex is retained on this method's signature only as documentation of
-        // the legacy ordering; it is no longer passed to create(). Map.of() = no overrides.
+    private static void registerMaterial(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Item item, Style style, float itemModelIndex, Map<ResourceKey<EquipmentAsset>, String> overrideArmorAssets) {
+        // 1.21.4: TrimMaterial.create dropped the itemModelIndex float (item models are data-driven now) and its
+        // overrides are keyed by the armour's equipment asset. itemModelIndex stays on the signature as the legacy order.
         TrimMaterial trimMaterial = TrimMaterial.create(trimKey.location().getPath(), item,
                 Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(style),
-                Map.of());
+                overrideArmorAssets);
         context.register(trimKey, trimMaterial);
     }
 }

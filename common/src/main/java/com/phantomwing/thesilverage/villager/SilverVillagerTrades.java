@@ -1,11 +1,14 @@
 package com.phantomwing.thesilverage.villager;
 
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
+
+import java.util.Optional;
 
 /**
  * Loader-agnostic source of truth for the Silver villager trades.
@@ -36,7 +39,7 @@ public final class SilverVillagerTrades {
 
     /**
      * Cleric, profession level 2: buy 3 Silver Ingot, sell 1 Emerald
-     * (maxUses 12, villagerXp 10). The only active Silver villager trade.
+     * (maxUses 12, villagerXp 10).
      */
     public static VillagerTrades.ItemListing clericSilverIngotForEmerald() {
         return (trader, random) -> new MerchantOffer(
@@ -44,6 +47,21 @@ public final class SilverVillagerTrades {
                 new ItemStack(Items.EMERALD, 1),
                 12,
                 10,
+                PRICE_MULTIPLIER
+        );
+    }
+
+    /**
+     * Fletcher, profession level 5: 2 Emeralds and 5 Arrows for 5 Silver Arrows (maxUses 12, villagerXp 30), as his
+     * tipped arrows are traded. No offer, which vanilla skips, while enable_silver_arrows is off.
+     */
+    public static VillagerTrades.ItemListing fletcherSilverArrows() {
+        return (trader, random) -> !CommonConfig.silverArrows() ? null : new MerchantOffer(
+                new ItemCost(Items.EMERALD, 2),
+                Optional.of(new ItemCost(Items.ARROW, 5)),
+                new ItemStack(ModItems.SILVER_ARROW.get(), 5),
+                12,
+                30,
                 PRICE_MULTIPLIER
         );
     }

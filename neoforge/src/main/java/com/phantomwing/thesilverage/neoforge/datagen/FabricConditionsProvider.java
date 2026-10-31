@@ -157,6 +157,14 @@ public class FabricConditionsProvider implements DataProvider {
                 fabric.addProperty(FABRIC_CONDITION, "fabric:not");
                 fabric.add("value", translate(neoforge.getAsJsonObject("value"), path));
             }
+            case "neoforge:and" -> {
+                fabric.addProperty(FABRIC_CONDITION, "fabric:and");
+                JsonArray values = new JsonArray();
+                for (JsonElement value : neoforge.getAsJsonArray("values")) {
+                    values.add(translate(value.getAsJsonObject(), path));
+                }
+                fabric.add("values", values);
+            }
             case "thesilverage:config_boolean" -> {
                 // Same condition id + field; only the dispatch key differs
                 // (NeoForge "type" -> Fabric "condition").

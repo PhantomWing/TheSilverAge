@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "thesilverage_gametest",
+  "version": "1.0.0",
+  "name": "The Silver Age game tests",
+  "description": "The Silver Age's game tests, for its dev runs only.",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "com.phantomwing.thesilverage.fabric.gametest.GameTestRegistration"
+    ]
+  },
+  "depends": {
+    "thesilverage": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

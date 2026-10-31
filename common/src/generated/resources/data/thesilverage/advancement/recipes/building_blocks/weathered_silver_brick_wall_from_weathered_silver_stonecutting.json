@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:weathered_silver_brick_wall_from_weathered_silver_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_weathered_silver": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:weathered_silver"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_weathered_silver"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:weathered_silver_brick_wall_from_weathered_silver_stonecutting"
+    ]
+  }
+}
