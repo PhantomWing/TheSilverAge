@@ -10,7 +10,7 @@
     },
     {
       "type": "thesilverage:config_boolean",
-      "settingId": "enable_spout_oxidation"
+      "settingId": "enable_create_spout_oxidation"
     }
   ],
   "type": "create:filling",
@@ -27,7 +27,7 @@
     },
     {
       "condition": "thesilverage:config_boolean",
-      "settingId": "enable_spout_oxidation"
+      "settingId": "enable_create_spout_oxidation"
     }
   ],
   "ingredients": [

@@ -50,13 +50,13 @@ public class ModFillingRecipeGen extends FillingRecipeGen {
     /**
      * Gated on Create being loaded, so a game without it skips these rather than logging errors about the unknown
      * {@code create:filling} serializer; on {@code enable_silver_oxidation}, or Create would get round that toggle;
-     * and on {@code enable_spout_oxidation}, for packs that want silver to weather only with time.
+     * and on {@code enable_create_spout_oxidation}, for packs that want silver to weather only with time.
      */
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
         super.buildRecipes(recipeOutput.withConditions(
                 new ModLoadedCondition(ModIds.CREATE),
                 new ConfigBooleanCondition(Configuration.ENABLE_SILVER_OXIDATION_ID),
-                new ConfigBooleanCondition(Configuration.ENABLE_SPOUT_OXIDATION_ID)));
+                new ConfigBooleanCondition(Configuration.ENABLE_CREATE_SPOUT_OXIDATION_ID)));
     }
 }
