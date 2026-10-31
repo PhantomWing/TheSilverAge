@@ -46,7 +46,7 @@ public final class SilverTradesGameTest {
 
     /** How many of {@code profession}'s trades at {@code level}, or at every level for 0, give an offer that matches. */
     private static long count(GameTestHelper helper, VillagerProfession profession, int level, Predicate<MerchantOffer> matches) {
-        Villager villager = EntityType.VILLAGER.create(helper.getLevel());
+        Villager villager = TestCompat.create(EntityType.VILLAGER, helper.getLevel());
         RandomSource random = RandomSource.create(0);
         long found = 0;
         for (var entry : VillagerTrades.TRADES.get(profession).int2ObjectEntrySet()) {

@@ -78,7 +78,7 @@ public final class SilverArmorGameTest {
             wearer.setHealth(wearer.getMaxHealth());
             attacker.invulnerableTime = 0;
             attacker.setHealth(attacker.getMaxHealth());
-            wearer.hurt(level.damageSources().mobAttack(attacker), 1.0F);
+            TestCompat.hurt(wearer, level.damageSources().mobAttack(attacker), 1.0F);
             if (attacker.getHealth() < attacker.getMaxHealth()) {
                 burned++;
             }

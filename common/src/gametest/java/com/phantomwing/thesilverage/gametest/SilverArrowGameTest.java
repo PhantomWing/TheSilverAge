@@ -131,7 +131,7 @@ public final class SilverArrowGameTest {
 
     private static float lost(LivingEntity mob, AbstractArrow arrow) {
         float before = mob.getHealth();
-        mob.hurt(mob.level().damageSources().arrow(arrow, null), 4.0f);
+        TestCompat.hurt(mob, mob.level().damageSources().arrow(arrow, null), 4.0f);
         return before - mob.getHealth();
     }
 }

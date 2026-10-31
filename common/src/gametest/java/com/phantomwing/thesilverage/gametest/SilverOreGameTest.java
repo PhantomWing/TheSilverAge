@@ -29,9 +29,8 @@ public final class SilverOreGameTest {
      */
     public static void silverOreFollowsItsConfig(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Registry<PlacedFeature> placed = level.registryAccess().registryOrThrow(Registries.PLACED_FEATURE);
         for (ResourceKey<PlacedFeature> key : List.of(ModPlacedFeatures.ORE_SILVER, ModPlacedFeatures.ORE_SILVER_LOWER, ModPlacedFeatures.ORE_SILVER_EXTRA)) {
-            List<PlacementModifier> placement = placed.getOrThrow(key).placement();
+            List<PlacementModifier> placement = TestCompat.placedFeature(level, key).placement();
             if (placement.isEmpty() || !(placement.get(0) instanceof ConfigBooleanPlacementFilter filter)
                     || !ModPlacedFeatures.GENERATE_SILVER_ORE_ID.equals(filter.settingId())) {
                 fail(helper, key.location() + " doesn't ask generate_silver_ore before placing");

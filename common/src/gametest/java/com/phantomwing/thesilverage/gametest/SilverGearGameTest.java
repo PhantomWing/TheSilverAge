@@ -5,7 +5,6 @@ import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,14 +14,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.armortrim.TrimMaterials;
-import net.minecraft.world.item.armortrim.TrimPatterns;
 
 import java.util.Map;
 
@@ -48,7 +42,7 @@ public final class SilverGearGameTest {
                 EntityType.ZOMBIE_VILLAGER, Items.IRON_SWORD,
                 EntityType.VINDICATOR, Items.IRON_AXE);
         for (Map.Entry<EntityType<? extends Mob>, Item> entry : held.entrySet()) {
-            Mob mob = entry.getKey().create(level);
+            Mob mob = TestCompat.create(entry.getKey(), level);
             Item silver = silverFor(entry.getValue());
             boolean swapped = false;
             for (int i = 0; i < TRIES && !swapped; i++) {
@@ -66,7 +60,7 @@ public final class SilverGearGameTest {
         }
 
         // A mob loaded from disk keeps what it had.
-        Mob loaded = EntityType.ZOMBIE.create(level);
+        Mob loaded = TestCompat.create(EntityType.ZOMBIE, level);
         for (int i = 0; i < TRIES; i++) {
             loaded.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
             MonsterArmorHandler.tryEquipSilverGear(loaded, level, true);
@@ -83,7 +77,7 @@ public final class SilverGearGameTest {
     /** A husk spawning in golden armor sometimes wears silver armor instead, as a zombie does. */
     public static void husksWearSilverArmor(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob husk = EntityType.HUSK.create(level);
+        Mob husk = TestCompat.create(EntityType.HUSK, level);
         boolean swapped = false;
         for (int i = 0; i < TRIES && !swapped; i++) {
             husk.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
@@ -105,7 +99,7 @@ public final class SilverGearGameTest {
      */
     public static void mobRollsOnce(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob zombie = EntityType.ZOMBIE.create(level);
+        Mob zombie = TestCompat.create(EntityType.ZOMBIE, level);
         for (int i = 0; i < TRIES; i++) {
             zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
             MonsterArmorHandler.tryEquipSilverGear(zombie, level, false);
@@ -126,7 +120,7 @@ public final class SilverGearGameTest {
     public static void convertedMobsKeepTheirRoll(GameTestHelper helper) {
         Mob husk = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(3, 2, 3));
         husk.addTag(MonsterArmorHandler.ROLLED_TAG);
-        Mob zombie = husk.convertTo(EntityType.ZOMBIE, true);
+        Mob zombie = TestCompat.convertTo(husk, EntityType.ZOMBIE, true);
         if (zombie == null) {
             fail(helper, "The husk didn't convert into a zombie");
         } else if (!zombie.getTags().contains(MonsterArmorHandler.ROLLED_TAG)) {
@@ -142,16 +136,16 @@ public final class SilverGearGameTest {
      */
     public static void thornsTakeNoWeaponBonus(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob armed = EntityType.ZOMBIE.create(level);
+        Mob armed = TestCompat.create(EntityType.ZOMBIE, level);
         armed.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.SILVER_SWORD.get()));
-        Mob unarmed = EntityType.ZOMBIE.create(level);
+        Mob unarmed = TestCompat.create(EntityType.ZOMBIE, level);
         Mob burnedByArmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(1, 2, 1));
         Mob burnedByUnarmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(5, 2, 1));
         float armedLoss = burnedByArmed.getHealth();
-        burnedByArmed.hurt(level.damageSources().thorns(armed), 2.0f);
+        TestCompat.hurt(burnedByArmed, level.damageSources().thorns(armed), 2.0f);
         armedLoss -= burnedByArmed.getHealth();
         float unarmedLoss = burnedByUnarmed.getHealth();
-        burnedByUnarmed.hurt(level.damageSources().thorns(unarmed), 2.0f);
+        TestCompat.hurt(burnedByUnarmed, level.damageSources().thorns(unarmed), 2.0f);
         unarmedLoss -= burnedByUnarmed.getHealth();
         armed.discard();
         unarmed.discard();
@@ -184,8 +178,7 @@ public final class SilverGearGameTest {
             return;
         }
         ServerLevel level = helper.getLevel();
-        ArmorTrim trim = new ArmorTrim(level.registryAccess().registryOrThrow(Registries.TRIM_MATERIAL).getHolderOrThrow(TrimMaterials.COPPER),
-                level.registryAccess().registryOrThrow(Registries.TRIM_PATTERN).getHolderOrThrow(TrimPatterns.FLOW));
+        var trim = TestCompat.trim(level, "copper", "flow");
         ItemStack helmet = new ItemStack(Items.GOLDEN_HELMET);
         helmet.set(DataComponents.TRIM, trim);
         if (!trim.equals(ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()).get(DataComponents.TRIM))) {
@@ -195,11 +188,9 @@ public final class SilverGearGameTest {
         helper.succeed();
     }
 
-    /** The silver trim on worn silver armour takes its darker palette, which only the registry's holder of the material finds. */
+    /** The silver trim on worn silver armour takes its darker palette, as iron's does on iron. */
     public static void silverTrimDarkensOnSilverArmor(GameTestHelper helper) {
-        Holder<TrimMaterial> silver = helper.getLevel().registryAccess().registryOrThrow(Registries.TRIM_MATERIAL)
-                .getHolderOrThrow(ModTrimMaterials.SILVER);
-        String palette = silver.value().overrideArmorMaterials().get(((ArmorItem) ModItems.SILVER_CHESTPLATE.get()).getMaterial());
+        String palette = TestCompat.trimPalette(helper.getLevel(), ModTrimMaterials.SILVER, ModItems.SILVER_CHESTPLATE.get());
         if ("silver_darker".equals(palette)) {
             helper.succeed();
         } else {

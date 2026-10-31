@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.gametest;
 
+import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,6 +42,33 @@ public final class SilverOxidationGameTest {
     private static final BlockPos AT = new BlockPos(3, 2, 3);
 
     private SilverOxidationGameTest() {
+    }
+
+    /**
+     * Every silver block with a stage left to reach takes random ticks, and an oxidized one none: the level only ticks a
+     * block whose state says it does, which a state works out once at startup. On NeoForge 1.21.3 that read the oxidizables
+     * data map before it had loaded, so no silver block ticked and none ever tarnished, though calling randomTick worked.
+     */
+    public static void tarnishingSilverTakesRandomTicks(GameTestHelper helper) {
+        List<String> wrong = new ArrayList<>();
+        for (Block block : BuiltInRegistries.BLOCK) {
+            if (!BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(TheSilverAge.MOD_ID)
+                    || !(block instanceof WeatheringCopper weathering)) {
+                continue;
+            }
+            boolean ticks = weathering.getAge() != WeatheringCopper.WeatherState.OXIDIZED;
+            for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+                if (state.isRandomlyTicking() != ticks) {
+                    wrong.add(BuiltInRegistries.BLOCK.getKey(block).getPath() + (ticks ? " doesn't tick" : " ticks"));
+                    break;
+                }
+            }
+        }
+        if (wrong.isEmpty()) {
+            helper.succeed();
+        } else {
+            fail(helper, "Random ticks: " + String.join(", ", wrong));
+        }
     }
 
     /** Every silver block that tarnishes stays as it is through its random ticks with the option off, and tarnishes with it on. */

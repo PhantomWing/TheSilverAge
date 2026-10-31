@@ -58,6 +58,7 @@ public final class GameTests {
             test("tarnished_plates_need_more_mobs", SilverPressurePlateGameTest::tarnishedPlatesNeedMoreMobs),
             test("undead_keep_away_from_silver_torches", SilverLightGameTest::undeadKeepAwayFromSilverTorches),
             test("undead_keep_away_from_silver_lanterns", SilverLightGameTest::undeadKeepAwayFromSilverLanterns),
+            test("tarnishing_silver_takes_random_ticks", SilverOxidationGameTest::tarnishingSilverTakesRandomTicks),
             test("silver_doesnt_tarnish_with_oxidation_off", SilverOxidationGameTest::silverDoesntTarnishWithOxidationOff),
             test("honeycomb_doesnt_wax_with_oxidation_off", SilverOxidationGameTest::honeycombDoesntWaxWithOxidationOff),
             test("clerics_buy_silver_ingots_once", SilverTradesGameTest::clericsBuySilverIngotsOnce),

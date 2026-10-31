@@ -50,8 +50,8 @@ public final class SilverCombatGameTest {
             wearer.setHealth(wearer.getMaxHealth());
             skeleton.invulnerableTime = 0;
             skeleton.setHealth(skeleton.getMaxHealth());
-            wearer.hurt(level.damageSources().mobAttack(skeleton), 1.0F);
-            skeleton.hurt(level.damageSources().thorns(wearer), THORNS);
+            TestCompat.hurt(wearer, level.damageSources().mobAttack(skeleton), 1.0F);
+            TestCompat.hurt(skeleton, level.damageSources().thorns(wearer), THORNS);
             float lost = skeleton.getMaxHealth() - skeleton.getHealth();
             if (lost < THORNS - 0.01F) {
                 problems.add("a strike's Thorns took " + lost + ", not " + THORNS);
@@ -109,7 +109,9 @@ public final class SilverCombatGameTest {
     /** A husk whose box reaches into a Silver Pressure Plate's block from beside it isn't hurt; one standing in it is. */
     public static void silverPlatesHurtOnlyWhatStandsInThem(GameTestHelper helper) {
         BlockPos plate = new BlockPos(2, 2, 3);
-        BlockPos other = new BlockPos(5, 2, 3);
+        // Far from the husk beside the first plate: silver's hop goes a random way, and two blocks off it shoved that husk
+        // into the plate's block now and then.
+        BlockPos other = new BlockPos(5, 2, 6);
         helper.setBlock(plate, ModBlocks.SILVER_PRESSURE_PLATE.get());
         helper.setBlock(other, ModBlocks.SILVER_PRESSURE_PLATE.get());
         // Its box half a husk wide either side, so it reaches 0.1 into the plate's block.

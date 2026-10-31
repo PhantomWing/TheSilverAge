@@ -41,8 +41,8 @@ public final class SilverRecipeConditionsGameTest {
 
     /**
      * The silver gear's recipes ask {@code enable_silver_gear_recipes}, the Silver Arrows' {@code enable_silver_arrows},
-     * Create's Spout's {@code enable_create_spout_oxidation} and oxidation's, Aquatic Ambitions' channeling oxidation's, and
-     * each vanilla override and its fallback the master switch and the override's own option.
+     * Create's Spout's {@code enable_create_spout_oxidation} and oxidation's, Aquatic Ambitions' channeling oxidation's
+     * (where the line has Create), and each vanilla override and its fallback the master switch and the override's own option.
      */
     public static void optionsGuardTheirRecipes(GameTestHelper helper) {
         ResourceManager resources = helper.getLevel().getServer().getResourceManager();
@@ -51,8 +51,9 @@ public final class SilverRecipeConditionsGameTest {
             expect(resources, mod("recipe/silver_" + piece + ".json"), Set.of("enable_silver_gear_recipes"), problems);
         }
         expect(resources, mod("recipe/silver_arrow.json"), Set.of("enable_silver_arrows"), problems);
-        expectFolder(resources, "recipe/filling", Set.of("enable_silver_oxidation", "enable_create_spout_oxidation"), problems);
-        expectFolder(resources, "recipe/channeling", Set.of("enable_silver_oxidation"), problems);
+        for (Map.Entry<String, Set<String>> folder : TestCompat.createRecipeFolders().entrySet()) {
+            expectFolder(resources, folder.getKey(), folder.getValue(), problems);
+        }
         for (Map.Entry<RecipeOverride, String> entry : OVERRIDDEN.entrySet()) {
             Set<String> options = Set.of("override_vanilla_recipes", entry.getKey().settingId());
             expect(resources, ResourceLocation.withDefaultNamespace("recipe/" + entry.getValue() + ".json"), options, problems);
