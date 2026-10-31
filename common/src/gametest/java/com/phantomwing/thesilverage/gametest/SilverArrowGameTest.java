@@ -108,7 +108,7 @@ public final class SilverArrowGameTest {
         BlockPos dispenser = new BlockPos(1, 2, 3);
         helper.setBlock(dispenser, Blocks.DISPENSER.defaultBlockState().setValue(DispenserBlock.FACING, Direction.EAST));
         helper.setBlock(new BlockPos(5, 2, 3), Blocks.STONE); // stops the arrow inside the arena
-        if (!(helper.getBlockEntity(dispenser) instanceof DispenserBlockEntity contents)) {
+        if (!(TestCompat.blockEntity(helper, dispenser) instanceof DispenserBlockEntity contents)) {
             fail(helper, "No dispenser was placed");
             return;
         }
