@@ -77,9 +77,9 @@ public final class SilverArmorGameTest {
                     wearer.setItemSlot(slot, item == null ? ItemStack.EMPTY : new ItemStack(item));
                 }
             }
-            wearer.invulnerableTime = 0;
+            TestCompat.resetDamageCooldown(wearer);
             wearer.setHealth(wearer.getMaxHealth());
-            attacker.invulnerableTime = 0;
+            TestCompat.resetDamageCooldown(attacker);
             attacker.setHealth(attacker.getMaxHealth());
             TestCompat.hurt(wearer, level.damageSources().mobAttack(attacker), 1.0F);
             if (attacker.getHealth() < attacker.getMaxHealth()) {

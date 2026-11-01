@@ -312,4 +312,9 @@ public final class TestCompat {
     public static Optional<CraftingInput> nameTagGrid(Item nugget) {
         return Optional.of(CraftingInput.of(2, 2, List.of(ItemStack.EMPTY, new ItemStack(nugget), new ItemStack(Items.PAPER), ItemStack.EMPTY)));
     }
+
+    /** Lets {@code entity} be hurt again at once. From 26.3 a living entity's hurt cooldown is its own damageCooldownTime, apart from invulnerableTime. */
+    public static void resetDamageCooldown(LivingEntity entity) {
+        entity.invulnerableTime = 0;
+    }
 }
