@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -35,6 +36,7 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         event.addProvider(new ModRecipeProvider.Runner(output, lookupProvider));
+        event.addProvider(new CreateFlyRecipeProvider(fabricOutput()));
 
         event.addProvider(new LootTableProvider(
                 output,
@@ -69,5 +71,14 @@ public class DataGenerators {
         // mirroring each neoforge:conditions block with a fabric:load_conditions
         // one so the single shared data gates identically on both loaders.
         event.addProvider(new FabricConditionsProvider(output));
+    }
+
+    /** Where what the Fabric jar alone carries goes, which the data run names: {@code fabric/src/generated/resources}. */
+    private static PackOutput fabricOutput() {
+        String folder = System.getProperty("thesilverage.datagen.fabricOutput");
+        if (folder == null) {
+            throw new IllegalStateException("The data run names no thesilverage.datagen.fabricOutput (neoforge/build.gradle)");
+        }
+        return new PackOutput(Path.of(folder));
     }
 }

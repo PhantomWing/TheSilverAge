@@ -1,0 +1,18 @@
+{
+  "type": "create:splashing",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
+  "ingredient": "create:crushed_raw_silver",
+  "results": [
+    {
+      "count": 9,
+      "id": "thesilverage:silver_nugget"
+    }
+  ]
+}

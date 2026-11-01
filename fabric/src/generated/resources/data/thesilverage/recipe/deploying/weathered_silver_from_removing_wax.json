@@ -1,0 +1,26 @@
+{
+  "type": "create:deploying",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredient": "#minecraft:axes",
+  "keep_held_item": true,
+  "result": {
+    "id": "thesilverage:weathered_silver"
+  },
+  "results": [
+    {
+      "id": "thesilverage:weathered_silver"
+    }
+  ],
+  "target": "thesilverage:waxed_weathered_silver"
+}

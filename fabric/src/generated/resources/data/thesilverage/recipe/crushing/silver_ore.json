@@ -1,0 +1,26 @@
+{
+  "type": "create:crushing",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
+  "ingredient": "#c:ores/silver",
+  "processing_time": 400,
+  "results": [
+    {
+      "id": "create:crushed_raw_silver"
+    },
+    {
+      "chance": 0.75,
+      "id": "create:crushed_raw_silver"
+    },
+    {
+      "chance": 0.75,
+      "id": "create:experience_nugget"
+    }
+  ]
+}

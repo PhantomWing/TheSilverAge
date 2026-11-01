@@ -40,6 +40,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
@@ -51,6 +55,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -170,11 +175,26 @@ public final class TestCompat {
     }
 
     /**
-     * The folders of Create's recipes, each with the options every recipe in it names. Create and Create: Aquatic
-     * Ambitions are on 1.21.1 alone, so a line without them has none.
+     * The folders of Create's recipes, each with the options every recipe in it names, in both modloaders' conditions.
+     * NeoForge has no Create here, and Create Fly's recipes ship in the Fabric jar alone with Fabric's conditions alone,
+     * so there are none to read on both.
      */
     public static Map<String, Set<String>> createRecipeFolders() {
         return Map.of();
+    }
+
+    /**
+     * Every recipe the recipe manager holds, by its id, as its serializer writes it: what a mod's recipe format was read
+     * as, whichever format that is. Recipes are looked up differently from 1.21.2 and 26.1.
+     */
+    public static Map<String, JsonElement> recipesAsJson(ServerLevel level) {
+        var ops = level.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+        Map<String, JsonElement> recipes = new HashMap<>();
+        for (RecipeHolder<?> holder : level.recipeAccess().getRecipes()) {
+            Recipe.CODEC.encodeStart(ops, holder.value()).result()
+                    .ifPresent(json -> recipes.put(holder.id().location().toString(), json));
+        }
+        return recipes;
     }
 
     /** A new entity of {@code type} in {@code level}, not yet added to it. It takes a spawn reason from 1.21.2. */

@@ -70,10 +70,9 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // registration here.
         ResourceConditions.register(ConfigBooleanResourceCondition.TYPE);
 
-        // NOTE: Create is not yet available past MC 1.21.1, so the Fabric Create
-        // hook is dropped on this branch. Recipe parity remains handled by the
-        // shared condition-gated generated data; re-add a runtime Create-Fabric
-        // integration here once Create ships for 1.21.3.
+        // Create Fly, the Fabric port of Create, needs nothing here: its recipes are
+        // data, which NeoForge's datagen writes in its format into fabric/src/generated
+        // (CreateFlyRecipeProvider), gated on fabric:all_mods_loaded create.
 
         // Vanilla LootTable carries no id of its own. Once all loot tables are
         // loaded, stamp each instance with its registry id (read back by the
