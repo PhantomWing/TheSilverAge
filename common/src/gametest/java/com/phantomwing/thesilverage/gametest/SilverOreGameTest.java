@@ -33,7 +33,7 @@ public final class SilverOreGameTest {
             List<PlacementModifier> placement = TestCompat.placedFeature(level, key).placement();
             if (placement.isEmpty() || !(placement.get(0) instanceof ConfigBooleanPlacementFilter filter)
                     || !ModPlacedFeatures.GENERATE_SILVER_ORE_ID.equals(filter.settingId())) {
-                fail(helper, key.location() + " doesn't ask generate_silver_ore before placing");
+                fail(helper, TestCompat.idOf(key) + " doesn't ask generate_silver_ore before placing");
                 return;
             }
         }

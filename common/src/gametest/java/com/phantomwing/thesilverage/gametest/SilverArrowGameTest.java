@@ -12,8 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,7 +55,7 @@ public final class SilverArrowGameTest {
     /** A Silver Arrow leaves a bow 15% faster than a plain one, which is what makes it hit harder. */
     public static void silverArrowsFlyFaster(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Arrow plain = new Arrow(level, 0, 0, 0, new ItemStack(Items.ARROW), null);
+        Projectile plain = TestCompat.plainArrow(level);
         SilverArrow silver = new SilverArrow(level, 0, 0, 0, new ItemStack(ModItems.SILVER_ARROW.get()), null);
         plain.shoot(0, 0, 1, 3.0f, 0.0f);
         silver.shoot(0, 0, 1, 3.0f, 0.0f);
@@ -126,12 +125,12 @@ public final class SilverArrowGameTest {
         Mob forPlain = helper.spawnWithNoFreeWill(type, new BlockPos(1, 2, z));
         Mob forSilver = helper.spawnWithNoFreeWill(type, new BlockPos(5, 2, z));
         return lost(forSilver, new SilverArrow(level, 0, 0, 0, new ItemStack(ModItems.SILVER_ARROW.get()), null))
-                - lost(forPlain, new Arrow(level, 0, 0, 0, new ItemStack(Items.ARROW), null));
+                - lost(forPlain, TestCompat.plainArrow(level));
     }
 
-    private static float lost(LivingEntity mob, AbstractArrow arrow) {
+    private static float lost(LivingEntity mob, Projectile arrow) {
         float before = mob.getHealth();
-        TestCompat.hurt(mob, mob.level().damageSources().arrow(arrow, null), 4.0f);
+        TestCompat.hurtByArrow(mob, arrow, 4.0f);
         return before - mob.getHealth();
     }
 }
