@@ -36,7 +36,7 @@ public final class SilverBlocksGameTest {
      */
     public static void moonPhaseDetectorFullMoon(GameTestHelper helper) {
         // Day 0 is a full moon; 14000 is night, so the detector reads the phase rather than a day change.
-        helper.setDayTime(14000);
+        TestCompat.setDayTime(helper, 14000);
         helper.setBlock(CENTER, ModBlocks.MOON_PHASE_DETECTOR.get());
         helper.startSequence()
                 .thenExecuteAfter(25, () -> helper.assertBlockProperty(CENTER, MoonPhaseDetectorBlock.POWER, 15))
