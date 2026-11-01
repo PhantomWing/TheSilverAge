@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thesilverage:waxed_exposed_silver_lightning_rod"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "thesilverage:blocks/waxed_exposed_silver_lightning_rod"
+}

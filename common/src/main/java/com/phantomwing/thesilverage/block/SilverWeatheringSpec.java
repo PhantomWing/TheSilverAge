@@ -48,6 +48,11 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BRICK_STAIRS::get, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get, ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS::get);
 
+        // Silver Brick Wall
+        ox(p, ModBlocks.SILVER_BRICK_WALL::get, ModBlocks.EXPOSED_SILVER_BRICK_WALL::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_WALL::get, ModBlocks.WEATHERED_SILVER_BRICK_WALL::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_WALL::get, ModBlocks.OXIDIZED_SILVER_BRICK_WALL::get);
+
         // Cut Silver Slab
         ox(p, ModBlocks.CUT_SILVER_SLAB::get, ModBlocks.EXPOSED_CUT_SILVER_SLAB::get);
         ox(p, ModBlocks.EXPOSED_CUT_SILVER_SLAB::get, ModBlocks.WEATHERED_CUT_SILVER_SLAB::get);
@@ -88,6 +93,31 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.OXIDIZED_SILVER_DOOR::get);
 
+        // Silver Pressure Plate
+        ox(p, ModBlocks.SILVER_PRESSURE_PLATE::get, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get, ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE::get);
+
+        // Silver Lantern
+        ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.EXPOSED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LANTERN::get, ModBlocks.WEATHERED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LANTERN::get, ModBlocks.OXIDIZED_SILVER_LANTERN::get);
+
+        // Silver Chain
+        ox(p, ModBlocks.SILVER_CHAIN::get, ModBlocks.EXPOSED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_CHAIN::get, ModBlocks.WEATHERED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_CHAIN::get, ModBlocks.OXIDIZED_SILVER_CHAIN::get);
+
+        // Silver Bars
+        ox(p, ModBlocks.SILVER_BARS::get, ModBlocks.EXPOSED_SILVER_BARS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WEATHERED_SILVER_BARS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.OXIDIZED_SILVER_BARS::get);
+
+        // Silver Lightning Rod
+        ox(p, ModBlocks.SILVER_LIGHTNING_ROD::get, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD::get);
+
         return p;
     }
 
@@ -124,6 +154,12 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_EXPOSED_SILVER_BRICK_STAIRS::get);
         ox(p, ModBlocks.WEATHERED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_WEATHERED_SILVER_BRICK_STAIRS::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_BRICK_STAIRS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_STAIRS::get);
+
+        // Silver Brick Wall
+        ox(p, ModBlocks.SILVER_BRICK_WALL::get, ModBlocks.WAXED_SILVER_BRICK_WALL::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BRICK_WALL::get, ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BRICK_WALL::get, ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_BRICK_WALL::get, ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL::get);
 
         // Cut Silver Slab
         ox(p, ModBlocks.CUT_SILVER_SLAB::get, ModBlocks.WAXED_CUT_SILVER_SLAB::get);
@@ -172,6 +208,36 @@ public final class SilverWeatheringSpec {
         ox(p, ModBlocks.EXPOSED_SILVER_DOOR::get, ModBlocks.WAXED_EXPOSED_SILVER_DOOR::get);
         ox(p, ModBlocks.WEATHERED_SILVER_DOOR::get, ModBlocks.WAXED_WEATHERED_SILVER_DOOR::get);
         ox(p, ModBlocks.OXIDIZED_SILVER_DOOR::get, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR::get);
+
+        // Silver Pressure Plate
+        ox(p, ModBlocks.SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE::get, ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE::get);
+
+        // Silver Lantern
+        ox(p, ModBlocks.SILVER_LANTERN::get, ModBlocks.WAXED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LANTERN::get, ModBlocks.WAXED_EXPOSED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LANTERN::get, ModBlocks.WAXED_WEATHERED_SILVER_LANTERN::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_LANTERN::get, ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN::get);
+
+        // Silver Chain
+        ox(p, ModBlocks.SILVER_CHAIN::get, ModBlocks.WAXED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_CHAIN::get, ModBlocks.WAXED_EXPOSED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_CHAIN::get, ModBlocks.WAXED_WEATHERED_SILVER_CHAIN::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_CHAIN::get, ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN::get);
+
+        // Silver Bars
+        ox(p, ModBlocks.SILVER_BARS::get, ModBlocks.WAXED_SILVER_BARS::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_BARS::get, ModBlocks.WAXED_EXPOSED_SILVER_BARS::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_BARS::get, ModBlocks.WAXED_WEATHERED_SILVER_BARS::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_BARS::get, ModBlocks.WAXED_OXIDIZED_SILVER_BARS::get);
+
+        // Silver Lightning Rod
+        ox(p, ModBlocks.SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD::get);
+        ox(p, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD::get, ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD::get);
 
         return p;
     }

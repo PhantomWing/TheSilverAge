@@ -21,20 +21,23 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
+import net.neoforged.neoforge.common.Tags;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
-
-import java.util.Map;
+import net.neoforged.neoforge.common.conditions.AndCondition;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -49,6 +52,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     // 26.3: RecipeProvider owns `output`; the recipe context is kept for registry lookups.
     private final BootstrapContext<Recipe<?>> recipeContext;
+    private static final TagKey<Item> SILVER_NUGGETS = CommonTags.Items.NUGGETS_SILVER;
 
     protected ModRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
         super(recipes, advancements);
@@ -81,20 +85,35 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
+        // NOTE: Create is not yet available past MC 1.21.1, so the crushed_raw_silver
+        // -> silver_ingot smelting bridge is dropped on this branch.
+
+
+        // Every recipe producing a weathered or waxed variant is gated on
+        // enable_silver_oxidation: with oxidation off those variants are
+        // unobtainable, so their recipes would only clutter the recipe book / JEI.
+        var oxidationGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_OXIDATION_ID));
+
         // Storage item recipes
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_NUGGET.get(), ModItems.SILVER_INGOT.get());
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
-        // Tools
-        sword(output, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
-        pickaxe(output, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
-        axe(output, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
-        hoe(output, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
-        shovel(output, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
-        spear(output, ModItems.SILVER_SPEAR.get(), SILVER_INGOTS);
+        // Caverns & Chasms crafts its own silver tools and armor from the same grids and tag, so a pack can turn ours off.
+        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
 
-        // Silver Knife, gated on Farmer's Delight being present.
-        var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT));
+        // Tools
+        sword(gearGated, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
+        pickaxe(gearGated, ModItems.SILVER_PICKAXE.get(), SILVER_INGOTS);
+        axe(gearGated, ModItems.SILVER_AXE.get(), SILVER_INGOTS);
+        hoe(gearGated, ModItems.SILVER_HOE.get(), SILVER_INGOTS);
+        shovel(gearGated, ModItems.SILVER_SHOVEL.get(), SILVER_INGOTS);
+        spear(gearGated, ModItems.SILVER_SPEAR.get(), SILVER_INGOTS);
+
+        // Farmer's Delight compat: Silver Knife (silver ingot over a stick).
+        // Gated on FD being present — without FD the item is a hidden fallback,
+        // so it has no recipe. It is gear too, whose grid another mod's silver knife takes.
+        var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT),
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
         shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
@@ -104,10 +123,10 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fdGated);
 
         // Armor
-        helmet(output, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
-        chestplate(output, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
-        leggings(output, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
-        boots(output, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
+        helmet(gearGated, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
+        chestplate(gearGated, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);
+        leggings(gearGated, ModItems.SILVER_LEGGINGS.get(), SILVER_INGOTS);
+        boots(gearGated, ModItems.SILVER_BOOTS.get(), SILVER_INGOTS);
 
         // Smelting tools/armor into nuggets
         oreSmeltingRecipes(output, ModItems.SILVER_SWORD.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
@@ -123,19 +142,29 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_HORSE_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
         oreSmeltingRecipes(output, ModItems.SILVER_NAUTILUS_ARMOR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
+        // Silver Arrows: eight arrows around an ingot, as tipped arrows are made around a potion.
+        shaped(RecipeCategory.COMBAT, ModItems.SILVER_ARROW.get(), 8)
+                .pattern("AAA")
+                .pattern("AIA")
+                .pattern("AAA")
+                .define('A', Items.ARROW)
+                .define('I', SILVER_INGOTS)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)));
+
         // Silver Bulb
         bulb(output, ModItems.SILVER_BLOCK.get(), ModItems.SILVER_BULB.get());
-        bulb(output, ModItems.EXPOSED_SILVER.get(), ModItems.EXPOSED_SILVER_BULB.get());
-        bulb(output, ModItems.WEATHERED_SILVER.get(), ModItems.WEATHERED_SILVER_BULB.get());
-        bulb(output, ModItems.OXIDIZED_SILVER.get(), ModItems.OXIDIZED_SILVER_BULB.get());
-        bulb(output, ModItems.WAXED_SILVER_BLOCK.get(), ModItems.WAXED_SILVER_BULB.get());
-        bulb(output, ModItems.WAXED_EXPOSED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get());
-        bulb(output, ModItems.WAXED_WEATHERED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER_BULB.get());
-        bulb(output, ModItems.WAXED_OXIDIZED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
-        waxable(output, ModItems.SILVER_BULB.get(), ModItems.WAXED_SILVER_BULB.get());
-        waxable(output, ModItems.EXPOSED_SILVER_BULB.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get());
-        waxable(output, ModItems.WEATHERED_SILVER_BULB.get(), ModItems.WAXED_WEATHERED_SILVER_BULB.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.EXPOSED_SILVER.get(), ModItems.EXPOSED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.WEATHERED_SILVER.get(), ModItems.WEATHERED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.OXIDIZED_SILVER.get(), ModItems.OXIDIZED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.WAXED_SILVER_BLOCK.get(), ModItems.WAXED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.WAXED_EXPOSED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.WAXED_WEATHERED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER_BULB.get());
+        bulb(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
+        waxable(oxidationGated, ModItems.SILVER_BULB.get(), ModItems.WAXED_SILVER_BULB.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BULB.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BULB.get(), ModItems.WAXED_WEATHERED_SILVER_BULB.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
 
         // Moon Dial
         shaped(RecipeCategory.TOOLS, ModItems.MOON_DIAL.get(), 1)
@@ -160,259 +189,443 @@ public class ModRecipeProvider extends RecipeProvider {
         
         // Block of Silver
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.SILVER_INGOT.get(), ModItems.SILVER_BLOCK.get());
-        waxable(output, ModItems.SILVER_BLOCK.get(), ModItems.WAXED_SILVER_BLOCK.get());
-        waxable(output, ModItems.EXPOSED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get());
-        waxable(output, ModItems.WEATHERED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get());
-        waxable(output, ModItems.OXIDIZED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get());
+        waxable(oxidationGated, ModItems.SILVER_BLOCK.get(), ModItems.WAXED_SILVER_BLOCK.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get());
 
         // Cut Silver
         twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CUT_SILVER.get(), ModItems.SILVER_BLOCK.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
         stoneCutting(output, ModItems.CUT_SILVER.get(), ModItems.SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        stoneCutting(output, ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
-        waxable(output, ModItems.CUT_SILVER.get(), ModItems.WAXED_CUT_SILVER.get());
-        waxable(output, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
-        waxable(output, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
-        waxable(output, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
+        waxable(oxidationGated, ModItems.CUT_SILVER.get(), ModItems.WAXED_CUT_SILVER.get());
+        waxable(oxidationGated, ModItems.EXPOSED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
+        waxable(oxidationGated, ModItems.WEATHERED_CUT_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
-        // Silver Bricks
-        shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), 4)
-                .pattern("##")
-                .pattern("##")
-                .define('#', SILVER_INGOTS)
-                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
-                .save(output, getRecipeName(ModItems.SILVER_INGOT.get(), ModItems.SILVER_BRICKS.get()));
+        // Silver Bricks, at every stage, waxed or not:
+        //   - Crafting table: 2x2 of the matching Cut Silver -> 4, as stone
+        //     bricks from stone. Not from ingots: 2x2 Silver Ingots is the
+        //     Silver Trapdoor's grid.
+        //   - Stonecutter: 1 of the matching Silver Block -> 4. Mirrors the
+        //     Cut Silver pattern.
+        // Waxed brick variants are additionally obtainable via Honeycomb on
+        // the matching unwaxed one (the waxable() chain below); placed
+        // silver_bricks also still oxidize naturally over time.
+        twoBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_BRICKS.get(), ModItems.CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 4);
+
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 4);
+        twoBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 4);
 
         stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        stoneCutting(output, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
-        waxable(output, ModItems.SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BRICKS.get());
-        waxable(output, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
-        waxable(output, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+        // The brick set from Cut Silver too, one for one as the 2x2 craft gives, as vanilla cuts stone bricks from stone.
+        stoneCutting(output, ModItems.SILVER_BRICKS.get(), ModItems.CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICKS.get(), ModItems.WAXED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 2);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 2);
+        stoneCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(output, ModItems.SILVER_BRICK_WALL.get(), ModItems.CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_WALL.get(), ModItems.WAXED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 1);
 
-        // Silver Brick Stairs
+        waxable(oxidationGated, ModItems.SILVER_BRICKS.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BRICKS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BRICKS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BRICKS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        // Silver Brick Stairs — three paths per variant:
+        //   1) Crafting-table stair shape from the matching Silver Bricks (4)
+        //   2) Stonecutter from the matching Silver Bricks (1 -> 1)
+        //   3) Stonecutter from the matching Silver Block (1 -> 4)
+        // Paths 1+2 come from stairsWithCutting; path 3 is the extra
+        // stoneCutting block below. Mirrors the Cut Silver Stairs pattern.
+        // Silver Brick Wall
+        wallWithCutting(output, ModItems.SILVER_BRICK_WALL.get(), ModItems.SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        wallWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+
+        stoneCutting(output, ModItems.SILVER_BRICK_WALL.get(), ModItems.SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+
+        waxable(oxidationGated, ModItems.SILVER_BRICK_WALL.get(), ModItems.WAXED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_WALL.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_WALL.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_WALL.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_WALL.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_WALL.get());
+
         stairsWithCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
 
-        stairsWithCutting(output, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
-        stairsWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
 
         stoneCutting(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        stoneCutting(output, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
-        waxable(output, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BRICK_STAIRS.get());
-        waxable(output, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get());
-        waxable(output, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
+        waxable(oxidationGated, ModItems.SILVER_BRICK_STAIRS.get(), ModItems.WAXED_SILVER_BRICK_STAIRS.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_STAIRS.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_STAIRS.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_STAIRS.get());
 
-        // Silver Brick Slab
+        // Silver Brick Slab — three paths per variant:
+        //   1) Crafting-table slab shape from the matching Silver Bricks (6)
+        //   2) Stonecutter from the matching Silver Bricks (1 -> 2)
+        //   3) Stonecutter from the matching Silver Block (1 -> 8)
+        // Paths 1+2 come from slabWithCutting; path 3 is the extra
+        // stoneCutting block below. Mirrors the Cut Silver Slab pattern.
         slabWithCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_SILVER_BRICKS.get());
 
-        slabWithCutting(output, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
-        slabWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER_BRICKS.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICKS.get());
 
         stoneCutting(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.SILVER_BLOCK.get(), 8);
-        stoneCutting(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.EXPOSED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WEATHERED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.OXIDIZED_SILVER.get(), 8);
 
-        stoneCutting(output, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BLOCK.get(), 8);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BLOCK.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 8);
 
-        waxable(output, ModItems.SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BRICK_SLAB.get());
-        waxable(output, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get());
-        waxable(output, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get());
+        waxable(oxidationGated, ModItems.SILVER_BRICK_SLAB.get(), ModItems.WAXED_SILVER_BRICK_SLAB.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER_BRICK_SLAB.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER_BRICK_SLAB.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BRICK_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER_BRICK_SLAB.get());
 
         // Cut Silver Stairs
         stairsWithCutting(output, ModItems.CUT_SILVER_STAIRS.get(), ModItems.CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.EXPOSED_CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WEATHERED_CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.OXIDIZED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.EXPOSED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WEATHERED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.OXIDIZED_CUT_SILVER.get());
 
-        stairsWithCutting(output, ModItems.WAXED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
-        stairsWithCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
+        stairsWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
         stoneCutting(output, ModItems.CUT_SILVER_STAIRS.get(), ModItems.SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        stoneCutting(output, ModItems.WAXED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
-        waxable(output, ModItems.CUT_SILVER_STAIRS.get(), ModItems.WAXED_CUT_SILVER_STAIRS.get());
-        waxable(output, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get());
-        waxable(output, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get());
-        waxable(output, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
+        waxable(oxidationGated, ModItems.CUT_SILVER_STAIRS.get(), ModItems.WAXED_CUT_SILVER_STAIRS.get());
+        waxable(oxidationGated, ModItems.EXPOSED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_STAIRS.get());
+        waxable(oxidationGated, ModItems.WEATHERED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_STAIRS.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_STAIRS.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_STAIRS.get());
 
         // Cut Silver Slab
         slabWithCutting(output, ModItems.CUT_SILVER_SLAB.get(), ModItems.CUT_SILVER.get());
-        slabWithCutting(output, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.EXPOSED_CUT_SILVER.get());
-        slabWithCutting(output, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WEATHERED_CUT_SILVER.get());
-        slabWithCutting(output, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.OXIDIZED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.EXPOSED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WEATHERED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.OXIDIZED_CUT_SILVER.get());
 
-        slabWithCutting(output, ModItems.WAXED_CUT_SILVER_SLAB.get(), ModItems.WAXED_CUT_SILVER.get());
-        slabWithCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
-        slabWithCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
-        slabWithCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_CUT_SILVER_SLAB.get(), ModItems.WAXED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get());
+        slabWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get());
 
         stoneCutting(output, ModItems.CUT_SILVER_SLAB.get(), ModItems.SILVER_BLOCK.get(), 8);
-        stoneCutting(output, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.EXPOSED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WEATHERED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.OXIDIZED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.EXPOSED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WEATHERED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.OXIDIZED_SILVER.get(), 8);
 
-        stoneCutting(output, ModItems.WAXED_CUT_SILVER_SLAB.get(), ModItems.WAXED_SILVER_BLOCK.get(), 8);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 8);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_CUT_SILVER_SLAB.get(), ModItems.WAXED_SILVER_BLOCK.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 8);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 8);
 
-        waxable(output, ModItems.CUT_SILVER_SLAB.get(), ModItems.WAXED_CUT_SILVER_SLAB.get());
-        waxable(output, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get());
-        waxable(output, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get());
-        waxable(output, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
+        waxable(oxidationGated, ModItems.CUT_SILVER_SLAB.get(), ModItems.WAXED_CUT_SILVER_SLAB.get());
+        waxable(oxidationGated, ModItems.EXPOSED_CUT_SILVER_SLAB.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get());
+        waxable(oxidationGated, ModItems.WEATHERED_CUT_SILVER_SLAB.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get());
 
         // Chiseled Silver
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), 2);
+        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER_SLAB.get(), 1);
 
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER_SLAB.get(), 1);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER_SLAB.get(), 1);
 
         stoneCutting(output, ModItems.CHISELED_SILVER.get(), ModItems.CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CUT_SILVER.get(), 1);
 
-        stoneCutting(output, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CUT_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get(), 1);
 
         stoneCutting(output, ModItems.CHISELED_SILVER.get(), ModItems.SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.OXIDIZED_SILVER.get(), 4);
 
-        stoneCutting(output, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 4);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 4);
 
-        waxable(output, ModItems.CHISELED_SILVER.get(), ModItems.WAXED_CHISELED_SILVER.get());
-        waxable(output, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CHISELED_SILVER.get());
-        waxable(output, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CHISELED_SILVER.get());
-        waxable(output, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get());
+        waxable(oxidationGated, ModItems.CHISELED_SILVER.get(), ModItems.WAXED_CHISELED_SILVER.get());
+        waxable(oxidationGated, ModItems.EXPOSED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CHISELED_SILVER.get());
+        waxable(oxidationGated, ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_WEATHERED_CHISELED_SILVER.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get());
 
-        // Silver Pillar
+        // Silver Pillar — three obtainment paths per variant (mirrors vanilla quartz_pillar):
+        //   1) Crafting table 1x2 vertical of Silver Block (2 -> 2)
+        //   2) Stonecutter from Silver Block (1 -> 1)
+        //   3) Honeycomb waxing (unwaxed -> waxed)
         oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.SILVER_PILLAR.get(), ModItems.SILVER_BLOCK.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.EXPOSED_SILVER.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WEATHERED_SILVER.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.OXIDIZED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.EXPOSED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WEATHERED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.OXIDIZED_SILVER.get(), 2);
 
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_SILVER_PILLAR.get(), ModItems.WAXED_SILVER_BLOCK.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 2);
-        oneBytwo(output, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_SILVER_PILLAR.get(), ModItems.WAXED_SILVER_BLOCK.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 2);
+        oneBytwo(oxidationGated, RecipeCategory.BUILDING_BLOCKS, ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 2);
 
         stoneCutting(output, ModItems.SILVER_PILLAR.get(), ModItems.SILVER_BLOCK.get(), 1);
-        stoneCutting(output, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.EXPOSED_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WEATHERED_SILVER.get(), 1);
-        stoneCutting(output, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.OXIDIZED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.EXPOSED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WEATHERED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.OXIDIZED_SILVER.get(), 1);
 
-        stoneCutting(output, ModItems.WAXED_SILVER_PILLAR.get(), ModItems.WAXED_SILVER_BLOCK.get(), 1);
-        stoneCutting(output, ModItems.WAXED_EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WAXED_WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 1);
-        stoneCutting(output, ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_SILVER_PILLAR.get(), ModItems.WAXED_SILVER_BLOCK.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER.get(), 1);
+        stoneCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER.get(), 1);
 
-        waxable(output, ModItems.SILVER_PILLAR.get(), ModItems.WAXED_SILVER_PILLAR.get());
-        waxable(output, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER_PILLAR.get());
-        waxable(output, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER_PILLAR.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get());
+        waxable(oxidationGated, ModItems.SILVER_PILLAR.get(), ModItems.WAXED_SILVER_PILLAR.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_PILLAR.get(), ModItems.WAXED_EXPOSED_SILVER_PILLAR.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_PILLAR.get(), ModItems.WAXED_WEATHERED_SILVER_PILLAR.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_PILLAR.get(), ModItems.WAXED_OXIDIZED_SILVER_PILLAR.get());
 
         // Silver Grate
         grateWithCutting(output, ModItems.SILVER_GRATE.get(), ModItems.SILVER_BLOCK.get());
-        grateWithCutting(output, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.EXPOSED_SILVER.get());
-        grateWithCutting(output, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WEATHERED_SILVER.get());
-        grateWithCutting(output, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.OXIDIZED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.EXPOSED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WEATHERED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.OXIDIZED_SILVER.get());
 
-        grateWithCutting(output, ModItems.WAXED_SILVER_GRATE.get(), ModItems.WAXED_SILVER_BLOCK.get());
-        grateWithCutting(output, ModItems.WAXED_EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER.get());
-        grateWithCutting(output, ModItems.WAXED_WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER.get());
-        grateWithCutting(output, ModItems.WAXED_OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.WAXED_SILVER_GRATE.get(), ModItems.WAXED_SILVER_BLOCK.get());
+        grateWithCutting(oxidationGated, ModItems.WAXED_EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.WAXED_WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER.get());
+        grateWithCutting(oxidationGated, ModItems.WAXED_OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER.get());
 
-        waxable(output, ModItems.SILVER_GRATE.get(), ModItems.WAXED_SILVER_GRATE.get());
-        waxable(output, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER_GRATE.get());
-        waxable(output, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER_GRATE.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER_GRATE.get());
+        waxable(oxidationGated, ModItems.SILVER_GRATE.get(), ModItems.WAXED_SILVER_GRATE.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_GRATE.get(), ModItems.WAXED_EXPOSED_SILVER_GRATE.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_GRATE.get(), ModItems.WAXED_WEATHERED_SILVER_GRATE.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_GRATE.get(), ModItems.WAXED_OXIDIZED_SILVER_GRATE.get());
 
         // Silver Door
         door(output, ModItems.SILVER_DOOR.get(), SILVER_INGOTS);
-        waxable(output, ModItems.SILVER_DOOR.get(), ModItems.WAXED_SILVER_DOOR.get());
-        waxable(output, ModItems.EXPOSED_SILVER_DOOR.get(), ModItems.WAXED_EXPOSED_SILVER_DOOR.get());
-        waxable(output, ModItems.WEATHERED_SILVER_DOOR.get(), ModItems.WAXED_WEATHERED_SILVER_DOOR.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_DOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_DOOR.get());
+        waxable(oxidationGated, ModItems.SILVER_DOOR.get(), ModItems.WAXED_SILVER_DOOR.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_DOOR.get(), ModItems.WAXED_EXPOSED_SILVER_DOOR.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_DOOR.get(), ModItems.WAXED_WEATHERED_SILVER_DOOR.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_DOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_DOOR.get());
 
         // Silver Trapdoor
         trapdoor(output, ModItems.SILVER_TRAPDOOR.get(), SILVER_INGOTS);
-        waxable(output, ModItems.SILVER_TRAPDOOR.get(), ModItems.WAXED_SILVER_TRAPDOOR.get());
-        waxable(output, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
-        waxable(output, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
-        waxable(output, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+        waxable(oxidationGated, ModItems.SILVER_TRAPDOOR.get(), ModItems.WAXED_SILVER_TRAPDOOR.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_TRAPDOOR.get(), ModItems.WAXED_EXPOSED_SILVER_TRAPDOOR.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_TRAPDOOR.get(), ModItems.WAXED_WEATHERED_SILVER_TRAPDOOR.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_TRAPDOOR.get(), ModItems.WAXED_OXIDIZED_SILVER_TRAPDOOR.get());
+
+        // Silver Pressure Plate - two ingots side by side, as vanilla's weighted plates
+        pressurePlate(output, ModItems.SILVER_PRESSURE_PLATE.get(), SILVER_INGOTS);
+        waxable(oxidationGated, ModItems.SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_EXPOSED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_WEATHERED_SILVER_PRESSURE_PLATE.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_PRESSURE_PLATE.get(), ModItems.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE.get());
+
+        // Silver Torch — mirrors the vanilla Copper Torch shape (nugget over coal over stick).
+        silverTorch(output, ModItems.SILVER_TORCH.get(), SILVER_NUGGETS);
+
+        // Silver Lantern
+        lantern(output, ModItems.SILVER_LANTERN.get(), SILVER_NUGGETS, ModItems.SILVER_TORCH.get());
+        waxable(oxidationGated, ModItems.SILVER_LANTERN.get(), ModItems.WAXED_SILVER_LANTERN.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_LANTERN.get(), ModItems.WAXED_EXPOSED_SILVER_LANTERN.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_LANTERN.get(), ModItems.WAXED_WEATHERED_SILVER_LANTERN.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_LANTERN.get(), ModItems.WAXED_OXIDIZED_SILVER_LANTERN.get());
+
+        // Silver Chain
+        chain(output, ModItems.SILVER_CHAIN.get(), SILVER_INGOTS, SILVER_NUGGETS);
+        waxable(oxidationGated, ModItems.SILVER_CHAIN.get(), ModItems.WAXED_SILVER_CHAIN.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_CHAIN.get(), ModItems.WAXED_EXPOSED_SILVER_CHAIN.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_CHAIN.get(), ModItems.WAXED_WEATHERED_SILVER_CHAIN.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_CHAIN.get(), ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
+
+        // Silver Bars
+        bars(output, ModItems.SILVER_BARS.get(), SILVER_INGOTS);
+        waxable(oxidationGated, ModItems.SILVER_BARS.get(), ModItems.WAXED_SILVER_BARS.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_BARS.get(), ModItems.WAXED_EXPOSED_SILVER_BARS.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_BARS.get(), ModItems.WAXED_WEATHERED_SILVER_BARS.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_BARS.get(), ModItems.WAXED_OXIDIZED_SILVER_BARS.get());
+
+        // Silver Lightning Rod
+        lightningRod(output, ModItems.SILVER_LIGHTNING_ROD.get(), SILVER_INGOTS);
+        waxable(oxidationGated, ModItems.SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.EXPOSED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.WEATHERED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get());
+        waxable(oxidationGated, ModItems.OXIDIZED_SILVER_LIGHTNING_ROD.get(), ModItems.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
     }
 
-    /** Add overrides for Vanilla Minecraft recipes. (Only if a recipe is enabled) */
+    /** Torch: nugget over coal/charcoal over a stick, yields 4 (vanilla Copper Torch shape). */
+    private void silverTorch(RecipeOutput output, ItemLike result, TagKey<Item> nugget) {
+        shaped(RecipeCategory.DECORATIONS, result, 4)
+                .pattern("N")
+                .pattern("X")
+                .pattern("#")
+                .define('N', nugget)
+                .define('X', Ingredient.of(Items.COAL, Items.CHARCOAL))
+                .define('#', Items.STICK)
+                .unlockedBy(getHasName(nugget), has(nugget))
+                .save(output);
+    }
+
+    /** Lantern: 8 nuggets around a torch (vanilla lantern shape). */
+    private void lantern(RecipeOutput output, ItemLike result, TagKey<Item> nugget, ItemLike torch) {
+        shaped(RecipeCategory.DECORATIONS, result, 1)
+                .pattern("XXX")
+                .pattern("X#X")
+                .pattern("XXX")
+                .define('X', nugget)
+                .define('#', torch)
+                .unlockedBy(getHasName(nugget), has(nugget))
+                .save(output);
+    }
+
+    /** Chain: nugget / ingot / nugget vertically (vanilla chain shape). */
+    private void chain(RecipeOutput output, ItemLike result, TagKey<Item> ingot, TagKey<Item> nugget) {
+        shaped(RecipeCategory.DECORATIONS, result, 1)
+                .pattern("N")
+                .pattern("I")
+                .pattern("N")
+                .define('I', ingot)
+                .define('N', nugget)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
+    }
+
+    /** Lightning rod: 3 ingots in a column (vanilla lightning rod shape). */
+    private void lightningRod(RecipeOutput output, ItemLike result, TagKey<Item> ingot) {
+        shaped(RecipeCategory.REDSTONE, result, 1)
+                .pattern("I")
+                .pattern("I")
+                .pattern("I")
+                .define('I', ingot)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
+    }
+
+    /** Bars: 6 ingots in a 3x2, yields 16 (vanilla iron/copper bars shape). */
+    private void bars(RecipeOutput output, ItemLike result, TagKey<Item> ingot) {
+        shaped(RecipeCategory.DECORATIONS, result, 16)
+                .pattern("###")
+                .pattern("###")
+                .define('#', ingot)
+                .unlockedBy(getHasName(ingot), has(ingot))
+                .save(output);
+    }
+
+    /**
+     * Overrides for vanilla recipes, saved under the vanilla recipe's own id so they replace it. Each
+     * applies while the master switch and its own option are both on; otherwise its {@code _fallback},
+     * the vanilla recipe as it was, takes its place, since the override's file hides vanilla's either way.
+     */
     private void buildRecipeOverrides(@NotNull RecipeOutput output) {
+        ICondition master = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
+
         // Glistering Melon Slice
         shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
                 .pattern("###")
@@ -421,15 +634,20 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('#', ModTags.Items.GLISTERING_NUGGETS)
                 .define('M', Items.MELON_SLICE)
                 .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
-                .save(output);
-
-        // Conditional overrides. Their unlock advancements are ModAdvancementProvider's, at vanilla's
-        // ids, which the ones RecipeBuilder makes would collide with.
-        ICondition condition = new ConfigBooleanCondition(Configuration.OVERRIDE_VANILLA_RECIPES_ID);
-        RecipeOutput conditionalOutput = withoutUnlocks(output.withConditions(condition));
-        RecipeOutput fallbackOutput = withoutUnlocks(output.withConditions(new NotCondition(condition)));
+                .save(overrideOutput(output, master, RecipeOverride.GLISTERING_MELON));
+        shaped(RecipeCategory.MISC, Items.GLISTERING_MELON_SLICE, 1)
+                .pattern("###")
+                .pattern("#M#")
+                .pattern("###")
+                // c:nuggets/gold, as NeoForge's own copy of the recipe, which the override hides, takes other mods' gold.
+                .define('#', Tags.Items.NUGGETS_GOLD)
+                .define('M', Items.MELON_SLICE)
+                .unlockedBy(getHasName(Items.MELON_SLICE), has(Items.MELON_SLICE))
+                .save(fallbackOutput(output, master, RecipeOverride.GLISTERING_MELON), "minecraft:" + ItemUtils.getName(Items.GLISTERING_MELON_SLICE) + "_fallback");
 
         // Lodestone
+        RecipeOutput conditionalOutput = overrideOutput(output, master, RecipeOverride.LODESTONE);
+        RecipeOutput fallbackOutput = fallbackOutput(output, master, RecipeOverride.LODESTONE);
         shaped(RecipeCategory.MISC, Items.LODESTONE, 1)
                 .pattern("###")
                 .pattern("#S#")
@@ -443,11 +661,15 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("#S#")
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
-                .define('S', Items.NETHERITE_INGOT)
-                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback");
+                // 26.1 makes the Lodestone of an Iron Ingot; c:ingots/iron, as NeoForge's own copy of the recipe,
+                // which the fallback's id hides, takes it.
+                .define('S', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
 
         // Brewing Stand
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.BREWING_STAND);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.BREWING_STAND);
         shaped(RecipeCategory.MISC, Items.BREWING_STAND, 1)
                 .pattern(" B ")
                 .pattern("SSS")
@@ -459,11 +681,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern(" B ")
                 .pattern("SSS")
                 .define('B', Items.BLAZE_ROD)
-                .define('S', Items.STONE)
+                .define('S', ItemTags.STONE_CRAFTING_MATERIALS)
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.BREWING_STAND) + "_fallback");  // Original recipe if override is disabled
 
-        // Redstone Comparator (S slot = #thesilverage:redstone_silver_components tag)
+        // The Name Tag needs no override from 26.1: vanilla's takes #minecraft:metal_nuggets, which holds the Silver Nugget.
+
+        // Redstone Comparator
+        // The S slot accepts any item in the #thesilverage:redstone_silver_components tag.
+        // Currently populated with silver_ingot + silver_sheet (sheet is Create-only, but the
+        // ingot path always works). Addons may contribute extra silver forms to the tag.
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.COMPARATOR);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.COMPARATOR);
         shaped(RecipeCategory.REDSTONE, Items.COMPARATOR, 1)
                 .pattern(" T ")
                 .pattern("TQT")
@@ -481,9 +710,12 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('Q', Items.QUARTZ)
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE_TORCH), has(Items.REDSTONE_TORCH))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.COMPARATOR) + "_fallback");
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.COMPARATOR) + "_fallback");  // Original recipe if override is disabled
 
         // Redstone Repeater
+        // Same tag-based S slot as the Comparator override — see above.
+        conditionalOutput = overrideOutput(output, master, RecipeOverride.REPEATER);
+        fallbackOutput = fallbackOutput(output, master, RecipeOverride.REPEATER);
         shaped(RecipeCategory.REDSTONE, Items.REPEATER, 1)
                 .pattern("TRT")
                 .pattern("SSS")
@@ -499,10 +731,11 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('T', Items.REDSTONE_TORCH)
                 .define('S', Items.STONE)
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
-                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");
+                .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.REPEATER) + "_fallback");  // Original recipe if override is disabled
 
-        // Firework Star override: STAR shape accepts gold OR silver nugget.
-        fireworkStarOverride(conditionalOutput, fallbackOutput);
+        // Firework Star: from 26.1 its shapes are the recipe's data, so the Silver Nugget's star is an override too,
+        // under the master switch alone (it has no option of its own, and changes no look).
+        fireworkStarOverride(withoutUnlocks(output.withConditions(master)), withoutUnlocks(output.withConditions(new NotCondition(master))));
     }
 
     /** Saves through {@code output} without the unlock advancement RecipeBuilder makes for each recipe. */
@@ -564,6 +797,20 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.FIREWORK_STAR) + "_fallback");
     }
 
+    private static ICondition overrideCondition(ICondition master, RecipeOverride override) {
+        return new AndCondition(List.of(master, new ConfigBooleanCondition(override.settingId())));
+    }
+
+    // The overrides' unlock advancements are ModAdvancementProvider's, at vanilla's ids, which the ones RecipeBuilder
+    // makes would collide with.
+    private static RecipeOutput overrideOutput(RecipeOutput output, ICondition master, RecipeOverride override) {
+        return withoutUnlocks(output.withConditions(overrideCondition(master, override)));
+    }
+
+    private static RecipeOutput fallbackOutput(RecipeOutput output, ICondition master, RecipeOverride override) {
+        return withoutUnlocks(output.withConditions(new NotCondition(overrideCondition(master, override))));
+    }
+
     private void stairsWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stoneCutting(recipeOutput, item, material, 1);
         stairs(recipeOutput, item, material);
@@ -571,6 +818,19 @@ public class ModRecipeProvider extends RecipeProvider {
 
     private void stairs(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
         stairBuilder(item, Ingredient.of(material))
+                .group(ItemUtils.getName(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    /** Wall: 6 from a 3x2 of the material, plus a 1:1 stonecutting shortcut. */
+    private void wallWithCutting(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        stoneCutting(recipeOutput, item, material, 1);
+        wall(recipeOutput, item, material);
+    }
+
+    private void wall(RecipeOutput recipeOutput, ItemLike item, ItemLike material) {
+        wallBuilder(RecipeCategory.BUILDING_BLOCKS, item, Ingredient.of(material))
                 .group(ItemUtils.getName(material))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
@@ -595,8 +855,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
+    private void pressurePlate(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
+        pressurePlateBuilder(RecipeCategory.REDSTONE, item, tag(material))
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    // Four ingots in a square, as vanilla's iron and copper trapdoors: a wooden trapdoor's two rows of three are the bars' recipe.
     private void trapdoor(RecipeOutput recipeOutput, ItemLike item, TagKey<Item> material) {
-        trapdoorBuilder(item, tag(material))
+        shaped(RecipeCategory.REDSTONE, item)
+                .pattern("##")
+                .pattern("##")
+                .define('#', material)
                 .group(ItemUtils.getName(ModItems.SILVER_INGOT.get()))
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
@@ -648,7 +918,8 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     private void bulb(RecipeOutput output, ItemLike block, ItemLike result) {
-        shaped(RecipeCategory.REDSTONE, result, 1)
+        // Yields 4, matching vanilla's Copper Bulb.
+        shaped(RecipeCategory.REDSTONE, result, 4)
                 .pattern(" S ")
                 .pattern("SBS")
                 .pattern(" R ")
@@ -696,6 +967,7 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     protected void spear(RecipeOutput recipeOutput, ItemLike tool, TagKey<Item> material) {
+        // Diagonal: one material at top-right + two sticks (mirrors vanilla copper_spear).
         shaped(RecipeCategory.COMBAT, tool)
             .pattern("  #")
             .pattern(" S ")

@@ -1,6 +1,18 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
   "key": {
     "B": "minecraft:blaze_rod",
     "R": "minecraft:redstone",
@@ -12,6 +24,7 @@
     " R "
   ],
   "result": {
+    "count": 4,
     "id": "thesilverage:weathered_silver_bulb"
   }
 }

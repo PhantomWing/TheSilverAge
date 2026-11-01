@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/iron_bars_post_ends",
+  "textures": {
+    "bars": "thesilverage:block/weathered_silver_bars",
+    "edge": "thesilverage:block/weathered_silver_bars",
+    "particle": "thesilverage:block/weathered_silver_bars"
+  }
+}

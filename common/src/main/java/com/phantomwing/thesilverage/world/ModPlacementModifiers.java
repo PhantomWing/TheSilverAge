@@ -12,7 +12,9 @@ public class ModPlacementModifiers {
     public static final DeferredRegister<MapCodec<? extends PlacementModifier>> PLACEMENT_MODIFIERS =
             DeferredRegister.create(TheSilverAge.MOD_ID, Registries.PLACEMENT_MODIFIER_TYPE);
 
-    @SuppressWarnings("unused")
+    public static final RegistrySupplier<MapCodec<? extends PlacementModifier>> CONFIG_BOOLEAN =
+            register("config_boolean", ConfigBooleanPlacementFilter.CODEC);
+
     private static <P extends PlacementModifier> RegistrySupplier<MapCodec<? extends PlacementModifier>> register(String name, MapCodec<P> codec) {
         return PLACEMENT_MODIFIERS.register(name, () -> codec);
     }

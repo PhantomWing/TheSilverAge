@@ -6,8 +6,10 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.villager.SilverArrowsEnabled;
 import com.phantomwing.thesilverage.villager.SilverVillagerTrades;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Holder;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -21,12 +23,11 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Writes the Silver villager_trade JSON (gated by enable_villager_trades) plus an additive
- * cleric level-2 pool tag entry. Encodes the trade via its CODEC, then injects the
+ * Writes the Silver villager_trade JSONs (gated by enable_villager_trades) plus additive
+ * cleric level-2 and fletcher level-5 pool tag entries. Encodes the trade via its CODEC, then injects the
  * neoforge:conditions gate; FabricConditionsProvider mirrors it to fabric:load_conditions.
  */
 public class ModVillagerTradeProvider implements DataProvider {
@@ -35,6 +36,11 @@ public class ModVillagerTradeProvider implements DataProvider {
     private static final String TRADE_ID = "thesilverage:cleric/2/silver_ingot_emerald";
     /** Vanilla cleric L2 trade pool — additive. */
     private static final String TAG_PATH = "minecraft/tags/villager_trade/cleric/level_2.json";
+    /** {@code data/thesilverage/villager_trade/fletcher/5/arrow_and_emerald_silver_arrow.json} */
+    private static final String FLETCHER_TRADE_PATH = "thesilverage/villager_trade/fletcher/5/arrow_and_emerald_silver_arrow.json";
+    private static final String FLETCHER_TRADE_ID = "thesilverage:fletcher/5/arrow_and_emerald_silver_arrow";
+    /** Vanilla fletcher L5 trade pool — additive. */
+    private static final String FLETCHER_TAG_PATH = "minecraft/tags/villager_trade/fletcher/level_5.json";
 
     private final PackOutput packOutput;
     private final CompletableFuture<HolderLookup.Provider> registries;
@@ -60,7 +66,21 @@ public class ModVillagerTradeProvider implements DataProvider {
             tradeJson.add("neoforge:conditions", configCondition(Configuration.ENABLE_VILLAGER_TRADES_ID));
             futures.add(DataProvider.saveStable(cache, tradeJson, data.resolve(TRADE_PATH)));
 
-            futures.add(DataProvider.saveStable(cache, clericPoolTag(), data.resolve(TAG_PATH)));
+            futures.add(DataProvider.saveStable(cache, poolTag(TRADE_ID), data.resolve(TAG_PATH)));
+
+            // Fletcher L5: 5 Arrows and 2 Emeralds for 5 Silver Arrows, as vanilla's tipped arrow trade (maxUses 12,
+            // xp 30). Skipped as the villager levels up while enable_silver_arrows is off (SilverArrowsEnabled).
+            VillagerTrade arrows = VillagerTrade.builder(
+                    new TradeCost(Items.ARROW, 5),
+                    new TradeCost(Items.EMERALD, 2),
+                    new ItemStackTemplate(ModItems.SILVER_ARROW.get(), 5),
+                    12, 30, SilverVillagerTrades.PRICE_MULTIPLIER)
+                    .merchantPredicate(Holder.direct(new SilverArrowsEnabled()))
+                    .build();
+            JsonObject arrowsJson = VillagerTrade.CODEC.encodeStart(ops, arrows).getOrThrow().getAsJsonObject();
+            arrowsJson.add("neoforge:conditions", configCondition(Configuration.ENABLE_VILLAGER_TRADES_ID));
+            futures.add(DataProvider.saveStable(cache, arrowsJson, data.resolve(FLETCHER_TRADE_PATH)));
+            futures.add(DataProvider.saveStable(cache, poolTag(FLETCHER_TRADE_ID), data.resolve(FLETCHER_TAG_PATH)));
 
             return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
         });
@@ -76,10 +96,10 @@ public class ModVillagerTradeProvider implements DataProvider {
         return arr;
     }
 
-    /** Additive cleric L2 pool tag adding our trade as an optional entry. */
-    private static JsonObject clericPoolTag() {
+    /** Additive pool tag adding one of our trades as an optional entry. */
+    private static JsonObject poolTag(String tradeId) {
         JsonObject entry = new JsonObject();
-        entry.addProperty("id", TRADE_ID);
+        entry.addProperty("id", tradeId);
         entry.addProperty("required", false);
         JsonArray values = new JsonArray();
         values.add(entry);

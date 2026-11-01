@@ -1,0 +1,23 @@
+{
+  "type": "thesilverage:replace_item",
+  "condition": {
+    "type": "minecraft:all_of",
+    "terms": [
+      {
+        "type": "neoforge:loot_table_id",
+        "loot_table_id": "minecraft:chests/trial_chambers/reward"
+      },
+      {
+        "type": "minecraft:random_chance",
+        "chance": 0.1
+      }
+    ]
+  },
+  "in_stacks": 1,
+  "item": "thesilverage:silver_axe",
+  "max_stacks": 1,
+  "priority": 0,
+  "removed_item": [
+    "minecraft:iron_axe"
+  ]
+}

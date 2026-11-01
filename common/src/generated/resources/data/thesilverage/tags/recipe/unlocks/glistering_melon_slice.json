@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:glistering_melon_slice",
+      "required": false
+    },
+    {
+      "id": "minecraft:glistering_melon_slice_fallback",
+      "required": false
+    }
+  ]
+}

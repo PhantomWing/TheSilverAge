@@ -29,8 +29,10 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getWorldLookupProvider();
         PackGenerator pack = event.getDefaultPackGenerator();
 
-        // World layer: worldgen features, placements, trim material and biome modifiers.
+        // World layer: worldgen features, placements, trim material, damage types and biome modifiers.
         pack.createWorldRegistryObjects(ModDatapackProvider.BUILDER, Set.of(TheSilverAge.MOD_ID));
+        // The world lookup with the mod's own damage types in it.
+        pack.createProvider(ModDamageTypeTagsProvider::new);
 
         // 26.3 moved recipes, loot tables and advancements out of standalone providers and
         // into reloadable datapack registries. Recipes need two registries (they also emit

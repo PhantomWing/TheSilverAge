@@ -8,8 +8,19 @@ architectury {
     fabric()
 }
 
+// The dev niceties below can only get in the way of the headless game-test server, which tests this mod alone.
+def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
+
+    // The test source set is a mod of its own, thesilverage_gametest, whose fabric.mod.json names the
+    // fabric-gametest entrypoint: an entrypoint in the shipped manifest would name a class the jar doesn't have.
+    mods {
+        register('thesilverage_gametest') {
+            sourceSet sourceSets.test
+        }
+    }
 
     // Give the dev server its own runDir so its config is separate from the client's
     // (lets client/server hold different override_vanilla_recipes values).
@@ -17,7 +28,33 @@ loom {
         server {
             runDir "run/server"
         }
+
+        // Headless Fabric game-test server: runs the same tests as NeoForge's, prints PASS/FAIL, and exits.
+        //   ./gradlew :fabric:runGameTest
+        gameTest {
+            server()
+            name = "Game Test"
+            runDir "run/gametest"
+            source sourceSets.test
+            vmArg '-Dfabric-api.gametest'
+        }
     }
+}
+
+// Test-only source set for game tests, kept out of `main` so nothing in it ships. The tests are
+// common/src/gametest, shared with NeoForge; only the registration is Fabric's own.
+sourceSets {
+    test {
+        java.srcDir project(':common').file('src/gametest/java')
+        resources.srcDir project(':common').file('src/gametest/resources')
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+// The JUnit `test` task finds no tests in the game tests' source set, and Gradle 9 fails a test task that discovers none.
+tasks.named('test') {
+    failOnNoDiscoveredTests = false
 }
 
 configurations {
@@ -37,11 +74,18 @@ dependencies {
     common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionFabric')) { transitive false }
 
-    // JEI — recipe viewer, dev-runtime only (never compiled against, never shipped).
-    localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}")
+    // JEI — recipe viewer, dev-runtime only; its info pages' plugin is in common (compat/jei). Not on the game-test
+    // run, where it has nothing to show.
+    if (!runningGameTest) {
+        localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}")
+    }
 
     // Cloth Config — compiled + shipped; backs the Fabric AutoConfig config. fabric-api excluded to avoid a transitive downgrade.
     implementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+    // Mod Menu opens that config's screen from its mod list (TheSilverAgeModMenu); compiled against only.
+    compileOnly("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
 }

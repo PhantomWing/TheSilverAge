@@ -26,7 +26,7 @@ public class ModRecipeTagsProvider extends TagsProvider<Recipe<?>> {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
-        // Each pair is mutually exclusive: override_vanilla_recipes picks one.
+        // Each pair is mutually exclusive: override_vanilla_recipes and the recipe's own option pick one.
         this.tag(ModTags.Recipes.UNLOCKS_BREWING_STAND)
                 .addOptional(vanilla("brewing_stand"))
                 .addOptional(vanilla("brewing_stand_fallback"));
@@ -39,6 +39,9 @@ public class ModRecipeTagsProvider extends TagsProvider<Recipe<?>> {
         this.tag(ModTags.Recipes.UNLOCKS_REPEATER)
                 .addOptional(vanilla("repeater"))
                 .addOptional(vanilla("repeater_fallback"));
+        this.tag(ModTags.Recipes.UNLOCKS_GLISTERING_MELON_SLICE)
+                .addOptional(vanilla("glistering_melon_slice"))
+                .addOptional(vanilla("glistering_melon_slice_fallback"));
         // Create-gated: absent entirely when Create is not installed.
         this.tag(ModTags.Recipes.UNLOCKS_SILVER_FROM_CRUSHED)
                 .addOptional(own("silver_ingot_from_crushed_raw_silver_smelting"))
