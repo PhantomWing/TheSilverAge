@@ -21,6 +21,12 @@
     ],
     "client": [
       "com.phantomwing.thesilverage.fabric.client.TheSilverAgeFabricClient"
+    ],
+    "modmenu": [
+      "com.phantomwing.thesilverage.fabric.config.TheSilverAgeModMenu"
+    ],
+    "jei_mod_plugin": [
+      "com.phantomwing.thesilverage.compat.jei.TheSilverAgeJeiPlugin"
     ]
   },
   "mixins": [
@@ -33,5 +39,8 @@
     "minecraft": "${dep_minecraft_fabric}",
     "architectury": "${dep_architectury_fabric}",
     "cloth-config": "${dep_cloth}"
+  },
+  "suggests": {
+    "jei": "*"
   }
 }

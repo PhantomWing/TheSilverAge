@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.minecraft.resources.RegistryOps;
@@ -27,24 +28,12 @@ public record ConfigBooleanResourceCondition(String settingId) implements Resour
         return TYPE;
     }
 
-    /**
-     * Delegates to the config's own id lookup, which covers EVERY setting.
-     *
-     * <p>This used to switch over a hand-written list holding only
-     * {@code override_vanilla_recipes}, so every other id fell through to {@code false} —
-     * silently dropping the cleric silver trade on Fabric once 26.1 made villager trades
-     * datapack entries gated on {@code enable_villager_trades}. Delegating keeps the handler
-     * in step with the config automatically; the NeoForge twin already does the same.</p>
-     */
+    /** Delegates to the config's own id lookup, which covers every setting. */
     @Override
     public boolean test(RegistryOps.RegistryInfoLookup registryLookup) {
-        // Unknown id: fail the condition (entry absent) rather than crash datapack loading.
-        try {
-            return TheSilverAgeFabricConfig.getBooleanConfigurationValue(settingId);
-        } catch (Error unknownSetting) {
-            TheSilverAge.LOGGER.error(
-                    "Unknown config setting id '{}' in a thesilverage:config_boolean condition", settingId);
-            return false;
-        }
+        // Any boolean option, as NeoForge's Configuration.getBooleanConfigurationValue reads it. An id
+        // no option has fails the condition (the recipe is simply absent) where NeoForge's throws.
+        Boolean value = TheSilverAgeFabricConfig.booleanValueOf(TheSilverAgeFabricConfig.get(), settingId);
+        return value != null && value;
     }
 }

@@ -3,34 +3,54 @@ package com.phantomwing.thesilverage.fabric.client;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import me.shedaniel.autoconfig.AutoConfig;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.InteractionResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/** Registers the silver_recipe_overrides built-in pack and syncs its enabled state with the override_vanilla_recipes config. */
+/**
+ * Fabric counterpart to the NeoForge {@code RecipeOverridePackHandler}: registers one built-in pack
+ * per {@link RecipeOverride} with a texture pack ({@code resourcepacks/<texturePack>}) and keeps each
+ * one's selection in step with its override - the server's when connected to one that synced them,
+ * else the local config.
+ *
+ * <p>Fabric has no {@code AddPackFindersEvent} that re-fires on resource reload, so the packs are
+ * registered once with {@code registerBuiltinResourcePack} at client init and switched by selecting
+ * them in the client {@link PackRepository}. {@code DEFAULT_ENABLED} has a fresh install's packs on
+ * with the default config; the sync right after registration covers a config that has some off.</p>
+ */
 public final class RecipeOverridePack {
-    // PACK_PATH must match the directory name in common resourcepacks/ or the registered pack is empty.
-    private static final String PACK_ID = TheSilverAge.MOD_ID + "/silver_recipe_overrides";
-    private static final String PACK_PATH = "silver_recipe_overrides";
+    private static volatile boolean syncPending;
 
     private RecipeOverridePack() {
     }
 
     public static void register() {
-        FabricLoader.getInstance().getModContainer(TheSilverAge.MOD_ID).ifPresent(container ->
+        FabricLoader.getInstance().getModContainer(TheSilverAge.MOD_ID).ifPresent(container -> {
+            for (RecipeOverride override : RecipeOverride.values()) {
+                if (!override.hasTexturePack()) continue;
+                // The path is looked up in the mod jar as resourcepacks/<path>, so it must be the folder's name.
                 ResourceManagerHelper.registerBuiltinResourcePack(
-                        Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, PACK_PATH),
+                        Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, override.texturePack()),
                         container,
-                        Component.literal("The Silver Age: Recipe-Override Textures"),
-                        ResourcePackActivationType.DEFAULT_ENABLED));
+                        Component.literal("The Silver Age: " + override.texturePack()),
+                        ResourcePackActivationType.DEFAULT_ENABLED);
+            }
+        });
+
+        ClientTickEvents.END_CLIENT_TICK.register(RecipeOverridePack::clientTick);
 
         // Sync once after registration in case the saved config differs from DEFAULT_ENABLED.
         Minecraft mc = Minecraft.getInstance();
@@ -43,46 +63,57 @@ public final class RecipeOverridePack {
         });
     }
 
-    /** Uses the server's synced override_vanilla_recipes value when connected, otherwise the local config. */
+    /**
+     * Select each pack whose override is on and deselect the rest, then reload once if anything
+     * changed. A pack that isn't in the repository is left out, so it can't cause a reload. Called
+     * on init, on config save, on server-sync receipt and on disconnect, and applied on the next client tick
+     * once it is safe, as NeoForge's: a reload while the client was still joining a world, where the server's
+     * overrides arrive, could freeze it.
+     */
     public static void refresh() {
-        applyPackState(ServerOverrideState.effective(currentConfigEnabled()));
+        syncPending = true;
     }
 
-    private static boolean currentConfigEnabled() {
-        try {
-            return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                    TheSilverAgeFabricConfig.OVERRIDE_VANILLA_RECIPES_ID);
-        } catch (Exception ignored) {
-            return true;
-        }
+    private static void clientTick(Minecraft mc) {
+        if (!syncPending) return;
+        if (mc.getOverlay() != null) return;                   // a resource reload is already in progress
+        if (mc.screen instanceof LevelLoadingScreen) return; // still joining a world
+        syncPending = false;
+        apply(mc);
     }
 
-    /** Add/remove the pack from the selected list to match {@code enabled}, then reload if anything changed. */
-    private static void applyPackState(boolean enabled) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc == null) return;
+    private static void apply(Minecraft mc) {
         PackRepository repo = mc.getResourcePackRepository();
 
-        // Resolve the actual repository id; Fabric's id format is an implementation detail.
-        String packId = resolvePackId(repo);
-        if (packId == null) return;
+        List<String> selected = new ArrayList<>(repo.getSelectedIds());
+        boolean changed = false;
+        for (RecipeOverride override : RecipeOverride.values()) {
+            if (!override.hasTexturePack()) continue;
+            String packId = resolvePackId(repo, override.texturePack());
+            if (packId == null) continue;
 
-        boolean isSelected = repo.getSelectedIds().contains(packId);
-        if (enabled == isSelected) return;
-
-        ArrayList<String> next = new ArrayList<>(repo.getSelectedIds());
-        if (enabled) {
-            if (!next.contains(packId)) next.add(packId); // append = top priority, overrides vanilla
-        } else {
-            next.remove(packId);
+            boolean wanted = ServerOverrideState.isOn(override);
+            if (wanted && !selected.contains(packId)) {
+                selected.add(packId); // last = top priority, over vanilla
+                changed = true;
+            } else if (!wanted && selected.remove(packId)) {
+                changed = true;
+            }
         }
-        repo.setSelected(next);
+        if (!changed) return;
+
+        repo.setSelected(selected);
         mc.reloadResourcePacks();
     }
 
-    private static String resolvePackId(PackRepository repo) {
+    /**
+     * A pack's actual repository id. Fabric derives it from the Identifier, and the exact format
+     * is an implementation detail, so it is matched by its trailing path.
+     */
+    @Nullable
+    private static String resolvePackId(PackRepository repo, String texturePack) {
         for (String id : repo.getAvailableIds()) {
-            if (id.equals(PACK_ID) || id.endsWith("/" + PACK_PATH) || id.endsWith(":" + PACK_PATH)) {
+            if (id.contains(TheSilverAge.MOD_ID) && (id.endsWith("/" + texturePack) || id.endsWith(":" + texturePack))) {
                 return id;
             }
         }

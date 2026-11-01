@@ -12,7 +12,7 @@ public final class MonsterArmorPlatformImpl {
 
     public static void registerMobSpawnHandler() {
         NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) ->
-                MonsterArmorHandler.tryEquipSilverArmor(
+                MonsterArmorHandler.tryEquipSilverGear(
                         event.getEntity(),
                         event.getLevel(),
                         event.loadedFromDisk()));

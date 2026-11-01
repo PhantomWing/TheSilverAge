@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_oxidized_silver_brick_wall"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_oxidized_silver_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:waxed_oxidized_silver_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_waxed_oxidized_silver_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_oxidized_silver_brick_wall"
+    ]
+  }
+}

@@ -1,24 +1,51 @@
 package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.advancement.SilverArmorHurtTrigger;
+import com.phantomwing.thesilverage.entity.ModEntityTypes;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.neoforge.condition.ConfigBooleanCondition;
+import com.phantomwing.thesilverage.tags.ModTags;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.criterion.DamageSourcePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.KilledTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ModAdvancementProvider implements AdvancementSubProvider {
+    static final String KILL_UNDEAD_WITH_SILVER_ARROW = "kill_undead_with_silver_arrow";
+    static final String HURT_UNDEAD_WITH_SILVER_ARMOR = "hurt_undead_with_silver_armor";
+
+    /**
+     * The advancements that load only while a config option is on, so none is left that nothing can grant.
+     * {@link AdvancementConditionsProvider} writes them in, since an advancement generator can't.
+     */
+    static final Map<Identifier, List<ICondition>> CONDITIONS = Map.of(
+            Identifier.parse(getNameId(KILL_UNDEAD_WITH_SILVER_ARROW)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)),
+            Identifier.parse(getNameId(HURT_UNDEAD_WITH_SILVER_ARMOR)), List.of(
+                    new ConfigBooleanCondition(Configuration.SILVER_AFFECTS_UNDEAD_ID),
+                    new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID)));
+
     @Override
     public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<AdvancementHolder> consumer) {
         // Root tab
@@ -34,6 +61,15 @@ public class ModAdvancementProvider implements AdvancementSubProvider {
         // Obtain Silver
         AdvancementHolder obtainSilverIngot = obtainItemAdvancement(consumer, theSilverAge, ModItems.SILVER_INGOT.get());
         AdvancementHolder obtainMoonDial = obtainItemAdvancement(consumer, obtainSilverIngot, ModItems.MOON_DIAL.get());
+
+        // Silver against the undead. From 1.21.2 an entity predicate takes the entity types' lookup.
+        HolderGetter<EntityType<?>> entityTypes = provider.lookupOrThrow(Registries.ENTITY_TYPE);
+        getAdvancement(consumer, obtainSilverIngot, KILL_UNDEAD_WITH_SILVER_ARROW, ModItems.SILVER_ARROW.get(), AdvancementType.TASK,
+                builder -> builder.addCriterion("killed_undead", KilledTrigger.TriggerInstance.playerKilledEntity(
+                        EntityPredicate.Builder.entity().of(entityTypes, ModTags.EntityTypes.SENSITIVE_TO_SILVER),
+                        DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity().of(entityTypes, ModEntityTypes.SILVER_ARROW.get())))));
+        getAdvancement(consumer, obtainSilverIngot, HURT_UNDEAD_WITH_SILVER_ARMOR, ModItems.SILVER_CHESTPLATE.get(), AdvancementType.TASK,
+                builder -> builder.addCriterion("hurt_undead", SilverArmorHurtTrigger.TriggerInstance.hurtUndead()));
     }
 
     protected static AdvancementHolder obtainItemAdvancement(Consumer<AdvancementHolder> consumer, AdvancementHolder parent, ItemLike item) {

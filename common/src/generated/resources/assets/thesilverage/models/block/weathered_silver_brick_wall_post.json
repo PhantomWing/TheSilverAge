@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_post",
+  "textures": {
+    "wall": "thesilverage:block/weathered_silver_bricks"
+  }
+}

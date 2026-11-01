@@ -34,6 +34,7 @@ public class DataGenerators {
                 lookupProvider));
 
         event.addProvider(new AdvancementProvider(output, lookupProvider, List.of(new ModAdvancementProvider())));
+        event.addProvider(new AdvancementConditionsProvider(output));
 
         event.addProvider(new ModDataMapProvider(output, lookupProvider));
 
@@ -46,7 +47,8 @@ public class DataGenerators {
 
         event.addProvider(new ModGlobalLootModifierProvider(output, lookupProvider));
 
-        event.addProvider(new ModDatapackProvider(output, lookupProvider));
+        ModDatapackProvider datapackProvider = event.addProvider(new ModDatapackProvider(output, lookupProvider));
+        event.addProvider(new ModDamageTypeTagsProvider(output, datapackProvider.getRegistryProvider()));
 
         // Must run BEFORE FabricConditionsProvider so its neoforge:conditions gate gets mirrored.
         event.addProvider(new ModVillagerTradeProvider(output, lookupProvider));

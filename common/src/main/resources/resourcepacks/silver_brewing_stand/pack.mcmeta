@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "The Silver Age: the silver Brewing Stand. Turned on and off with its recipe override option.",
+    "min_format": 84,
+    "max_format": [84, 0]
+  }
+}

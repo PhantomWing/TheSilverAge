@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "thesilverage:block/silver_chain",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "thesilverage:block/silver_chain"
+    },
+    "axis=z": {
+      "model": "thesilverage:block/silver_chain",
+      "x": 90
+    }
+  }
+}
