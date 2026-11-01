@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/chain",
+  "textures": {
+    "all": "thesilverage:block/weathered_silver_chain",
+    "particle": "thesilverage:block/weathered_silver_chain"
+  }
+}

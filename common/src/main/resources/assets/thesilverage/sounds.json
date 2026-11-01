@@ -1,0 +1,20 @@
+{
+  "block.silver_bulb.turn_on": {
+    "sounds": [
+      { "name": "minecraft:block.copper_bulb.turn_on", "type": "event" }
+    ],
+    "subtitle": "subtitles.thesilverage.block.silver_bulb.turn_on"
+  },
+  "block.silver_bulb.turn_off": {
+    "sounds": [
+      { "name": "minecraft:block.copper_bulb.turn_off", "type": "event" }
+    ],
+    "subtitle": "subtitles.thesilverage.block.silver_bulb.turn_off"
+  },
+  "item.armor.equip_silver": {
+    "sounds": [
+      { "name": "minecraft:item.armor.equip_gold", "type": "event" }
+    ],
+    "subtitle": "subtitles.thesilverage.item.armor.equip_silver"
+  }
+}

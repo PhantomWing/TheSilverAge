@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:waxed_weathered_silver_pressure_plate_from_weathered_silver_pressure_plate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_weathered_silver_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thesilverage:weathered_silver_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_weathered_silver_pressure_plate"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:waxed_weathered_silver_pressure_plate_from_weathered_silver_pressure_plate"
+    ]
+  }
+}

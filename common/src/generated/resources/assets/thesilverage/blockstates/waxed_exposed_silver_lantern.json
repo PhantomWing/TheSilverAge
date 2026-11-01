@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "thesilverage:block/waxed_exposed_silver_lantern"
+    },
+    "hanging=true": {
+      "model": "thesilverage:block/waxed_exposed_silver_lantern_hanging"
+    }
+  }
+}

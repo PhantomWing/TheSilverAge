@@ -5,112 +5,288 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_1"
+          "model": "thesilverage:item/moon_dial_1",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.0625
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_2"
+          "model": "thesilverage:item/moon_dial_2",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.125
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_3"
+          "model": "thesilverage:item/moon_dial_3",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.1875
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_4"
+          "model": "thesilverage:item/moon_dial_4",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.25
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_5"
+          "model": "thesilverage:item/moon_dial_5",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.3125
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_6"
+          "model": "thesilverage:item/moon_dial_6",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.375
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_7"
+          "model": "thesilverage:item/moon_dial_7",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.4375
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_8"
+          "model": "thesilverage:item/moon_dial_8",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.5
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_9"
+          "model": "thesilverage:item/moon_dial_9",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.5625
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_10"
+          "model": "thesilverage:item/moon_dial_10",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.625
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_11"
+          "model": "thesilverage:item/moon_dial_11",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.6875
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_12"
+          "model": "thesilverage:item/moon_dial_12",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.75
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_13"
+          "model": "thesilverage:item/moon_dial_13",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.8125
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_14"
+          "model": "thesilverage:item/moon_dial_14",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.875
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "thesilverage:item/moon_dial_15"
+          "model": "thesilverage:item/moon_dial_15",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
         },
         "threshold": 0.9375
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "thesilverage:item/moon_dial_16",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
+        },
+        "threshold": 1.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "thesilverage:item/moon_dial_17",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "thesilverage:lunar_event"
+            }
+          ]
+        },
+        "threshold": 1.0625
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "thesilverage:item/moon_dial_0"
+      "model": "thesilverage:item/moon_dial_0",
+      "tints": [
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        },
+        {
+          "type": "thesilverage:lunar_event"
+        }
+      ]
     },
     "property": "thesilverage:moon_phase"
   }

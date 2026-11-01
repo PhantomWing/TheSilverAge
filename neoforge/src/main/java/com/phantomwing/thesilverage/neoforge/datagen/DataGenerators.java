@@ -45,6 +45,7 @@ public class DataGenerators {
         // 1.21.4: NeoForge's AdvancementProvider wrapper is gone — use vanilla's,
         // which takes a List<AdvancementSubProvider> (ModAdvancementProvider).
         event.addProvider(new AdvancementProvider(output, lookupProvider, List.of(new ModAdvancementProvider())));
+        event.addProvider(new AdvancementConditionsProvider(output));
 
         event.addProvider(new ModDataMapProvider(output, lookupProvider));
 
@@ -61,7 +62,8 @@ public class DataGenerators {
 
         event.addProvider(new ModGlobalLootModifierProvider(output, lookupProvider));
 
-        event.addProvider(new ModDatapackProvider(output, lookupProvider));
+        ModDatapackProvider datapackProvider = event.addProvider(new ModDatapackProvider(output, lookupProvider));
+        event.addProvider(new ModDamageTypeTagsProvider(output, datapackProvider.getRegistryProvider()));
 
         // MUST be registered LAST — post-processes the shared generated tree,
         // mirroring each neoforge:conditions block with a fabric:load_conditions

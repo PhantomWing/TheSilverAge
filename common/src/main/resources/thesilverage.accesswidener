@@ -13,6 +13,11 @@ accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	
 # codec)` on both loaders. Mirrored by a `public` field entry in the NeoForge AT.
 accessible	field	net/minecraft/client/renderer/item/properties/numeric/RangeSelectItemModelProperties	ID_MAPPER	Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
 
+# The Moon Dial's moon tint (client.ModItemColors): from 1.21.4 an item's tint is a tint source named in its items/
+# definition, and a mod's tint source type goes into vanilla's (private) ItemTintSources.ID_MAPPER. Mirrored in
+# NeoForge's accesstransformer.cfg, where RegisterColorHandlersEvent.ItemTintSources registers it too.
+accessible	field	net/minecraft/client/color/item/ItemTintSources	ID_MAPPER	Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+
 # Silver Nugget firework-star parity (common ModFireworks). Vanilla
 # FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) as private static final;
 # the loader-agnostic patch reads and reassigns it, so widen it accessible +
@@ -27,3 +32,15 @@ mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM
 # type via `new BlockEntityType<>(factory, Set.of(block))`. Mirrored by a
 # `public` <init> entry in the NeoForge accesstransformer.cfg.
 accessible	method	net/minecraft/world/level/block/entity/BlockEntityType	<init>	(Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
+
+# Mob.goalSelector (protected): LeaveSilverFloorGoal.addTo gives the mobs silver harms the goal as they join a level.
+# Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/entity/Mob	goalSelector	Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+
+# LivingEntity.lastHurt (protected): SilverThornsHandler puts back the attacker's damage cooldown after a burn, so
+# Thorns still hurts in full. Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/entity/LivingEntity	lastHurt	F
+
+# CreativeModeTabs.CACHED_PARAMETERS (private): ModNetworking drops it when the server's enable_silver_oxidation
+# changes what the tab hides, so the tab is built again. Mirrored in NeoForge's accesstransformer.cfg.
+accessible	field	net/minecraft/world/item/CreativeModeTabs	CACHED_PARAMETERS	Lnet/minecraft/world/item/CreativeModeTab$ItemDisplayParameters;

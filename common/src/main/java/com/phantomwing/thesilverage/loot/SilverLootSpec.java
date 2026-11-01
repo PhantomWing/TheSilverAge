@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.loot;
 
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -62,6 +63,11 @@ public final class SilverLootSpec {
                         Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
     }
 
+    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows have an option of their own. */
+    public static boolean itemEnabled(Item item) {
+        return item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows();
+    }
+
     private static ResourceLocation mc(String path) {
         return ResourceLocation.withDefaultNamespace(path);
     }
@@ -93,7 +99,10 @@ public final class SilverLootSpec {
     private static final ResourceLocation TRIAL_CHAMBERS_REWARD_OMINOUS = mc("chests/trial_chambers/reward_ominous");
     private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION = mc("chests/trial_chambers/intersection");
     private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION_BARREL = mc("chests/trial_chambers/intersection_barrel");
+    private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR = mc("chests/trial_chambers/corridor");
     private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR_POT = mc("pots/trial_chambers/corridor");
+    private static final ResourceLocation TRIAL_CHAMBERS_SUPPLY = mc("chests/trial_chambers/supply");
+    private static final ResourceLocation BASTION_OTHER = mc("chests/bastion_other");
     private static final ResourceLocation ANCIENT_CITY = mc("chests/ancient_city");
     private static final ResourceLocation END_CITY_TREASURE = mc("chests/end_city_treasure");
     private static final ResourceLocation IGLOO_CHEST = mc("chests/igloo_chest");
@@ -123,7 +132,7 @@ public final class SilverLootSpec {
                 new Entry("silver_ingot_from_jungle_temple", JUNGLE_TEMPLE, 0.5f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 1, 2, List.of(vanilla(Items.GOLD_INGOT))),
                 new Entry("silver_horse_armor_from_jungle_temple", JUNGLE_TEMPLE, 0.33f, Op.REPLACE,
-                        ModItems.SILVER_INGOT::get, 1, 1,
+                        ModItems.SILVER_HORSE_ARMOR::get, 1, 1,
                         List.of(vanilla(Items.IRON_HORSE_ARMOR), vanilla(Items.GOLDEN_HORSE_ARMOR))),
 
                 // Shipwrecks
@@ -151,6 +160,8 @@ public final class SilverLootSpec {
                         ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.GOLD_INGOT))),
                 new Entry("silver_pickaxe_from_village_toolsmith", VILLAGE_TOOLSMITH, 0.1f, Op.REPLACE,
                         ModItems.SILVER_PICKAXE::get, 1, 1, List.of(vanilla(Items.IRON_PICKAXE))),
+                new Entry("silver_shovel_from_village_toolsmith", VILLAGE_TOOLSMITH, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_SHOVEL::get, 1, 1, List.of(vanilla(Items.IRON_SHOVEL))),
                 new Entry("silver_ingot_from_village_weaponsmith", VILLAGE_WEAPONSMITH, 0.5f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.GOLD_INGOT))),
                 new Entry("silver_pickaxe_from_village_weaponsmith", VILLAGE_WEAPONSMITH, 0.1f, Op.REPLACE,
@@ -195,6 +206,18 @@ public final class SilverLootSpec {
                         List.of(vanilla(Items.GOLDEN_HORSE_ARMOR), vanilla(Items.IRON_HORSE_ARMOR))),
                 new Entry("silver_ingot_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 1.0f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 2, List.of(vanilla(Items.GOLD_INGOT))),
+                new Entry("silver_sword_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_SWORD::get, 1, 1, List.of(vanilla(Items.IRON_SWORD))),
+                new Entry("silver_pickaxe_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_PICKAXE::get, 1, 1, List.of(vanilla(Items.IRON_PICKAXE))),
+                new Entry("silver_helmet_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_HELMET::get, 1, 1, List.of(vanilla(Items.IRON_HELMET))),
+                new Entry("silver_chestplate_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_CHESTPLATE::get, 1, 1, List.of(vanilla(Items.IRON_CHESTPLATE))),
+                new Entry("silver_leggings_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_LEGGINGS::get, 1, 1, List.of(vanilla(Items.IRON_LEGGINGS))),
+                new Entry("silver_boots_from_stronghold_corridor", STRONGHOLD_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_BOOTS::get, 1, 1, List.of(vanilla(Items.IRON_BOOTS))),
                 new Entry("silver_ingot_from_stronghold_crossing", STRONGHOLD_CROSSING, 1.0f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 2, List.of(vanilla(Items.GOLD_INGOT))),
                 new Entry("silver_pickaxe_from_stronghold_crossing", STRONGHOLD_CROSSING, 0.1f, Op.REPLACE,
@@ -205,10 +228,20 @@ public final class SilverLootSpec {
                 // Pillager Outpost
                 new Entry("silver_ingot_from_pillager_outpost", PILLAGER_OUTPOST, 1.0f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 2, List.of(vanilla(Items.IRON_INGOT))),
+                new Entry("silver_arrow_from_pillager_outpost", PILLAGER_OUTPOST, 0.5f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
 
                 // Trial Chambers
                 new Entry("silver_ingot_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 1, 1, List.of(vanilla(Items.IRON_INGOT))),
+                // The vault rolls chests/trial_chambers/reward, which reaches reward_rare's iron gear as a
+                // nested table; loot modifiers only ever see the table that was rolled.
+                new Entry("silver_axe_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_AXE::get, 1, 1, List.of(vanilla(Items.IRON_AXE))),
+                new Entry("silver_chestplate_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_CHESTPLATE::get, 1, 1, List.of(vanilla(Items.IRON_CHESTPLATE))),
+                new Entry("silver_axe_from_trial_chambers_corridor", TRIAL_CHAMBERS_CORRIDOR, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_AXE::get, 1, 1, List.of(vanilla(Items.IRON_AXE))),
                 new Entry("silver_block_from_trial_chambers_reward_ominous", TRIAL_CHAMBERS_REWARD_OMINOUS, 0.1f, Op.REPLACE,
                         ModItems.SILVER_BLOCK::get, 1, 1, List.of(vanilla(Items.IRON_BLOCK))),
                 new Entry("silver_block_from_trial_chambers_intersection", TRIAL_CHAMBERS_INTERSECTION, 0.1f, Op.REPLACE,
@@ -219,6 +252,11 @@ public final class SilverLootSpec {
                         ModItems.SILVER_PICKAXE::get, 1, 1, List.of(vanilla(Items.GOLDEN_PICKAXE))),
                 new Entry("silver_ingot_from_trial_chambers_corridor_pot", TRIAL_CHAMBERS_CORRIDOR_POT, 0.25f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 1, 1, List.of(vanilla(Items.IRON_INGOT))),
+                // Its undead are what Silver Arrows are for. The reward reaches reward_common's arrows.
+                new Entry("silver_arrow_from_trial_chambers_supply", TRIAL_CHAMBERS_SUPPLY, 0.5f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
+                new Entry("silver_arrow_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
+                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
 
                 // Ancient City
                 new Entry("silver_leggings_from_ancient_city", ANCIENT_CITY, 0.5f, Op.REPLACE,
@@ -248,6 +286,10 @@ public final class SilverLootSpec {
                 new Entry("silver_horse_armor_from_end_city", END_CITY_TREASURE, 0.33f, Op.REPLACE,
                         ModItems.SILVER_HORSE_ARMOR::get, 1, 1,
                         List.of(vanilla(Items.GOLDEN_HORSE_ARMOR), vanilla(Items.IRON_HORSE_ARMOR))),
+
+                // Bastion Remnant
+                new Entry("silver_sword_from_bastion_other", BASTION_OTHER, 0.1f, Op.REPLACE,
+                        ModItems.SILVER_SWORD::get, 1, 1, List.of(vanilla(Items.IRON_SWORD))),
 
                 // Igloo
                 new Entry("silver_nugget_from_igloo_chest", IGLOO_CHEST, 0.5f, Op.REPLACE,
