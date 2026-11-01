@@ -123,7 +123,7 @@ public final class SilverGearGameTest {
         Mob zombie = TestCompat.convertTo(husk, EntityType.ZOMBIE, true);
         if (zombie == null) {
             fail(helper, "The husk didn't convert into a zombie");
-        } else if (!zombie.getTags().contains(MonsterArmorHandler.ROLLED_TAG)) {
+        } else if (!TestCompat.entityTags(zombie).contains(MonsterArmorHandler.ROLLED_TAG)) {
             fail(helper, "A husk that converted into a zombie lost its silver gear roll, so it rolls again");
         } else {
             helper.succeed();
