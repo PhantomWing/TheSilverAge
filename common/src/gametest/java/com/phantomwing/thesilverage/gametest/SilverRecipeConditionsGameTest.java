@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -48,16 +47,16 @@ public final class SilverRecipeConditionsGameTest {
         ResourceManager resources = helper.getLevel().getServer().getResourceManager();
         List<String> problems = new ArrayList<>();
         for (String piece : GEAR) {
-            expect(resources, mod("recipe/silver_" + piece + ".json"), Set.of("enable_silver_gear_recipes"), problems);
+            expect(resources, TheSilverAge.MOD_ID, "recipe/silver_" + piece + ".json", Set.of("enable_silver_gear_recipes"), problems);
         }
-        expect(resources, mod("recipe/silver_arrow.json"), Set.of("enable_silver_arrows"), problems);
+        expect(resources, TheSilverAge.MOD_ID, "recipe/silver_arrow.json", Set.of("enable_silver_arrows"), problems);
         for (Map.Entry<String, Set<String>> folder : TestCompat.createRecipeFolders().entrySet()) {
             expectFolder(resources, folder.getKey(), folder.getValue(), problems);
         }
         for (Map.Entry<RecipeOverride, String> entry : OVERRIDDEN.entrySet()) {
             Set<String> options = Set.of("override_vanilla_recipes", entry.getKey().settingId());
-            expect(resources, ResourceLocation.withDefaultNamespace("recipe/" + entry.getValue() + ".json"), options, problems);
-            expect(resources, ResourceLocation.withDefaultNamespace("recipe/" + entry.getValue() + "_fallback.json"), options, problems);
+            expect(resources, "minecraft", "recipe/" + entry.getValue() + ".json", options, problems);
+            expect(resources, "minecraft", "recipe/" + entry.getValue() + "_fallback.json", options, problems);
         }
         if (problems.isEmpty()) {
             helper.succeed();
@@ -67,19 +66,20 @@ public final class SilverRecipeConditionsGameTest {
     }
 
     private static void expectFolder(ResourceManager resources, String folder, Set<String> options, List<String> problems) {
-        Set<ResourceLocation> recipes = resources.listResources(folder,
-                id -> id.getNamespace().equals(TheSilverAge.MOD_ID) && id.getPath().endsWith(".json")).keySet();
+        List<String> recipes = TestCompat.jsonPaths(resources, folder, TheSilverAge.MOD_ID);
         if (recipes.isEmpty()) {
             problems.add("no recipes in " + folder);
         }
-        for (ResourceLocation recipe : recipes) {
-            expect(resources, recipe, options, problems);
+        for (String recipe : recipes) {
+            expect(resources, TheSilverAge.MOD_ID, recipe, options, problems);
         }
     }
 
     /** Both modloaders' conditions in {@code recipe} name every one of {@code options}. */
-    private static void expect(ResourceManager resources, ResourceLocation recipe, Set<String> options, List<String> problems) {
-        Optional<Resource> resource = resources.getResource(recipe);
+    private static void expect(ResourceManager resources, String namespace, String path, Set<String> options,
+            List<String> problems) {
+        String recipe = namespace + ":" + path;
+        Optional<Resource> resource = TestCompat.resource(resources, namespace, path);
         if (resource.isEmpty()) {
             problems.add(recipe + " is missing");
             return;
@@ -116,9 +116,5 @@ public final class SilverRecipeConditionsGameTest {
                 }
             }
         }
-    }
-
-    private static ResourceLocation mod(String path) {
-        return ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, path);
     }
 }
