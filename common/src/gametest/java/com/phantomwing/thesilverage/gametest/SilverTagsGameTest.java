@@ -8,12 +8,13 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VINDICATOR;
 
 /** Game tests for the tags silver joins so vanilla and other mods treat it as their own. Listed in {@link GameTests}. */
 public final class SilverTagsGameTest {
@@ -42,8 +43,8 @@ public final class SilverTagsGameTest {
         } else if (!ModBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState().is(DENSE_ORES)
                 || ModBlocks.SILVER_ORE.get().defaultBlockState().is(SINGULAR_ORES)) {
             fail(helper, "Silver ores aren't in c:ore_rates/dense alone");
-        } else if (!TestCompat.isIn(EntityType.HUSK, ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
-                || !TestCompat.isIn(EntityType.VINDICATOR, ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
+        } else if (!TestCompat.isIn(HUSK, ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
+                || !TestCompat.isIn(VINDICATOR, ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
             fail(helper, "Husks or vindicators are missing from the silver gear tags");
         } else {
             helper.succeed();
