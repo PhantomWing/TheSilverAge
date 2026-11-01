@@ -1,5 +1,10 @@
 package com.phantomwing.thesilverage.gametest;
 
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import java.util.HashMap;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.component.DataComponents;
@@ -149,6 +154,20 @@ public final class TestCompat {
         } finally {
             helper.getLevel().getServer().getPlayerList().remove(player);
         }
+    }
+
+    /**
+     * Every recipe the recipe manager holds, by its id, as its serializer writes it: what a mod's recipe format was read
+     * as, whichever format that is. Recipes are looked up differently from 1.21.2 and 26.1.
+     */
+    public static Map<String, JsonElement> recipesAsJson(ServerLevel level) {
+        var ops = level.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+        Map<String, JsonElement> recipes = new HashMap<>();
+        for (RecipeHolder<?> holder : level.recipeAccess().getRecipes()) {
+            Recipe.CODEC.encodeStart(ops, holder.value()).result()
+                    .ifPresent(json -> recipes.put(holder.id().identifier().toString(), json));
+        }
+        return recipes;
     }
 
     /**
