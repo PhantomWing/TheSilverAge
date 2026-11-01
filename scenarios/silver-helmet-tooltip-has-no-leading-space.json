@@ -1,0 +1,27 @@
+{
+  "name": "Silver Helmet tooltip has no leading space",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "give": "thesilverage:silver_helmet"
+    },
+    {
+      "inventory": true
+    },
+    {
+      "hover": "thesilverage:silver_helmet"
+    },
+    {
+      "expect": "tooltip",
+      "line": "Thorns against Undead",
+      "color": "blue"
+    },
+    {
+      "expect": "tooltip",
+      "lacks": " Thorns against Undead"
+    },
+    {
+      "screenshot": "silver_helmet_tooltip"
+    }
+  ]
+}

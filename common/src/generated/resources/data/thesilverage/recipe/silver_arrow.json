@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "key": {
+    "A": "minecraft:arrow",
+    "I": "#c:ingots/silver"
+  },
+  "pattern": [
+    "AAA",
+    "AIA",
+    "AAA"
+  ],
+  "result": {
+    "count": 8,
+    "id": "thesilverage:silver_arrow"
+  }
+}

@@ -1,15 +1,24 @@
 package com.phantomwing.thesilverage.neoforge.client;
 
+import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ModItemProperties;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
+import com.phantomwing.thesilverage.client.ServerUndeadSettings;
+import com.phantomwing.thesilverage.client.ModEntityRenderers;
+import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
+import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
+import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
+import net.minecraft.client.particle.FlameParticle;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -25,7 +34,7 @@ import net.neoforged.neoforge.common.NeoForge;
  * that class loads — forcing the client types to resolve — and NeoForge 1.21.2+'s
  * dedicated-server class loader hard-rejects loading client classes ("invalid dist
  * DEDICATED_SERVER"), crashing the server during mod construction even though the
- * code is guarded by {@code FMLEnvironment.dist.isClient()} at runtime.</p>
+ * code is guarded by {@code FMLEnvironment.getDist().isClient()} at runtime.</p>
  *
  * <p>By isolating it here and calling {@link #init} via {@code invokestatic} from
  * behind the {@code isClient()} guard, this class (and the client types it names)
@@ -43,6 +52,16 @@ public final class TheSilverAgeNeoForgeClient {
                 (mc, parent) -> new ConfigurationScreen(mc, parent, StyledConfigSectionScreen::new));
 
         modEventBus.addListener(TheSilverAgeNeoForgeClient::clientSetup);
+        modEventBus.addListener(TheSilverAgeNeoForgeClient::registerParticleProviders);
+
+        // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
+        // tooltip event, so the same common class is called from the Fabric client too.
+        SilverSmiteTooltip.register();
+
+        ModEntityRenderers.register();
+
+        // "Thorns against Undead" line on silver armour. Same cross-loader event.
+        SilverThornsTooltip.register();
 
         // Register the Moon Dial's custom thesilverage:moon_phase range-select property.
         // MUST use this event (fires before item models are parsed) — registering it at
@@ -50,6 +69,10 @@ public final class TheSilverAgeNeoForgeClient {
         // with "Unknown element id: thesilverage:moon_phase".
         modEventBus.addListener((RegisterRangeSelectItemModelPropertyEvent e) ->
                 e.register(ModItemProperties.MOON_PHASE, ModItemProperties.MoonPhaseProperty.MAP_CODEC));
+        // The moon's lunar event tint (thesilverage:lunar_event), named by the dial's items/ definition: before item
+        // models are parsed, as the property is.
+        modEventBus.addListener((RegisterColorHandlersEvent.ItemTintSources e) ->
+                e.register(ModItemColors.LUNAR_EVENT, ModItemColors.LunarEventTint.MAP_CODEC));
 
         // Recipe-override server-sync client receiver. MUST be registered during
         // mod construction, NOT in clientSetup: Architectury's NeoForge adaptor
@@ -61,11 +84,18 @@ public final class TheSilverAgeNeoForgeClient {
         ModNetworking.registerClientReceiver(RecipeOverridePackHandler::syncFromState);
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut e) -> {
             ServerOverrideState.clear();
+            ServerUndeadSettings.clear();
+            ModNetworking.setContentFromServer(null, null);
             RecipeOverridePackHandler.syncFromState();
         });
         // The sync above is deferred; this tick applies it once it's safe to reload
         // (never during the world-join loading screen — that hangs).
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> RecipeOverridePackHandler.clientTick());
+    }
+
+    /** The Silver Torch flame: vanilla flame behaviour over the violet sprite. */
+    private static void registerParticleProviders(final RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticles.SILVER_FLAME.get(), FlameParticle.Provider::new);
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {

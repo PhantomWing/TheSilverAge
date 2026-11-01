@@ -14,29 +14,38 @@ def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
 
-// Dedicated source set for the automated GameTests. Its classes + datapack resources
-// (test_instance JSON, the arena structure NBT) live here, NOT in `main`, so NONE of it
-// ships in the production jar or sits on the runClient/runServer classpath — it is wired
-// onto the `gameTest` run ONLY (see loom.runs.gameTest below). It compiles against main's
-// full classpath (Minecraft, NeoForge, common) plus main's output.
-sourceSets {
-    gametest {
-        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
-        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
-    }
-}
-
-configurations {
-    // Let the gametest source set resolve the same (loom-remapped) dependencies as main.
-    gametestImplementation.extendsFrom implementation
-    gametestRuntimeOnly.extendsFrom runtimeOnly
-    gametestCompileOnly.extendsFrom compileOnly
-}
+// The dev niceties are useless in the headless game-test run, and some crash it.
+def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
+    // Include the test-only source set in the dev mod so the game tests and their data load.
+    // Dev-runtime only: the production jar is still built from `main`, so test classes never ship.
+    // Added to Loom's own `main` group rather than a second group: two groups carrying the same
+    // mod make the loader keep one, and some FML releases keep the one without the tests (none run).
+    mods {
+        named('main') {
+            sourceSet sourceSets.test
+        }
+    }
+
     runs {
+        // Headless NeoForge game-test server: runs every test in GameTests, prints PASS/FAIL, and exits.
+        //   ./gradlew :neoforge:runGameTest
+        // From NeoForge 21.5 the enableGameTest / gameTestServer properties do nothing: the run takes NeoForge's
+        // gameTestServer template, which both enables and runs the tests. With server() it boots a plain dedicated
+        // server and idles. The environment selects launch.cfg's section, so it names the template too.
+        gameTest {
+            environment 'gameTestServer'
+            forgeTemplate 'gameTestServer'
+            name = "Game Test"
+            runDir "run/gametest"
+            source sourceSets.test
+            // Only this mod's tests, so a built-in one can't break the run.
+            programArgs '--tests', "${rootProject.mod_id}:*"
+        }
+
         // NeoForge data generation. Ported from the pre-Architectury single-loader
         // `runs.data` block. Output + existing-resource paths now point at the
         // relocated common source set (datagen output is shared across loaders).
@@ -54,6 +63,13 @@ loom {
             // past MC 1.21.1, so it is absent from the datagen classpath on this
             // branch. The FD-gated Silver Knife recipe is still emitted (gated via
             // ModLoadedCondition, written to disk regardless of FD's presence).
+            // The mod without the test source set, which carries the datagen output into dev runs: datagen would
+            // otherwise load the output of the run before as the mod's own while it writes the new one.
+            mods {
+                register('main') {
+                    sourceSet sourceSets.main
+                }
+            }
         }
 
         // Give the dev server its own working directory so its COMMON config
@@ -67,46 +83,6 @@ loom {
         server {
             runDir "run/server"
         }
-
-        // Automated GameTest server: launches a headless dedicated server, runs every
-        // test_instance in the `thesilverage` namespace, and exits with a code equal to the
-        // number of required failures (0 = all green). Task: ./gradlew :neoforge:runGameTest
-        //
-        // architectury-loom has no gameTestServer() helper (only client/server/data variants),
-        // so we bind NeoForge's `gameTestServer` userdev launch template directly via the
-        // public forgeTemplate(...) — the same mechanism server()/clientData() use internally.
-        // That template flips on `neoforge.enableGameTest` and selects the gametest main flow;
-        // we add the enabled-namespaces filter so ONLY this mod's tests run.
-        gameTest {
-            // environment string MUST equal the forge template name — loom derives the
-            // launchTarget from `environment` (every built-in helper sets the two to the
-            // same value, e.g. server() => environment "server" + forgeTemplate "server").
-            environment "gameTestServer"
-            forgeTemplate "gameTestServer"
-            name = "Game Test"
-            // The gametest source set (its runtimeClasspath already includes main's output),
-            // so the test classes + datapack resources are present for THIS run only.
-            source sourceSets.gametest
-            // Declare BOTH source sets as the `thesilverage` mod *for this run only*, so
-            // NeoForge treats the gametest output as mod content: it scans TheSilverAgeGameTests'
-            // @EventBusSubscriber (→ registers the TEST_FUNCTION entries) and loads the
-            // test_instance / structure datapack resources. Scoped to this run, so the normal
-            // runClient/runServer/jar are untouched.
-            mods {
-                "${rootProject.mod_id}" {
-                    sourceSet sourceSets.main
-                    sourceSet sourceSets.gametest
-                }
-            }
-            // --tests: select ONLY this mod's tests (a ResourceSelectorArgument glob, like the
-            //   /test command). Without it the server runs every registered test_instance — our
-            //   4 plus any built-in ones — so a future built-in test couldn't break this run.
-            // --report: write a JUnit-like XML breakdown (relative to the run cwd =
-            //   run/gametest) for CI to upload on failure. On GitHub Actions the server ALSO
-            //   prints ::error:: annotations natively, so failures show inline too.
-            programArgs '--tests', "${rootProject.mod_id}:*", '--report', 'gametest-report.xml'
-            runDir "run/gametest"
-        }
     }
 }
 
@@ -118,10 +94,35 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// NOTE (1.21.6 branch): NO recipe viewer is available — JEI has no 1.21.6 build and EMI
-// is stalled at MC 1.21.1 (see gradle.properties PORT NOTES). Both deferred; the EMI
-// integration (ModEmiPlugin) + the -Precipe_viewer toggle live on the version/1.21 branch
-// and return when a 1.21.6 viewer ships. Create also stays unavailable.
+// Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
+// structure ship in the production jar. The tests themselves are common/src/gametest; only the
+// registration is NeoForge's own.
+//
+// The datagen output is in it too, for dev runs only. There common's transformed jar is a mod of its own
+// (generated_<hash>) that nothing orders, so NeoForge's own Lodestone and Glistering Melon Slice recipes beat the
+// overrides. As part of this mod it loads after NeoForge, as the shipped jar's does.
+sourceSets {
+    test {
+        java.srcDir project(':common').file('src/gametest/java')
+        resources.srcDir project(':common').file('src/gametest/resources')
+        resources.srcDir project(':common').file('src/generated/resources')
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+processTestResources {
+    exclude '.cache/**'
+}
+
+// Every run but datagen's loads the test source set as part of the mod, but only the game-test run builds it: the
+// client and server would load whatever the last game tests copied.
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'runData' }.configureEach {
+    dependsOn tasks.named('processTestResources')
+}
+
+// NOTE (1.21.10 branch): Create is still unavailable, so its toggle stays dropped.
+// JEI has NeoForge and Fabric 1.21.10 builds; EMI has none.
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -134,14 +135,15 @@ dependencies {
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency). ----
 
-    // Jade — dev-runtime nicety (runtime-only).
-    modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
-    // Recipe viewer (JEI/EMI) — NONE for 1.21.6 yet; dependency intentionally omitted.
-    // Re-add `modLocalRuntime("mezz.jei:jei-${minecraft_version}-neoforge:<ver>")` and/or
-    // the EMI dep + ModEmiPlugin when a 1.21.6 build ships. See gradle.properties.
+    // Jade and JEI - dev-runtime niceties (runtime-only). Never on the game-test run: they send their packets to a
+    // test's mock player, whose connection has none of them, and crash the server.
+    if (!runningGameTest) {
+        modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+        modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_neoforge_version}")
+    }
 
-    // NOTE (1.21.4 branch): AppleSkin is dropped (no 1.21.4 build). Create + Farmer's
-    // Delight are still unpublished for 1.21.4 — the Silver Knife compiles against the
+    // NOTE (1.21.10 branch): AppleSkin is dropped. Create + Farmer's
+    // Delight are still unpublished for 1.21.10 — the Silver Knife compiles against the
     // local compile-only FD KnifeItem stub (src/main/java/vectorwing/farmersdelight/
     // common/item/KnifeItem.java), excluded from the shipped jar via
     // shadowJar { exclude 'vectorwing/**' }. Re-add those deps once they ship.
@@ -160,7 +162,7 @@ processResources {
 
     // Copy the built-in resource pack from common into the NeoForge mod's
     // resource output so RecipeOverridePackHandler's
-    // ModFile.findResource("resourcepacks/silver_recipe_overrides") resolves in
+    // ModFile.findResource("resourcepacks/<pack>") resolves in
     // dev. As on Fabric, common's resources are on the dev classpath but are NOT
     // part of this mod file's resource roots, so without this copy
     // Pack.readMetaAndCreate finds no pack.mcmeta, returns null, and the handler
@@ -244,7 +246,7 @@ publishMods {
         // Token: env var MODRINTH_TOKEN (CI/GitHub secret) OR a `modrinth_token` gradle
         // property — put that in your USER ~/.gradle/gradle.properties (never the repo).
         accessToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(providers.gradleProperty("modrinth_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
+        // Tag EVERY supported game version (1.21.9 + 1.21.10) on the upload, not just the
         // build target — one jar, listed under both MC versions. See gradle.properties.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // NeoForge only needs Architectury — fabric-api / cloth-config are Fabric-only.
@@ -253,7 +255,7 @@ publishMods {
     curseforge {
         projectId = providers.gradleProperty("curseforge_project_id")
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN").orElse(providers.gradleProperty("curseforge_token"))
-        // Tag EVERY supported game version (1.21.7 + 1.21.8) on the upload, not just the
+        // Tag EVERY supported game version (1.21.9 + 1.21.10) on the upload, not just the
         // build target — one jar, listed under both MC versions. See gradle.properties.
         rootProject.supported_minecraft_versions.tokenize(' ,').each { minecraftVersions.add(it) }
         // CurseForge requires explicit side flags (Modrinth infers them from the jar).
