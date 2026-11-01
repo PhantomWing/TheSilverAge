@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "覆蓋原版配方",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "修改部分現有的合成配方，改用銀。（例如釀造台、紅石中繼器、紅石比較器等）",
   "thesilverage.configuration.override_lodestone_recipe": "磁石配方",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "是否用銀錠代替獄髓錠合成磁石？需要開啟「覆蓋原版配方」。",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "是否用銀錠代替鐵錠合成磁石？需要開啟「覆蓋原版配方」。",
   "thesilverage.configuration.override_brewing_stand_recipe": "釀造台配方",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "是否用銀錠合成釀造台，並讓它呈現銀色外觀？需要開啟「覆蓋原版配方」。",
   "thesilverage.configuration.override_comparator_recipe": "比較器配方",

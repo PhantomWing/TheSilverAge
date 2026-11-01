@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Suprascrie rețetele originale",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifică unele rețete existente pentru a folosi argint (de ex. Stand de Băuturi, Repetor, Comparator, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Rețeta magnetitului",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Ar trebui ca magnetitul să fie fabricat cu un lingou de argint în loc de un lingou de netherit? Necesită Suprascrie rețetele originale.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Ar trebui ca magnetitul să fie fabricat cu un lingou de argint în loc de un lingou de fier? Necesită Suprascrie rețetele originale.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Rețeta standului de fiert",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Ar trebui ca standul de fiert să fie fabricat cu lingouri de argint și să arate argintiu? Necesită Suprascrie rețetele originale.",
   "thesilverage.configuration.override_comparator_recipe": "Rețeta comparatorului",
