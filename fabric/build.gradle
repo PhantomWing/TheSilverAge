@@ -10,7 +10,13 @@ architectury {
 // The dev niceties below can only get in the way of the headless game-test server, which tests this mod alone.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
 //   ./gradlew :fabric:runClient -Penable_create_fly=false
-def loadCreateFly = (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
+// Not in the portal's server scenarios, its server (an init script named *.server.gradle) or the client that joins it
+// (quick play into a server): with Create Fly a dev server's /reload holds its thread over 30 seconds on a busy machine,
+// and the client times out. The scenarios test the recipe overrides' textures, which Create Fly has nothing to do with.
+def playingOnServer = gradle.startParameter.initScripts.any {
+    it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
+}
+def loadCreateFly = !playingOnServer && (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
