@@ -21,6 +21,10 @@ import net.minecraft.world.item.Items;
 import java.util.Map;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VINDICATOR;
+import static com.phantomwing.thesilverage.gametest.TestCompat.ZOMBIE;
+import static com.phantomwing.thesilverage.gametest.TestCompat.ZOMBIE_VILLAGER;
 
 /**
  * Game tests for mobs spawning with silver gear. They hand a mob its iron or golden gear and call the
@@ -37,10 +41,10 @@ public final class SilverGearGameTest {
     public static void mobsHoldSilverTools(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         Map<EntityType<? extends Mob>, Item> held = Map.of(
-                EntityType.ZOMBIE, Items.IRON_SWORD,
-                EntityType.HUSK, Items.IRON_SHOVEL,
-                EntityType.ZOMBIE_VILLAGER, Items.IRON_SWORD,
-                EntityType.VINDICATOR, Items.IRON_AXE);
+                ZOMBIE, Items.IRON_SWORD,
+                HUSK, Items.IRON_SHOVEL,
+                ZOMBIE_VILLAGER, Items.IRON_SWORD,
+                VINDICATOR, Items.IRON_AXE);
         for (Map.Entry<EntityType<? extends Mob>, Item> entry : held.entrySet()) {
             Mob mob = TestCompat.create(entry.getKey(), level);
             Item silver = silverFor(entry.getValue());
@@ -60,7 +64,7 @@ public final class SilverGearGameTest {
         }
 
         // A mob loaded from disk keeps what it had.
-        Mob loaded = TestCompat.create(EntityType.ZOMBIE, level);
+        Mob loaded = TestCompat.create(ZOMBIE, level);
         for (int i = 0; i < TRIES; i++) {
             loaded.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
             MonsterArmorHandler.tryEquipSilverGear(loaded, level, true);
@@ -77,7 +81,7 @@ public final class SilverGearGameTest {
     /** A husk spawning in golden armor sometimes wears silver armor instead, as a zombie does. */
     public static void husksWearSilverArmor(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob husk = TestCompat.create(EntityType.HUSK, level);
+        Mob husk = TestCompat.create(HUSK, level);
         boolean swapped = false;
         for (int i = 0; i < TRIES && !swapped; i++) {
             husk.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
@@ -99,7 +103,7 @@ public final class SilverGearGameTest {
      */
     public static void mobRollsOnce(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob zombie = TestCompat.create(EntityType.ZOMBIE, level);
+        Mob zombie = TestCompat.create(ZOMBIE, level);
         for (int i = 0; i < TRIES; i++) {
             zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
             MonsterArmorHandler.tryEquipSilverGear(zombie, level, false);
@@ -118,9 +122,9 @@ public final class SilverGearGameTest {
      * fresh spawn and had another chance at silver.
      */
     public static void convertedMobsKeepTheirRoll(GameTestHelper helper) {
-        Mob husk = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(3, 2, 3));
+        Mob husk = helper.spawnWithNoFreeWill(HUSK, new BlockPos(3, 2, 3));
         husk.addTag(MonsterArmorHandler.ROLLED_TAG);
-        Mob zombie = TestCompat.convertTo(husk, EntityType.ZOMBIE, true);
+        Mob zombie = TestCompat.convertTo(husk, ZOMBIE, true);
         if (zombie == null) {
             fail(helper, "The husk didn't convert into a zombie");
         } else if (!TestCompat.entityTags(zombie).contains(MonsterArmorHandler.ROLLED_TAG)) {
@@ -136,11 +140,11 @@ public final class SilverGearGameTest {
      */
     public static void thornsTakeNoWeaponBonus(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        Mob armed = TestCompat.create(EntityType.ZOMBIE, level);
+        Mob armed = TestCompat.create(ZOMBIE, level);
         armed.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.SILVER_SWORD.get()));
-        Mob unarmed = TestCompat.create(EntityType.ZOMBIE, level);
-        Mob burnedByArmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(1, 2, 1));
-        Mob burnedByUnarmed = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(5, 2, 1));
+        Mob unarmed = TestCompat.create(ZOMBIE, level);
+        Mob burnedByArmed = helper.spawnWithNoFreeWill(ZOMBIE, new BlockPos(1, 2, 1));
+        Mob burnedByUnarmed = helper.spawnWithNoFreeWill(ZOMBIE, new BlockPos(5, 2, 1));
         float armedLoss = burnedByArmed.getHealth();
         TestCompat.hurt(burnedByArmed, level.damageSources().thorns(armed), 2.0f);
         armedLoss -= burnedByArmed.getHealth();

@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.PIG;
+import static com.phantomwing.thesilverage.gametest.TestCompat.ZOMBIE;
 
 /** Game tests for the Silver Arrow. Listed in {@link GameTests}. */
 public final class SilverArrowGameTest {
@@ -37,9 +39,9 @@ public final class SilverArrowGameTest {
      * undead mob with {@code silver_affects_undead} off.
      */
     public static void silverArrowsHurtTheUndeadMore(GameTestHelper helper) {
-        float zombie = extraDamage(helper, EntityType.ZOMBIE, 1);
-        float pig = extraDamage(helper, EntityType.PIG, 4);
-        float zombieOff = TestSettings.with("silver_affects_undead", false, () -> extraDamage(helper, EntityType.ZOMBIE, 6));
+        float zombie = extraDamage(helper, ZOMBIE, 1);
+        float pig = extraDamage(helper, PIG, 4);
+        float zombieOff = TestSettings.with("silver_affects_undead", false, () -> extraDamage(helper, ZOMBIE, 6));
         if (Math.abs(zombie - SilverSmiteHandler.ARROW_BONUS_DAMAGE) > 0.5f) {
             fail(helper, "A Silver Arrow hurt a zombie " + zombie + " more than a plain arrow, where it should be about "
                     + SilverSmiteHandler.ARROW_BONUS_DAMAGE + " (before the zombie's armour)");
