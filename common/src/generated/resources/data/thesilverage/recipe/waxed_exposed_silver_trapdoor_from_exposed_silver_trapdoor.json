@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "thesilverage:exposed_silver_trapdoor",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thesilverage:waxed_exposed_silver_trapdoor"
+  }
+}

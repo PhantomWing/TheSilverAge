@@ -1,0 +1,10 @@
+accessWidener	v2	official
+
+# BlockSetType.register (private): silver door/trapdoor/pressure-plate need it to register their BlockSetType.
+accessible	method	net/minecraft/world/level/block/state/properties/BlockSetType	register	(Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
+
+# RangeSelectItemModelProperties.ID_MAPPER (private): lets ModItemProperties register the Moon Dial's moon_phase range-select property.
+accessible	field	net/minecraft/client/renderer/item/properties/numeric/RangeSelectItemModelProperties	ID_MAPPER	Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+
+# BlockEntityType constructor (private): lets ModBlockEntityTypes build the Moon Phase Detector type (no Builder since 1.21.2).
+accessible	method	net/minecraft/world/level/block/entity/BlockEntityType	<init>	(Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V

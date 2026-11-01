@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
+  "key": {
+    "Q": "minecraft:quartz",
+    "S": "#thesilverage:redstone_silver_components",
+    "T": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    " T ",
+    "TQT",
+    "SSS"
+  ],
+  "result": {
+    "id": "minecraft:comparator"
+  }
+}

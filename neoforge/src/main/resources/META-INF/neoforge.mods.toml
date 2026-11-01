@@ -1,0 +1,41 @@
+modLoader = "javafml"
+loaderVersion = "${dep_loader_neoforge}"
+issueTrackerURL = "${mod_issues}"
+license = "${mod_license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+displayURL = "${mod_homepage}"
+authors = "${mod_author}"
+description = '''
+${mod_description}
+'''
+
+# Client-only mixin that hides the mod-managed recipe-override resource pack
+# from Options → Resource Packs (the pack stays in the repository and is toggled
+# by config / server-sync; it just isn't a user-facing entry).
+[[mixins]]
+config = "thesilverage.neoforge.mixins.json"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "${dep_neoforge}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${dep_minecraft_neoforge}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "architectury"
+type = "required"
+versionRange = "${dep_architectury_neoforge}"
+ordering = "AFTER"
+side = "BOTH"

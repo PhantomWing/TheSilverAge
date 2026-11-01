@@ -1,0 +1,12 @@
+{
+  "values": [
+    "thesilverage:cut_silver",
+    "thesilverage:exposed_cut_silver",
+    "thesilverage:weathered_cut_silver",
+    "thesilverage:oxidized_cut_silver",
+    "thesilverage:waxed_cut_silver",
+    "thesilverage:waxed_exposed_cut_silver",
+    "thesilverage:waxed_weathered_cut_silver",
+    "thesilverage:waxed_oxidized_cut_silver"
+  ]
+}

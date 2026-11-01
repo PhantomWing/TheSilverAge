@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "override_vanilla_recipes"
+    }
+  ],
+  "key": {
+    "B": "minecraft:blaze_rod",
+    "S": "#c:ingots/silver"
+  },
+  "pattern": [
+    " B ",
+    "SSS"
+  ],
+  "result": {
+    "id": "minecraft:brewing_stand"
+  }
+}

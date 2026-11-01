@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_right",
+  "textures": {
+    "bottom": "thesilverage:block/exposed_silver_door_bottom",
+    "top": "thesilverage:block/exposed_silver_door_top"
+  }
+}

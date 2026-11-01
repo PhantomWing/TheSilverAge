@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 0.1,
+  "ingredient": "thesilverage:silver_axe",
+  "result": {
+    "id": "thesilverage:silver_nugget"
+  }
+}

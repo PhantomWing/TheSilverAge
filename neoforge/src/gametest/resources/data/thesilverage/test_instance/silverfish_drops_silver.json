@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "function": "thesilverage:silverfish_drops_silver",
+  "structure": "thesilverage:silver_test_arena",
+  "environment": "minecraft:default",
+  "max_ticks": 60,
+  "setup_ticks": 0,
+  "required": true
+}

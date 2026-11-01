@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "thesilverage:weathered_cut_silver_stairs",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thesilverage:waxed_weathered_cut_silver_stairs"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "thesilverage:oxidized_chiseled_silver",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thesilverage:waxed_oxidized_chiseled_silver"
+  }
+}

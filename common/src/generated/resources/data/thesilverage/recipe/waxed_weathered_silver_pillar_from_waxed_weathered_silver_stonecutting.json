@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "thesilverage:waxed_weathered_silver",
+  "result": {
+    "id": "thesilverage:waxed_weathered_silver_pillar"
+  }
+}

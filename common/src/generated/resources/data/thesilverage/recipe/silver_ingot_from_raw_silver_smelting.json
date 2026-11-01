@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 1.0,
+  "ingredient": "thesilverage:raw_silver",
+  "result": {
+    "id": "thesilverage:silver_ingot"
+  }
+}

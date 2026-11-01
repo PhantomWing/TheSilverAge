@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:pressing",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "c:ingots/silver"
+    }
+  ],
+  "results": [
+    {
+      "id": "thesilverage:silver_sheet"
+    }
+  ]
+}

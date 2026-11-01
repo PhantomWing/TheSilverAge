@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:glass",
+    "S": "#c:ingots/silver"
+  },
+  "pattern": [
+    "GGG",
+    "AAA",
+    "SSS"
+  ],
+  "result": {
+    "id": "thesilverage:moon_phase_detector"
+  }
+}
