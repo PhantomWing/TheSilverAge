@@ -39,7 +39,7 @@
   ],
   "key": {
     "#": "minecraft:chiseled_stone_bricks",
-    "S": "#c:ingots/netherite"
+    "S": "#c:ingots/iron"
   },
   "pattern": [
     "###",

@@ -62,14 +62,16 @@ public final class ModItemProperties {
     /**
      * Client-setup registrations shared by both loaders: the {@code thesilverage:moon_phase}
      * range-select property type, plus the transparent-block render layers. 1.21.4 no longer
-     * carries render type in the model JSON, so doors, trapdoors, lanterns, chains, bars and the torch (cutout)
-     * and grates (translucent) register their layer here via Architectury's cross-loader RenderTypeRegistry.
+     * carries render type in the model JSON, so doors, trapdoors, lanterns and the torch (cutout), chains and bars
+     * (cutout_mipped, as vanilla's chain and iron bars) and grates (translucent) register their layer here via
+     * Architectury's cross-loader RenderTypeRegistry.
      */
     public static void register() {
         RangeSelectItemModelProperties.ID_MAPPER.put(MOON_PHASE, MoonPhaseProperty.MAP_CODEC);
         ItemTintSources.ID_MAPPER.put(ModItemColors.LUNAR_EVENT, ModItemColors.LunarEventTint.MAP_CODEC);
 
         RenderTypeRegistry.register(RenderType.cutout(), CUTOUT_BLOCKS);
+        RenderTypeRegistry.register(RenderType.cutoutMipped(), CUTOUT_MIPPED_BLOCKS);
         RenderTypeRegistry.register(RenderType.translucent(), TRANSLUCENT_BLOCKS);
     }
 
@@ -81,11 +83,15 @@ public final class ModItemProperties {
             ModBlocks.WAXED_SILVER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_SILVER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_SILVER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_SILVER_TRAPDOOR,
             ModBlocks.SILVER_LANTERN, ModBlocks.EXPOSED_SILVER_LANTERN, ModBlocks.WEATHERED_SILVER_LANTERN, ModBlocks.OXIDIZED_SILVER_LANTERN,
             ModBlocks.WAXED_SILVER_LANTERN, ModBlocks.WAXED_EXPOSED_SILVER_LANTERN, ModBlocks.WAXED_WEATHERED_SILVER_LANTERN, ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN,
+            ModBlocks.SILVER_TORCH, ModBlocks.SILVER_WALL_TORCH
+    ).map(s -> (Block) s.get()).toArray(Block[]::new);
+
+    /** Chains + bars (all weather/waxed states) — cutout_mipped, as vanilla's chain and iron bars. */
+    private static final Block[] CUTOUT_MIPPED_BLOCKS = Stream.of(
             ModBlocks.SILVER_CHAIN, ModBlocks.EXPOSED_SILVER_CHAIN, ModBlocks.WEATHERED_SILVER_CHAIN, ModBlocks.OXIDIZED_SILVER_CHAIN,
             ModBlocks.WAXED_SILVER_CHAIN, ModBlocks.WAXED_EXPOSED_SILVER_CHAIN, ModBlocks.WAXED_WEATHERED_SILVER_CHAIN, ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN,
             ModBlocks.SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS,
-            ModBlocks.WAXED_SILVER_BARS, ModBlocks.WAXED_EXPOSED_SILVER_BARS, ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WAXED_OXIDIZED_SILVER_BARS,
-            ModBlocks.SILVER_TORCH, ModBlocks.SILVER_WALL_TORCH
+            ModBlocks.WAXED_SILVER_BARS, ModBlocks.WAXED_EXPOSED_SILVER_BARS, ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WAXED_OXIDIZED_SILVER_BARS
     ).map(s -> (Block) s.get()).toArray(Block[]::new);
 
     /** Grates (all weather/waxed states) — translucent render layer. */

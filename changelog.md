@@ -66,8 +66,9 @@
 - Fixed jungle temples giving a Silver Ingot instead of Silver Horse Armor
 - Fixed Glistering Melon Slices accepting Silver Nuggets with `override_vanilla_recipes` turned off
 - Fixed the Brewing Stand needing Stone instead of Cobblestone with `override_vanilla_recipes` turned off
+- Fixed the Lodestone needing a Netherite Ingot instead of an Iron Ingot with `override_vanilla_recipes` turned off
 - Fixed the Lodestone and Glistering Melon Slice recipe overrides not applying on NeoForge with fewer than about 25 mods installed
-- Fixed the Glistering Melon Slice and Lodestone recipes not accepting gold nuggets and netherite from other mods on NeoForge
+- Fixed the Glistering Melon Slice and Lodestone recipes not accepting gold nuggets and iron from other mods on NeoForge
 - Fixed the Silver Wall Torch dropping a normal torch on Fabric
 - Fixed silver Repeaters and Comparators using Minecraft's old redstone torch models.
 - Fixed mobs losing their armor trims and names when their gear turns into silver gear
