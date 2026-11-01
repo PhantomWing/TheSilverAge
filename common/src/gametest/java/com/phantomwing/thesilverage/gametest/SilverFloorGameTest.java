@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -150,7 +149,7 @@ public final class SilverFloorGameTest {
 
     /** Every mob Smite targets is sensitive to silver, and so are Werewolves' werewolves where it's installed; no other is. */
     public static void silverHarmsWhatSmiteDoes(GameTestHelper helper) {
-        TagKey<EntityType<?>> werewolves = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("werewolves", "werewolf"));
+        TagKey<EntityType<?>> werewolves = TestCompat.tag(Registries.ENTITY_TYPE, "werewolves", "werewolf");
         List<String> problems = new ArrayList<>();
         for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
             boolean sensitive = type.is(EntityTypeTags.SENSITIVE_TO_SMITE) || type.is(werewolves);

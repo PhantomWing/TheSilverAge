@@ -1,5 +1,17 @@
 package com.phantomwing.thesilverage.gametest;
 
+import net.minecraft.core.Registry;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.trading.MerchantOffer;
+import java.util.ArrayList;
+import java.util.Optional;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.component.DataComponents;
@@ -189,5 +201,63 @@ public final class TestCompat {
     /** The trades of vanilla's profession of that name by level. The trade lists are keyed by the profession's key from 1.21.5. */
     public static Int2ObjectMap<VillagerTrades.ItemListing[]> villagerTrades(String profession) {
         return VillagerTrades.TRADES.get(ResourceKey.create(Registries.VILLAGER_PROFESSION, ResourceLocation.withDefaultNamespace(profession)));
+    }
+
+    /**
+     * The offers the trades of vanilla's {@code profession} at {@code tradeLevel}, or at every level for 0, give a fresh
+     * villager. Villagers and their trades move to {@code npc.villager} in 1.21.11, where a listing takes the level too.
+     */
+    public static List<MerchantOffer> villagerOffers(ServerLevel level, String profession, int tradeLevel, RandomSource random) {
+        Villager villager = create(EntityType.VILLAGER, level);
+        List<MerchantOffer> offers = new ArrayList<>();
+        for (var entry : villagerTrades(profession).int2ObjectEntrySet()) {
+            if (tradeLevel != 0 && entry.getIntKey() != tradeLevel) {
+                continue;
+            }
+            for (VillagerTrades.ItemListing listing : entry.getValue()) {
+                MerchantOffer offer = listing.getOffer(villager, random);
+                if (offer != null) {
+                    offers.add(offer);
+                }
+            }
+        }
+        villager.discard();
+        return offers;
+    }
+
+    /** The tag of that name in {@code registry}. ResourceLocation is Identifier from 1.21.11. */
+    public static <T> TagKey<T> tag(ResourceKey<? extends Registry<T>> registry, String namespace, String path) {
+        return TagKey.create(registry, ResourceLocation.fromNamespaceAndPath(namespace, path));
+    }
+
+    /** The resource of that name, if a pack has it. ResourceLocation is Identifier from 1.21.11. */
+    public static Optional<Resource> resource(ResourceManager resources, String namespace, String path) {
+        return resources.getResource(ResourceLocation.fromNamespaceAndPath(namespace, path));
+    }
+
+    /** The paths of the JSON files under {@code folder} in {@code namespace}, sorted. ResourceLocation is Identifier from 1.21.11. */
+    public static List<String> jsonPaths(ResourceManager resources, String folder, String namespace) {
+        return resources.listResources(folder, id -> id.getNamespace().equals(namespace) && id.getPath().endsWith(".json"))
+                .keySet().stream().map(ResourceLocation::getPath).sorted().toList();
+    }
+
+    /** Sets the time of day in the test's level. {@code GameTestHelper.setDayTime} goes in 1.21.11. */
+    public static void setDayTime(GameTestHelper helper, int time) {
+        helper.setDayTime(time);
+    }
+
+    /** The id {@code key} names, as text. {@code ResourceKey#location} is {@code identifier} from 1.21.11. */
+    public static String idOf(ResourceKey<?> key) {
+        return key.location().toString();
+    }
+
+    /** A plain arrow at the origin, not yet added to {@code level}. Arrows move to {@code projectile.arrow} in 1.21.11. */
+    public static Projectile plainArrow(ServerLevel level) {
+        return new Arrow(level, 0, 0, 0, new ItemStack(Items.ARROW), null);
+    }
+
+    /** Hurts {@code mob} as {@code arrow} hitting it would, answering whether it took the hit. */
+    public static boolean hurtByArrow(LivingEntity mob, Projectile arrow, float amount) {
+        return hurt(mob, mob.level().damageSources().arrow((AbstractArrow) arrow, null), amount);
     }
 }
