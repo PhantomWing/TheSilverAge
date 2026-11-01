@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/chain",
-  "render_type": "minecraft:cutout",
+  "render_type": "minecraft:cutout_mipped",
   "textures": {
     "all": "thesilverage:block/weathered_silver_chain",
     "particle": "thesilverage:block/weathered_silver_chain"

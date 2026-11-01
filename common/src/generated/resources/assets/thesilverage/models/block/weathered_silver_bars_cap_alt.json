@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/iron_bars_cap_alt",
-  "render_type": "minecraft:cutout",
+  "render_type": "minecraft:cutout_mipped",
   "textures": {
     "bars": "thesilverage:block/weathered_silver_bars",
     "edge": "thesilverage:block/weathered_silver_bars",

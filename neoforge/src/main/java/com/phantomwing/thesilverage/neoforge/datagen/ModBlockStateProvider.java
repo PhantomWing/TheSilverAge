@@ -292,7 +292,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .withExistingParent(BlockUtils.getName(block.get()), ResourceLocation.withDefaultNamespace("block/chain"))
                 .texture("all", texture)
                 .texture("particle", texture)
-                .renderType(RenderType.cutout().name);
+                .renderType(RenderType.cutoutMipped().name); // as vanilla's chain (ItemBlockRenderTypes)
 
         getVariantBuilder(block.get()).forAllStates(state -> switch (state.getValue(ChainBlock.AXIS)) {
             case X -> ConfiguredModel.builder().modelFile(model).rotationX(90).rotationY(90).build();
@@ -302,8 +302,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     /**
-     * Bars: vanilla's iron bars multipart over its own models, cutout. The glass pane's, which this took before, drew a
-     * lone bar as a thick post and a run of them with the texture along its edges.
+     * Bars: vanilla's iron bars multipart over its own models, cutout_mipped as vanilla's iron bars are. The glass
+     * pane's, which this took before, drew a lone bar as a thick post and a run of them with the texture along its edges.
      */
     private void bars(RegistrySupplier<IronBarsBlock> block) {
         barsWithTexture(block, block);
@@ -343,7 +343,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private ModelFile barsModel(String name, String part, ResourceLocation texture) {
         return models().withExistingParent(name + "_" + part, mcLoc("block/iron_bars_" + part))
-                .renderType(RenderType.cutout().name)
+                .renderType(RenderType.cutoutMipped().name)
                 .texture("particle", texture)
                 .texture("bars", texture)
                 .texture("edge", texture);
