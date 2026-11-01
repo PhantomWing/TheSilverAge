@@ -59,6 +59,7 @@
 - Silver Bricks are now crafted from 4 Cut Silver (including oxidized and waxed variants)
 - Silver Bricks, Silver Brick Stairs, Silver Brick Slabs and Silver Brick Walls can now be cut from Cut Silver in a stonecutter
 - Silver Bulbs and Silver Armor now have their own subtitles
+- Silver Spear's charge attack now matches the Copper Spear's, which Minecraft 26.1 changed
 
 ### Fixes
 - Crafting a Silver Bulb (and its variants) now yields 4 instead of 1

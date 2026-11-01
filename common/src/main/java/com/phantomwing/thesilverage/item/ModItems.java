@@ -279,9 +279,10 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerSpear(String name, ToolMaterial material) {
-        // First float is the attack-speed factor (displayed speed = 1.0 / factor); rest is the charge curve.
+        // First float is the attack-speed factor (displayed speed = 1.0 / factor); the rest is vanilla copper_spear's
+        // charge curve on this version, whose dismount threshold 26.1 raised from 9.0 to 12.0.
         return register(name, (props) -> new Item(
-                props.spear(material, 1.0f, 0.82f, 0.65f, 4.0f, 9.0f, 8.25f, 5.1f, 12.5f, 4.6f)), baseItem());
+                props.spear(material, 1.0f, 0.82f, 0.65f, 4.0f, 12.0f, 8.25f, 5.1f, 12.5f, 4.6f)), baseItem());
     }
 
     /** Concrete class chosen per loader by KnifePlatform so the FD class only loads when FD is present. */
