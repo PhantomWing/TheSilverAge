@@ -49,9 +49,9 @@ public final class SilverCombatGameTest {
         int stacked = 0;
         List<String> problems = new ArrayList<>();
         for (int i = 0; i < STRIKES; i++) {
-            wearer.invulnerableTime = 0;
+            TestCompat.resetDamageCooldown(wearer);
             wearer.setHealth(wearer.getMaxHealth());
-            skeleton.invulnerableTime = 0;
+            TestCompat.resetDamageCooldown(skeleton);
             skeleton.setHealth(skeleton.getMaxHealth());
             TestCompat.hurt(wearer, level.damageSources().mobAttack(skeleton), 1.0F);
             TestCompat.hurt(skeleton, level.damageSources().thorns(wearer), THORNS);
@@ -140,7 +140,7 @@ public final class SilverCombatGameTest {
 
     /** What {@code player}'s swing at {@code target} took off it, the swing fully charged or made at once. */
     private static float swing(ServerPlayer player, LivingEntity target, boolean charged) {
-        target.invulnerableTime = 0;
+        TestCompat.resetDamageCooldown(target);
         target.setHealth(target.getMaxHealth());
         player.resetAttackStrengthTicker();
         if (charged) {
