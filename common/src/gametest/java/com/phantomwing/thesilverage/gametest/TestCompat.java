@@ -62,6 +62,20 @@ import java.util.function.Consumer;
  * when a port turns up another such call, it goes here rather than into a body.
  */
 public final class TestCompat {
+    // ENTITY TYPES THE BODIES SPAWN: 26.2 moved every constant from EntityType to EntityTypes.
+    public static final EntityType<net.minecraft.world.entity.animal.cow.Cow> COW = EntityType.COW;
+    public static final EntityType<net.minecraft.world.entity.monster.Creeper> CREEPER = EntityType.CREEPER;
+    public static final EntityType<net.minecraft.world.entity.animal.equine.Horse> HORSE = EntityType.HORSE;
+    public static final EntityType<net.minecraft.world.entity.monster.zombie.Husk> HUSK = EntityType.HUSK;
+    public static final EntityType<net.minecraft.world.entity.animal.pig.Pig> PIG = EntityType.PIG;
+    public static final EntityType<net.minecraft.world.entity.monster.Silverfish> SILVERFISH = EntityType.SILVERFISH;
+    public static final EntityType<net.minecraft.world.entity.monster.skeleton.Skeleton> SKELETON = EntityType.SKELETON;
+    public static final EntityType<net.minecraft.world.entity.npc.villager.Villager> VILLAGER = EntityType.VILLAGER;
+    public static final EntityType<net.minecraft.world.entity.monster.illager.Vindicator> VINDICATOR = EntityType.VINDICATOR;
+    public static final EntityType<net.minecraft.world.entity.monster.skeleton.WitherSkeleton> WITHER_SKELETON = EntityType.WITHER_SKELETON;
+    public static final EntityType<net.minecraft.world.entity.monster.zombie.Zombie> ZOMBIE = EntityType.ZOMBIE;
+    public static final EntityType<net.minecraft.world.entity.monster.zombie.ZombieVillager> ZOMBIE_VILLAGER = EntityType.ZOMBIE_VILLAGER;
+
     private TestCompat() {
     }
 
