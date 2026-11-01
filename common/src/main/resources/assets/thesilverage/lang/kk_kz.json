@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Бастапқы рецепттерді қайта жазу",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Кейбір бар жасау рецепттерін оның орнына күміс пайдаланатындай етіп өзгертеді. (мысалы, Демдегіш, Қайталағыш, Салыстырғыш, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Бағдартас рецепті",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Бағдартас незерит құйманың орнына күміс құймадан жасалсын ба? «Бастапқы рецепттерді қайта жазу» опциясын қажет етеді.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Бағдартас темір құйманың орнына күміс құймадан жасалсын ба? «Бастапқы рецепттерді қайта жазу» опциясын қажет етеді.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Демдегіш рецепті",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Демдегіш күміс құймалардан жасалып, күміс түсті болсын ба? «Бастапқы рецепттерді қайта жазу» опциясын қажет етеді.",
   "thesilverage.configuration.override_comparator_recipe": "Салыстырғыш рецепті",
