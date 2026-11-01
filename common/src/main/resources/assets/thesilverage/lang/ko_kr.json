@@ -256,7 +256,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "바닐라 제작법 덮어쓰기",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "기존의 일부 제작법을 은을 사용하도록 수정합니다(예: 양조기, 리피터, 비교기 등).",
   "thesilverage.configuration.override_lodestone_recipe": "자석석 제작법",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "자석석을 네더라이트 주괴 대신 은괴로 제작할까요? 바닐라 제작법 덮어쓰기가 필요합니다.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "자석석을 철 주괴 대신 은괴로 제작할까요? 바닐라 제작법 덮어쓰기가 필요합니다.",
   "thesilverage.configuration.override_brewing_stand_recipe": "양조기 제작법",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "양조기를 은괴로 제작하고 은빛으로 보이게 할까요? 바닐라 제작법 덮어쓰기가 필요합니다.",
   "thesilverage.configuration.override_comparator_recipe": "비교기 제작법",
