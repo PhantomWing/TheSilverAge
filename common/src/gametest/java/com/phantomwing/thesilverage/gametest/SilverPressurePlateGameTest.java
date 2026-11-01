@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.CREEPER;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VILLAGER;
 
 /**
  * Game tests for the Silver Pressure Plate: no hostile mob presses it, the undead are hurt standing in it, and the more
@@ -33,9 +36,9 @@ public final class SilverPressurePlateGameTest {
         BlockPos villagerPlate = new BlockPos(1, 2, 1);
         BlockPos huskPlate = new BlockPos(5, 2, 5);
         BlockPos creeperPlate = new BlockPos(1, 2, 5);
-        LivingEntity villager = standOn(helper, villagerPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.VILLAGER);
-        LivingEntity husk = standOn(helper, huskPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.HUSK);
-        LivingEntity creeper = standOn(helper, creeperPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), EntityType.CREEPER);
+        LivingEntity villager = standOn(helper, villagerPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), VILLAGER);
+        LivingEntity husk = standOn(helper, huskPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), HUSK);
+        LivingEntity creeper = standOn(helper, creeperPlate, ModBlocks.SILVER_PRESSURE_PLATE.get(), CREEPER);
         helper.runAfterDelay(STANDING, () -> {
             List<String> problems = new ArrayList<>();
             expectPower(helper, problems, villagerPlate, "a villager", 15);
@@ -60,7 +63,7 @@ public final class SilverPressurePlateGameTest {
         for (int i = 0; i < plates.size(); i++) {
             BlockPos place = new BlockPos(1 + 2 * (i % 3), 2, 1 + 2 * (i / 3));
             places.add(place);
-            villagers.add(standOn(helper, place, plates.get(i), EntityType.VILLAGER));
+            villagers.add(standOn(helper, place, plates.get(i), VILLAGER));
         }
         helper.runAfterDelay(STANDING, () -> {
             List<String> problems = new ArrayList<>();
