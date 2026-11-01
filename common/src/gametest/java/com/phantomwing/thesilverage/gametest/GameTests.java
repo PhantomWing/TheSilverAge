@@ -78,7 +78,8 @@ public final class GameTests {
             test("dispensers_dont_wax_with_oxidation_off", SilverMaterialGameTest::dispensersDontWaxWithOxidationOff),
             test("silver_armor_stacks_with_thorns", SilverCombatGameTest::silverArmorStacksWithThorns),
             test("silver_swings_scale_with_their_charge", SilverCombatGameTest::silverSwingsScaleWithTheirCharge),
-            test("silver_plates_hurt_only_what_stands_in_them", SilverCombatGameTest::silverPlatesHurtOnlyWhatStandsInThem));
+            test("silver_plates_hurt_only_what_stands_in_them", SilverCombatGameTest::silverPlatesHurtOnlyWhatStandsInThem),
+            test("create_processes_silver", SilverCreateGameTest::createProcessesSilver));
 
     private GameTests() {
     }
