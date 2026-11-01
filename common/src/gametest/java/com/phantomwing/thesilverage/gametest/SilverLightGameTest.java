@@ -5,7 +5,6 @@ import com.phantomwing.thesilverage.combat.AvoidSilverLightGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VILLAGER;
 
 /**
  * Game tests for idle undead keeping away from silver light ({@link AvoidSilverLightGoal}): a husk's goal finds a Silver
@@ -68,10 +69,10 @@ public final class SilverLightGameTest {
 
     /** The light a new husk beside it finds to keep away from, or null. */
     private static BlockPos lightFound(GameTestHelper helper, boolean withTarget) {
-        PathfinderMob husk = helper.spawn(EntityType.HUSK, LIGHT.east());
+        PathfinderMob husk = helper.spawn(HUSK, LIGHT.east());
         PathfinderMob target = null;
         if (withTarget) {
-            target = helper.spawnWithNoFreeWill(EntityType.VILLAGER, new BlockPos(1, 2, 1));
+            target = helper.spawnWithNoFreeWill(VILLAGER, new BlockPos(1, 2, 1));
             husk.setTarget(target);
         }
         AvoidSilverLightGoal goal = new AvoidSilverLightGoal(husk);
