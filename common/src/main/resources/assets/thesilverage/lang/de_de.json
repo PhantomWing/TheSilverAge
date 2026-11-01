@@ -256,7 +256,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Vanilla-Rezepte überschreiben",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Passt einige bestehende Herstellungsrezepte an, um stattdessen Silber zu verwenden. (z.B. Braustand, Verstärker, Komparator, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Leitstein-Rezept",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Soll der Leitstein mit einem Silberbarren statt einem Netheritbarren hergestellt werden? Benötigt Vanilla-Rezepte überschreiben.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Soll der Leitstein mit einem Silberbarren statt einem Eisenbarren hergestellt werden? Benötigt Vanilla-Rezepte überschreiben.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Braustand-Rezept",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Soll der Braustand mit Silberbarren hergestellt werden und silbern aussehen? Benötigt Vanilla-Rezepte überschreiben.",
   "thesilverage.configuration.override_comparator_recipe": "Komparator-Rezept",

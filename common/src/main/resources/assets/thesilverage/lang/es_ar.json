@@ -256,7 +256,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Sobrescribir recetas originales",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Modifica algunas recetas existentes para que usen plata en su lugar (por ej. Destiladora, Repetidor, Comparador, ...).",
   "thesilverage.configuration.override_lodestone_recipe": "Receta de la magnetita",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "¿La magnetita debería fabricarse con un lingote de plata en lugar de un lingote de netherita? Requiere Sobrescribir recetas originales.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "¿La magnetita debería fabricarse con un lingote de plata en lugar de un lingote de hierro? Requiere Sobrescribir recetas originales.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Receta de la destiladora",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "¿La destiladora debería fabricarse con lingotes de plata y verse plateada? Requiere Sobrescribir recetas originales.",
   "thesilverage.configuration.override_comparator_recipe": "Receta del comparador",
