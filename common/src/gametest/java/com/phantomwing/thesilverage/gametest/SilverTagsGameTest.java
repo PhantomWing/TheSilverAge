@@ -5,7 +5,6 @@ import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -18,12 +17,12 @@ import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
 
 /** Game tests for the tags silver joins so vanilla and other mods treat it as their own. Listed in {@link GameTests}. */
 public final class SilverTagsGameTest {
-    private static final TagKey<Block> CHAINS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "chains"));
-    private static final TagKey<Item> CHAIN_ITEMS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "chains"));
-    private static final TagKey<Block> DENSE_ORES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_rates/dense"));
-    private static final TagKey<Block> SINGULAR_ORES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_rates/singular"));
-    private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "tools/silver"));
-    private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("werewolves", "armor/silver"));
+    private static final TagKey<Block> CHAINS = TestCompat.tag(Registries.BLOCK, "c", "chains");
+    private static final TagKey<Item> CHAIN_ITEMS = TestCompat.tag(Registries.ITEM, "c", "chains");
+    private static final TagKey<Block> DENSE_ORES = TestCompat.tag(Registries.BLOCK, "c", "ore_rates/dense");
+    private static final TagKey<Block> SINGULAR_ORES = TestCompat.tag(Registries.BLOCK, "c", "ore_rates/singular");
+    private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS = TestCompat.tag(Registries.ITEM, "werewolves", "tools/silver");
+    private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR = TestCompat.tag(Registries.ITEM, "werewolves", "armor/silver");
 
     private SilverTagsGameTest() {
     }

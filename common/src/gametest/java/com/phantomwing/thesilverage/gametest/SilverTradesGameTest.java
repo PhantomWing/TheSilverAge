@@ -3,9 +3,6 @@ package com.phantomwing.thesilverage.gametest;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import java.util.function.Predicate;
@@ -45,21 +42,12 @@ public final class SilverTradesGameTest {
 
     /** How many of the trades of vanilla's {@code profession} at {@code level}, or at every level for 0, give an offer that matches. */
     private static long count(GameTestHelper helper, String profession, int level, Predicate<MerchantOffer> matches) {
-        Villager villager = TestCompat.create(EntityType.VILLAGER, helper.getLevel());
-        RandomSource random = RandomSource.create(0);
         long found = 0;
-        for (var entry : TestCompat.villagerTrades(profession).int2ObjectEntrySet()) {
-            if (level != 0 && entry.getIntKey() != level) {
-                continue;
-            }
-            for (VillagerTrades.ItemListing listing : entry.getValue()) {
-                MerchantOffer offer = listing.getOffer(villager, random);
-                if (offer != null && matches.test(offer)) {
-                    found++;
-                }
+        for (MerchantOffer offer : TestCompat.villagerOffers(helper.getLevel(), profession, level, RandomSource.create(0))) {
+            if (matches.test(offer)) {
+                found++;
             }
         }
-        villager.discard();
         return found;
     }
 }
