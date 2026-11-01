@@ -68,11 +68,11 @@ public class ModVillagerTradeProvider implements DataProvider {
 
             futures.add(DataProvider.saveStable(cache, poolTag(TRADE_ID), data.resolve(TAG_PATH)));
 
-            // Fletcher L5: 5 Arrows and 2 Emeralds for 5 Silver Arrows, as vanilla's tipped arrow trade (maxUses 12,
-            // xp 30). Skipped as the villager levels up while enable_silver_arrows is off (SilverArrowsEnabled).
+            // Fletcher L5: 2 Emeralds and 5 Arrows for 5 Silver Arrows, as vanilla's tipped arrow trade (maxUses 12,
+            // xp 30), which asks for the emeralds first from 26.2. Skipped as the villager levels up while enable_silver_arrows is off (SilverArrowsEnabled).
             VillagerTrade arrows = VillagerTrade.builder(
-                    new TradeCost(Items.ARROW, 5),
                     new TradeCost(Items.EMERALD, 2),
+                    new TradeCost(Items.ARROW, 5),
                     new ItemStackTemplate(ModItems.SILVER_ARROW.get(), 5),
                     12, 30, SilverVillagerTrades.PRICE_MULTIPLIER)
                     .merchantPredicate(Holder.direct(new SilverArrowsEnabled()))
