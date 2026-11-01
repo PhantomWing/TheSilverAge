@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.COW;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.SKELETON;
+import static com.phantomwing.thesilverage.gametest.TestCompat.WITHER_SKELETON;
+import static com.phantomwing.thesilverage.gametest.TestCompat.ZOMBIE;
 
 /**
  * Game tests for silver floors ({@link SilverFloor}): a mob silver harms is hurt standing on silver, the more slowly the
@@ -55,15 +60,15 @@ public final class SilverFloorGameTest {
     public static void silverFloorsHurtTheUndead(GameTestHelper helper) {
         pens(helper);
         List<Pen> pens = List.of(
-                new Pen(1, 1, ModBlocks.SILVER_BLOCK.get(), EntityType.HUSK, 10, 11),
-                new Pen(3, 1, ModBlocks.EXPOSED_SILVER.get(), EntityType.HUSK, 5, 5),
-                new Pen(5, 1, ModBlocks.WEATHERED_SILVER.get(), EntityType.HUSK, 3, 3),
-                new Pen(1, 3, ModBlocks.OXIDIZED_SILVER.get(), EntityType.HUSK, 2, 2),
-                new Pen(3, 3, ModBlocks.WAXED_OXIDIZED_SILVER.get(), EntityType.HUSK, 2, 2),
-                new Pen(5, 3, ModBlocks.WAXED_SILVER_BRICK_SLAB.get(), EntityType.HUSK, 10, 11),
-                new Pen(1, 5, ModBlocks.SILVER_BLOCK.get(), EntityType.WITHER_SKELETON, 10, 11),
-                new Pen(3, 5, Blocks.STONE, EntityType.HUSK, 0, 0),
-                new Pen(5, 5, ModBlocks.SILVER_BLOCK.get(), EntityType.COW, 0, 0));
+                new Pen(1, 1, ModBlocks.SILVER_BLOCK.get(), HUSK, 10, 11),
+                new Pen(3, 1, ModBlocks.EXPOSED_SILVER.get(), HUSK, 5, 5),
+                new Pen(5, 1, ModBlocks.WEATHERED_SILVER.get(), HUSK, 3, 3),
+                new Pen(1, 3, ModBlocks.OXIDIZED_SILVER.get(), HUSK, 2, 2),
+                new Pen(3, 3, ModBlocks.WAXED_OXIDIZED_SILVER.get(), HUSK, 2, 2),
+                new Pen(5, 3, ModBlocks.WAXED_SILVER_BRICK_SLAB.get(), HUSK, 10, 11),
+                new Pen(1, 5, ModBlocks.SILVER_BLOCK.get(), WITHER_SKELETON, 10, 11),
+                new Pen(3, 5, Blocks.STONE, HUSK, 0, 0),
+                new Pen(5, 5, ModBlocks.SILVER_BLOCK.get(), COW, 0, 0));
         List<LivingEntity> mobs = new ArrayList<>();
         for (Pen pen : pens) {
             helper.setBlock(floor(pen.x, pen.z), pen.floor);
@@ -99,13 +104,13 @@ public final class SilverFloorGameTest {
         BlockPos stone = floor(5, 1);
         helper.setBlock(silver, ModBlocks.SILVER_BLOCK.get());
         helper.setBlock(tarnished, ModBlocks.WAXED_OXIDIZED_CUT_SILVER.get());
-        succeedUnless(helper, spawnsOn(helper, EntityType.ZOMBIE, silver) ? "a zombie can spawn on a Block of Silver"
-                : spawnsOn(helper, EntityType.SKELETON, silver) ? "a skeleton can spawn on a Block of Silver"
-                : spawnsOn(helper, EntityType.ZOMBIE, tarnished) ? "a zombie can spawn on Waxed Oxidized Cut Silver"
-                : !spawnsOn(helper, EntityType.ZOMBIE, stone) ? "The test's setup failed, not the mod: a zombie can't spawn on stone ("
+        succeedUnless(helper, spawnsOn(helper, ZOMBIE, silver) ? "a zombie can spawn on a Block of Silver"
+                : spawnsOn(helper, SKELETON, silver) ? "a skeleton can spawn on a Block of Silver"
+                : spawnsOn(helper, ZOMBIE, tarnished) ? "a zombie can spawn on Waxed Oxidized Cut Silver"
+                : !spawnsOn(helper, ZOMBIE, stone) ? "The test's setup failed, not the mod: a zombie can't spawn on stone ("
                         + whatIsAt(helper, stone) + ")"
-                : !spawnsOn(helper, EntityType.COW, silver) ? "a cow can't spawn on a Block of Silver"
-                : !TestSettings.with("silver_affects_undead", false, () -> spawnsOn(helper, EntityType.ZOMBIE, silver))
+                : !spawnsOn(helper, COW, silver) ? "a cow can't spawn on a Block of Silver"
+                : !TestSettings.with("silver_affects_undead", false, () -> spawnsOn(helper, ZOMBIE, silver))
                         ? "a zombie can't spawn on a Block of Silver with silver_affects_undead off"
                 : null);
     }
@@ -119,8 +124,8 @@ public final class SilverFloorGameTest {
             helper.setBlock(floor(x, 3), ModBlocks.SILVER_BLOCK.get());
         }
         BlockPos target = helper.absolutePos(floor(1, 5).above());
-        Path husk = route(helper, EntityType.HUSK, target);
-        Path cow = route(helper, EntityType.COW, target);
+        Path husk = route(helper, HUSK, target);
+        Path cow = route(helper, COW, target);
         succeedUnless(helper, husk == null || !husk.canReach() || cow == null || !cow.canReach()
                 ? "The test's setup failed, not the mod: a husk or a cow found no way across the arena (husk "
                         + describe(helper, husk) + "; cow " + describe(helper, cow) + ")"
@@ -134,8 +139,8 @@ public final class SilverFloorGameTest {
         BlockPos onSilver = floor(1, 1).above();
         BlockPos onStone = floor(5, 1).above();
         helper.setBlock(onSilver.below(), ModBlocks.SILVER_BLOCK.get());
-        PathfinderMob husk = helper.spawn(EntityType.HUSK, floor(3, 4).above());
-        PathfinderMob cow = helper.spawn(EntityType.COW, floor(3, 6).above());
+        PathfinderMob husk = helper.spawn(HUSK, floor(3, 4).above());
+        PathfinderMob cow = helper.spawn(COW, floor(3, 6).above());
         BlockPos[] places = {helper.absolutePos(onSilver), helper.absolutePos(onStone)};
         Vec3 huskPicked = RandomPos.generateRandomPos(husk, offering(places));
         Vec3 cowPicked = RandomPos.generateRandomPos(cow, offering(places));

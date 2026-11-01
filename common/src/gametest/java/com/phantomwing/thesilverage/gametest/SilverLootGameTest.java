@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import static com.phantomwing.thesilverage.gametest.SilverBlocksGameTest.CENTER;
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.SILVERFISH;
 
 /** Game tests for silver in loot: mob drops and the chests silver stands in for iron or gold in. Listed in {@link GameTests}. */
 public final class SilverLootGameTest {
@@ -45,7 +45,7 @@ public final class SilverLootGameTest {
         helper.startSequence()
                 .thenExecuteAfter(2, () -> {
                     for (int i = 0; i < 15; i++) {
-                        Silverfish silverfish = helper.spawnWithNoFreeWill(EntityType.SILVERFISH, CENTER);
+                        Silverfish silverfish = helper.spawnWithNoFreeWill(SILVERFISH, CENTER);
                         TestCompat.kill(silverfish);
                     }
                 })
