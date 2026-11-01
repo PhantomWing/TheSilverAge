@@ -656,9 +656,10 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("#S#")
                 .pattern("###")
                 .define('#', Items.CHISELED_STONE_BRICKS)
-                // c:ingots/netherite, as NeoForge's own copy of the recipe, which the fallback's id hides, takes it.
-                .define('S', Tags.Items.INGOTS_NETHERITE)
-                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)) // TODO: Change fallback to IRON_INGOT once updated to later Minecraft version
+                // 1.21.5 makes the Lodestone of an Iron Ingot; c:ingots/iron, as NeoForge's own copy of the recipe,
+                // which the fallback's id hides, takes it.
+                .define('S', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(fallbackOutput, "minecraft:" + ItemUtils.getName(Items.LODESTONE) + "_fallback"); // Original recipe if override is disabled
 
         // Brewing Stand
