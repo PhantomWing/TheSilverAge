@@ -13,6 +13,8 @@ architectury {
 def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
+// What only the Fabric jar carries: the Create Fly recipes (datagen/CreateFlyRecipeProvider).
+def datagenFabricOutput = rootProject.file('fabric/src/generated/resources/').absolutePath
 
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
@@ -59,6 +61,7 @@ loom {
             clientData()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
+            property('thesilverage.datagen.fabricOutput', datagenFabricOutput)
             // NOTE: no `--existing-mod farmersdelight` — FD is not yet published
             // past MC 1.21.1, so it is absent from the datagen classpath on this
             // branch. The FD-gated Silver Knife recipe is still emitted (gated via

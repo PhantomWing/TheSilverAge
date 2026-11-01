@@ -33,6 +33,7 @@
 - Added config options for how much extra damage silver tools and Silver Arrows deal to undead mobs (`silver_smite_damage`, `silver_arrow_smite_damage`), and for each piece of Silver Armor's chance to hurt undead mobs that hit you (`silver_thorns_chance`)
 - Added a config screen on Fabric (opened from Mod Menu)
 - Added compatibility with JEI. Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
+- Added compatibility with Create Fly on Fabric. Spout oxidizing, Deployer waxing and scraping, pressing Silver Sheets and crushing and washing Raw Silver work as with Create
 - Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
 - Silver items now also show up in the vanilla creative tabs
 - Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
