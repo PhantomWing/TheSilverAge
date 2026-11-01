@@ -4,7 +4,6 @@ import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.COW;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HORSE;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VINDICATOR;
 
 /**
  * Game tests for silver armour burning the undead that strike its wearer: a fifth of the strikes for each piece, four
@@ -31,9 +34,9 @@ public final class SilverArmorGameTest {
 
     /** A full set burns about 160 husk strikes in 200, one piece about 40, none and a cow's strikes none. */
     public static void silverArmorBurnsUndeadAttackers(GameTestHelper helper) {
-        LivingEntity husk = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(1, 2, 1));
-        LivingEntity cow = helper.spawnWithNoFreeWill(EntityType.COW, new BlockPos(5, 2, 1));
-        Mob wearer = helper.spawnWithNoFreeWill(EntityType.VINDICATOR, new BlockPos(3, 2, 3));
+        LivingEntity husk = helper.spawnWithNoFreeWill(HUSK, new BlockPos(1, 2, 1));
+        LivingEntity cow = helper.spawnWithNoFreeWill(COW, new BlockPos(5, 2, 1));
+        Mob wearer = helper.spawnWithNoFreeWill(VINDICATOR, new BlockPos(3, 2, 3));
         Map<EquipmentSlot, Item> fullSet = Map.of(EquipmentSlot.HEAD, ModItems.SILVER_HELMET.get(),
                 EquipmentSlot.CHEST, ModItems.SILVER_CHESTPLATE.get(), EquipmentSlot.LEGS, ModItems.SILVER_LEGGINGS.get(),
                 EquipmentSlot.FEET, ModItems.SILVER_BOOTS.get());
@@ -52,8 +55,8 @@ public final class SilverArmorGameTest {
 
     /** Silver Horse Armor, all the silver a horse wears, burns as often as a full set. */
     public static void silverHorseArmorCountsAsAFullSet(GameTestHelper helper) {
-        LivingEntity husk = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(1, 2, 1));
-        Mob horse = helper.spawnWithNoFreeWill(EntityType.HORSE, new BlockPos(4, 2, 4));
+        LivingEntity husk = helper.spawnWithNoFreeWill(HUSK, new BlockPos(1, 2, 1));
+        Mob horse = helper.spawnWithNoFreeWill(HORSE, new BlockPos(4, 2, 4));
         List<String> problems = new ArrayList<>();
         expect(problems, "Silver Horse Armor struck by a husk",
                 burns(helper, horse, Map.of(EquipmentSlot.BODY, ModItems.SILVER_HORSE_ARMOR.get()), husk), 120, 190);
