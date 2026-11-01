@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
+  "ingredient": "create:crushed_raw_silver",
+  "result": {
+    "id": "thesilverage:silver_ingot"
+  }
+}

@@ -10,6 +10,14 @@ architectury {
 
 // The dev niceties below can only get in the way of the headless game-test server, which tests this mod alone.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+//   ./gradlew :fabric:runClient -Penable_create_fly=false
+// Not in the portal's server scenarios, its server (an init script named *.server.gradle) or the client that joins it
+// (quick play into a server): with Create Fly a dev server's /reload holds its thread over 30 seconds on a busy machine,
+// and the client times out. The scenarios test the recipe overrides' textures, which Create Fly has nothing to do with.
+def playingOnServer = gradle.startParameter.initScripts.any {
+    it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
+}
+def loadCreateFly = !playingOnServer && (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -44,6 +52,11 @@ loom {
 // Test-only source set for game tests, kept out of `main` so nothing in it ships. The tests are
 // common/src/gametest, shared with NeoForge; only the registration is Fabric's own.
 sourceSets {
+    // Datagen's Fabric-only output: the Create Fly recipes (neoforge/.../datagen/CreateFlyRecipeProvider), in Create
+    // Fly's own format, which Create on NeoForge can't read. In `main`, so the Loom jar and shadowJar carry it.
+    main {
+        resources.srcDir file('src/generated/resources')
+    }
     test {
         java.srcDir project(':common').file('src/gametest/java')
         resources.srcDir project(':common').file('src/gametest/resources')
@@ -78,6 +91,12 @@ dependencies {
     // run, where it has nothing to show.
     if (!runningGameTest) {
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}")
+    }
+
+    // Create Fly, the Fabric port of Create: never compiled against. Its recipes are ours, written by NeoForge's datagen
+    // into src/generated/resources, which only this jar carries (see sourceSets above).
+    if (loadCreateFly) {
+        localRuntime("maven.modrinth:create-fly:${rootProject.create_fly_version}")
     }
 
     // Cloth Config — compiled + shipped; backs the Fabric AutoConfig config. fabric-api excluded to avoid a transitive downgrade.

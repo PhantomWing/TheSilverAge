@@ -1,0 +1,28 @@
+{
+  "type": "create:filling",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_create_spout_oxidation"
+    }
+  ],
+  "fluid_ingredient": {
+    "type": "fluid_stack",
+    "amount": 20250,
+    "fluid": "minecraft:water"
+  },
+  "ingredient": "thesilverage:weathered_silver_brick_stairs",
+  "result": {
+    "id": "thesilverage:oxidized_silver_brick_stairs"
+  }
+}

@@ -90,8 +90,8 @@ public class ModRecipeProvider extends RecipeProvider {
         oreSmeltingRecipes(output, ModItems.SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
         oreSmeltingRecipes(output, ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.SILVER_INGOT.get(), XP_MEDIUM);
 
-        // NOTE: Create is not yet available past MC 1.21.1, so the crushed_raw_silver
-        // -> silver_ingot smelting bridge is dropped on this branch.
+        // Crushed Raw Silver's smelting is Create Fly's, on Fabric alone (CreateFlyRecipeProvider):
+        // NeoForge has no Create for this version.
 
 
         // Every recipe producing a weathered or waxed variant is gated on
