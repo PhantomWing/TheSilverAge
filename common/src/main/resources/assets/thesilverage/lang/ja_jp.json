@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "バニラのレシピを上書き",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "既存の一部のクラフトレシピを銀を使うように変更します(例: 醸造台、リピーター、コンパレーターなど)。",
   "thesilverage.configuration.override_lodestone_recipe": "ロードストーンのレシピ",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "ロードストーンをネザライトインゴットの代わりに銀インゴットで作りますか？「バニラのレシピを上書き」が必要です。",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "ロードストーンを鉄インゴットの代わりに銀インゴットで作りますか？「バニラのレシピを上書き」が必要です。",
   "thesilverage.configuration.override_brewing_stand_recipe": "醸造台のレシピ",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "醸造台を銀インゴットで作り、銀色の見た目にしますか？「バニラのレシピを上書き」が必要です。",
   "thesilverage.configuration.override_comparator_recipe": "コンパレーターのレシピ",

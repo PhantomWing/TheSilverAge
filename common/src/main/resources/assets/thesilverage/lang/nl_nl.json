@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Standaardrecepten overschrijven",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Past enkele bestaande maakrecepten aan om zilver te gebruiken. (bijv. brouwsel, versterker, vergelijker, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Zeilsteenrecept",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Moet de zeilsteen worden gemaakt met een zilverstaaf in plaats van een netherietstaaf? Vereist Standaardrecepten overschrijven.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Moet de zeilsteen worden gemaakt met een zilverstaaf in plaats van een ijzerstaaf? Vereist Standaardrecepten overschrijven.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Brouwstandaardrecept",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Moet de brouwstandaard worden gemaakt met zilverstaven en er zilver uitzien? Vereist Standaardrecepten overschrijven.",
   "thesilverage.configuration.override_comparator_recipe": "Vergelijkerrecept",
