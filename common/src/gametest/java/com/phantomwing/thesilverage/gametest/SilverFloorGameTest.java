@@ -152,8 +152,8 @@ public final class SilverFloorGameTest {
         TagKey<EntityType<?>> werewolves = TestCompat.tag(Registries.ENTITY_TYPE, "werewolves", "werewolf");
         List<String> problems = new ArrayList<>();
         for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-            boolean sensitive = type.is(EntityTypeTags.SENSITIVE_TO_SMITE) || type.is(werewolves);
-            if (sensitive != type.is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
+            boolean sensitive = TestCompat.isIn(type, EntityTypeTags.SENSITIVE_TO_SMITE) || TestCompat.isIn(type, werewolves);
+            if (sensitive != TestCompat.isIn(type, ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
                 problems.add(BuiltInRegistries.ENTITY_TYPE.getKey(type) + (sensitive ? " isn't" : " is"));
             }
         }
