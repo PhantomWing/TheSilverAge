@@ -102,6 +102,15 @@ public final class SilverRecipesGameTest {
         helper.succeed();
     }
 
+    /**
+     * A Silver Nugget over paper makes a Name Tag: from 26.1 vanilla's recipe takes {@code #minecraft:metal_nuggets}, which
+     * holds the Silver Nugget. The lines before have no such recipe, and the test has nothing to check there.
+     */
+    public static void silverNuggetCraftsANameTag(GameTestHelper helper) {
+        TestCompat.nameTagGrid(ModItems.SILVER_NUGGET.get()).ifPresent(grid -> expect(helper, Items.NAME_TAG, grid));
+        helper.succeed();
+    }
+
     private static void expect(GameTestHelper helper, Item result, CraftingInput input) {
         ItemStack crafted = TestCompat.craft(helper.getLevel(), input);
         if (!crafted.is(result)) {
