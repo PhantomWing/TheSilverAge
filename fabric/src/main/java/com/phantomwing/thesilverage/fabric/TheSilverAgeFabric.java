@@ -46,6 +46,10 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // registration here.
         ResourceConditions.register(ConfigBooleanResourceCondition.TYPE);
 
+        // Create Fly, the Fabric port of Create, needs nothing here: its recipes are
+        // data, which NeoForge's datagen writes in its format into fabric/src/generated
+        // (CreateFlyRecipeProvider), gated on fabric:all_mods_loaded create.
+
         // Stamp each loaded LootTable with its registry id (vanilla tables carry none); read by LootTableMixin.
         LootTableEvents.ALL_LOADED.register((resourceManager, lootRegistry) ->
                 lootRegistry.entrySet().forEach(e -> {

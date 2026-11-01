@@ -1,0 +1,23 @@
+{
+  "type": "create:deploying",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredient": "minecraft:honeycomb_block",
+  "keep_held_item": true,
+  "results": [
+    {
+      "id": "thesilverage:waxed_oxidized_silver_grate"
+    }
+  ],
+  "target": "thesilverage:oxidized_silver_grate"
+}
