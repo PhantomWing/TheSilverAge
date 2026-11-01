@@ -4,8 +4,18 @@
   "package": "com.phantomwing.thesilverage.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockMixin",
+    "BlockStateBaseMixin",
+    "LivingEntityMixin",
+    "MobMixin",
     "LootTableMixin",
-    "PersistentEntitySectionManagerMixin"
+    "PersistentEntitySectionManagerMixin",
+    "ServerPlayerMixin",
+    "PoiTypesAccessor",
+    "RandomPosMixin",
+    "WalkNodeEvaluatorMixin",
+    "WorldGenRegionMixin",
+    "ZombieMixin"
   ],
   "client": [
     "client.PackSelectionModelMixin"

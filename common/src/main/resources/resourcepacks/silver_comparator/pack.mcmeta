@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "The Silver Age: the silver Redstone Comparator. Turned on and off with its recipe override option.",
+    "min_format": 75,
+    "max_format": [75, 0]
+  }
+}

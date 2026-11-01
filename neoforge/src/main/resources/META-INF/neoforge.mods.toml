@@ -13,9 +13,9 @@ description = '''
 ${mod_description}
 '''
 
-# Client-only mixin that hides the mod-managed recipe-override resource pack
-# from Options → Resource Packs (the pack stays in the repository and is toggled
-# by config / server-sync; it just isn't a user-facing entry).
+# Client-only mixin that hides the mod-managed recipe-override resource packs
+# from Options → Resource Packs (the packs stay in the repository and are toggled
+# by config / server-sync; they just aren't user-facing entries).
 [[mixins]]
 config = "thesilverage.neoforge.mixins.json"
 
@@ -42,3 +42,4 @@ type = "required"
 versionRange = "${dep_architectury_neoforge}"
 ordering = "AFTER"
 side = "BOTH"
+

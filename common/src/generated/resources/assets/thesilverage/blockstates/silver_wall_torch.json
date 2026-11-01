@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "thesilverage:block/silver_wall_torch"
+    },
+    "facing=north": {
+      "model": "thesilverage:block/silver_wall_torch",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "thesilverage:block/silver_wall_torch",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "thesilverage:block/silver_wall_torch",
+      "y": 180
+    }
+  }
+}
