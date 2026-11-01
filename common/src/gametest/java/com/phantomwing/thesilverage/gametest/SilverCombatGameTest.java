@@ -7,7 +7,6 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -18,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.phantomwing.thesilverage.gametest.TestCompat.fail;
+import static com.phantomwing.thesilverage.gametest.TestCompat.HUSK;
+import static com.phantomwing.thesilverage.gametest.TestCompat.SKELETON;
+import static com.phantomwing.thesilverage.gametest.TestCompat.VINDICATOR;
+import static com.phantomwing.thesilverage.gametest.TestCompat.ZOMBIE;
 
 /**
  * Game tests for how silver's hits add up: armour's hurt stacks with Thorns, a silver tool's bonus is scaled by the
@@ -37,8 +40,8 @@ public final class SilverCombatGameTest {
      */
     public static void silverArmorStacksWithThorns(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        LivingEntity skeleton = helper.spawnWithNoFreeWill(EntityType.SKELETON, new BlockPos(1, 2, 1));
-        Mob wearer = helper.spawnWithNoFreeWill(EntityType.VINDICATOR, new BlockPos(3, 2, 3));
+        LivingEntity skeleton = helper.spawnWithNoFreeWill(SKELETON, new BlockPos(1, 2, 1));
+        Mob wearer = helper.spawnWithNoFreeWill(VINDICATOR, new BlockPos(3, 2, 3));
         wearer.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.SILVER_HELMET.get()));
         wearer.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ModItems.SILVER_CHESTPLATE.get()));
         wearer.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModItems.SILVER_LEGGINGS.get()));
@@ -79,7 +82,7 @@ public final class SilverCombatGameTest {
      */
     public static void silverSwingsScaleWithTheirCharge(GameTestHelper helper) {
         TestCompat.withServerPlayer(helper, player -> {
-            LivingEntity zombie = helper.spawnWithNoFreeWill(EntityType.ZOMBIE, new BlockPos(3, 2, 3));
+            LivingEntity zombie = helper.spawnWithNoFreeWill(ZOMBIE, new BlockPos(3, 2, 3));
             try {
                 player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.SILVER_SWORD.get()));
                 float chargedOn = swing(player, zombie, true);
@@ -115,8 +118,8 @@ public final class SilverCombatGameTest {
         helper.setBlock(plate, ModBlocks.SILVER_PRESSURE_PLATE.get());
         helper.setBlock(other, ModBlocks.SILVER_PRESSURE_PLATE.get());
         // Its box half a husk wide either side, so it reaches 0.1 into the plate's block.
-        Mob beside = helper.spawnWithNoFreeWill(EntityType.HUSK, plate.getX() + 1.2F, plate.getY(), plate.getZ() + 0.5F);
-        Mob on = helper.spawnWithNoFreeWill(EntityType.HUSK, other);
+        Mob beside = helper.spawnWithNoFreeWill(HUSK, plate.getX() + 1.2F, plate.getY(), plate.getZ() + 0.5F);
+        Mob on = helper.spawnWithNoFreeWill(HUSK, other);
         helper.runAfterDelay(40, () -> {
             List<String> problems = new ArrayList<>();
             if (beside.getHealth() < beside.getMaxHealth()) {
