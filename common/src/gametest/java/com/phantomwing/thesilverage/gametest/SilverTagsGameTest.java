@@ -42,8 +42,8 @@ public final class SilverTagsGameTest {
         } else if (!ModBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState().is(DENSE_ORES)
                 || ModBlocks.SILVER_ORE.get().defaultBlockState().is(SINGULAR_ORES)) {
             fail(helper, "Silver ores aren't in c:ore_rates/dense alone");
-        } else if (!EntityType.HUSK.is(ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
-                || !EntityType.VINDICATOR.is(ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
+        } else if (!TestCompat.isIn(EntityType.HUSK, ModTags.EntityTypes.CAN_WEAR_SILVER_ARMOR)
+                || !TestCompat.isIn(EntityType.VINDICATOR, ModTags.EntityTypes.CAN_HOLD_SILVER_TOOLS)) {
             fail(helper, "Husks or vindicators are missing from the silver gear tags");
         } else {
             helper.succeed();
