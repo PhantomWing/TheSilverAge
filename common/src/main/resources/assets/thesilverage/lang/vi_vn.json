@@ -256,7 +256,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Ghi đè công thức gốc",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Chỉnh sửa một số công thức chế tạo có sẵn để dùng bạc thay thế. (vd. Giàn pha thuốc, Bộ lặp, Mạch so sánh, ...)",
   "thesilverage.configuration.override_lodestone_recipe": "Công thức đá nam châm",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Đá nam châm có được chế tạo bằng phôi bạc thay vì phôi Netherit không? Cần bật “Ghi đè công thức gốc”.",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Đá nam châm có được chế tạo bằng phôi bạc thay vì phôi sắt không? Cần bật “Ghi đè công thức gốc”.",
   "thesilverage.configuration.override_brewing_stand_recipe": "Công thức giàn pha thuốc",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Giàn pha thuốc có được chế tạo bằng phôi bạc và trông như bằng bạc không? Cần bật “Ghi đè công thức gốc”.",
   "thesilverage.configuration.override_comparator_recipe": "Công thức mạch so sánh",
