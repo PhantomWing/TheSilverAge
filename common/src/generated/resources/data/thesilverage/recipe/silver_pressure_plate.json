@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "#c:ingots/silver"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "thesilverage:silver_pressure_plate"
+  }
+}

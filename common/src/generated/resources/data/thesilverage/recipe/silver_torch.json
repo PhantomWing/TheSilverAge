@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "minecraft:stick",
+    "N": "#c:nuggets/silver",
+    "X": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ]
+  },
+  "pattern": [
+    "N",
+    "X",
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "thesilverage:silver_torch"
+  }
+}

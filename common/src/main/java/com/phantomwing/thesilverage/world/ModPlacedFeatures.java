@@ -21,6 +21,8 @@ import java.util.List;
 
 public class ModPlacedFeatures {
     private static final int ANCIENT_CITY_LAYER = -51;
+    /** The config option that turns all silver ore generation on or off, on both loaders. */
+    public static final String GENERATE_SILVER_ORE_ID = "generate_silver_ore";
 
     public static final ResourceKey<PlacedFeature> ORE_SILVER = registerKey("ore_silver");
     public static final ResourceKey<PlacedFeature> ORE_SILVER_LOWER = registerKey("ore_silver_lower");
@@ -44,8 +46,9 @@ public class ModPlacedFeatures {
                 commonOrePlacement(25, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
     }
 
+    // First, so a chunk with the ore turned off places nothing: for packs that take another mod's silver ore instead.
     private static List<PlacementModifier> orePlacement(PlacementModifier pCountPlacement, PlacementModifier pHeightRange) {
-        return List.of(pCountPlacement, InSquarePlacement.spread(), pHeightRange, BiomeFilter.biome());
+        return List.of(new ConfigBooleanPlacementFilter(GENERATE_SILVER_ORE_ID), pCountPlacement, InSquarePlacement.spread(), pHeightRange, BiomeFilter.biome());
     }
 
     private static List<PlacementModifier> commonOrePlacement(int pCount, PlacementModifier pHeightRange) {

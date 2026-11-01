@@ -4,10 +4,16 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.armor.ModTrimMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
+import com.phantomwing.thesilverage.client.ModItemColors;
 import com.phantomwing.thesilverage.client.ModItemProperties;
 import com.phantomwing.thesilverage.item.ModItems;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -35,9 +41,20 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-/** Block + item model datagen. Waxed variants reuse their unwaxed counterpart's textures. */
+/**
+ * Unified block + item model datagen for 1.21.5 (vanilla {@link ModelProvider}).
+ *
+ * <p>Uses the (NeoForge-AT-widened) {@link BlockModelGenerators}/{@link ItemModelGenerators}
+ * helpers + their public {@code blockStateOutput}/{@code modelOutput}/{@code itemModelOutput}.
+ * Render types for the transparent blocks (doors/trapdoors/grates) are registered client-side
+ * (1.21.4 no longer carries render type in the model JSON).</p>
+ *
+ * <p>Waxed variants reuse their unwaxed counterpart's textures, or its models outright
+ * (vanilla-copper style).</p>
+ */
 public class ModModelProvider extends ModelProvider {
     public ModModelProvider(net.minecraft.data.PackOutput output) {
         super(output, TheSilverAge.MOD_ID);
@@ -139,6 +156,69 @@ public class ModModelProvider extends ModelProvider {
         doorReusing(bmg, ModBlocks.WAXED_WEATHERED_SILVER_DOOR, ModBlocks.WEATHERED_SILVER_DOOR);
         doorReusing(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_DOOR, ModBlocks.OXIDIZED_SILVER_DOOR);
 
+        // ---------- Silver Brick Wall (textured from the bricks of the matching weather stage) ----------
+        wall(bmg, ModBlocks.SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wall(bmg, ModBlocks.EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wall(bmg, ModBlocks.WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wall(bmg, ModBlocks.OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
+        wall(bmg, ModBlocks.WAXED_SILVER_BRICK_WALL, ModBlocks.SILVER_BRICKS);
+        wall(bmg, ModBlocks.WAXED_EXPOSED_SILVER_BRICK_WALL, ModBlocks.EXPOSED_SILVER_BRICKS);
+        wall(bmg, ModBlocks.WAXED_WEATHERED_SILVER_BRICK_WALL, ModBlocks.WEATHERED_SILVER_BRICKS);
+        wall(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_BRICK_WALL, ModBlocks.OXIDIZED_SILVER_BRICKS);
+
+        // ---------- Silver Pressure Plate (textured with its stage's Block of Silver, as vanilla's weighted plates are) ----------
+        pressurePlate(bmg, ModBlocks.SILVER_PRESSURE_PLATE, ModBlocks.SILVER_BLOCK);
+        pressurePlate(bmg, ModBlocks.EXPOSED_SILVER_PRESSURE_PLATE, ModBlocks.EXPOSED_SILVER);
+        pressurePlate(bmg, ModBlocks.WEATHERED_SILVER_PRESSURE_PLATE, ModBlocks.WEATHERED_SILVER);
+        pressurePlate(bmg, ModBlocks.OXIDIZED_SILVER_PRESSURE_PLATE, ModBlocks.OXIDIZED_SILVER);
+        pressurePlate(bmg, ModBlocks.WAXED_SILVER_PRESSURE_PLATE, ModBlocks.SILVER_BLOCK);
+        pressurePlate(bmg, ModBlocks.WAXED_EXPOSED_SILVER_PRESSURE_PLATE, ModBlocks.EXPOSED_SILVER);
+        pressurePlate(bmg, ModBlocks.WAXED_WEATHERED_SILVER_PRESSURE_PLATE, ModBlocks.WEATHERED_SILVER);
+        pressurePlate(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_PRESSURE_PLATE, ModBlocks.OXIDIZED_SILVER);
+
+        // ---------- Silver Lantern (vanilla's lantern templates; cutout layer set client-side) ----------
+        lantern(bmg, ModBlocks.SILVER_LANTERN, ModBlocks.SILVER_LANTERN);
+        lantern(bmg, ModBlocks.EXPOSED_SILVER_LANTERN, ModBlocks.EXPOSED_SILVER_LANTERN);
+        lantern(bmg, ModBlocks.WEATHERED_SILVER_LANTERN, ModBlocks.WEATHERED_SILVER_LANTERN);
+        lantern(bmg, ModBlocks.OXIDIZED_SILVER_LANTERN, ModBlocks.OXIDIZED_SILVER_LANTERN);
+        lantern(bmg, ModBlocks.WAXED_SILVER_LANTERN, ModBlocks.SILVER_LANTERN);
+        lantern(bmg, ModBlocks.WAXED_EXPOSED_SILVER_LANTERN, ModBlocks.EXPOSED_SILVER_LANTERN);
+        lantern(bmg, ModBlocks.WAXED_WEATHERED_SILVER_LANTERN, ModBlocks.WEATHERED_SILVER_LANTERN);
+        lantern(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN, ModBlocks.OXIDIZED_SILVER_LANTERN);
+
+        // ---------- Silver Chain ----------
+        chain(bmg, ModBlocks.SILVER_CHAIN, ModBlocks.SILVER_CHAIN);
+        chain(bmg, ModBlocks.EXPOSED_SILVER_CHAIN, ModBlocks.EXPOSED_SILVER_CHAIN);
+        chain(bmg, ModBlocks.WEATHERED_SILVER_CHAIN, ModBlocks.WEATHERED_SILVER_CHAIN);
+        chain(bmg, ModBlocks.OXIDIZED_SILVER_CHAIN, ModBlocks.OXIDIZED_SILVER_CHAIN);
+        chain(bmg, ModBlocks.WAXED_SILVER_CHAIN, ModBlocks.SILVER_CHAIN);
+        chain(bmg, ModBlocks.WAXED_EXPOSED_SILVER_CHAIN, ModBlocks.EXPOSED_SILVER_CHAIN);
+        chain(bmg, ModBlocks.WAXED_WEATHERED_SILVER_CHAIN, ModBlocks.WEATHERED_SILVER_CHAIN);
+        chain(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN, ModBlocks.OXIDIZED_SILVER_CHAIN);
+
+        // ---------- Silver Bars ----------
+        bars(bmg, ModBlocks.SILVER_BARS, ModBlocks.SILVER_BARS);
+        bars(bmg, ModBlocks.EXPOSED_SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS);
+        bars(bmg, ModBlocks.WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
+        bars(bmg, ModBlocks.OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
+        bars(bmg, ModBlocks.WAXED_SILVER_BARS, ModBlocks.SILVER_BARS);
+        bars(bmg, ModBlocks.WAXED_EXPOSED_SILVER_BARS, ModBlocks.EXPOSED_SILVER_BARS);
+        bars(bmg, ModBlocks.WAXED_WEATHERED_SILVER_BARS, ModBlocks.WEATHERED_SILVER_BARS);
+        bars(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_BARS, ModBlocks.OXIDIZED_SILVER_BARS);
+
+        // ---------- Silver Lightning Rod ----------
+        lightningRod(bmg, ModBlocks.SILVER_LIGHTNING_ROD);
+        lightningRod(bmg, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        lightningRod(bmg, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        lightningRod(bmg, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+        lightningRodReusing(bmg, ModBlocks.WAXED_SILVER_LIGHTNING_ROD, ModBlocks.SILVER_LIGHTNING_ROD);
+        lightningRodReusing(bmg, ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD, ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD);
+        lightningRodReusing(bmg, ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD, ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD);
+        lightningRodReusing(bmg, ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD, ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD);
+
+        // ---------- Silver Torch (floor + wall; the wall torch has no item) ----------
+        bmg.createNormalTorch(ModBlocks.SILVER_TORCH.get(), ModBlocks.SILVER_WALL_TORCH.get());
+
         // ---------- Moon Phase Detector (daylight-detector style, INVERTED top swap) ----------
         moonPhaseDetector(bmg);
 
@@ -172,6 +252,7 @@ public class ModModelProvider extends ModelProvider {
         handheld(img, ModItems.SILVER_SWORD);
         handheld(img, ModItems.SILVER_KNIFE);
         img.generateSpear(ModItems.SILVER_SPEAR.get());
+        flat(img, ModItems.SILVER_ARROW);
     }
 
     // ---------------- block helpers ----------------
@@ -267,6 +348,127 @@ public class ModModelProvider extends ModelProvider {
         bmg.itemModelOutput.copy(s.asItem(), block.get().asItem());
     }
 
+    private static void wall(BlockModelGenerators bmg, RegistrySupplier<? extends Block> wall, RegistrySupplier<? extends Block> textureSource) {
+        bmg.new BlockFamilyProvider(TextureMapping.cube(textureSource.get())).wall(wall.get());
+    }
+
+    /** Weighted-plate models (up and down) off its stage's Block of Silver, and the up model as its item. */
+    private static void pressurePlate(BlockModelGenerators bmg, RegistrySupplier<Block> plate, RegistrySupplier<Block> textureSource) {
+        bmg.createWeightedPressurePlate(plate.get(), textureSource.get());
+        bmg.registerSimpleItemModel(plate.get(), ModelLocationUtils.getModelLocation(plate.get()));
+    }
+
+    /** Standing and hanging lantern off vanilla's templates; a waxed lantern takes its unwaxed one's texture and item. */
+    private static void lantern(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
+        Block b = block.get();
+        TextureMapping mapping = TextureMapping.lantern(textureSource.get());
+        Identifier standing = ModelTemplates.LANTERN.create(b, mapping, bmg.modelOutput);
+        Identifier hanging = ModelTemplates.HANGING_LANTERN.create(b, mapping, bmg.modelOutput);
+        bmg.blockStateOutput.accept(MultiVariantGenerator.dispatch(b)
+                .with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.HANGING,
+                        BlockModelGenerators.plainVariant(hanging), BlockModelGenerators.plainVariant(standing))));
+        flatItemFrom(bmg, b, textureSource.get());
+    }
+
+    /**
+     * Vanilla's chain template, rotated per axis. 1.21.9 made {@code block/chain} {@code block/iron_chain} over
+     * {@code template_chain}, whose one slot is {@code texture}: a model still naming {@code block/chain} draws the missing texture.
+     */
+    private static void chain(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
+        Identifier model = ModelTemplates.CHAIN.create(block.get(),
+                TextureMapping.defaultTexture(textureSource.get()), bmg.modelOutput);
+        bmg.createAxisAlignedPillarBlockCustomModel(block.get(), BlockModelGenerators.plainVariant(model));
+        flatItemFrom(bmg, block.get(), textureSource.get());
+    }
+
+    /**
+     * Bars: vanilla's iron bars multipart over its own models. The glass pane's drew a lone bar as a thick post and a
+     * run of them with the texture along its edges. The item is the block texture, flat, as iron bars' is.
+     */
+    private static void bars(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> textureSource) {
+        Block b = block.get();
+        Material texture = TextureMapping.getBlockTexture(textureSource.get());
+        TextureMapping mapping = new TextureMapping()
+                .put(TextureSlot.PARTICLE, texture).put(BARS, texture).put(TextureSlot.EDGE, texture);
+        Identifier postEnds = barsModel(bmg, b, textureSource.get(), "post_ends", mapping);
+        Identifier post = barsModel(bmg, b, textureSource.get(), "post", mapping);
+        Identifier cap = barsModel(bmg, b, textureSource.get(), "cap", mapping);
+        Identifier capAlt = barsModel(bmg, b, textureSource.get(), "cap_alt", mapping);
+        Identifier side = barsModel(bmg, b, textureSource.get(), "side", mapping);
+        Identifier sideAlt = barsModel(bmg, b, textureSource.get(), "side_alt", mapping);
+        bmg.blockStateOutput.accept(MultiPartGenerator.multiPart(b)
+                .with(BlockModelGenerators.plainVariant(postEnds))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, false).term(BlockStateProperties.EAST, false)
+                                .term(BlockStateProperties.SOUTH, false).term(BlockStateProperties.WEST, false),
+                        BlockModelGenerators.plainVariant(post))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, true).term(BlockStateProperties.EAST, false)
+                                .term(BlockStateProperties.SOUTH, false).term(BlockStateProperties.WEST, false),
+                        BlockModelGenerators.plainVariant(cap))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, false).term(BlockStateProperties.EAST, true)
+                                .term(BlockStateProperties.SOUTH, false).term(BlockStateProperties.WEST, false),
+                        BlockModelGenerators.plainVariant(cap).with(BlockModelGenerators.Y_ROT_90))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, false).term(BlockStateProperties.EAST, false)
+                                .term(BlockStateProperties.SOUTH, true).term(BlockStateProperties.WEST, false),
+                        BlockModelGenerators.plainVariant(capAlt))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, false).term(BlockStateProperties.EAST, false)
+                                .term(BlockStateProperties.SOUTH, false).term(BlockStateProperties.WEST, true),
+                        BlockModelGenerators.plainVariant(capAlt).with(BlockModelGenerators.Y_ROT_90))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, true),
+                        BlockModelGenerators.plainVariant(side))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.EAST, true),
+                        BlockModelGenerators.plainVariant(side).with(BlockModelGenerators.Y_ROT_90))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.SOUTH, true),
+                        BlockModelGenerators.plainVariant(sideAlt))
+                .with(BlockModelGenerators.condition().term(BlockStateProperties.WEST, true),
+                        BlockModelGenerators.plainVariant(sideAlt).with(BlockModelGenerators.Y_ROT_90)));
+        bmg.registerSimpleItemModel(b, ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(b.asItem()),
+                TextureMapping.layer0(texture), bmg.modelOutput));
+    }
+
+    /** A part's model: written for the unwaxed bars, and the waxed ones' blockstate points at those. */
+    private static Identifier barsModel(BlockModelGenerators bmg, Block block, Block textureSource, String part, TextureMapping mapping) {
+        return block == textureSource
+                ? barsTemplate(part).create(block, mapping, bmg.modelOutput)
+                : ModelLocationUtils.getModelLocation(textureSource, "_" + part);
+    }
+
+    private static ModelTemplate barsTemplate(String part) {
+        return new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/iron_bars_" + part)),
+                Optional.of("_" + part), TextureSlot.PARTICLE, BARS, TextureSlot.EDGE);
+    }
+
+    /** Lightning rod: vanilla's rod geometry, pointing where it faces; struck, every stage glows vanilla's plain white. */
+    private static void lightningRod(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block) {
+        Block b = block.get();
+        Material texture = TextureMapping.getBlockTexture(b);
+        LIGHTNING_ROD.create(b, new TextureMapping().put(TextureSlot.TEXTURE, texture).put(TextureSlot.PARTICLE, texture), bmg.modelOutput);
+        LIGHTNING_ROD.createWithSuffix(b, "_on", new TextureMapping()
+                .put(TextureSlot.TEXTURE, new Material(Identifier.withDefaultNamespace("block/lightning_rod_on")))
+                .put(TextureSlot.PARTICLE, texture), bmg.modelOutput);
+        lightningRodReusing(bmg, block, block);
+    }
+
+    private static void lightningRodReusing(BlockModelGenerators bmg, RegistrySupplier<? extends Block> block, RegistrySupplier<? extends Block> source) {
+        Identifier off = ModelLocationUtils.getModelLocation(source.get());
+        Identifier on = ModelLocationUtils.getModelLocation(source.get(), "_on");
+        bmg.blockStateOutput.accept(MultiVariantGenerator.dispatch(block.get())
+                .with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.POWERED,
+                        BlockModelGenerators.plainVariant(on), BlockModelGenerators.plainVariant(off)))
+                .with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING));
+        bmg.registerSimpleItemModel(block.get(), off);
+    }
+
+    /** A flat item from {@code textureSource}'s item texture: a waxed block's item looks as its unwaxed one's. */
+    private static void flatItemFrom(BlockModelGenerators bmg, Block block, Block textureSource) {
+        bmg.registerSimpleItemModel(block, ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()),
+                TextureMapping.layer0(textureSource.asItem()), bmg.modelOutput));
+    }
+
+    private static final TextureSlot BARS = TextureSlot.create("bars");
+    private static final ModelTemplate LIGHTNING_ROD = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/lightning_rod")),
+            Optional.empty(), TextureSlot.TEXTURE, TextureSlot.PARTICLE);
+
+
     /** Moon Phase Detector: daylight-detector-style model; INVERTED swaps the top texture. */
     private static void moonPhaseDetector(BlockModelGenerators bmg) {
         Block block = ModBlocks.MOON_PHASE_DETECTOR.get();
@@ -326,6 +528,8 @@ public class ModModelProvider extends ModelProvider {
     private static final Item[][] VANILLA_TRIMMED_ARMOR = {
             {Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS},
             {Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS},
+            // From 1.21.9.
+            {Items.COPPER_HELMET, Items.COPPER_CHESTPLATE, Items.COPPER_LEGGINGS, Items.COPPER_BOOTS},
             {Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS},
             {Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS},
             {Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS},
@@ -387,23 +591,46 @@ public class ModModelProvider extends ModelProvider {
         img.generateFlatItem(item.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
     }
 
-    /** Moon Dial: range_dispatch over thesilverage:moon_phase, 16 frames at thresholds i/16. */
+    /**
+     * Moon Dial: a {@code range_dispatch} item model on the custom {@code thesilverage:moon_phase}
+     * property, at thresholds i/16 (matching the property's {@code signal/16f}): frames 0-15 are the
+     * moon phase signals, 16 and 17 the super moon frames ModItemProperties swaps in during an
+     * Enhanced Celestials super event. Each frame is two layers, an untinted base and the moon, whose
+     * tint is the {@code thesilverage:lunar_event} source (ModItemColors). The property and tint types
+     * are registered into their ID mappers here so this run can serialize them (the game-side
+     * registration is in the client bootstrap; putting the same codec under the same id again changes nothing).
+     */
     private static void moonDial(ItemModelGenerators img) {
         RangeSelectItemModelProperties.ID_MAPPER.put(ModItemProperties.MOON_PHASE, ModItemProperties.MoonPhaseProperty.MAP_CODEC);
+        ItemTintSources.ID_MAPPER.put(ModItemColors.LUNAR_EVENT, ModItemColors.LunarEventTint.MAP_CODEC);
 
+        // The fallback is the full-moon frame, matching the one LevelUtils uses for fixed-time dimensions.
         ItemModel.Unbaked fallback = frameModel(img, 0);
         List<RangeSelectItemModel.Entry> entries = new ArrayList<>();
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= ModItemProperties.SUPER_MOON_UPCOMING; i++) {
             entries.add(ItemModelUtils.override(frameModel(img, i), i / 16f));
         }
         img.itemModelOutput.accept(ModItems.MOON_DIAL.get(),
                 ItemModelUtils.rangeSelect(new ModItemProperties.MoonPhaseProperty(), fallback, entries));
     }
 
-    /** Flat model {@code item/moon_dial_<i>} from texture {@code item/moon_dial_<i>}. */
+    /**
+     * Layered model {@code item/moon_dial_<i>}. getMoonPhaseSignal: signal = phase * 2 - (isDay ? 1 : 0), so an
+     * even signal is a settled night phase and an odd one the daytime transition toward the next phase, which uses
+     * the "upcoming" base. A super moon replaces the full moon it always coincides with.
+     */
     private static ItemModel.Unbaked frameModel(ItemModelGenerators img, int i) {
-        Identifier id = Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, "item/moon_dial_" + i);
-        Identifier model = ModelTemplates.FLAT_ITEM.create(id, TextureMapping.layer0(new Material(id)), img.modelOutput);
-        return ItemModelUtils.plainModel(model);
+        boolean superMoon = i >= ModItemProperties.SUPER_MOON_NIGHT;
+        boolean upcoming = superMoon ? i == ModItemProperties.SUPER_MOON_UPCOMING : i % 2 != 0;
+        Identifier base = itemTexture(upcoming ? "moon_dial_upcoming_base" : "moon_dial_base");
+        Identifier moon = itemTexture(superMoon ? "moon_dial_super_moon"
+                : "moon_dial_moon_" + (upcoming ? ((i + 1) / 2) % 8 : i / 2));
+        Identifier model = ModelTemplates.TWO_LAYERED_ITEM.create(itemTexture("moon_dial_" + i),
+                TextureMapping.layered(new Material(base), new Material(moon)), img.modelOutput);
+        return ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(-1), new ModItemColors.LunarEventTint());
+    }
+
+    private static Identifier itemTexture(String name) {
+        return Identifier.fromNamespaceAndPath(TheSilverAge.MOD_ID, "item/" + name);
     }
 }

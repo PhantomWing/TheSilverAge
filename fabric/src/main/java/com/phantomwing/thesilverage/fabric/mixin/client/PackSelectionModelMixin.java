@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.fabric.mixin.client;
 
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.minecraft.client.gui.screens.packs.PackSelectionModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,8 +23,9 @@ public class PackSelectionModelMixin {
         cir.setReturnValue(cir.getReturnValue().filter(e -> !thesilverage$isHidden(e.getId())));
     }
 
+    /** Matches the recipe-override texture packs' ids on both loaders. */
     @Unique
     private static boolean thesilverage$isHidden(String id) {
-        return id != null && id.contains("thesilverage") && id.endsWith("recipe_overrides");
+        return RecipeOverride.isTexturePackId(id);
     }
 }

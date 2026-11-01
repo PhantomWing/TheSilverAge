@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_lantern",
+  "textures": {
+    "lantern": "thesilverage:block/weathered_silver_lantern"
+  }
+}

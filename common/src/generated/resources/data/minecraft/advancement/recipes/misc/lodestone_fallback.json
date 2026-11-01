@@ -3,18 +3,27 @@
     {
       "type": "neoforge:not",
       "value": {
-        "type": "thesilverage:config_boolean",
-        "settingId": "override_vanilla_recipes"
+        "type": "neoforge:and",
+        "values": [
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_lodestone_recipe"
+          }
+        ]
       }
     }
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_ingot": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:netherite_ingot"
+            "items": "minecraft:iron_ingot"
           }
         ]
       },
@@ -31,15 +40,24 @@
     {
       "condition": "fabric:not",
       "value": {
-        "condition": "thesilverage:config_boolean",
-        "settingId": "override_vanilla_recipes"
+        "condition": "fabric:and",
+        "values": [
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_lodestone_recipe"
+          }
+        ]
       }
     }
   ],
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_ingot"
+      "has_iron_ingot"
     ]
   ],
   "rewards": {

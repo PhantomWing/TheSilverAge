@@ -57,13 +57,14 @@ ext.manifestProps = { ->
             dep_minecraft_fabric     : ">=${mcFloor} <${mcNext}".toString(),
             dep_fabricloader         : ">=${rootProject.fabric_loader_version}".toString(),
             dep_fabric_api           : ">=${fabricApiFloor}".toString(),
-            dep_architectury_fabric  : ">=${mm(rootProject.architectury_version)}".toString(),
+            // 26.2: Architectury before 21.1.10 doesn't load on NeoForge 26.2.0.88, so both floors are the full version.
+            dep_architectury_fabric  : ">=${rootProject.architectury_version}".toString(),
             dep_cloth                : ">=${mm(rootProject.cloth_config_version)}".toString(),
             // neoforge.mods.toml (maven range format)
             dep_loader_neoforge      : rootProject.loader_version_range,
             dep_neoforge             : rootProject.neo_version_range,
             dep_minecraft_neoforge   : "[${mcFloor},${mcNext})".toString(),
-            dep_architectury_neoforge: "[${mm(rootProject.architectury_version)},)".toString(),
+            dep_architectury_neoforge: "[${rootProject.architectury_version},)".toString(),
     ]
 }
 

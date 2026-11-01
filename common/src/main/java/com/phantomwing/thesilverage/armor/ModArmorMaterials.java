@@ -5,16 +5,24 @@ import com.phantomwing.thesilverage.tags.CommonTags;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import com.phantomwing.thesilverage.sound.ModSounds;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 
+import com.google.common.base.Suppliers;
+
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ModArmorMaterials {
-    public static final ArmorMaterial SILVER_ARMOR_MATERIAL = create(
+    /**
+     * Made the first time an item asks for it, as the item registers: its equip sound's holder only exists once the
+     * sound is registered, and from Architectury 21 a RegistrySupplier is no longer a holder of its own.
+     */
+    public static final Supplier<ArmorMaterial> SILVER_ARMOR_MATERIAL = Suppliers.memoize(() -> create(
             "silver",
             10, // Durability factor (Iron is 15, Gold is 7)
             2,  // Boots defense
@@ -25,7 +33,7 @@ public class ModArmorMaterials {
             0f, // Toughness
             0f, // Knockback resistance
             12  // Enchantability
-    );
+    ));
 
     private static ArmorMaterial create(String name, int durability,
                                         int bootsDefense, int legsDefense, int chestDefense,
@@ -38,7 +46,10 @@ public class ModArmorMaterials {
                 ArmorType.HELMET, headDefense,
                 ArmorType.BODY, bodyDefense
         );
-        Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GOLD;
+        Holder<SoundEvent> equipSound = Objects.requireNonNull(ModSounds.ARMOR_EQUIP_SILVER.asHolder(), "the silver equip sound isn't registered yet");
+        // 1.21.4: the equipment model id is now a typed ResourceKey<EquipmentAsset>
+        // (the EquipmentAssets registry), not a plain Identifier. Resolves to
+        // the equipment asset at assets/<ns>/equipment/<path>.json.
         ResourceKey<EquipmentAsset> assetId =
                 ResourceKey.create(EquipmentAssets.ROOT_ID, TheSilverAge.resourceLocation(name));
 

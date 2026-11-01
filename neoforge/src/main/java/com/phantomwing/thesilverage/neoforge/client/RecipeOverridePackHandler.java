@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.neoforge.client;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.client.ServerOverrideState;
-import com.phantomwing.thesilverage.neoforge.Configuration;
+import com.phantomwing.thesilverage.recipe.RecipeOverride;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.chat.Component;
@@ -21,21 +21,45 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.resource.JarContentsPackResources;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
-// Built-in resource pack for the silver-themed brewing-stand/comparator/repeater
-// textures, gated on the override_vanilla_recipes setting (server value when synced,
-// else local config). The config gate lives in the source lambda (not the event
-// handler) because AddPackFindersEvent fires once but the source re-runs every reload.
+/**
+ * The built-in resource packs that give the vanilla blocks whose recipes take silver a silver look:
+ * one per {@link RecipeOverride} with a texture pack (brewing stand, comparator, repeater). Each
+ * applies while its override does - the server's when connected to one that synced them
+ * ({@link ServerOverrideState}), else the local config - so the textures stay consistent with the
+ * (server-driven) recipes.
+ *
+ * <p><b>How the toggle works.</b> {@link AddPackFindersEvent} fires only ONCE (at
+ * {@link net.minecraft.server.packs.repository.PackRepository} construction), but the
+ * {@code RepositorySource} registered here is re-invoked on every reload (it runs inside
+ * {@code PackRepository#discoverAvailable}). So the gate lives in the source lambda: each reload
+ * provides the packs whose override is on and omits the rest. The packs are {@code required}, so a
+ * provided one is selected at the initial resource load too - the default-on case shows the
+ * textures from the first frame with no reload.</p>
+ *
+ * <p>{@link #syncFromState()} (join receiver / disconnect / config save) asks for a re-evaluation,
+ * which {@link #clientTick()} carries out once it is safe - never during the world-join loading
+ * screen, which would freeze the client - and only when some pack's state actually differs, with
+ * one reload for all of them.</p>
+ */
+// 1.21.6: buses unified — @EventBusSubscriber dropped the `bus` element (Bus enum removed).
 @EventBusSubscriber(modid = TheSilverAge.MOD_ID, value = Dist.CLIENT)
 public final class RecipeOverridePackHandler {
-    private static final String PACK_ID = "builtin/" + TheSilverAge.MOD_ID + "/recipe_overrides";
-    private static final String PACK_RESOURCE_ROOT = "resourcepacks/silver_recipe_overrides";
+    /** The packs found in the mod file, by their override, each its root in the mod file. One that isn't found never takes part. */
+    private static final Map<RecipeOverride, String> AVAILABLE = new EnumMap<>(RecipeOverride.class);
+    /** Packs found whose metadata couldn't be read: they can't be applied either, so they don't take part. */
+    private static final Set<RecipeOverride> UNREADABLE = Collections.synchronizedSet(EnumSet.noneOf(RecipeOverride.class));
 
-    private static volatile boolean appliedOverride = false;
+    /** The packs the source last provided; lets {@link #clientTick()} skip a reload that changes nothing. */
+    private static volatile Set<RecipeOverride> applied = EnumSet.noneOf(RecipeOverride.class);
+    /** Whether a sync is queued, waiting for a safe moment to reload. */
     private static volatile boolean syncPending = false;
-    // Without the pack no reload can change appliedOverride, so every sync would reload again.
-    private static volatile boolean packAvailable = false;
 
     private RecipeOverridePackHandler() {
     }
@@ -44,64 +68,80 @@ public final class RecipeOverridePackHandler {
     public static void onAddPackFinders(@NotNull AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
-        // Read through the mod file's contents, as NeoForge's own addPackFinders does: its content roots
-        // are folders only in a dev run, and in a shipped jar the jar file itself.
+        // Read through the mod file's contents, as NeoForge's own addPackFinders does: its content roots are
+        // folders only in a dev run, and in a shipped jar the jar file itself.
         JarContents contents = ModList.get().getModFileById(TheSilverAge.MOD_ID).getFile().getContents();
-        if (!contents.containsFile(PACK_RESOURCE_ROOT + "/pack.mcmeta")) {
-            TheSilverAge.LOGGER.warn("Recipe-override pack '{}' not found in the mod file; skipping pack registration.", PACK_RESOURCE_ROOT);
-            return;
-        }
-        packAvailable = true;
-
-        event.addRepositorySource(consumer -> {
-            boolean enabled = desiredOverride();
-            appliedOverride = enabled;
-            if (!enabled) return;
-
-            PackLocationInfo location = new PackLocationInfo(
-                    PACK_ID,
-                    Component.literal("The Silver Age: Recipe-Override Textures"),
-                    PackSource.BUILT_IN,
-                    Optional.empty());
-            // required=true force-selects the pack at the initial load (no reload for default-on); TOP overrides vanilla.
-            PackSelectionConfig selection = new PackSelectionConfig(true, Pack.Position.TOP, true);
-
-            Pack pack = Pack.readMetaAndCreate(
-                    location,
-                    new JarContentsPackResources.JarContentsResourcesSupplier(contents, PACK_RESOURCE_ROOT),
-                    PackType.CLIENT_RESOURCES,
-                    selection);
-            if (pack != null) {
-                consumer.accept(pack);
-            } else {
-                TheSilverAge.LOGGER.warn("Recipe-override pack at '{}' has no readable metadata; skipping.", PACK_RESOURCE_ROOT);
+        for (RecipeOverride override : RecipeOverride.values()) {
+            if (!override.hasTexturePack()) continue;
+            String root = "resourcepacks/" + override.texturePack();
+            if (!contents.containsFile(root + "/pack.mcmeta")) {
+                // In a dev run common's resources are only on the mod file's path through the
+                // processResources copy in neoforge/build.gradle.
+                TheSilverAge.LOGGER.warn("Recipe-override texture pack '{}' not found in the mod file; skipping it.", root);
+                continue;
             }
+            AVAILABLE.put(override, root);
+        }
+        if (AVAILABLE.isEmpty()) return;
+
+        // Registered once; its lambda re-runs on every reload, which is what re-evaluates the packs.
+        event.addRepositorySource(consumer -> {
+            Set<RecipeOverride> provided = EnumSet.noneOf(RecipeOverride.class);
+            for (Map.Entry<RecipeOverride, String> entry : AVAILABLE.entrySet()) {
+                RecipeOverride override = entry.getKey();
+                if (!ServerOverrideState.isOn(override)) continue; // omitted -> vanilla's textures
+
+                PackLocationInfo location = new PackLocationInfo(
+                        "builtin/" + TheSilverAge.MOD_ID + "/" + override.texturePack(),
+                        Component.literal("The Silver Age: " + override.texturePack()),
+                        PackSource.BUILT_IN,
+                        Optional.empty());
+                // required: selected whenever provided, at the initial load too. Fixed at the top, over vanilla.
+                PackSelectionConfig selection = new PackSelectionConfig(true, Pack.Position.TOP, true);
+                Pack pack = Pack.readMetaAndCreate(location,
+                        new JarContentsPackResources.JarContentsResourcesSupplier(contents, entry.getValue()), PackType.CLIENT_RESOURCES, selection);
+                if (pack != null) {
+                    consumer.accept(pack);
+                    provided.add(override);
+                } else {
+                    UNREADABLE.add(override);
+                    TheSilverAge.LOGGER.warn("Recipe-override texture pack '{}' has no readable metadata; skipping it.", override.texturePack());
+                }
+            }
+            applied = provided;
         });
     }
 
+    /** On config save, request a (deferred) re-evaluation of the packs. */
     @SubscribeEvent
     public static void onConfigReloaded(@NotNull ModConfigEvent.Reloading event) {
         if (!event.getConfig().getModId().equals(TheSilverAge.MOD_ID)) return;
         syncFromState();
     }
 
-    // Server value wins when synced; else local config. Defensive read in case the spec hasn't loaded.
-    private static boolean desiredOverride() {
-        boolean local;
-        try {
-            local = Configuration.OVERRIDE_VANILLA_RECIPES.get();
-        } catch (Exception ignored) {
-            local = true;
+    /** The packs that should be applied now. Only those found take part: a missing one can't be applied, and comparing it would reload on every sync. */
+    private static Set<RecipeOverride> desired() {
+        Set<RecipeOverride> desired = EnumSet.noneOf(RecipeOverride.class);
+        for (RecipeOverride override : AVAILABLE.keySet()) {
+            if (!UNREADABLE.contains(override) && ServerOverrideState.isOn(override)) desired.add(override);
         }
-        return ServerOverrideState.effective(local);
+        return desired;
     }
 
-    // Request a pack-state sync; the reload is deferred to clientTick() (reloading during world-join freezes the client).
+    /**
+     * Request a pack sync. The reload (if needed) is deferred to {@link #clientTick()}: reloading
+     * during the world-join loading screen freezes the client. Called from the join receiver,
+     * disconnect and config save.
+     */
     public static void syncFromState() {
         syncPending = true;
     }
 
-    // Reloads only when the desired state differs from what is applied, and only once it is safe.
+    /**
+     * Driven every client tick (registered on the game bus). Reloads - which re-runs the source and
+     * re-evaluates every pack - only when the packs wanted differ from those applied, and only once
+     * it is safe.
+     */
     public static void clientTick() {
         if (!syncPending) return;
         Minecraft mc = Minecraft.getInstance();
@@ -109,7 +149,7 @@ public final class RecipeOverridePackHandler {
         if (mc.gui.overlay() != null) return;                   // a resource reload is already in progress
         if (mc.gui.screen() instanceof LevelLoadingScreen) return; // still joining a world — reloading now hangs
         syncPending = false;
-        if (packAvailable && appliedOverride != desiredOverride()) {
+        if (!applied.equals(desired())) {
             mc.reloadResourcePacks();
         }
     }

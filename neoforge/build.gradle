@@ -14,24 +14,21 @@ def datagenModId = rootProject.property('mod_id').toString()
 def datagenOutput = rootProject.file('common/src/generated/resources/').absolutePath
 def datagenExisting = rootProject.file('common/src/main/resources/').absolutePath
 
-// Dedicated source set for GameTests — kept out of `main` so it never ships or sits on the
-// runClient/runServer classpath; wired onto the `gameTest` run only.
-sourceSets {
-    gametest {
-        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
-        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
-    }
-}
-
-configurations {
-    // Let the gametest source set resolve the same dependencies as main.
-    gametestImplementation.extendsFrom implementation
-    gametestRuntimeOnly.extendsFrom runtimeOnly
-    gametestCompileOnly.extendsFrom compileOnly
-}
+// The dev niceties are useless in the headless game-test run, and some crash it.
+def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
+
+    // Include the test-only source set in the dev mod so the game tests and their data load.
+    // Dev-runtime only: the production jar is still built from `main`, so test classes never ship.
+    // Added to Loom's own `main` group rather than a second group: two groups carrying the same
+    // mod make the loader keep one, and some FML releases keep the one without the tests (none run).
+    mods {
+        named('main') {
+            sourceSet sourceSets.test
+        }
+    }
 
     runs {
         // Data generation: ./gradlew :neoforge:runData. clientData()'s environment is a
@@ -40,6 +37,13 @@ loom {
             clientData()
             name = "Data Generation"
             programArgs('--mod', datagenModId, '--all', '--output', datagenOutput, '--existing', datagenExisting)
+            // The mod without the test source set, which carries the datagen output into dev runs: datagen would
+            // otherwise load the output of the run before as the mod's own while it writes the new one.
+            mods {
+                register('main') {
+                    sourceSet sourceSets.main
+                }
+            }
         }
 
         // Give the dev server its own runDir so its config is separate from the client's
@@ -48,25 +52,18 @@ loom {
             runDir "run/server"
         }
 
-        // Automated GameTest server: ./gradlew :neoforge:runGameTest. loom has no
-        // gameTestServer() helper, so bind NeoForge's template directly via forgeTemplate.
+        // Headless NeoForge game-test server: runs every test in GameTests, prints PASS/FAIL, and exits.
+        //   ./gradlew :neoforge:runGameTest
+        // The run takes NeoForge's gameTestServer template, which both enables and runs the tests; the environment
+        // selects launch.cfg's section, so it names the template too.
         gameTest {
-            // environment must equal the forge template name (loom derives launchTarget from it).
-            environment "gameTestServer"
-            forgeTemplate "gameTestServer"
+            environment 'gameTestServer'
+            forgeTemplate 'gameTestServer'
             name = "Game Test"
-            source sourceSets.gametest
-            // Declare both source sets as the mod for this run only, so NeoForge treats the
-            // gametest output as mod content (scans @EventBusSubscriber, loads test datapack).
-            mods {
-                "${rootProject.mod_id}" {
-                    sourceSet sourceSets.main
-                    sourceSet sourceSets.gametest
-                }
-            }
-            // --tests: run only this mod's tests; --report: JUnit-like XML for CI.
-            programArgs '--tests', "${rootProject.mod_id}:*", '--report', 'gametest-report.xml'
             runDir "run/gametest"
+            source sourceSets.test
+            // Only this mod's tests, so a built-in one can't break the run.
+            programArgs '--tests', "${rootProject.mod_id}:*"
         }
     }
 }
@@ -79,6 +76,38 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
+// Test-only source set for game tests. Kept out of `main` so neither the test classes nor the arena
+// structure ship in the production jar. The tests themselves are common/src/gametest; only the
+// registration is NeoForge's own.
+//
+// The datagen output is in it too, for dev runs only. There common's transformed jar is a mod of its own
+// (generated_<hash>) that nothing orders, so NeoForge's own Lodestone and Glistering Melon Slice recipes beat the
+// overrides. As part of this mod it loads after NeoForge, as the shipped jar's does.
+sourceSets {
+    test {
+        java.srcDir project(':common').file('src/gametest/java')
+        resources.srcDir project(':common').file('src/gametest/resources')
+        resources.srcDir project(':common').file('src/generated/resources')
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+// The JUnit `test` task finds no tests in the game tests' source set, and Gradle 9 fails a test task that discovers none.
+tasks.named('test') {
+    failOnNoDiscoveredTests = false
+}
+
+processTestResources {
+    exclude '.cache/**'
+}
+
+// Every run but datagen's loads the test source set as part of the mod, but only the game-test run builds it: the
+// client and server would load whatever the last game tests copied.
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'runData' }.configureEach {
+    dependsOn tasks.named('processTestResources')
+}
+
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
     // loom-no-remap: plain configs (no `mod` prefix — nothing is remapped).
@@ -87,9 +116,12 @@ dependencies {
     common(project(path: ':common')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 
-    // Jade + JEI — dev-runtime only (never compiled against, never shipped).
-    localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
-    localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
+    // Jade + JEI — dev-runtime only (never compiled against, never shipped). Never on the game-test run: they send
+    // their packets to a test's mock player, whose connection has none of them, and crash the server.
+    if (!runningGameTest) {
+        localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+        localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
+    }
 }
 
 processResources {
