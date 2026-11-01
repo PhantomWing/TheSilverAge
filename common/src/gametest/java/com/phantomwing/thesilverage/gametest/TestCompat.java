@@ -257,4 +257,22 @@ public final class TestCompat {
     public static boolean hurtByArrow(LivingEntity mob, Projectile arrow, float amount) {
         return hurt(mob, mob.level().damageSources().arrow((AbstractArrow) arrow, null), amount);
     }
+
+    /** Whether {@code type} is in {@code tag}. {@code EntityType#is(TagKey)} went in 26.1, for its registry holder's. */
+    public static boolean isIn(EntityType<?> type, TagKey<EntityType<?>> tag) {
+        return type.is(tag);
+    }
+
+    /** The scoreboard tags an entity carries. {@code Entity#getTags} is {@code entityTags} from 26.1. */
+    public static Set<String> entityTags(Entity entity) {
+        return entity.getTags();
+    }
+
+    /**
+     * The grid of vanilla's Name Tag recipe with {@code nugget} for its nugget, where vanilla has one: from 26.1 a nugget
+     * of {@code #minecraft:metal_nuggets} over paper. Empty before 26.1, which crafts no Name Tag.
+     */
+    public static Optional<CraftingInput> nameTagGrid(Item nugget) {
+        return Optional.empty();
+    }
 }
