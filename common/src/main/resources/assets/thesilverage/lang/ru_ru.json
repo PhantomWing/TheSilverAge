@@ -260,7 +260,7 @@
   "thesilverage.configuration.override_vanilla_recipes": "Заменить ванильные рецепты",
   "thesilverage.configuration.override_vanilla_recipes.tooltip": "Изменяет некоторые существующие рецепты крафта, чтобы использовать серебро (например, варочная стойка, повторитель, компаратор, …).",
   "thesilverage.configuration.override_lodestone_recipe": "Рецепт магнетита",
-  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Создавать магнетит из слитка серебра вместо незеритового слитка? Требует «Заменить ванильные рецепты».",
+  "thesilverage.configuration.override_lodestone_recipe.tooltip": "Создавать магнетит из слитка серебра вместо железного слитка? Требует «Заменить ванильные рецепты».",
   "thesilverage.configuration.override_brewing_stand_recipe": "Рецепт варочной стойки",
   "thesilverage.configuration.override_brewing_stand_recipe.tooltip": "Создавать варочную стойку из слитков серебра и делать её серебряной на вид? Требует «Заменить ванильные рецепты».",
   "thesilverage.configuration.override_comparator_recipe": "Рецепт компаратора",
