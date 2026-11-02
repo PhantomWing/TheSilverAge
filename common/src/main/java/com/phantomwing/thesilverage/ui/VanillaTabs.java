@@ -80,7 +80,7 @@ public final class VanillaTabs {
         add(CreativeModeTabs.COMBAT, Items.GOLDEN_HORSE_ARMOR, List.of("silver_horse_armor"));
         add(CreativeModeTabs.COMBAT, List.of(vanilla("golden_nautilus_armor"), silver("silver_horse_armor")),
                 List.of("silver_nautilus_armor"));
-        add(CreativeModeTabs.COMBAT, Items.SPECTRAL_ARROW, List.of("silver_arrow"));
+        add(CreativeModeTabs.COMBAT, Items.ARROW, List.of("silver_arrow"));
 
         add(CreativeModeTabs.INGREDIENTS, Items.RAW_GOLD, List.of("raw_silver"));
         add(CreativeModeTabs.INGREDIENTS, Items.GOLD_NUGGET, List.of("silver_nugget"));

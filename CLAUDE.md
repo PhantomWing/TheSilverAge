@@ -138,7 +138,7 @@ on a rung where they have no build; that does not block the line.
   bus, so on NeoForge the tabs are filled through `CreativeTabPlatform` rather than Architectury's
   `CreativeTabRegistry.modify`, which listens on Architectury's bus and ran before Backported Spears and Mekanism had
   filled the tab. NeoForge's `insertAfter` throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of
-  anchors. Fabric's `addAfter` appends at the end instead.
+  anchors; Fabric's `addAfter` would append one it doesn't list at the end, so its side throws too, and inserts in a phase after the default one, where Vanilla Backport adds its spears.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. The Fabric upload is tagged from `supported_minecraft_versions`, 1.21 and 1.21.1, and the NeoForge one from `neoforge_minecraft_versions`, 1.21.1 alone, since NeoForge 21.1 exists for 1.21.1 only. The Fabric manifest asks for `fabric-api >=0.102.0`, the newest for 1.21: a change that needs a newer Fabric API raises that floor and drops 1.21 from the list.
 - Orevolution (NeoForge, 6.0.0 and up) compiles against two of this line's fields to give silver its tier and armour
   powers: `tool.ModTiers.SILVER` (a `Tier`) and `armor.ModArmorMaterials.SILVER_ARMOR_MATERIAL` (a
