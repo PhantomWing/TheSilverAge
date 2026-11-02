@@ -29,6 +29,8 @@ public class BackportTags {
         public static final TagKey<Item> LIGHTNING_RODS = tag("lightning_rods");
         /** 1.21.11's spears, which take Lunge and the melee enchantments. */
         public static final TagKey<Item> SPEARS = tag("spears");
+        /** 26.2's Sulfur Cube swallows these and turns heavy and slow, as it does with metal blocks. */
+        public static final TagKey<Item> SULFUR_CUBE_SLOW_FLAT = tag("sulfur_cube_archetype/slow_flat");
 
         private static TagKey<Item> tag(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.withDefaultNamespace(path));

@@ -71,7 +71,7 @@ public final class VanillaTabs {
 
         add(CreativeModeTabs.INGREDIENTS, Items.RAW_GOLD, List.of("raw_silver"));
         add(CreativeModeTabs.INGREDIENTS, Items.GOLD_NUGGET, List.of("silver_nugget"));
-        add(CreativeModeTabs.INGREDIENTS, Items.GOLD_INGOT, List.of("silver_ingot", "silver_sheet"));
+        add(CreativeModeTabs.INGREDIENTS, Items.GOLD_INGOT, List.of("silver_ingot", "silver_sheet", "silver_dust"));
     }
 
     /** {@code family} at {@code stage}: the Block of Silver is {@code silver_block} bare and waxed, {@code exposed_silver} weathered. */

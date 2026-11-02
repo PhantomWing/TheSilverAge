@@ -56,8 +56,14 @@
   - Added the `c:is_overworld` biome tag to the `thesilverage:has_silver_ore` tag
   - Added Silver Chains, Silver Lanterns and Silver Brick Walls to Sable's tags
 - Added compatibility with Backported Spears: adds the Silver Spear, crafted like other spears
-- Added compatibility with Vanilla Backport: adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
+- Added compatibility with Vanilla Backport
+  - Adds the Silver Spear, crafted like other spears
+  - Adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
+  - Sulfur Cubes can swallow silver blocks, ores and bulbs, like copper's
+  - Parched can spawn with silver armor
 - Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook
+- Added compatibility with Mekanism: adds Silver Dust, made in the Crusher and Enrichment Chamber and smelted back into Silver Ingots. Only shows up when Mekanism is installed.
+- The Silver Spear swings like a spear with Better Combat
 - Silver Bars, Chains, Lanterns and Lightning Rods are now in the tags Vanilla Backport and Copper Age Backport use for their copper ones
 
 ### Changes

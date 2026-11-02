@@ -1,8 +1,17 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:mod_loaded",
-      "modid": "spears"
+      "type": "neoforge:or",
+      "values": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "spears"
+        },
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "vanillabackport"
+        }
+      ]
     },
     {
       "type": "thesilverage:config_boolean",
@@ -13,9 +22,20 @@
   "category": "equipment",
   "fabric:load_conditions": [
     {
-      "condition": "fabric:all_mods_loaded",
+      "condition": "fabric:or",
       "values": [
-        "spears"
+        {
+          "condition": "fabric:all_mods_loaded",
+          "values": [
+            "spears"
+          ]
+        },
+        {
+          "condition": "fabric:all_mods_loaded",
+          "values": [
+            "vanillabackport"
+          ]
+        }
       ]
     },
     {

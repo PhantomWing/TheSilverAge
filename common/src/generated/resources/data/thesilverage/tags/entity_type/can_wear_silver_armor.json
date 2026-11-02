@@ -5,6 +5,10 @@
     "minecraft:husk",
     "minecraft:skeleton",
     "minecraft:stray",
-    "minecraft:bogged"
+    "minecraft:bogged",
+    {
+      "id": "minecraft:parched",
+      "required": false
+    }
   ]
 }

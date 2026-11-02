@@ -97,6 +97,22 @@ on a rung where they have no build; that does not block the line.
     (whose Copper Nautilus Armor the nautilus loot modifiers name), and Fabric's runs Vanilla Backport alone.
   - On Fabric, Backported Spears registers its components in its own initializer, so the spear is only a spear
     where it ran first (`suggests` orders it); otherwise it falls back to a plain item and logs a warning.
+  - Without Backported Spears, Vanilla Backport makes the spear: its `SpearItem` takes the same numbers in the same
+    order. It draws only its own seven spears held as spears, so the Silver Spear's held model is registered with its
+    Platform library's `GameRendering.registerHandHeldModels` in each loader's client setup, after the items exist.
+    Its recipe and smelting load with either mod (`neoforge:or`, which `FabricConditionsProvider` turns into
+    `fabric:or`). `weapon_attributes/silver_spear.json` gives it Better Combat's spear swings, as Backported Spears
+    does its own.
+  - Vanilla Backport's Sulfur Cube swallows silver's blocks, ores, cut and chiseled silver and bulbs as copper's,
+    in `minecraft:sulfur_cube_archetype/slow_flat` (26.2's vanilla tag, which the 26.x lines lack too). Its Parched
+    is in `can_wear_silver_armor`, optional; its Camel Husk, Zombie Nautilus and Parched are in vanilla's zombie and
+    skeleton tags, so silver hurts them with nothing added. A play session's world is Peaceful: summon hostile mobs
+    with `difficulty normal`.
+- Silver Dust (`c:dusts/silver`) is Mekanism's alone: Mekanism (NeoForge only) has no silver, and its Crusher and
+  Enrichment Chamber recipes are hand-written in `data/thesilverage/recipe/mekanism`, as Mekanism makes gold dust, behind
+  its mod-loaded condition. Without Mekanism the item is hidden, as the Create-only Silver Sheet is. Its texture is
+  Mekanism's Iron Dust (MIT) recoloured onto the Silver Ingot's ramp. Mekanism's machine recipes aren't in the recipe
+  book, so `recipe give` answers "No new recipes were learned" for them rather than an unknown recipe.
   - Silver Nautilus Armor takes 1.21.11's six ocean chest swaps from Copper Nautilus Armor (`SilverLootSpec`), each
     with `requiredMod`, so its loot modifier loads, and Fabric's mixin applies it, only with Vanilla Backport.
   - `BackportTags` holds the 1.21.9 tags (`minecraft:bars`, `chains`, `lanterns`, `lightning_rods`, `spears`) that

@@ -1,8 +1,17 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:mod_loaded",
-      "modid": "spears"
+      "type": "neoforge:or",
+      "values": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "spears"
+        },
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "vanillabackport"
+        }
+      ]
     }
   ],
   "type": "minecraft:smelting",
@@ -11,9 +20,20 @@
   "experience": 0.1,
   "fabric:load_conditions": [
     {
-      "condition": "fabric:all_mods_loaded",
+      "condition": "fabric:or",
       "values": [
-        "spears"
+        {
+          "condition": "fabric:all_mods_loaded",
+          "values": [
+            "spears"
+          ]
+        },
+        {
+          "condition": "fabric:all_mods_loaded",
+          "values": [
+            "vanillabackport"
+          ]
+        }
       ]
     }
   ],

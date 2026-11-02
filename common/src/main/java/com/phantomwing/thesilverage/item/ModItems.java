@@ -20,6 +20,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,6 +36,9 @@ public class ModItems {
     // Silver sheet is a Create-compat item (obtained via Mechanical Press).
     // Only appears in the creative tab when Create is loaded.
     public static final RegistrySupplier<Item> SILVER_SHEET = registerWithModCompat("silver_sheet", ModIds.CREATE);
+    // Silver dust is for the mods that grind ingots and ores into dust and have no silver of their own: Mekanism's
+    // Crusher and Enrichment Chamber. Only in the creative tab, and only with recipes, when one is loaded.
+    public static final RegistrySupplier<Item> SILVER_DUST = registerWithModCompat("silver_dust", ModIds.MEKANISM);
 
     // Silver tools
     public static final RegistrySupplier<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);
@@ -46,9 +50,9 @@ public class ModItems {
     // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
-    // 1.21.11's Silver Spear, made by Backported Spears' own spear API when it is installed.
+    // 1.21.11's Silver Spear, made as Backported Spears or Vanilla Backport makes a spear when one is installed.
     public static final RegistrySupplier<Item> SILVER_SPEAR = registerWithModCompat("silver_spear",
-            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1)), ModIds.BACKPORTED_SPEARS);
+            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1)), ModIds.BACKPORTED_SPEARS, ModIds.VANILLA_BACKPORT);
     public static final RegistrySupplier<Item> SILVER_ARROW = register("silver_arrow", SilverArrowItem::new, baseItem());
 
     // Silver armor
@@ -337,9 +341,10 @@ public class ModItems {
         return registerWithModCompat(name, () -> new Item(baseItem()), modId);
     }
 
-    private static RegistrySupplier<Item> registerWithModCompat(String name, Supplier<Item> factory, String modId) {
+    /** An item the creative tabs show only where one of {@code modIds} is loaded. */
+    private static RegistrySupplier<Item> registerWithModCompat(String name, Supplier<Item> factory, String... modIds) {
         RegistrySupplier<Item> item = ITEMS.register(name, factory);
-        if (CommonPlatform.isModLoaded(modId)) {
+        if (Arrays.stream(modIds).anyMatch(CommonPlatform::isModLoaded)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
         return item;

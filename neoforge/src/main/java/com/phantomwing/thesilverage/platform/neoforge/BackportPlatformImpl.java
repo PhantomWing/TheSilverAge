@@ -6,7 +6,7 @@ import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import net.minecraft.world.item.Item;
 
-/** Neoforge implementation of {@link com.phantomwing.thesilverage.platform.BackportPlatform}. */
+/** NeoForge implementation of {@link com.phantomwing.thesilverage.platform.BackportPlatform}. */
 public final class BackportPlatformImpl {
     private BackportPlatformImpl() {
     }
@@ -15,6 +15,9 @@ public final class BackportPlatformImpl {
         // Static factories, not an inline `new`, so verifying this method never loads the other mod's classes.
         if (CommonPlatform.isModLoaded(ModIds.BACKPORTED_SPEARS)) {
             return SilverSpear.create();
+        }
+        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT)) {
+            return com.phantomwing.thesilverage.neoforge.compat.vanillabackport.SilverSpear.create(fallback);
         }
         return new Item(fallback);
     }

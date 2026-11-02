@@ -34,6 +34,8 @@ public class CommonTags {
 
         // TOOLS
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
+        public static final TagKey<Item> DUSTS = tag("dusts");
+        public static final TagKey<Item> DUSTS_SILVER = tag("dusts/silver");
         // 1.21.11's nautilus armour, which Vanilla Backport tags its own with on this version.
         public static final TagKey<Item> ARMORS_NAUTILUS = tag("armors/nautilus");
 

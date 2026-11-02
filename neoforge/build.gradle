@@ -231,6 +231,7 @@ dependencies {
     // Modrinth version ids, since a version number names both loaders' files there.
     modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
     modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_neoforge_version}")
+    modCompileOnly("maven.modrinth:platform:${rootProject.platform_neoforge_version}")
     // Vanilla Backport and Backported Spears register the same spear components under vanilla's ids, and a held
     // spear crashes the client with both installed, so the game runs Backported Spears and datagen Vanilla Backport,
     // whose Copper Nautilus Armor the nautilus loot modifiers name. Fabric's runs play Vanilla Backport.
@@ -242,6 +243,8 @@ dependencies {
         modLocalRuntime("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
         modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
         modLocalRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
+        // Mekanism, whose Crusher and Enrichment Chamber make the Silver Dust.
+        modLocalRuntime("maven.modrinth:mekanism:${rootProject.mekanism_version}")
         // The libraries YACL's jar bundles, which a dev run doesn't unpack.
         forgeRuntimeLibrary("org.quiltmc.parsers:json:0.2.1")
         forgeRuntimeLibrary("org.quiltmc.parsers:gson:0.2.1")

@@ -163,6 +163,7 @@ dependencies {
     // Backport runs in dev here.
     modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_fabric_version}") { transitive = false }
     modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
+    modCompileOnly("maven.modrinth:platform:${rootProject.platform_fabric_version}") { transitive = false }
     if (loadBackports && !runningGameTest) {
         modLocalRuntime("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
         modLocalRuntime("maven.modrinth:platform:${rootProject.platform_fabric_version}") { transitive = false }

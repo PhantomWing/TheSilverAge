@@ -23,6 +23,7 @@ import net.neoforged.neoforge.common.conditions.AndCondition;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
+import net.neoforged.neoforge.common.conditions.OrCondition;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -91,9 +92,12 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(fdGated);
 
-        // Backported Spears compat: the Silver Spear, as 1.21.11's (an ingot over two sticks, corner to corner), and
-        // its smelting into a nugget. Without the mod the item is a hidden fallback, so it has neither.
-        var spearsGated = output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS),
+        // Backported Spears and Vanilla Backport compat: the Silver Spear, as 1.21.11's (an ingot over two sticks,
+        // corner to corner), and its smelting into a nugget. Without either mod the item is a hidden fallback, so it
+        // has neither.
+        var spearMods = new OrCondition(List.of(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS),
+                new ModLoadedCondition(ModIds.VANILLA_BACKPORT)));
+        var spearsGated = output.withConditions(spearMods,
                 new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SILVER_SPEAR.get(), 1)
                 .pattern("  #")
@@ -103,7 +107,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', Items.STICK)
                 .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(spearsGated);
-        oreSmeltingRecipes(output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS)),
+        oreSmeltingRecipes(output.withConditions(spearMods),
                 ModItems.SILVER_SPEAR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
         // Armor

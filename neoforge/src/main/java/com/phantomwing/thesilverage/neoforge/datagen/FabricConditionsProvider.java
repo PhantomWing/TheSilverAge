@@ -61,6 +61,8 @@ import java.util.stream.Stream;
  *   <li>{@code neoforge:not {value:{...}}} →
  *       {@code fabric:not {value:{...}}} (inner translated recursively;
  *       built into fabric-api).</li>
+ *   <li>{@code neoforge:and} and {@code neoforge:or {values:[...]}} → {@code fabric:and} and {@code fabric:or}
+ *       (each value translated recursively).</li>
  *   <li>{@code thesilverage:config_boolean {settingId:"X"}} →
  *       {@code thesilverage:config_boolean {settingId:"X"}} (same id + field;
  *       only the dispatch key changes from {@code "type"} to {@code "condition"}.
@@ -157,8 +159,8 @@ public class FabricConditionsProvider implements DataProvider {
                 fabric.addProperty(FABRIC_CONDITION, "fabric:not");
                 fabric.add("value", translate(neoforge.getAsJsonObject("value"), path));
             }
-            case "neoforge:and" -> {
-                fabric.addProperty(FABRIC_CONDITION, "fabric:and");
+            case "neoforge:and", "neoforge:or" -> {
+                fabric.addProperty(FABRIC_CONDITION, type.equals("neoforge:and") ? "fabric:and" : "fabric:or");
                 JsonArray values = new JsonArray();
                 for (JsonElement value : neoforge.getAsJsonArray("values")) {
                     values.add(translate(value.getAsJsonObject(), path));

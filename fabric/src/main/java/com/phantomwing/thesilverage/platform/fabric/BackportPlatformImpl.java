@@ -16,6 +16,9 @@ public final class BackportPlatformImpl {
         if (CommonPlatform.isModLoaded(ModIds.BACKPORTED_SPEARS)) {
             return SilverSpear.create(fallback);
         }
+        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT)) {
+            return com.phantomwing.thesilverage.fabric.compat.vanillabackport.SilverSpear.create(fallback);
+        }
         return new Item(fallback);
     }
 

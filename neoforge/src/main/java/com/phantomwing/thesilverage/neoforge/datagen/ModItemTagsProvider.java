@@ -115,6 +115,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get());
 
+        // Dusts (Mekanism compat; the item exists either way)
+        tag(CommonTags.Items.DUSTS_SILVER).add(ModItems.SILVER_DUST.get());
+        tag(CommonTags.Items.DUSTS).addTag(CommonTags.Items.DUSTS_SILVER);
+
         // Chains
         tag(Tags.Items.CHAINS)
                 .add(ModItems.SILVER_CHAIN.get())
@@ -169,6 +173,23 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Both spear backports put minecraft:spears into the enchantable tags, so the Silver Spear takes Lunge and
         // the melee enchantments through it.
         tag(BackportTags.Items.SPEARS).add(ModItems.SILVER_SPEAR.get());
+        // What a Sulfur Cube swallowing it turns into, as vanilla's copper blocks, ores and bulbs do (26.2, and Vanilla
+        // Backport here).
+        tag(BackportTags.Items.SULFUR_CUBE_SLOW_FLAT)
+                .add(ModItems.SILVER_ORE.get(), ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.RAW_SILVER_BLOCK.get())
+                .add(ModItems.SILVER_BLOCK.get(), ModItems.EXPOSED_SILVER.get(), ModItems.WEATHERED_SILVER.get(),
+                        ModItems.OXIDIZED_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), ModItems.WAXED_EXPOSED_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get())
+                .add(ModItems.CUT_SILVER.get(), ModItems.EXPOSED_CUT_SILVER.get(), ModItems.WEATHERED_CUT_SILVER.get(),
+                        ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get())
+                .add(ModItems.CHISELED_SILVER.get(), ModItems.EXPOSED_CHISELED_SILVER.get(),
+                        ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CHISELED_SILVER.get(),
+                        ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get())
+                .add(ModItems.SILVER_BULB.get(), ModItems.EXPOSED_SILVER_BULB.get(), ModItems.WEATHERED_SILVER_BULB.get(),
+                        ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_SILVER_BULB.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get(),
+                        ModItems.WAXED_WEATHERED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
 
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());

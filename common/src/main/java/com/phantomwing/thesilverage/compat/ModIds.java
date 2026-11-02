@@ -20,6 +20,8 @@ public final class ModIds {
     public static final String BACKPORTED_SPEARS = "spears";
     /** Vanilla Backport: newer vanilla content on 1.21.1 under vanilla's own ids, the nautilus and its armour among it. */
     public static final String VANILLA_BACKPORT = "vanillabackport";
+    /** Mekanism, NeoForge only, whose Crusher and Enrichment Chamber turn silver into the Silver Dust. */
+    public static final String MEKANISM = "mekanism";
     /** Yori3o's Grappling Hooks, whose hook tiers are read from every jar's {@code yo_hooks/hooks.json}. */
     public static final String GRAPPLING_HOOKS = "yo_hooks";
 
