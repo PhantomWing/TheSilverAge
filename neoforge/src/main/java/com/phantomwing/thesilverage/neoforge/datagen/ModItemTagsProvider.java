@@ -118,6 +118,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Dusts (Mekanism compat; the item exists either way)
         tag(CommonTags.Items.DUSTS_SILVER).add(ModItems.SILVER_DUST.get());
         tag(CommonTags.Items.DUSTS).addTag(CommonTags.Items.DUSTS_SILVER);
+        tag(CommonTags.Items.DIRTY_DUSTS_SILVER).add(ModItems.DIRTY_SILVER_DUST.get());
+        tag(CommonTags.Items.CLUMPS_SILVER).add(ModItems.SILVER_CLUMP.get());
+        tag(CommonTags.Items.SHARDS_SILVER).add(ModItems.SILVER_SHARD.get());
+        tag(CommonTags.Items.CRYSTALS_SILVER).add(ModItems.SILVER_CRYSTAL.get());
 
         // Chains
         tag(Tags.Items.CHAINS)

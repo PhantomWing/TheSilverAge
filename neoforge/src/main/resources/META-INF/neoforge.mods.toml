@@ -62,3 +62,28 @@ type = "optional"
 versionRange = "[1.0,)"
 ordering = "AFTER"
 side = "BOTH"
+
+# Optional: after the spear backports, so the Silver Spear goes in the Combat tab after their Golden Spear, which they
+# add in the same creative tab event (VanillaTabs).
+[[dependencies.thesilverage]]
+modId = "spears"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "vanillabackport"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: after Mekanism, which lists its ore processing in Ingredients in the same creative tab event, so silver's
+# goes after gold's there (VanillaTabs).
+[[dependencies.thesilverage]]
+modId = "mekanism"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

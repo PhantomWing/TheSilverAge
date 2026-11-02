@@ -41,7 +41,9 @@
 - Added compatibility with JEI and EMI. Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
 - Added Create washing of Crushed Raw Silver into Silver Nuggets
 - Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
-- Silver items now also show up in the vanilla creative tabs
+- Silver items now also show up in the vanilla creative tabs, beside their vanilla counterparts
+  - The Silver Knife shows up in Farmer's Delight's tab, and the Silver Sheet in Create's
+  - Added the `enable_creative_tab` and `enable_vanilla_creative_tabs` config options, to choose which tabs silver items show up in
 - Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
@@ -61,8 +63,8 @@
   - Adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
   - Sulfur Cubes can swallow silver blocks, ores and bulbs, like copper's
   - Parched can spawn with silver armor
-- Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook
-- Added compatibility with Mekanism: adds Silver Dust, made in the Crusher and Enrichment Chamber and smelted back into Silver Ingots. Only shows up when Mekanism is installed.
+- Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook, with a range of 14 blocks
+- Added compatibility with Mekanism: adds Silver Dust, Dirty Silver Dust, Silver Clumps, Silver Shards, Silver Crystals and silver slurries, for Mekanism's full ore processing. Only shows up when Mekanism is installed.
 - The Silver Spear swings like a spear with Better Combat
 - Silver Bars, Chains, Lanterns and Lightning Rods are now in the tags Vanilla Backport and Copper Age Backport use for their copper ones
 

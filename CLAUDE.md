@@ -108,22 +108,34 @@ on a rung where they have no build; that does not block the line.
     is in `can_wear_silver_armor`, optional; its Camel Husk, Zombie Nautilus and Parched are in vanilla's zombie and
     skeleton tags, so silver hurts them with nothing added. A play session's world is Peaceful: summon hostile mobs
     with `difficulty normal`.
-- Silver Dust (`c:dusts/silver`) is Mekanism's alone: Mekanism (NeoForge only) has no silver, and its Crusher and
-  Enrichment Chamber recipes are hand-written in `data/thesilverage/recipe/mekanism`, as Mekanism makes gold dust, behind
-  its mod-loaded condition. Without Mekanism the item is hidden, as the Create-only Silver Sheet is. Its texture is
-  Mekanism's Iron Dust (MIT) recoloured onto the Silver Ingot's ramp. Mekanism's machine recipes aren't in the recipe
-  book, so `recipe give` answers "No new recipes were learned" for them rather than an unknown recipe.
   - Silver Nautilus Armor takes 1.21.11's six ocean chest swaps from Copper Nautilus Armor (`SilverLootSpec`), each
     with `requiredMod`, so its loot modifier loads, and Fabric's mixin applies it, only with Vanilla Backport.
   - `BackportTags` holds the 1.21.9 tags (`minecraft:bars`, `chains`, `lanterns`, `lightning_rods`, `spears`) that
     Vanilla Backport and Copper Age Backport fill on this version.
   - Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
-    `common/src/main/resources`: the hook (62 durability, 13 long, 10 enchantability, between iron's and gold's as
+    `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability, between iron's and gold's as
     silver's tools are), its `yo_hooks` models, textures (iron's recoloured onto the Silver Pickaxe's ramp), names and
     tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions.
   - Backported Spears needs Fabric Loader 0.18.1 and Grappling Hooks 0.19, past this line's 0.16.14, so both are
     only tried on NeoForge in dev. YACL's jar bundles libraries a dev run doesn't unpack, which
     `forgeRuntimeLibrary` adds.
+- Mekanism (NeoForge only, 10.7, `modCompileOnly`) has no silver, so the mod adds gold's whole ore processing for it:
+  Silver Dust (`c:dusts/silver`), Dirty Silver Dust, Silver Clump, Shard and Crystal (`c:dirty_dusts/silver`,
+  `c:clumps/silver`, `c:shards/silver`, `c:crystals/silver`, which have no parent tags in Mekanism), and the dirty and
+  clean silver slurries, registered in Mekanism's chemical registry only when it is loaded
+  (`neoforge/compat/mekanism/SilverSlurries`). The recipes are hand-written in `data/thesilverage/recipe/mekanism` with
+  gold's numbers, behind its mod-loaded condition. Without Mekanism the items are hidden, as the Create-only Silver Sheet
+  is. Their textures are Mekanism's gold ones (MIT) recoloured onto the Silver Ingot's ramp. No Enriched Silver:
+  Mekanism's enriched metals are circuit and alloy materials, which silver has no recipe for. Mekanism's machine recipes
+  aren't in the recipe book, so `recipe give` answers "No new recipes were learned" for them.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife, the sheet after Create's Golden
+  Sheet in `create:base`, Mekanism's processing items after gold's in its tab and Ingredients). Redstone Blocks lists
+  only the waxed bulbs, plates and rods, as vanilla does its copper bulbs. An anchor that only another mod adds (the
+  Golden Spear, the Golden Nautilus Armor) needs that mod's insertions to run first, which `neoforge.mods.toml` orders
+  with optional `AFTER` dependencies: NeoForge's `acceptAfter` throws on an anchor the tab doesn't list, so
+  `VanillaTabs` tries a list of anchors. Fabric's `addAfter` appends at the end instead.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. The Fabric upload is tagged from `supported_minecraft_versions`, 1.21 and 1.21.1, and the NeoForge one from `neoforge_minecraft_versions`, 1.21.1 alone, since NeoForge 21.1 exists for 1.21.1 only. The Fabric manifest asks for `fabric-api >=0.102.0`, the newest for 1.21: a change that needs a newer Fabric API raises that floor and drops 1.21 from the list.
 - Orevolution (NeoForge, 6.0.0 and up) compiles against two of this line's fields to give silver its tier and armour
   powers: `tool.ModTiers.SILVER` (a `Tier`) and `armor.ModArmorMaterials.SILVER_ARMOR_MATERIAL` (a

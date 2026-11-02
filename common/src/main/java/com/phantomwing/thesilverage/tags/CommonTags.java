@@ -36,6 +36,11 @@ public class CommonTags {
         public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
         public static final TagKey<Item> DUSTS = tag("dusts");
         public static final TagKey<Item> DUSTS_SILVER = tag("dusts/silver");
+        // Mekanism's ore processing, under the c: tags it gives its own metals.
+        public static final TagKey<Item> DIRTY_DUSTS_SILVER = tag("dirty_dusts/silver");
+        public static final TagKey<Item> CLUMPS_SILVER = tag("clumps/silver");
+        public static final TagKey<Item> SHARDS_SILVER = tag("shards/silver");
+        public static final TagKey<Item> CRYSTALS_SILVER = tag("crystals/silver");
         // 1.21.11's nautilus armour, which Vanilla Backport tags its own with on this version.
         public static final TagKey<Item> ARMORS_NAUTILUS = tag("armors/nautilus");
 

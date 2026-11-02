@@ -85,4 +85,12 @@ public final class CommonConfigImpl {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_ARROWS_ID);
     }
+
+    public static boolean creativeTab() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_CREATIVE_TAB_ID);
+    }
+
+    public static boolean vanillaCreativeTabs() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_VANILLA_CREATIVE_TABS_ID);
+    }
 }

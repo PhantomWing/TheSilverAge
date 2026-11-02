@@ -74,6 +74,13 @@ public class Configuration {
     public static final String ENABLE_SILVER_ARROWS_ID = "enable_silver_arrows";
     public static ModConfigSpec.BooleanValue ENABLE_SILVER_ARROWS;
 
+    // Where the creative menu lists silver's items: a tab of the mod's own, and beside their vanilla counterparts in
+    // vanilla's tabs. Each player's own, read on the client.
+    public static final String ENABLE_CREATIVE_TAB_ID = "enable_creative_tab";
+    public static ModConfigSpec.BooleanValue ENABLE_CREATIVE_TAB;
+    public static final String ENABLE_VANILLA_CREATIVE_TABS_ID = "enable_vanilla_creative_tabs";
+    public static ModConfigSpec.BooleanValue ENABLE_VANILLA_CREATIVE_TABS;
+
     // Villager trades
     public static final String ENABLE_VILLAGER_TRADES_ID = "enable_villager_trades";
     public static ModConfigSpec.BooleanValue ENABLE_VILLAGER_TRADES;
@@ -100,6 +107,8 @@ public class Configuration {
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
             case ENABLE_SILVER_ARROWS_ID -> Configuration.ENABLE_SILVER_ARROWS.get();
+            case ENABLE_CREATIVE_TAB_ID -> Configuration.ENABLE_CREATIVE_TAB.get();
+            case ENABLE_VANILLA_CREATIVE_TABS_ID -> Configuration.ENABLE_VANILLA_CREATIVE_TABS.get();
             default -> {
                 for (Map.Entry<RecipeOverride, ModConfigSpec.BooleanValue> entry : RECIPE_OVERRIDES.entrySet()) {
                     if (entry.getKey().settingId().equals(id)) {
@@ -139,6 +148,8 @@ public class Configuration {
         ENABLE_SILVER_FLOOR_DAMAGE = COMMON_BUILDER.define(ENABLE_SILVER_FLOOR_DAMAGE_ID, true);
         UNDEAD_AVOID_SILVER_LIGHT = COMMON_BUILDER.define(UNDEAD_AVOID_SILVER_LIGHT_ID, true);
         ENABLE_SILVER_ARROWS = COMMON_BUILDER.define(ENABLE_SILVER_ARROWS_ID, true);
+        ENABLE_CREATIVE_TAB = COMMON_BUILDER.define(ENABLE_CREATIVE_TAB_ID, true);
+        ENABLE_VANILLA_CREATIVE_TABS = COMMON_BUILDER.define(ENABLE_VANILLA_CREATIVE_TABS_ID, true);
 
         // Build config
         COMMON_CONFIG = COMMON_BUILDER.build();

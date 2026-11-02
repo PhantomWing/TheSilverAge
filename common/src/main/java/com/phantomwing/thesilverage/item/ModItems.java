@@ -39,6 +39,11 @@ public class ModItems {
     // Silver dust is for the mods that grind ingots and ores into dust and have no silver of their own: Mekanism's
     // Crusher and Enrichment Chamber. Only in the creative tab, and only with recipes, when one is loaded.
     public static final RegistrySupplier<Item> SILVER_DUST = registerWithModCompat("silver_dust", ModIds.MEKANISM);
+    // The rest of Mekanism's ore processing, as its gold has: ore to slurry, crystal, shard, clump, dirty dust and dust.
+    public static final RegistrySupplier<Item> DIRTY_SILVER_DUST = registerWithModCompat("dirty_silver_dust", ModIds.MEKANISM);
+    public static final RegistrySupplier<Item> SILVER_CLUMP = registerWithModCompat("silver_clump", ModIds.MEKANISM);
+    public static final RegistrySupplier<Item> SILVER_SHARD = registerWithModCompat("silver_shard", ModIds.MEKANISM);
+    public static final RegistrySupplier<Item> SILVER_CRYSTAL = registerWithModCompat("silver_crystal", ModIds.MEKANISM);
 
     // Silver tools
     public static final RegistrySupplier<Item> SILVER_SHOVEL = registerShovel("silver_shovel", ModTiers.SILVER);

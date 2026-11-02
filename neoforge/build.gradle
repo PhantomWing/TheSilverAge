@@ -232,6 +232,8 @@ dependencies {
     modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
     modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_neoforge_version}")
     modCompileOnly("maven.modrinth:platform:${rootProject.platform_neoforge_version}")
+    // Mekanism, whose chemical registry silver's slurries go in (compat/mekanism/SilverSlurries).
+    modCompileOnly("maven.modrinth:mekanism:${rootProject.mekanism_version}")
     // Vanilla Backport and Backported Spears register the same spear components under vanilla's ids, and a held
     // spear crashes the client with both installed, so the game runs Backported Spears and datagen Vanilla Backport,
     // whose Copper Nautilus Armor the nautilus loot modifiers name. Fabric's runs play Vanilla Backport.

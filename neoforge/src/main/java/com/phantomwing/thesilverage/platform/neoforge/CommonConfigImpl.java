@@ -72,4 +72,12 @@ public final class CommonConfigImpl {
     public static boolean silverArrows() {
         return Configuration.ENABLE_SILVER_ARROWS.get();
     }
+
+    public static boolean creativeTab() {
+        return Configuration.ENABLE_CREATIVE_TAB.get();
+    }
+
+    public static boolean vanillaCreativeTabs() {
+        return Configuration.ENABLE_VANILLA_CREATIVE_TABS.get();
+    }
 }

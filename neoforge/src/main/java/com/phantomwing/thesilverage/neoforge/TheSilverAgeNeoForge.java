@@ -10,6 +10,9 @@ import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
+import com.phantomwing.thesilverage.compat.ModIds;
+import com.phantomwing.thesilverage.neoforge.compat.mekanism.SilverSlurries;
+import net.neoforged.fml.ModList;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -46,6 +49,10 @@ public final class TheSilverAgeNeoForge {
         // SilverLootAlgorithms drive these GLMs here and a loot mixin on Fabric.
         ModConditions.register(modEventBus);
         ModLootModifiers.register(modEventBus);
+        // Silver's slurries go in Mekanism's chemical registry, which exists only with Mekanism.
+        if (ModList.get().isLoaded(ModIds.MEKANISM)) {
+            SilverSlurries.register(modEventBus);
+        }
 
         // Config (kept on NeoForge for now; common reaches values via @ExpectPlatform).
         container.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);

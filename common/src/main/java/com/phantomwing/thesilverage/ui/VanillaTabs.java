@@ -1,10 +1,13 @@
 package com.phantomwing.thesilverage.ui;
 
 import com.phantomwing.thesilverage.TheSilverAge;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.registry.CreativeTabOutput;
 import dev.architectury.registry.CreativeTabRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -30,6 +33,10 @@ public final class VanillaTabs {
             "silver_brick_wall", "silver_pillar", "silver_bars", "silver_chain", "silver_door", "silver_trapdoor",
             "silver_pressure_plate", "silver_bulb"};
 
+    private static final ResourceKey<CreativeModeTab> FARMERS_DELIGHT_TAB = modTab("farmersdelight", "farmersdelight");
+    private static final ResourceKey<CreativeModeTab> CREATE_TAB = modTab("create", "base");
+    private static final ResourceKey<CreativeModeTab> MEKANISM_TAB = modTab("mekanism", "mekanism");
+
     private VanillaTabs() {
     }
 
@@ -51,27 +58,46 @@ public final class VanillaTabs {
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, everyStage("silver_bulb"));
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.LIGHTNING_ROD, everyStage("silver_lightning_rod"));
 
-        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, everyStage("silver_bulb"));
-        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.HEAVY_WEIGHTED_PRESSURE_PLATE, everyStage("silver_pressure_plate"));
-        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.LIGHTNING_ROD, everyStage("silver_lightning_rod"));
+        // Only the waxed forms, as vanilla lists only its waxed copper bulbs here.
+        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, waxedStages("silver_bulb"));
+        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.HEAVY_WEIGHTED_PRESSURE_PLATE, waxedStages("silver_pressure_plate"));
+        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.LIGHTNING_ROD, waxedStages("silver_lightning_rod"));
         add(CreativeModeTabs.REDSTONE_BLOCKS, Items.DAYLIGHT_DETECTOR, List.of("moon_phase_detector"));
 
         add(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.GOLDEN_HOE,
-                List.of("silver_shovel", "silver_pickaxe", "silver_axe", "silver_hoe", "silver_knife"));
+                List.of("silver_shovel", "silver_pickaxe", "silver_axe", "silver_hoe"));
         add(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.CLOCK, List.of("moon_dial"));
+        // Farmer's Delight lists its knives in its own tab, not vanilla's.
+        add(FARMERS_DELIGHT_TAB, List.of(farmersDelight("golden_knife")), List.of("silver_knife"));
 
-        // 1.21.11's spear and nautilus armour beside the sword and horse armour: the mods backporting them don't all
-        // list vanilla's own in this tab.
-        add(CreativeModeTabs.COMBAT, Items.GOLDEN_SWORD, List.of("silver_sword", "silver_spear"));
+        add(CreativeModeTabs.COMBAT, Items.GOLDEN_SWORD, List.of("silver_sword"));
+        // 1.21.11's spear after the Golden Spear and nautilus armour after the Golden Nautilus Armor, where a mod
+        // backporting them lists them, which neoforge.mods.toml orders before this; else beside the sword and horse
+        // armour.
+        add(CreativeModeTabs.COMBAT, List.of(vanilla("golden_spear"), silver("silver_sword")), List.of("silver_spear"));
         add(CreativeModeTabs.COMBAT, Items.GOLDEN_AXE, List.of("silver_axe"));
         add(CreativeModeTabs.COMBAT, Items.GOLDEN_BOOTS,
                 List.of("silver_helmet", "silver_chestplate", "silver_leggings", "silver_boots"));
-        add(CreativeModeTabs.COMBAT, Items.GOLDEN_HORSE_ARMOR, List.of("silver_horse_armor", "silver_nautilus_armor"));
+        add(CreativeModeTabs.COMBAT, Items.GOLDEN_HORSE_ARMOR, List.of("silver_horse_armor"));
+        add(CreativeModeTabs.COMBAT, List.of(vanilla("golden_nautilus_armor"), silver("silver_horse_armor")),
+                List.of("silver_nautilus_armor"));
         add(CreativeModeTabs.COMBAT, Items.SPECTRAL_ARROW, List.of("silver_arrow"));
 
         add(CreativeModeTabs.INGREDIENTS, Items.RAW_GOLD, List.of("raw_silver"));
         add(CreativeModeTabs.INGREDIENTS, Items.GOLD_NUGGET, List.of("silver_nugget"));
-        add(CreativeModeTabs.INGREDIENTS, Items.GOLD_INGOT, List.of("silver_ingot", "silver_sheet", "silver_dust"));
+        add(CreativeModeTabs.INGREDIENTS, Items.GOLD_INGOT, List.of("silver_ingot"));
+
+        // Create lists its sheets in its own tab, not vanilla's.
+        add(CREATE_TAB, List.of(create("golden_sheet")), List.of("silver_sheet"));
+
+        // Mekanism's ore processing, each after gold's, in Mekanism's tab and in Ingredients, where Mekanism lists
+        // them too; neoforge.mods.toml orders Mekanism's own additions before these.
+        String[][] processing = {{"dirty_dust_gold", "dirty_silver_dust"}, {"clump_gold", "silver_clump"},
+                {"shard_gold", "silver_shard"}, {"crystal_gold", "silver_crystal"}, {"dust_gold", "silver_dust"}};
+        for (String[] item : processing) {
+            add(MEKANISM_TAB, List.of(mekanism(item[0])), List.of(item[1]));
+            add(CreativeModeTabs.INGREDIENTS, List.of(mekanism(item[0])), List.of(item[1]));
+        }
     }
 
     /** {@code family} at {@code stage}: the Block of Silver is {@code silver_block} bare and waxed, {@code exposed_silver} weathered. */
@@ -90,8 +116,20 @@ public final class VanillaTabs {
         return ids;
     }
 
+    private static List<String> waxedStages(String family) {
+        return everyStage(family).stream().filter(id -> id.startsWith("waxed_")).toList();
+    }
+
     private static void add(ResourceKey<CreativeModeTab> tab, ItemLike after, List<String> ids) {
+        add(tab, List.of(() -> after.asItem()), ids);
+    }
+
+    /** {@code ids} after the first of {@code anchors} the tab lists; an item no mod registers is air, and skipped. */
+    private static void add(ResourceKey<CreativeModeTab> tab, List<ItemLike> anchors, List<String> ids) {
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(tab), (flags, output, op) -> {
+            if (!CommonConfig.vanillaCreativeTabs()) {
+                return;
+            }
             List<ItemStack> stacks = new ArrayList<>();
             for (String id : ids) {
                 Item item = BuiltInRegistries.ITEM.get(TheSilverAge.resourceLocation(id));
@@ -99,8 +137,49 @@ public final class VanillaTabs {
                     stacks.add(new ItemStack(item));
                 }
             }
-            insertAfter(output, after, stacks);
+            if (stacks.isEmpty()) {
+                return;
+            }
+            for (ItemLike anchor : anchors) {
+                if (anchor.asItem() == Items.AIR) {
+                    continue;
+                }
+                try {
+                    insertAfter(output, anchor, stacks);
+                    return;
+                } catch (IllegalArgumentException notListed) {
+                    // The tab doesn't list this anchor, so the next one is tried; a failed insert has inserted nothing.
+                }
+            }
         });
+    }
+
+    private static ItemLike vanilla(String path) {
+        return () -> BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(path));
+    }
+
+    private static ItemLike silver(String path) {
+        return () -> BuiltInRegistries.ITEM.get(TheSilverAge.resourceLocation(path));
+    }
+
+    private static ItemLike farmersDelight(String path) {
+        return modItem("farmersdelight", path);
+    }
+
+    private static ItemLike create(String path) {
+        return modItem("create", path);
+    }
+
+    private static ItemLike mekanism(String path) {
+        return modItem("mekanism", path);
+    }
+
+    private static ItemLike modItem(String namespace, String path) {
+        return () -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(namespace, path));
+    }
+
+    private static ResourceKey<CreativeModeTab> modTab(String namespace, String path) {
+        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(namespace, path));
     }
 
     // Each after the one before: inserted after the same anchor, they would come out in reverse.
