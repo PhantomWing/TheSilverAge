@@ -2,8 +2,7 @@ package com.phantomwing.thesilverage.ui;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.platform.CommonConfig;
-import dev.architectury.registry.CreativeTabOutput;
-import dev.architectury.registry.CreativeTabRegistry;
+import com.phantomwing.thesilverage.platform.CreativeTabPlatform;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -126,7 +125,7 @@ public final class VanillaTabs {
 
     /** {@code ids} after the first of {@code anchors} the tab lists; an item no mod registers is air, and skipped. */
     private static void add(ResourceKey<CreativeModeTab> tab, List<ItemLike> anchors, List<String> ids) {
-        CreativeTabRegistry.modify(CreativeTabRegistry.defer(tab), (flags, output, op) -> {
+        CreativeTabPlatform.modify(tab, output -> {
             if (!CommonConfig.vanillaCreativeTabs()) {
                 return;
             }
@@ -183,10 +182,10 @@ public final class VanillaTabs {
     }
 
     // Each after the one before: inserted after the same anchor, they would come out in reverse.
-    private static void insertAfter(CreativeTabOutput output, ItemLike anchor, List<ItemStack> stacks) {
+    private static void insertAfter(CreativeTabPlatform.Inserter output, ItemLike anchor, List<ItemStack> stacks) {
         ItemStack previous = new ItemStack(anchor);
         for (ItemStack stack : stacks) {
-            output.acceptAfter(previous, stack);
+            output.insertAfter(previous, stack);
             previous = stack;
         }
     }

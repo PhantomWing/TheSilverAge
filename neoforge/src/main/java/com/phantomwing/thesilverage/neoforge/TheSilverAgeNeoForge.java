@@ -12,6 +12,7 @@ import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.neoforge.compat.mekanism.SilverSlurries;
+import com.phantomwing.thesilverage.platform.neoforge.CreativeTabPlatformImpl;
 import net.neoforged.fml.ModList;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.neoforged.bus.api.IEventBus;
@@ -76,6 +77,7 @@ public final class TheSilverAgeNeoForge {
             }
         });
         modEventBus.addListener(TheSilverAgeNeoForge::extendLightningRodPoi);
+        modEventBus.addListener(CreativeTabPlatformImpl::buildContents);
         NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> SilverUndeadGoals.addTo(event.getEntity()));
     }
 
