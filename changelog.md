@@ -55,6 +55,10 @@
   - Moved Silver Ore from the `c:ore_rates/singular` tag to the `c:ore_rates/dense` tag
   - Added the `c:is_overworld` biome tag to the `thesilverage:has_silver_ore` tag
   - Added Silver Chains, Silver Lanterns and Silver Brick Walls to Sable's tags
+- Added compatibility with Backported Spears: adds the Silver Spear, crafted like other spears
+- Added compatibility with Vanilla Backport: adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
+- Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook
+- Silver Bars, Chains, Lanterns and Lightning Rods are now in the tags Vanilla Backport and Copper Age Backport use for their copper ones
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5

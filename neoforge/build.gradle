@@ -130,6 +130,7 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
 def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
+def loadBackports = (project.findProperty('enable_backports') ?: rootProject.enable_backports).toString().toBoolean()
 
 // Which Enhanced Celestials is present at dev runtime (see gradle.properties). Both
 // compat paths compile regardless; this only decides what is loaded to test against.
@@ -223,6 +224,28 @@ dependencies {
         modLocalRuntime("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
         // Create: Aquatic Ambitions (Create 6.0.8 and up), so the scenarios play its channeling.
         modLocalRuntime("maven.modrinth:create-aquatic-ambitions:1.21.1-6.0.10-2.0.4")
+    }
+
+    // Mods backporting 1.21.9-1.21.11 content, which the Silver Spear and Silver Nautilus Armor are made with
+    // (BackportPlatformImpl), and Yori3o's Grappling Hooks, which reads the silver hook from yo_hooks/hooks.json.
+    // Modrinth version ids, since a version number names both loaders' files there.
+    modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
+    modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_neoforge_version}")
+    // Vanilla Backport and Backported Spears register the same spear components under vanilla's ids, and a held
+    // spear crashes the client with both installed, so the game runs Backported Spears and datagen Vanilla Backport,
+    // whose Copper Nautilus Armor the nautilus loot modifiers name. Fabric's runs play Vanilla Backport.
+    if (loadBackports && runningDataGen) {
+        modLocalRuntime("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_neoforge_version}")
+        modLocalRuntime("maven.modrinth:platform:${rootProject.platform_neoforge_version}")
+    }
+    if (loadBackports && !runningGameTest && !runningDataGen) {
+        modLocalRuntime("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
+        modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
+        modLocalRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
+        // The libraries YACL's jar bundles, which a dev run doesn't unpack.
+        forgeRuntimeLibrary("org.quiltmc.parsers:json:0.2.1")
+        forgeRuntimeLibrary("org.quiltmc.parsers:gson:0.2.1")
+        forgeRuntimeLibrary("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
     }
 }
 

@@ -87,6 +87,27 @@ on a rung where they have no build; that does not block the line.
 - Game tests in `common/src/gametest`, run on both loaders: `:neoforge:runGameTest` and `:fabric:runGameTest`. Fabric's test source set is a mod of its own, `thesilverage_gametest`, whose `fabric.mod.json` names the `fabric-gametest` entrypoint. Laid out with The Lead Age's test shim (`verification.md`): the test classes and `GameTests` read the same on every line, `TestCompat` holds the calls whose shape differs between versions, and each loader's `src/test` has a `GameTestRegistration` that registers them. They run in `silver_test_arena`, a 7x5x7 box with a stone floor and no walls. A test's positions count from the structure block a layer below the arena, so the floor is at y = 1 and what stands on it at y = 2: a mob spawned at y = 1 is inside the stone and plans no path.
 - 11 play scenarios in `scenarios/`, one of them Fabric's alone (the config screen Mod Menu opens), and in `scenarios/server` one per modloader played on the line's dedicated server: turning `override_vanilla_recipes` off and on with `server_config` and `/reload`, the repeater's and comparator's textures following without a rejoin. Each modloader keeps its config in a file of its own, so each names its `loader`.
 - Create is NeoForge's alone on this rung (no Fabric Create or Create Fly for 1.21.1), and the game-test run can't load it (`neoforge/build.gradle`), so its machines on silver are six NeoForge scenarios, `scenarios/create-*.json`, each a machine on a Create Depot driven by a Creative Motor, its result taken off the Depot by hand: the Press, the Deployer (waxing with a Honeycomb Block, scraping wax and a tarnish stage with an axe), the Spout (one stage per 250 mB; it keeps pouring while a block stays under it, so it is filled with 250 alone through the block entity's `Tanks`), the Encased Fan washing through water, the Crushing Wheels (one wheel's motor on each side, so they turn inward) and smelting Crushed Raw Silver. A Deployer takes the item in its hand from a click on its working face; a click on its side sets its filter. Create: Aquatic Ambitions (NeoForge's dev runs carry 2.0.4, which takes Create 6.0.8 and up) is played in `create-aquatic-ambitions-channeling-*.json`: a fan blowing through a Conduit Cage channels one tarnish stage and leaves waxed silver alone. The cage awakens only while it has water to burn, so it is set again with 1000 mB in its `InputTanks` (not `Tanks`) before each item, and `setblock` over the same block does nothing, so it goes through air first.
+- Newer vanilla content that mods backport to 1.21.1, under vanilla's own ids (2026-11-02):
+  - The Silver Spear and Silver Nautilus Armor are always registered, so a world keeps them, and only shown in the
+    creative tabs with the mod that backports them (`ModItems`, `BackportPlatform`). With Backported Spears (`spears`)
+    the spear is made by its `Spears.registerSpearRaw` with 1.21.11's numbers, and with Vanilla Backport the armour
+    is its `NautilusArmorItem`, whose renderer reads `thesilverage:textures/entity/nautilus/armor/silver.png`.
+    Without them each is a plain item. The two mods register the same spear components and crash a client holding a
+    spear when both are installed, so NeoForge's game runs take Backported Spears and its datagen Vanilla Backport
+    (whose Copper Nautilus Armor the nautilus loot modifiers name), and Fabric's runs Vanilla Backport alone.
+  - On Fabric, Backported Spears registers its components in its own initializer, so the spear is only a spear
+    where it ran first (`suggests` orders it); otherwise it falls back to a plain item and logs a warning.
+  - Silver Nautilus Armor takes 1.21.11's six ocean chest swaps from Copper Nautilus Armor (`SilverLootSpec`), each
+    with `requiredMod`, so its loot modifier loads, and Fabric's mixin applies it, only with Vanilla Backport.
+  - `BackportTags` holds the 1.21.9 tags (`minecraft:bars`, `chains`, `lanterns`, `lightning_rods`, `spears`) that
+    Vanilla Backport and Copper Age Backport fill on this version.
+  - Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
+    `common/src/main/resources`: the hook (62 durability, 13 long, 10 enchantability, between iron's and gold's as
+    silver's tools are), its `yo_hooks` models, textures (iron's recoloured onto the Silver Pickaxe's ramp), names and
+    tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions.
+  - Backported Spears needs Fabric Loader 0.18.1 and Grappling Hooks 0.19, past this line's 0.16.14, so both are
+    only tried on NeoForge in dev. YACL's jar bundles libraries a dev run doesn't unpack, which
+    `forgeRuntimeLibrary` adds.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. The Fabric upload is tagged from `supported_minecraft_versions`, 1.21 and 1.21.1, and the NeoForge one from `neoforge_minecraft_versions`, 1.21.1 alone, since NeoForge 21.1 exists for 1.21.1 only. The Fabric manifest asks for `fabric-api >=0.102.0`, the newest for 1.21: a change that needs a newer Fabric API raises that floor and drops 1.21 from the list.
 - Orevolution (NeoForge, 6.0.0 and up) compiles against two of this line's fields to give silver its tier and armour
   powers: `tool.ModTiers.SILVER` (a `Tier`) and `armor.ModArmorMaterials.SILVER_ARMOR_MATERIAL` (a

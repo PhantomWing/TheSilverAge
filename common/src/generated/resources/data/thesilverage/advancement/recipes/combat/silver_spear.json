@@ -1,0 +1,54 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "spears"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingots_silver": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ingots/silver"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:silver_spear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "spears"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear_recipes"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ingots_silver"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:silver_spear"
+    ]
+  }
+}

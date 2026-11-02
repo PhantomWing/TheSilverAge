@@ -91,6 +91,21 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(fdGated);
 
+        // Backported Spears compat: the Silver Spear, as 1.21.11's (an ingot over two sticks, corner to corner), and
+        // its smelting into a nugget. Without the mod the item is a hidden fallback, so it has neither.
+        var spearsGated = output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS),
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SILVER_SPEAR.get(), 1)
+                .pattern("  #")
+                .pattern(" S ")
+                .pattern("S  ")
+                .define('#', SILVER_INGOTS)
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(spearsGated);
+        oreSmeltingRecipes(output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS)),
+                ModItems.SILVER_SPEAR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
+
         // Armor
         helmet(gearGated, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);
         chestplate(gearGated, ModItems.SILVER_CHESTPLATE.get(), SILVER_INGOTS);

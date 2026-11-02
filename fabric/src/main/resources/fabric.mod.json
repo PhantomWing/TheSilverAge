@@ -46,6 +46,9 @@
     "enhancedcelestials": ">=6.0",
     "enhancedcelestials2core": ">=1.0",
     "jei": "*",
-    "emi": "*"
+    "emi": "*",
+    "spears": "*",
+    "vanillabackport": "*",
+    "yo_hooks": "*"
   }
 }

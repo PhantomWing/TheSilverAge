@@ -1,5 +1,6 @@
 package com.phantomwing.thesilverage.fabric.mixin;
 
+import net.fabricmc.loader.api.FabricLoader;
 import com.phantomwing.thesilverage.fabric.loot.SilverLootTableId;
 import com.phantomwing.thesilverage.loot.SilverLootAlgorithms;
 import com.phantomwing.thesilverage.loot.SilverLootSpec;

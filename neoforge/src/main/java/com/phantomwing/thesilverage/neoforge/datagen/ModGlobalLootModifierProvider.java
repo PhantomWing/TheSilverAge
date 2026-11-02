@@ -1,5 +1,7 @@
 package com.phantomwing.thesilverage.neoforge.datagen;
 
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.loot.SilverLootSpec;
 import com.phantomwing.thesilverage.neoforge.loot.AddItemModifier;
@@ -38,16 +40,19 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
         for (SilverLootSpec.Entry entry : SilverLootSpec.entries()) {
             LootItemCondition[] conditions = conditions(entry);
             Item item = entry.item().get();
-
-            switch (entry.op()) {
-                case SILVERFISH -> add(entry.id(), new SilverfishDropsModifier(
-                        conditions, item, entry.min(), entry.max()));
-                case REPLACE -> add(entry.id(), new ReplaceItemModifier(
+            IGlobalLootModifier modifier = switch (entry.op()) {
+                case SILVERFISH -> new SilverfishDropsModifier(conditions, item, entry.min(), entry.max());
+                case REPLACE -> new ReplaceItemModifier(
                         conditions, item,
                         entry.removedItems().stream().map(java.util.function.Supplier::get).toList(),
-                        entry.min(), entry.max()));
-                case ADD -> add(entry.id(), new AddItemModifier(
-                        conditions, item, entry.min(), entry.max()));
+                        entry.min(), entry.max());
+                case ADD -> new AddItemModifier(conditions, item, entry.min(), entry.max());
+            };
+            if (entry.requiredMod() == null) {
+                add(entry.id(), modifier);
+            } else {
+                // Its JSON names another mod's items, so it loads only with that mod.
+                add(entry.id(), modifier, new ModLoadedCondition(entry.requiredMod()));
             }
         }
     }

@@ -82,6 +82,7 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 }
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
+def loadBackports = (project.findProperty('enable_backports') ?: rootProject.enable_backports).toString().toBoolean()
 logger.lifecycle("[TheSilverAge] (fabric) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
 
 dependencies {
@@ -155,6 +156,16 @@ dependencies {
     // Mod Menu opens that config's screen from its mod list (TheSilverAgeModMenu); compiled against only.
     modCompileOnly("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         exclude group: "net.fabricmc.fabric-api"
+    }
+
+    // Backported Spears and Vanilla Backport, which the Silver Spear and Silver Nautilus Armor are made with
+    // (BackportPlatformImpl). Backported Spears asks for Fabric Loader 0.18.1, past this line's, so only Vanilla
+    // Backport runs in dev here.
+    modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_fabric_version}") { transitive = false }
+    modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
+    if (loadBackports && !runningGameTest) {
+        modLocalRuntime("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
+        modLocalRuntime("maven.modrinth:platform:${rootProject.platform_fabric_version}") { transitive = false }
     }
 
     // Jade (Fabric): intentionally NOT added. The NeoForge side pins a specific

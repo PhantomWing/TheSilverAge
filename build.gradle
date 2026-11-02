@@ -109,6 +109,12 @@ allprojects {
             content { includeGroup "maven.modrinth" }
         }
 
+        // Quilt's JSON parsers, which YACL bundles in its jar; dev runs don't unpack a jar's bundled libraries.
+        maven {
+            url = "https://maven.quiltmc.org/repository/release"
+            content { includeGroup "org.quiltmc.parsers" }
+        }
+
         // Create, Ponder, Flywheel
         maven { url = "https://maven.createmod.net" }
 

@@ -3,6 +3,7 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.block.SilverWeatheringSpec;
+import com.phantomwing.thesilverage.tags.BackportTags;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -333,6 +334,45 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
+        // 1.21.9's tags of the copper age's bars, chains, lanterns and rods, which Vanilla Backport and Copper Age
+        // Backport fill on this version, as the 1.21.9 lines do.
+        tag(BackportTags.Blocks.BARS)
+                .add(ModBlocks.SILVER_BARS.get())
+                .add(ModBlocks.EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.OXIDIZED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_BARS.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_BARS.get());
+        tag(BackportTags.Blocks.CHAINS)
+                .add(ModBlocks.SILVER_CHAIN.get())
+                .add(ModBlocks.EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_CHAIN.get());
+        tag(BackportTags.Blocks.LANTERNS)
+                .add(ModBlocks.SILVER_LANTERN.get())
+                .add(ModBlocks.EXPOSED_SILVER_LANTERN.get())
+                .add(ModBlocks.WEATHERED_SILVER_LANTERN.get())
+                .add(ModBlocks.OXIDIZED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_LANTERN.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_LANTERN.get());
+        tag(BackportTags.Blocks.LIGHTNING_RODS)
+                .add(ModBlocks.SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.OXIDIZED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModBlocks.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
+
         // Tool requirements
         tag(BlockTags.NEEDS_IRON_TOOL).addTag(ModTags.Blocks.SILVER_BLOCKS);
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.SILVER_BLOCKS);

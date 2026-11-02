@@ -8,6 +8,7 @@ import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
 import com.phantomwing.thesilverage.item.custom.SilverArmorItem;
 import com.phantomwing.thesilverage.item.custom.SilverArrowItem;
+import com.phantomwing.thesilverage.platform.BackportPlatform;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.LinkedHashSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(TheSilverAge.MOD_ID, Registries.ITEM);
@@ -44,6 +46,9 @@ public class ModItems {
     // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
+    // 1.21.11's Silver Spear, made by Backported Spears' own spear API when it is installed.
+    public static final RegistrySupplier<Item> SILVER_SPEAR = registerWithModCompat("silver_spear",
+            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1)), ModIds.BACKPORTED_SPEARS);
     public static final RegistrySupplier<Item> SILVER_ARROW = register("silver_arrow", SilverArrowItem::new, baseItem());
 
     // Silver armor
@@ -52,6 +57,9 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 10);
     public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 10);
     public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
+    // 1.21.11's Silver Nautilus Armor, Vanilla Backport's kind of nautilus armour when it is installed. Loot only.
+    public static final RegistrySupplier<Item> SILVER_NAUTILUS_ARMOR = registerWithModCompat("silver_nautilus_armor",
+            () -> BackportPlatform.createSilverNautilusArmor(baseItem().stacksTo(1)), ModIds.VANILLA_BACKPORT);
 
     // Silver Torch
     public static final RegistrySupplier<Item> SILVER_TORCH = register("silver_torch",
@@ -326,7 +334,11 @@ public class ModItems {
 
     /** Register an item that only appears in the creative tab when the given mod is loaded. */
     private static RegistrySupplier<Item> registerWithModCompat(String name, String modId) {
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> new Item(baseItem()));
+        return registerWithModCompat(name, () -> new Item(baseItem()), modId);
+    }
+
+    private static RegistrySupplier<Item> registerWithModCompat(String name, Supplier<Item> factory, String modId) {
+        RegistrySupplier<Item> item = ITEMS.register(name, factory);
         if (CommonPlatform.isModLoaded(modId)) {
             CREATIVE_TAB_ITEMS.add(item);
         }

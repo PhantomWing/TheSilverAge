@@ -1,7 +1,9 @@
 package com.phantomwing.thesilverage.loot;
 
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.platform.CommonConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -58,9 +60,14 @@ public final class SilverLootSpec {
      * @param min            ADD/SILVERFISH: min count. REPLACE: minStacks.
      * @param max            ADD/SILVERFISH: max count. REPLACE: maxStacks (0 ⇒ replace all).
      * @param removedItems   REPLACE only: items eligible to be replaced (empty for ADD/SILVERFISH).
+     * @param requiredMod    the mod whose items the entry takes, which it applies only with, or null.
      */
     public record Entry(String id, ResourceLocation targetLootTable, float chance, Op op,
-                        Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
+                        Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems, String requiredMod) {
+        public Entry(String id, ResourceLocation targetLootTable, float chance, Op op,
+                     Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
+            this(id, targetLootTable, chance, op, item, min, max, removedItems, null);
+        }
     }
 
     /** Whether an entry adding this item applies, past the loot gates: Silver Arrows have an option of their own. */
@@ -76,12 +83,18 @@ public final class SilverLootSpec {
         return () -> item;
     }
 
+    /** A vanilla item newer than 1.21.1, which a mod backports here under vanilla's id. */
+    private static Supplier<Item> backported(String path) {
+        return () -> BuiltInRegistries.ITEM.get(mc(path));
+    }
+
     // --- Vanilla loot table ids (BuiltInLootTables key paths, default-namespaced) ---
     private static final ResourceLocation SILVERFISH_ENTITY = mc("entities/silverfish");
     private static final ResourceLocation DESERT_PYRAMID = mc("chests/desert_pyramid");
     private static final ResourceLocation JUNGLE_TEMPLE = mc("chests/jungle_temple");
     private static final ResourceLocation SHIPWRECK_TREASURE = mc("chests/shipwreck_treasure");
     private static final ResourceLocation SHIPWRECK_MAP = mc("chests/shipwreck_map");
+    private static final ResourceLocation SHIPWRECK_SUPPLY = mc("chests/shipwreck_supply");
     private static final ResourceLocation BURIED_TREASURE = mc("chests/buried_treasure");
     private static final ResourceLocation VILLAGE_ARMORER = mc("chests/village/village_armorer");
     private static final ResourceLocation VILLAGE_TEMPLE = mc("chests/village/village_temple");
@@ -327,7 +340,21 @@ public final class SilverLootSpec {
                 new Entry("silver_ingot_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
                         ModItems.SILVER_INGOT::get, 0, 0, List.of(vanilla(Items.WHITE_DYE))),
                 new Entry("silver_nugget_from_trail_ruins_archaeology_common", TRAIL_RUINS_ARCHAEOLOGY_COMMON, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_NUGGET::get, 0, 0, List.of(vanilla(Items.GOLD_NUGGET)))
+                        ModItems.SILVER_NUGGET::get, 0, 0, List.of(vanilla(Items.GOLD_NUGGET))),
+
+                // Nautilus Armor - Vanilla Backport's Copper Nautilus Armor, in the ocean chests 1.21.11 puts it in,
+                // as the 1.21.11 lines replace vanilla's
+                nautilusArmor("silver_nautilus_armor_from_buried_treasure", BURIED_TREASURE),
+                nautilusArmor("silver_nautilus_armor_from_shipwreck_treasure", SHIPWRECK_TREASURE),
+                nautilusArmor("silver_nautilus_armor_from_shipwreck_supply", SHIPWRECK_SUPPLY),
+                nautilusArmor("silver_nautilus_armor_from_shipwreck_map", SHIPWRECK_MAP),
+                nautilusArmor("silver_nautilus_armor_from_underwater_ruin_big", UNDERWATER_RUIN_BIG),
+                nautilusArmor("silver_nautilus_armor_from_underwater_ruin_small", UNDERWATER_RUIN_SMALL)
         );
+    }
+
+    private static Entry nautilusArmor(String id, ResourceLocation table) {
+        return new Entry(id, table, 0.25f, Op.REPLACE, ModItems.SILVER_NAUTILUS_ARMOR::get, 1, 1,
+                List.of(backported("copper_nautilus_armor")), ModIds.VANILLA_BACKPORT);
     }
 }

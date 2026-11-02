@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.tags.BackportTags;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -65,7 +66,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.SILVER_PICKAXE.get())
                 .add(ModItems.SILVER_SHOVEL.get())
                 .add(ModItems.SILVER_HOE.get())
-                .add(ModItems.SILVER_KNIFE.get());
+                .add(ModItems.SILVER_KNIFE.get())
+                .add(ModItems.SILVER_SPEAR.get());
 
         // Silver armour burning the undead that strike its wearer: a piece's chance each, and a full set's for
         // Silver Horse Armor, all the silver a horse wears.
@@ -74,7 +76,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.SILVER_CHESTPLATE.get())
                 .add(ModItems.SILVER_LEGGINGS.get())
                 .add(ModItems.SILVER_BOOTS.get())
-                .add(ModItems.SILVER_HORSE_ARMOR.get());
+                .add(ModItems.SILVER_HORSE_ARMOR.get())
+                .add(ModItems.SILVER_NAUTILUS_ARMOR.get());
     }
 
     protected void addCommonTags(HolderLookup.@NotNull Provider provider) {
@@ -110,6 +113,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.ORES_IN_GROUND_STONE).add(ModItems.SILVER_ORE.get());
         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(ModItems.DEEPSLATE_SILVER_ORE.get());
 
+        tag(CommonTags.Items.ARMORS_NAUTILUS).add(ModItems.SILVER_NAUTILUS_ARMOR.get());
+
         // Chains
         tag(Tags.Items.CHAINS)
                 .add(ModItems.SILVER_CHAIN.get())
@@ -123,6 +128,47 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     protected void addMinecraftTags(HolderLookup.@NotNull Provider provider) {
+        // The item tags of 1.21.9's bars, chains, lanterns and lightning rods, which Vanilla Backport and Copper Age
+        // Backport fill on this version, as the 1.21.9 lines do.
+        tag(BackportTags.Items.BARS)
+                .add(ModItems.SILVER_BARS.get())
+                .add(ModItems.EXPOSED_SILVER_BARS.get())
+                .add(ModItems.WEATHERED_SILVER_BARS.get())
+                .add(ModItems.OXIDIZED_SILVER_BARS.get())
+                .add(ModItems.WAXED_SILVER_BARS.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_BARS.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_BARS.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_BARS.get());
+        tag(BackportTags.Items.CHAINS)
+                .add(ModItems.SILVER_CHAIN.get())
+                .add(ModItems.EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.OXIDIZED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_CHAIN.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get());
+        tag(BackportTags.Items.LANTERNS)
+                .add(ModItems.SILVER_LANTERN.get())
+                .add(ModItems.EXPOSED_SILVER_LANTERN.get())
+                .add(ModItems.WEATHERED_SILVER_LANTERN.get())
+                .add(ModItems.OXIDIZED_SILVER_LANTERN.get())
+                .add(ModItems.WAXED_SILVER_LANTERN.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_LANTERN.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_LANTERN.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_LANTERN.get());
+        tag(BackportTags.Items.LIGHTNING_RODS)
+                .add(ModItems.SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.OXIDIZED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.WAXED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get())
+                .add(ModItems.WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());
+        // Both spear backports put minecraft:spears into the enchantable tags, so the Silver Spear takes Lunge and
+        // the melee enchantments through it.
+        tag(BackportTags.Items.SPEARS).add(ModItems.SILVER_SPEAR.get());
 
         // Tools
         tag(ItemTags.SWORDS).add(ModItems.SILVER_SWORD.get());

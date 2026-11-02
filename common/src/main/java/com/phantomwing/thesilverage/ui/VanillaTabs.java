@@ -19,8 +19,8 @@ import java.util.List;
  * The mod's items in vanilla's creative tabs too, each beside its vanilla counterpart, as The Tin Age's are: silver's
  * blocks after copper's, every stage in turn and then their waxed forms, as vanilla lays copper's out; its ore, tools,
  * armour and ingredients after gold's, the metal it stands beside. The mod's own tab keeps all of them together, and
- * an item it hides - the weathered and waxed forms with oxidation off, the arrows, the knife without Farmer's Delight -
- * is left out here too.
+ * an item it hides - the weathered and waxed forms with oxidation off, the arrows, the knife without Farmer's Delight,
+ * the spear and nautilus armour without the mods backporting them - is left out here too.
  */
 public final class VanillaTabs {
     private static final String[] STAGES = {"", "exposed_", "weathered_", "oxidized_", "waxed_", "waxed_exposed_",
@@ -60,11 +60,13 @@ public final class VanillaTabs {
                 List.of("silver_shovel", "silver_pickaxe", "silver_axe", "silver_hoe", "silver_knife"));
         add(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.CLOCK, List.of("moon_dial"));
 
-        add(CreativeModeTabs.COMBAT, Items.GOLDEN_SWORD, List.of("silver_sword"));
+        // 1.21.11's spear and nautilus armour beside the sword and horse armour: the mods backporting them don't all
+        // list vanilla's own in this tab.
+        add(CreativeModeTabs.COMBAT, Items.GOLDEN_SWORD, List.of("silver_sword", "silver_spear"));
         add(CreativeModeTabs.COMBAT, Items.GOLDEN_AXE, List.of("silver_axe"));
         add(CreativeModeTabs.COMBAT, Items.GOLDEN_BOOTS,
                 List.of("silver_helmet", "silver_chestplate", "silver_leggings", "silver_boots"));
-        add(CreativeModeTabs.COMBAT, Items.GOLDEN_HORSE_ARMOR, List.of("silver_horse_armor"));
+        add(CreativeModeTabs.COMBAT, Items.GOLDEN_HORSE_ARMOR, List.of("silver_horse_armor", "silver_nautilus_armor"));
         add(CreativeModeTabs.COMBAT, Items.SPECTRAL_ARROW, List.of("silver_arrow"));
 
         add(CreativeModeTabs.INGREDIENTS, Items.RAW_GOLD, List.of("raw_silver"));

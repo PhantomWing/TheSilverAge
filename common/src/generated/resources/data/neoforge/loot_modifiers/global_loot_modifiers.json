@@ -77,7 +77,13 @@
     "thesilverage:silver_hoe_from_ocean_ruin_warm_archaeology",
     "thesilverage:silver_nugget_from_desert_well_archaeology",
     "thesilverage:silver_ingot_from_trail_ruins_archaeology_common",
-    "thesilverage:silver_nugget_from_trail_ruins_archaeology_common"
+    "thesilverage:silver_nugget_from_trail_ruins_archaeology_common",
+    "thesilverage:silver_nautilus_armor_from_buried_treasure",
+    "thesilverage:silver_nautilus_armor_from_shipwreck_treasure",
+    "thesilverage:silver_nautilus_armor_from_shipwreck_supply",
+    "thesilverage:silver_nautilus_armor_from_shipwreck_map",
+    "thesilverage:silver_nautilus_armor_from_underwater_ruin_big",
+    "thesilverage:silver_nautilus_armor_from_underwater_ruin_small"
   ],
   "replace": false
 }
