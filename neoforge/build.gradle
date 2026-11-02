@@ -221,6 +221,8 @@ dependencies {
         modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")
         modLocalRuntime("dev.engine-room.flywheel:flywheel-neoforge-${rootProject.minecraft_version}:${rootProject.flywheel_version}")
         modLocalRuntime("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
+        // Create: Aquatic Ambitions (Create 6.0.8 and up), so the scenarios play its channeling.
+        modLocalRuntime("maven.modrinth:create-aquatic-ambitions:1.21.1-6.0.10-2.0.4")
     }
 }
 

@@ -1,0 +1,172 @@
+{
+  "name": "Create: Aquatic Ambitions channels silver one tarnish stage through an awakened Conduit Cage, waxed silver aside",
+  "loader": "neoforge",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "create:depot"
+    },
+    {
+      "setblock": [
+        -2,
+        0,
+        0
+      ],
+      "block": "create:encased_fan[facing=east]"
+    },
+    {
+      "setblock": [
+        -3,
+        0,
+        0
+      ],
+      "block": "create:creative_motor[facing=east]"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "minecraft:air"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "create_aquatic_ambitions:mechanical_conduit{InputTanks:[{TankContent:{Fluid:{id:\"minecraft:water\",amount:1000}}}]}"
+    },
+    {
+      "wait": 40
+    },
+    {
+      "hold": "thesilverage:silver_block",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "wait": 200
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "holding",
+      "is": "thesilverage:exposed_silver",
+      "count": 1
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "minecraft:air"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "create_aquatic_ambitions:mechanical_conduit{InputTanks:[{TankContent:{Fluid:{id:\"minecraft:water\",amount:1000}}}]}"
+    },
+    {
+      "wait": 40
+    },
+    {
+      "hold": "thesilverage:weathered_cut_silver_slab",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "wait": 200
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "holding",
+      "is": "thesilverage:oxidized_cut_silver_slab",
+      "count": 1
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "minecraft:air"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "create_aquatic_ambitions:mechanical_conduit{InputTanks:[{TankContent:{Fluid:{id:\"minecraft:water\",amount:1000}}}]}"
+    },
+    {
+      "wait": 40
+    },
+    {
+      "hold": "thesilverage:waxed_silver_block",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "wait": 200
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "holding",
+      "is": "thesilverage:waxed_silver_block",
+      "count": 1
+    }
+  ]
+}
