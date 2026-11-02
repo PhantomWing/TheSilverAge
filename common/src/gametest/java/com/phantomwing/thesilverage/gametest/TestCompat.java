@@ -171,8 +171,9 @@ public final class TestCompat {
     }
 
     /**
-     * The folders of Create's recipes, each with the options every recipe in it names. Create and Create: Aquatic
-     * Ambitions are on 1.21.1 alone, so a line without them has none.
+     * The folders of Create's recipes, each with the options every recipe in it names, in both modloaders' conditions.
+     * NeoForge has no Create here, and Create Fly's recipes ship in the Fabric jar alone with Fabric's conditions alone,
+     * so there are none to read on both.
      */
     public static Map<String, Set<String>> createRecipeFolders() {
         return Map.of();
