@@ -1,0 +1,88 @@
+{
+  "name": "Create's Crushing Wheels crush Raw Silver into Crushed Raw Silver",
+  "loader": "neoforge",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        -1,
+        1,
+        0
+      ],
+      "block": "create:crushing_wheel[axis=z]"
+    },
+    {
+      "setblock": [
+        1,
+        1,
+        0
+      ],
+      "block": "create:crushing_wheel[axis=z]"
+    },
+    {
+      "setblock": [
+        -1,
+        1,
+        1
+      ],
+      "block": "create:creative_motor[facing=north]"
+    },
+    {
+      "setblock": [
+        1,
+        1,
+        -1
+      ],
+      "block": "create:creative_motor[facing=south]"
+    },
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "create:depot"
+    },
+    {
+      "wait": 20
+    },
+    {
+      "summon": "minecraft:item",
+      "at": [
+        0,
+        3,
+        0
+      ],
+      "nbt": "{Item:{id:\"thesilverage:raw_silver\",count:1}}"
+    },
+    {
+      "wait": 300
+    },
+    {
+      "move": [
+        0,
+        0,
+        -2
+      ]
+    },
+    {
+      "look": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "inventory",
+      "has": "create:crushed_raw_silver"
+    }
+  ]
+}

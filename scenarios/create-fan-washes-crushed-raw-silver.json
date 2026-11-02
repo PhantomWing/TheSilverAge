@@ -1,0 +1,71 @@
+{
+  "name": "Create's Encased Fan washes Crushed Raw Silver into 9 Silver Nuggets",
+  "loader": "neoforge",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "create:depot"
+    },
+    {
+      "setblock": [
+        -1,
+        0,
+        0
+      ],
+      "block": "minecraft:water"
+    },
+    {
+      "setblock": [
+        -2,
+        0,
+        0
+      ],
+      "block": "create:encased_fan[facing=east]"
+    },
+    {
+      "setblock": [
+        -3,
+        0,
+        0
+      ],
+      "block": "create:creative_motor[facing=east]"
+    },
+    {
+      "hold": "create:crushed_raw_silver",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "wait": 200
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "holding",
+      "is": "thesilverage:silver_nugget",
+      "count": 9
+    },
+    {
+      "expect": "inventory",
+      "lacks": "create:crushed_raw_silver"
+    }
+  ]
+}

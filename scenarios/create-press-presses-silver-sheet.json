@@ -1,0 +1,66 @@
+{
+  "name": "Create's Mechanical Press presses a Silver Ingot into a Silver Sheet",
+  "loader": "neoforge",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "create:depot"
+    },
+    {
+      "setblock": [
+        0,
+        2,
+        0
+      ],
+      "block": "create:mechanical_press[facing=east]"
+    },
+    {
+      "setblock": [
+        1,
+        2,
+        0
+      ],
+      "block": "create:creative_motor[facing=west]"
+    },
+    {
+      "hold": "thesilverage:silver_ingot",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "holding",
+      "is": "minecraft:air"
+    },
+    {
+      "wait": 100
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "up"
+    },
+    {
+      "expect": "inventory",
+      "has": "thesilverage:silver_sheet"
+    },
+    {
+      "expect": "inventory",
+      "lacks": "thesilverage:silver_ingot"
+    }
+  ]
+}

@@ -213,7 +213,9 @@ dependencies {
     // localRuntime only when toggled on (so the classes are never loaded when Create is absent).
     modCompileOnly("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
     modCompileOnly("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-    // Never on the game-test run: Create crashes the headless GameTestServer.
+    // Never on the game-test run: Create sends its payloads to every player each tick, mock players too, whose
+    // connections never agreed on them, and NeoForge refuses them and crashes the server. Its machines are played in
+    // the scenarios instead (scenarios/create-*.json).
     if (loadCreate && !runningGameTest) {
         modLocalRuntime("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") { transitive = false }
         modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")

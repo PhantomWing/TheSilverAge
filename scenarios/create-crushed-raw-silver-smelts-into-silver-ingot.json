@@ -1,0 +1,108 @@
+{
+  "name": "Crushed Raw Silver smelts and blasts into a Silver Ingot",
+  "loader": "neoforge",
+  "gamemode": "creative",
+  "steps": [
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "minecraft:furnace[facing=north]"
+    },
+    {
+      "give": "create:crushed_raw_silver",
+      "count": 1
+    },
+    {
+      "give": "minecraft:coal",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "north"
+    },
+    {
+      "click": 30,
+      "shift": true
+    },
+    {
+      "click": 31,
+      "shift": true
+    },
+    {
+      "expect": "slot",
+      "slot": 0,
+      "is": "create:crushed_raw_silver"
+    },
+    {
+      "wait": 260
+    },
+    {
+      "expect": "slot",
+      "slot": 2,
+      "is": "thesilverage:silver_ingot",
+      "count": 1
+    },
+    {
+      "close": true
+    },
+    {
+      "reset": true
+    },
+    {
+      "setblock": [
+        0,
+        0,
+        0
+      ],
+      "block": "minecraft:blast_furnace[facing=north]"
+    },
+    {
+      "give": "create:crushed_raw_silver",
+      "count": 1
+    },
+    {
+      "give": "minecraft:coal",
+      "count": 1
+    },
+    {
+      "use": [
+        0,
+        0,
+        0
+      ],
+      "face": "north"
+    },
+    {
+      "click": 30,
+      "shift": true
+    },
+    {
+      "click": 31,
+      "shift": true
+    },
+    {
+      "expect": "slot",
+      "slot": 0,
+      "is": "create:crushed_raw_silver"
+    },
+    {
+      "wait": 160
+    },
+    {
+      "expect": "slot",
+      "slot": 2,
+      "is": "thesilverage:silver_ingot",
+      "count": 1
+    },
+    {
+      "close": true
+    }
+  ]
+}
