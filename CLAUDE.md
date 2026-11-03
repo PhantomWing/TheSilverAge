@@ -65,8 +65,14 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
-  tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI and EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
+  (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
+  honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, armour and horse
+  armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and the armour
+  advancement through their conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs spawning
+  with it, folded into `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made still
+  works and still smelts into nuggets.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -90,5 +96,25 @@ on a rung where they have no build; that does not block the line.
 - No Create, Create: Aquatic Ambitions, EMI, Enhanced Celestials (1 or 2) or Werewolves for 1.21.4, so that part of 1.4's compat isn't on this line: no EMI info pages, no Create recipes, and `compat/LunarEvents` answers as for an ordinary night (the Moon Dial keeps its layered textures, and its moon takes the `thesilverage:lunar_event` tint source in its `items/` definition, `client/ModItemColors`: from 1.21.4 an item's tint is data, not a colour handler). JEI has a NeoForge build (20.0.0.4): `compat/jei` and its info pages (`compat/SilverInfo`) are compiled against `jei-1.21.4-common-api` and loaded in NeoForge dev runs; JEI has no Fabric 1.21.4 build, so Fabric's manifest names no JEI plugin. The Werewolves entries in the tags stay, optional, as on 1.21.1. `enable_create_spout_oxidation` is still in both configs and does nothing here.
 - NeoForge 21.4 has no `ExtendPoiTypesEvent`: the Silver Lightning Rods' states go into `GameData.getBlockStatePointOfInterestTypeMap()` in common setup, as Fabric's `PoiTypesAccessor` puts them into vanilla's map. Its `LightningBolt` checks the rod with vanilla's `state.is(Blocks.LIGHTNING_ROD)`, so NeoForge takes Fabric's `LightningBoltMixin` too.
 - Models are vanilla's `ModelProvider` (`ModModelProvider`), which also writes the `items/` client item definitions; NeoForge's datagen runs as `clientData`. Render layers aren't in the model JSON from 1.21.4: the cutout and translucent blocks (doors, trapdoors, lanterns, chains, bars, the torch, grates) are registered in `client/ModItemProperties` on both loaders.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife and the sheet after Create's
+  Golden Sheet in `create:base`, both dormant here since neither mod has a 1.21.4 build). Redstone Blocks lists only the
+  waxed bulbs, plates and rods, as vanilla does its copper bulbs; the Silver Arrow follows the Arrow. The tabs are
+  filled through `CreativeTabPlatform`: on NeoForge from the mod's own bus (`BuildCreativeModeTabContentsEvent`), where
+  `neoforge.mods.toml`'s ordering reaches, rather than Architectury's `CreativeTabRegistry.modify`, which listens on
+  Architectury's bus; on Fabric in a phase after the default one. Both throw on an anchor the tab doesn't list, so
+  `VanillaTabs` can try a list of anchors, as 1.21.1 does for the Golden Spear.
+- Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json` from its Fabric 4.0 on 1.21.4, so the Silver
+  Grappling Hook is data alone, in `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability),
+  its `yo_hooks` models, textures, names and tags, its `items/` definitions (the `yo_hooks:hook_active` condition shows
+  the handle while cast) in the built-in pack `resourcepacks/grappling_hooks`, which Fabric's client turns on only with
+  the mod (a 1.21.4 client logs an error for every `items/` definition naming a property nobody registered), and its recipes, hand-written in `data/thesilverage/recipe` behind the hook item being
+  registered (`neoforge:registered`, `fabric:registry_contains`) and `enable_silver_gear`. Its NeoForge builds for
+  1.21.4 (to 3.8) have a fixed set of hooks and no silver one, which those conditions answer. The Fabric build needs
+  Fabric Loader 0.17, past this line's 0.16.14, so no dev run loads it and the hook is untested in the game here.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>`: `enable_jade` and
+  `enable_jei`, both NeoForge's; `-Penable_jei=false` and the like test without one. The game-test runs load none of
+  them, so their servers are the check that the mod loads alone.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged with `minecraft_version` alone, which is the whole rung here.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.

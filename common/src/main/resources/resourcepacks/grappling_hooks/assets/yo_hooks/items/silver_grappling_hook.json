@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "yo_hooks:hook_active",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "yo_hooks:item/grappling_hook_handle"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "yo_hooks:item/silver_grappling_hook"
+    }
+  }
+}

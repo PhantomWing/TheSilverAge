@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "yo_hooks:silver_hook_head"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "yo_hooks:silver_hook_head"
+      ]
+    }
+  ],
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": [
+    "yo_hooks:silver_grappling_hook",
+    "yo_hooks:silver_hook_head"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thesilverage:silver_nugget"
+  }
+}

@@ -10,6 +10,7 @@ import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
+import com.phantomwing.thesilverage.platform.neoforge.CreativeTabPlatformImpl;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -71,6 +72,7 @@ public final class TheSilverAgeNeoForge {
                 ModNetworking.configChanged();
             }
         });
+        modEventBus.addListener(CreativeTabPlatformImpl::buildContents);
         NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> SilverUndeadGoals.addTo(event.getEntity()));
     }
 

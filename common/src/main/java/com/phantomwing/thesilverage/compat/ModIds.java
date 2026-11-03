@@ -16,6 +16,8 @@ public final class ModIds {
      * never need to name because everything is read through the Core's API.
      */
     public static final String ENHANCED_CELESTIALS_2 = "enhancedcelestials2core";
+    /** Yori3o's Grappling Hooks, whose hook tiers are read from every jar's {@code yo_hooks/hooks.json}. */
+    public static final String GRAPPLING_HOOKS = "yo_hooks";
 
     private ModIds() {}
 }
