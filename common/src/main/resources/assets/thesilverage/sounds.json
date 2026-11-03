@@ -11,6 +11,12 @@
     ],
     "subtitle": "subtitles.thesilverage.block.silver_bulb.turn_off"
   },
+  "block.moon_phase_detector.click": {
+    "sounds": [
+      { "name": "minecraft:block.comparator.click", "type": "event" }
+    ],
+    "subtitle": "subtitles.thesilverage.block.moon_phase_detector.click"
+  },
   "item.armor.equip_silver": {
     "sounds": [
       { "name": "minecraft:item.armor.equip_gold", "type": "event" }
