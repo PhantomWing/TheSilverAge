@@ -65,8 +65,23 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients (`ContentSyncPayload`), so the creative
   tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **Creative tabs** - `VanillaTabs` puts each item beside its vanilla counterpart through `platform/CreativeTabPlatform`, not
+  Architectury's `CreativeTabRegistry.modify`, which listens on Architectury's bus and runs before other mods have filled
+  the tab. NeoForge's side listens on the mod's own bus (`CreativeTabPlatformImpl::buildContents`), whose `insertAfter`
+  throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of anchors; Fabric's `insertAfter` would append
+  one it doesn't list at the end, so its side throws too, and inserts in a phase after the default one
+  (`CreativeModeTabEvents.modifyOutputEvent`, 26.1's Fabric API). The Redstone Blocks tab takes only the waxed bulbs,
+  plates and rods, as vanilla's does copper's; the Silver Arrow follows the Arrow; the Silver Knife goes in Farmer's
+  Delight's tab after its Golden Knife and the Silver Sheet in Create's after its Golden Sheet, where those mods are.
+  `enable_creative_tab` (the mod's tab lists nothing, so it isn't drawn) and `enable_vanilla_creative_tabs` are each
+  player's own, read on the client.
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour, horse
+  and nautilus armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and
+  the armour advancement through their conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs
+  spawning with it, folded into `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made
+  still works and still smelts into nuggets. It is sent to clients with oxidation's and the arrows' (`ContentSyncPayload`).
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -91,6 +106,24 @@ have no build; that does not block the line.
 - Recipes 26.1 changed: the Lodestone is made of an Iron Ingot, so its fallback takes `c:ingots/iron`; the Firework Star's shapes are its recipe's data, so the Silver Nugget's star is a datagen override under the `override_vanilla_recipes` switch alone (`ModRecipeProvider.fireworkStarOverride`); and vanilla's Name Tag takes `#minecraft:metal_nuggets`, which holds the Silver Nugget, so it needs no override. Cooking recipes take `CookingBookCategory`.
 - Villager trades are data from 26.1 (`ModVillagerTradeProvider`): the Cleric's level-2 Silver Ingot trade and the master Fletcher's level-5 Silver Arrows (2 Emeralds and 5 Arrows, as vanilla's tipped arrows, which ask for the emeralds first from 26.2) are `villager_trade` files added to vanilla's pool tags, gated by `enable_villager_trades` at load. `enable_silver_arrows` is read as the villager levels up, through the trade's merchant predicate, the loot condition `thesilverage:silver_arrows_enabled` (`villager/SilverArrowsEnabled`). `SilverVillagerTrades` and both loaders' `ModVillagerTrades` are vestigial.
 - No Create, Create: Aquatic Ambitions, EMI, Enhanced Celestials (1 or 2), Werewolves or NeoForge Farmer's Delight for 26.3 (checked 2026-11-01), so that part of 1.4's compat isn't on this line: no Create recipes, and `compat/LunarEvents` answers as for an ordinary night (the Moon Dial keeps its layered textures, and its moon takes the `thesilverage:lunar_event` tint source in its `items/` definition, `client/ModItemColors`). JEI (both loaders) shows `compat/SilverInfo`'s info pages through the common `compat/jei` plugin, compiled against `jei-26.3-common-api`; Fabric names it as a `jei_mod_plugin` entrypoint. The Werewolves entries in the tags stay, optional. `enable_create_spout_oxidation` is still in both configs and does nothing here.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>`: JEI (both loaders),
+  Jade (NeoForge), Farmer's Delight Refabricated (Fabric) and Yori3o's Grappling Hooks with its YACL (Fabric: YACL's 26.3 NeoForge build,
+  3.9.7, asks for 26.2, so NeoForge's dev runs can't have the hooks);
+  `-Penable_grappling_hooks=false` and the like test without one. The game-test runs load none of them, so their servers
+  are the check that the mod loads alone.
+- Farmer's Delight Refabricated (26.3-3.6.30, Fabric, from the Modrinth maven) is compiled against for the Silver Knife's
+  `KnifeItem`, so Fabric has no stub of it; NeoForge keeps its stub (`neoforge/.../vectorwing`, left out of the jar),
+  since there is no NeoForge Farmer's Delight for 26.3. Fabric's dev runs load it, and the knife goes in its tab.
+- Yori3o's Grappling Hooks (5.4.0, both loaders) reads every `yo_hooks/hooks.json` on the classpath
+  (`ClassLoader.getResources`; 1.21.1's NeoForge record has its hooks and ours), so the Silver Grappling Hook
+  (`yo_hooks:silver_grappling_hook`, range 14) is data only. It is Fabric's alone here, since YACL, which the hooks need,
+  has no NeoForge build for 26.3 (its 26.3 NeoForge file asks for 26.2): `fabric/src/main/resources` holds `hooks.json`,
+  the models, textures, names and tags under `yo_hooks`, and four hand-written recipes behind the mod-loaded condition
+  (the two crafting ones behind `enable_silver_gear` too). Its `items/` definitions name the hooks' own
+  `yo_hooks:hook_active` property, which fails to parse without the mod, so they are a built-in pack,
+  `resourcepacks/silver_grappling_hook`, that `TheSilverAgeFabricClient` turns on only where Grappling Hooks is loaded.
+- Sulfur Cubes swallow silver's blocks, ores, cut and chiseled silver and bulbs as copper's: `minecraft:sulfur_cube_archetype/slow_flat`.
+  Better Combat (3.2.2 on 26.3) reads `data/thesilverage/weapon_attributes/silver_spear.json`, a `bettercombat:spear`.
 - Lightning rods: vanilla's `LightningBolt` powers any `LightningRodBlock` and scrapes the struck block itself when it is a `WeatheringCopper`, so a Silver Lightning Rod needs no mixin. The rods still need lightning's point of interest: NeoForge adds them through `ExtendPoiTypesEvent`, Fabric through `PoiTypesAccessor`. They are in `minecraft:lightning_rods` too, and the bars, chains and lanterns in `minecraft:bars`, `chains` and `lanterns`. Vanilla's chain is `minecraft:iron_chain`.
 - Models are vanilla's `ModelProvider` (`ModModelProvider`), which also writes the `items/` client item definitions; NeoForge's datagen runs as `clientData`. From 26.1 a texture in a model is a `Material` (`TextureMapping` takes and gives them). There are no programmatic render layers from 26.1 (Architectury's `RenderTypeRegistry` is gone): the doors, trapdoors, lanterns, chains, bars and torch draw cutout from their textures' alpha.
 - 1.21.11's content: the Silver Spear (`Item.Properties#spear`, `minecraft:spears`) and the Silver Nautilus Armor (loot only). The spear is one of `thesilverage:silver_smite_tools` (its hits are `minecraft:spear`) and a zombie's iron spear can turn into it as its sword does; the nautilus armour counts as a full set of silver armour for the hurt, as the horse armour does. In the vanilla tabs they follow the golden spear and nautilus armour.

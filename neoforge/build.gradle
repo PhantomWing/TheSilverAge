@@ -17,6 +17,13 @@ def datagenExisting = rootProject.file('common/src/main/resources/').absolutePat
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
 
+// Which optional mods the dev runs load, one switch each (gradle.properties).
+//   ./gradlew :neoforge:runClient -Penable_jade=false
+// No Grappling Hooks here: its NeoForge build needs YACL, and YACL's 26.3 NeoForge build (3.9.7) asks for 26.2.
+def enabled = { String name -> (project.findProperty(name) ?: rootProject.property(name)).toString().toBoolean() }
+def loadJei = enabled('enable_jei')
+def loadJade = enabled('enable_jade')
+
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
 
@@ -118,8 +125,10 @@ dependencies {
 
     // Jade + JEI — dev-runtime only (never compiled against, never shipped). Never on the game-test run: they send
     // their packets to a test's mock player, whose connection has none of them, and crash the server.
-    if (!runningGameTest) {
+    if (loadJade && !runningGameTest) {
         localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    }
+    if (loadJei && !runningGameTest) {
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
     }
 }

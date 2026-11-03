@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "yo_hooks"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "yo_hooks"
+      ]
+    }
+  ],
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    "yo_hooks:silver_grappling_hook",
+    "yo_hooks:silver_hook_head"
+  ],
+  "result": {
+    "id": "thesilverage:silver_nugget"
+  }
+}

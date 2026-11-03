@@ -9,6 +9,11 @@ import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
+import com.phantomwing.thesilverage.compat.ModIds;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.chat.Component;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
@@ -40,12 +45,22 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // disabling the recipe-override config also drops the visual overrides.
         RecipeOverridePack.register();
 
+        // The Silver Grappling Hook's items/ definition names Grappling Hooks' own condition property, which fails to
+        // parse, with an error in the log, wherever that mod isn't installed; so it is in a pack of its own.
+        if (FabricLoader.getInstance().isModLoaded(ModIds.GRAPPLING_HOOKS)) {
+            FabricLoader.getInstance().getModContainer(TheSilverAge.MOD_ID).ifPresent(container ->
+                    ResourceManagerHelper.registerBuiltinResourcePack(
+                            TheSilverAge.resourceLocation("silver_grappling_hook"), container,
+                            Component.literal("The Silver Age: Silver Grappling Hook"),
+                            ResourcePackActivationType.ALWAYS_ENABLED));
+        }
+
         // Match the texture pack to the server's override value on join, revert on disconnect.
         ModNetworking.registerClientReceiver(RecipeOverridePack::refresh);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ServerOverrideState.clear();
             ServerUndeadSettings.clear();
-            ModNetworking.setContentFromServer(null, null);
+            ModNetworking.setContentFromServer(null, null, null);
             client.execute(RecipeOverridePack::refresh);
         });
 

@@ -74,7 +74,7 @@ public final class TheSilverAgeNeoForgeClient {
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut e) -> {
             ServerOverrideState.clear();
             ServerUndeadSettings.clear();
-            ModNetworking.setContentFromServer(null, null);
+            ModNetworking.setContentFromServer(null, null, null);
             RecipeOverridePackHandler.syncFromState();
         });
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> RecipeOverridePackHandler.clientTick());

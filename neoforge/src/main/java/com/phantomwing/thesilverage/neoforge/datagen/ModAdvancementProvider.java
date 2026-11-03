@@ -97,6 +97,7 @@ public class ModAdvancementProvider extends AdvancementSubProvider {
                 new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID));
         getAdvancement(this.output, obtainSilverIngot, HURT_UNDEAD_WITH_SILVER_ARMOR, ModItems.SILVER_CHESTPLATE.get(), AdvancementType.TASK,
                 builder -> builder.addCriterion("hurt_undead", SilverArmorHurtTrigger.TriggerInstance.hurtUndead()),
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID),
                 new ConfigBooleanCondition(Configuration.SILVER_AFFECTS_UNDEAD_ID),
                 new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID));
     }

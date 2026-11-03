@@ -1,0 +1,10 @@
+[
+  {
+    "id": "silver",
+    "durability": 62,
+    "length": 14,
+    "enchantability": 10,
+    "damageOnHit": 1,
+    "repairItemsTag": "yo_hooks:silver_repairable"
+  }
+]

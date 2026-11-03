@@ -189,6 +189,22 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
         tag(ItemTags.SPEARS).add(ModItems.SILVER_SPEAR.get());
+        // What a Sulfur Cube swallowing it turns into, as vanilla's copper blocks, ores and bulbs do.
+        tag(ItemTags.SULFUR_CUBE_ARCHETYPE_SLOW_FLAT)
+                .add(ModItems.SILVER_ORE.get(), ModItems.DEEPSLATE_SILVER_ORE.get(), ModItems.RAW_SILVER_BLOCK.get())
+                .add(ModItems.SILVER_BLOCK.get(), ModItems.EXPOSED_SILVER.get(), ModItems.WEATHERED_SILVER.get(),
+                        ModItems.OXIDIZED_SILVER.get(), ModItems.WAXED_SILVER_BLOCK.get(), ModItems.WAXED_EXPOSED_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_SILVER.get(), ModItems.WAXED_OXIDIZED_SILVER.get())
+                .add(ModItems.CUT_SILVER.get(), ModItems.EXPOSED_CUT_SILVER.get(), ModItems.WEATHERED_CUT_SILVER.get(),
+                        ModItems.OXIDIZED_CUT_SILVER.get(), ModItems.WAXED_CUT_SILVER.get(), ModItems.WAXED_EXPOSED_CUT_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_CUT_SILVER.get(), ModItems.WAXED_OXIDIZED_CUT_SILVER.get())
+                .add(ModItems.CHISELED_SILVER.get(), ModItems.EXPOSED_CHISELED_SILVER.get(),
+                        ModItems.WEATHERED_CHISELED_SILVER.get(), ModItems.OXIDIZED_CHISELED_SILVER.get(),
+                        ModItems.WAXED_CHISELED_SILVER.get(), ModItems.WAXED_EXPOSED_CHISELED_SILVER.get(),
+                        ModItems.WAXED_WEATHERED_CHISELED_SILVER.get(), ModItems.WAXED_OXIDIZED_CHISELED_SILVER.get())
+                .add(ModItems.SILVER_BULB.get(), ModItems.EXPOSED_SILVER_BULB.get(), ModItems.WEATHERED_SILVER_BULB.get(),
+                        ModItems.OXIDIZED_SILVER_BULB.get(), ModItems.WAXED_SILVER_BULB.get(), ModItems.WAXED_EXPOSED_SILVER_BULB.get(),
+                        ModItems.WAXED_WEATHERED_SILVER_BULB.get(), ModItems.WAXED_OXIDIZED_SILVER_BULB.get());
 
         // Every pickaxe gets an amethyst cluster's full four shards.
         tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(ModItems.SILVER_PICKAXE.get());

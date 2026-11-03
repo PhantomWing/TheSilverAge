@@ -6,6 +6,7 @@ import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import com.phantomwing.thesilverage.neoforge.client.TheSilverAgeNeoForgeClient;
+import com.phantomwing.thesilverage.platform.neoforge.CreativeTabPlatformImpl;
 import com.phantomwing.thesilverage.neoforge.condition.ModConditions;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import com.phantomwing.thesilverage.neoforge.loot.ModLootModifiers;
@@ -40,6 +41,7 @@ public final class TheSilverAgeNeoForge {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(TheSilverAgeNeoForge::extendLightningRodPoi);
+        modEventBus.addListener(CreativeTabPlatformImpl::buildContents);
         modEventBus.addListener((ModConfigEvent.Reloading event) -> {
             if (event.getConfig().getModId().equals(TheSilverAge.MOD_ID)) {
                 ModNetworking.configChanged();
