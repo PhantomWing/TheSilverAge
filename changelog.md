@@ -79,6 +79,7 @@
 - Fixed the mod's tags having no names in recipe viewers like JEI and EMI
 - Fixed the Silver Knife, Silver Spear and Silver Nautilus Armor having no name in every language besides English
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
+- Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
 
 # 1.3.3
 ### Fixes
