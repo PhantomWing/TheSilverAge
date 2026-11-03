@@ -1,35 +1,44 @@
 # 1.4.0
 ### Additions
-- Added Silver Lantern, Silver Chain and Silver Bars (including oxidized and waxed variants)
+- Added Silver Chain (including oxidized and waxed variants)
+- Added Silver Bars (including oxidized and waxed variants)
 - Added Silver Brick Wall (including oxidized and waxed variants)
 - Added Silver Pressure Plate (including oxidized and waxed variants)
   - Can't be pressed by hostile mobs
   - Undead mobs take damage on it and avoid it, like other silver blocks
   - The more it tarnishes, the more mobs it takes to give a full signal (1, 3, 5 or 15)
 - Added Silver Lightning Rod (including oxidized and waxed variants)
-- Added Silver Torch, crafted with a Silver Nugget. It burns with a violet flame.
+- Added Silver Torch and Silver Lantern (including oxidized and waxed variants), which burn with a violet flame
+  - The Silver Torch is crafted with a Silver Nugget
   - Undead mobs keep away from Silver Torches and Silver Lanterns when they have no target
   - Can be turned off with the `undead_avoid_silver_light` config option
 - Added Silver Arrows, crafted from 8 arrows around a Silver Ingot
   - They fly faster than normal arrows, so they hit harder
-  - They deal +1 extra damage to undead mobs. Can be turned off with the `enable_silver_smite` config option.
+  - They deal +1 extra damage to undead mobs, which can be turned off with the `enable_silver_smite` config option
   - Sold by master Fletchers, and found in pillager outposts and trial chambers
   - Can be turned off with the `enable_silver_arrows` config option, which stops them from being crafted, traded or found
-- Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe). Stacks with Smite. Can be turned off with the `enable_silver_smite` config option.
-- Silver armor now has a 20% chance per piece to hurt undead mobs that hit you, dealing 1-2 damage (80% for a full set). Silver Horse Armor counts as a full set. Works like Thorns and stacks with it. Can be turned off with the `enable_silver_thorns` config option.
+- Silver tools now deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe)
+  - Stacks with Smite
+  - Can be turned off with the `enable_silver_smite` config option
+- Silver armor now has a 20% chance per piece to hurt undead mobs that hit you, dealing 1-2 damage (80% for a full set)
+  - Silver Horse Armor counts as a full set
+  - Works like Thorns and stacks with it
+  - Can be turned off with the `enable_silver_thorns` config option
 - Undead mobs now take damage while standing on silver blocks, and avoid walking over them
   - The more the silver tarnishes, the slower it hurts
   - Undead mobs can't spawn on silver blocks, except from monster spawners
   - Undead mobs walk off silver blocks when they have no target
   - Can be turned off with the `enable_silver_floor_damage` config option
-- Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons. The Moon Dial will display the current lunar event's name and color.
-- Added compatibility with Werewolves: Become a Beast
-  - Werewolves are sensitive to silver, like undead mobs
-  - Silver tools and armor count as silver for the Werewolves mod
-- Added compatibility with Create: Aquatic Ambitions. Channeling oxidizes silver blocks, like copper.
-- Added the `enable_silver_oxidation` config option. Turning it off stops silver from oxidizing over time and from being waxed with honeycomb. Existing blocks stay in the world and can still be scraped back down with an axe, and the weathered and waxed variants are hidden from the creative tab.
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
+- Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
+- Silver items now also show up in the vanilla creative tabs, beside their vanilla counterparts
+  - The Silver Knife shows up in Farmer's Delight's tab, and the Silver Sheet in Create's
+  - Added the `enable_creative_tab` and `enable_vanilla_creative_tabs` config options, to choose which tabs silver items show up in
+- Added the `enable_silver_oxidation` config option
+  - Turning it off stops silver from oxidizing over time and from being waxed with honeycomb
+  - Existing blocks stay in the world and can still be scraped back down with an axe
+  - The weathered and waxed variants are hidden from the creative tab
 - Added a config option for mobs spawning with silver gear
 - Added the `generate_silver_ore` config option, for modpacks that use another mod's silver ore
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
@@ -38,13 +47,25 @@
 - Added the `silver_affects_undead` config option, which turns off everything silver does to undead mobs at once
 - Added config options for how much extra damage silver tools and Silver Arrows deal to undead mobs (`silver_smite_damage`, `silver_arrow_smite_damage`), and for each piece of Silver Armor's chance to hurt undead mobs that hit you (`silver_thorns_chance`)
 - Added a config screen on Fabric (opened from Mod Menu)
-- Added compatibility with JEI and EMI. Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
+- Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons: the Moon Dial displays the current lunar event's name and color
+- Added compatibility with Werewolves: Become a Beast
+  - Werewolves are sensitive to silver, like undead mobs
+  - Silver tools and armor count as silver for the Werewolves mod
+- Added compatibility with Create: Aquatic Ambitions: channeling oxidizes silver blocks, like copper
 - Added Create washing of Crushed Raw Silver into Silver Nuggets
+- Added compatibility with JEI and EMI: Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
+- Added compatibility with Backported Spears: adds the Silver Spear, crafted like other spears
+- Added compatibility with Vanilla Backport
+  - Adds the Silver Spear, crafted like other spears
+  - Adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
+  - Sulfur Cubes can swallow silver blocks, ores and bulbs, like copper's
+  - Parched can spawn with silver armor
+- Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook, with a range of 14 blocks
+- Added compatibility with Mekanism: adds Silver Dust, Dirty Silver Dust, Silver Clumps, Silver Shards, Silver Crystals and silver slurries, for Mekanism's full ore processing
+  - Only shows up when Mekanism is installed
+- The Silver Spear swings like a spear with Better Combat
+- Silver Bars, Chains, Lanterns and Lightning Rods are now in the tags Vanilla Backport and Copper Age Backport use for their copper ones
 - Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
-- Silver items now also show up in the vanilla creative tabs, beside their vanilla counterparts
-  - The Silver Knife shows up in Farmer's Delight's tab, and the Silver Sheet in Create's
-  - Added the `enable_creative_tab` and `enable_vanilla_creative_tabs` config options, to choose which tabs silver items show up in
-- Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
 - Updated tags for better compatibility with vanilla and other mods
   - Added the `thesilverage:sensitive_to_silver` tag, so modpacks can make other mobs sensitive to silver
   - Added the `thesilverage:cannot_press_silver_pressure_plates` tag, so modpacks can keep other mobs from pressing Silver Pressure Plates
@@ -57,20 +78,11 @@
   - Moved Silver Ore from the `c:ore_rates/singular` tag to the `c:ore_rates/dense` tag
   - Added the `c:is_overworld` biome tag to the `thesilverage:has_silver_ore` tag
   - Added Silver Chains, Silver Lanterns and Silver Brick Walls to Sable's tags
-- Added compatibility with Backported Spears: adds the Silver Spear, crafted like other spears
-- Added compatibility with Vanilla Backport
-  - Adds the Silver Spear, crafted like other spears
-  - Adds Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
-  - Sulfur Cubes can swallow silver blocks, ores and bulbs, like copper's
-  - Parched can spawn with silver armor
-- Added compatibility with Yori3o's Grappling Hooks: adds the Silver Grappling Hook, with a range of 14 blocks
-- Added compatibility with Mekanism: adds Silver Dust, Dirty Silver Dust, Silver Clumps, Silver Shards, Silver Crystals and silver slurries, for Mekanism's full ore processing. Only shows up when Mekanism is installed.
-- The Silver Spear swings like a spear with Better Combat
-- Silver Bars, Chains, Lanterns and Lightning Rods are now in the tags Vanilla Backport and Copper Age Backport use for their copper ones
 
 ### Changes
 - Silver Axe attack damage increased from 8 to 8.5
-- Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags). Silver tools can be repaired with it too.
+- Recipes that use Silver Ingots or Silver Nuggets now also accept silver from other mods, such as Occultism's (the c:ingots/silver and c:nuggets/silver tags)
+  - Silver tools can be repaired with it too
 - Silver Doors and Silver Trapdoors can now be opened by wind charges
 - Silver Trapdoors are now crafted from 4 Silver Ingots, like iron trapdoors
 - Silver Bricks are now crafted from 4 Cut Silver (including oxidized and waxed variants)
@@ -82,8 +94,8 @@
 - Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
 - Crafting a Silver Bulb (and its variants) now yields 4 instead of 1
 - Crafting Chiseled Silver from Cut Silver Slabs (and its variants) now yields 1 instead of 2
-- Added names for the mod's tags, shown by recipe viewers like JEI and EMI, in every language.
-- Added the missing Silver Knife name in every language besides English.
+- Fixed the mod's tags having no names in recipe viewers like JEI and EMI
+- Fixed the Silver Knife having no name in every language besides English
 - Fixed jungle temples giving a Silver Ingot instead of Silver Horse Armor
 - Fixed Glistering Melon Slices accepting Silver Nuggets with `override_vanilla_recipes` turned off
 - Fixed the Brewing Stand needing Stone instead of Cobblestone with `override_vanilla_recipes` turned off
