@@ -76,6 +76,10 @@ configurations {
 // `-Precipe_viewer=jei|emi|both|none` toggle are preserved on the version/1.21 branch
 // and return once a 1.21.6 viewer ships. See gradle.properties PORT NOTES.
 
+// Which optional mods the dev runs load, one switch each (gradle.properties).
+//   ./gradlew :fabric:runClient -Penable_grappling_hooks=false
+def loadHooks = (project.findProperty('enable_grappling_hooks') ?: rootProject.enable_grappling_hooks).toString().toBoolean()
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
@@ -87,6 +91,11 @@ dependencies {
 
     // ---- Dev-runtime niceties (modLocalRuntime ONLY — never compiled against,
     //      never shipped, never a hard dependency; mirrors the NeoForge intent). ----
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json (gradle.properties).
+    if (loadHooks && !runningGameTest) {
+        modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}")
+    }
 
     // NOTE (1.21.6 branch): no Fabric dev-runtime niceties.
     //  * AppleSkin: dropped — no 1.21.4–1.21.6 build.
