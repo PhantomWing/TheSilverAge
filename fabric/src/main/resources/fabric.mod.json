@@ -35,5 +35,8 @@
     "minecraft": "${dep_minecraft_fabric}",
     "architectury": "${dep_architectury_fabric}",
     "cloth-config": "${dep_cloth}"
+  },
+  "suggests": {
+    "yo_hooks": "*"
   }
 }

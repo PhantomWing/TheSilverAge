@@ -33,6 +33,7 @@
   - One for each vanilla recipe override (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Added a config screen on Fabric (opened from Mod Menu)
 - Added compatibility with Yori3o's Grappling Hooks: the Silver Grappling Hook, with a range of 14 blocks
+  - Fabric only on this version
 - Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
 - Updated tags for better compatibility with vanilla and other mods
   - Added `thesilverage:sensitive_to_silver`, so modpacks can make other mobs sensitive to silver

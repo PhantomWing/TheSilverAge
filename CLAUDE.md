@@ -106,9 +106,11 @@ on a rung where they have no build; that does not block the line.
   an anchor yet), and on Fabric it inserts in a phase after the default one. Both throw on an anchor the tab doesn't
   list, so `VanillaTabs` can try a list of anchors.
 - Yori3o's Grappling Hooks reads `yo_hooks/hooks.json` to make its hooks, so the Silver Grappling Hook is data alone:
-  the hook (62 durability, 14 long, 10 enchantability), its `yo_hooks` models, `items/` definitions (the handle while
-  cast, by its `yo_hooks:hook_active` condition), textures, names and tags in `common`, and `hooks.json` and the
-  recipes in `fabric/src/main/resources`, Fabric's alone. Its Fabric build (4.5.3) reads every mod's `hooks.json`; its
+  the hook (62 durability, 14 long, 10 enchantability), its `yo_hooks` models, textures, names, tags and recipes, all
+  in `fabric/src/main/resources`, Fabric's alone. The hook's `items/` definition (the handle while cast) names the mod's
+  `yo_hooks:hook_active` condition, which fails to parse with an error wherever the mod is missing, so it is in a
+  built-in pack, `resourcepacks/silver_grappling_hook`, that the Fabric client registers only with the mod loaded (1.21.1's
+  model override was ignored instead). Its Fabric build (4.5.3) reads every mod's `hooks.json`; its
   NeoForge build for 1.21.6-1.21.8 (4.5.1) reads only the first one the class loader finds, which was ours, so its own
   hooks went unregistered and its enchantments failed to load with the world. Fabric's dev runs load it
   (`enable_grappling_hooks`), NeoForge's don't.
