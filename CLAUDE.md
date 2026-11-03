@@ -65,8 +65,14 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
-  tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
+  (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
+  honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, armour and horse
+  armour - as `enable_silver_arrows` takes the arrows: their recipes and the armour advancement through their
+  conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs spawning with it, folded into
+  `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made still works and still
+  smelts into nuggets. 1.21.1's spear, nautilus armour and grappling hook aren't on this line.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -88,6 +94,23 @@ on a rung where they have no build; that does not block the line.
 - Play scenarios in `scenarios/`, one of them Fabric's alone (the config screen Mod Menu opens), and in `scenarios/server` one per modloader played on the line's dedicated server: turning `override_vanilla_recipes` off and on with `server_config` and `/reload`, the repeater's and comparator's textures following without a rejoin.
 - The recipe overrides' textures are three built-in resource packs, `silver_repeater`, `silver_comparator` and `silver_brewing_stand`, one per override option. The repeater's and comparator's packs hold a copy of vanilla's blockstate pointing at child models in the mod's namespace (`thesilverage:block/silver_repeater_*`), never copies of vanilla's models: 1.21.2 reworked the redstone torch in them (`kb/mc-deltas/1.21.1-to-1.21.3.md`, issue #10).
 - No Create, Create: Aquatic Ambitions, EMI, Enhanced Celestials (1 or 2) or Werewolves for 1.21.5, so that part of 1.4's compat isn't on this line: no EMI info pages, no Create recipes, and `compat/LunarEvents` answers as for an ordinary night (the Moon Dial keeps its layered textures, and its moon takes the `thesilverage:lunar_event` tint source in its `items/` definition, `client/ModItemColors`: from 1.21.4 an item's tint is data, not a colour handler). JEI has builds for both loaders (21.4.0.27, the Fabric one on JEI's maven alone): `compat/jei` and its info pages (`compat/SilverInfo`) are compiled against `jei-1.21.5-common-api` and loaded in both loaders' dev runs, Fabric's manifest naming the plugin as `jei_mod_plugin`. The Werewolves entries in the tags stay, optional, as on 1.21.1. `enable_create_spout_oxidation` is still in both configs and does nothing here.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife in its own tab, which Farmer's
+  Delight Refabricated has on Fabric here; the sheet after Create's Golden Sheet in `create:base`, dormant without
+  Create). Redstone Blocks lists only the waxed bulbs, plates and rods, as vanilla does its copper bulbs. The tabs are
+  filled through `CreativeTabPlatform` rather than Architectury's `CreativeTabRegistry.modify`, which listens on
+  Architectury's bus on NeoForge, before other mods have filled the tab: NeoForge's side listens on this mod's own bus,
+  after the mods `neoforge.mods.toml` orders before it (none on this line yet; add an optional `AFTER` dependency
+  for a mod whose item becomes an anchor), and Fabric's inserts in a phase after the default one. NeoForge's
+  `insertAfter` throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of anchors; Fabric's
+  `addAfter` would append it at the end, so its side throws too.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`: `recipe_viewer` (`jei` or
+  `none`, both loaders) and `enable_jade` (NeoForge); `-Penable_jade=false` and the like test without one. The
+  game-test runs load neither.
+- Yori3o's Grappling Hooks has 1.21.5 builds (up to 3.8.0), but they register their four hooks in code and don't read
+  `yo_hooks/hooks.json`, and their Fabric builds ask for Fabric Loader 0.17, so the Silver Grappling Hook can't be on
+  this line.
 - NeoForge 21.5 has no `ExtendPoiTypesEvent`: the Silver Lightning Rods' states go into `GameData.getBlockStatePointOfInterestTypeMap()` in common setup, as Fabric's `PoiTypesAccessor` puts them into vanilla's map. Its `LightningBolt` checks the rod with vanilla's `state.is(Blocks.LIGHTNING_ROD)`, so NeoForge takes Fabric's `LightningBoltMixin` too.
 - Models are vanilla's `ModelProvider` (`ModModelProvider`), which also writes the `items/` client item definitions; NeoForge's datagen runs as `clientData`. Blockstates are written with 1.21.5's `MultiVariant` and `VariantMutator` (`plainVariant`, `Y_ROT_90`, `ROTATIONS_COLUMN_WITH_FACING`). Render layers aren't in the model JSON from 1.21.4: the cutout and translucent blocks (doors, trapdoors, lanterns, chains, bars, the torch, grates) are registered in `client/ModItemProperties` on both loaders.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged with `minecraft_version` alone, which is the whole rung here.

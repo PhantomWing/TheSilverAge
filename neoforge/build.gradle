@@ -124,6 +124,16 @@ tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'ru
 // NOTE (1.21.5 branch): Create is still unavailable, so its toggle stays dropped.
 // JEI has NeoForge and Fabric 1.21.5 builds; EMI has none.
 
+// Which optional mods the dev runs load, one switch each (gradle.properties).
+//   ./gradlew :neoforge:runClient -Precipe_viewer=jei|none -Penable_jade=false
+def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
+if (!['jei', 'none'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, none")
+}
+def loadJei = selectedRecipeViewer == 'jei'
+def loadJade = (project.findProperty('enable_jade') ?: rootProject.enable_jade).toString().toBoolean()
+logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer}, Jade: ${loadJade}")
+
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
     // Architectury API (NeoForge).
@@ -137,8 +147,10 @@ dependencies {
 
     // Jade and JEI - dev-runtime niceties (runtime-only). Never on the game-test run: they send their packets to a
     // test's mock player, whose connection has none of them, and crash the server.
-    if (!runningGameTest) {
+    if (loadJade && !runningGameTest) {
         modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    }
+    if (loadJei && !runningGameTest) {
         modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_neoforge_version}")
     }
 

@@ -71,8 +71,14 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
-// NOTE (1.21.5 branch): JEI is back on Fabric (dev runtime only); EMI has no 1.21.5 build, so the
-// `-Precipe_viewer=...` toggle stays dropped. See gradle.properties PORT NOTES.
+// Which recipe viewer the dev runs load (gradle.properties): JEI or none, since EMI has no 1.21.5 build.
+//   ./gradlew :fabric:runClient -Precipe_viewer=jei|none
+def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
+if (!['jei', 'none'].contains(selectedRecipeViewer)) {
+    throw new GradleException("Invalid recipe_viewer='${selectedRecipeViewer}'. Valid values: jei, none")
+}
+def loadJei = selectedRecipeViewer == 'jei'
+logger.lifecycle("[TheSilverAge] (fabric) Recipe viewer: ${selectedRecipeViewer}")
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
@@ -89,7 +95,7 @@ dependencies {
     // JEI - recipe viewer, dev-runtime only; its info pages' plugin is in common (compat/jei). JEI publishes its Fabric
     // 1.21.5 build to its own maven alone. Not on the game-test run, where it has nothing to show.
     // AppleSkin is left out; EMI has no 1.21.5 build.
-    if (!runningGameTest) {
+    if (loadJei && !runningGameTest) {
         modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_neoforge_version}")
     }
 
