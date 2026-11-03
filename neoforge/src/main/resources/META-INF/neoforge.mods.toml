@@ -43,3 +43,12 @@ versionRange = "${dep_architectury_neoforge}"
 ordering = "AFTER"
 side = "BOTH"
 
+
+# Optional: after Backported Spears, so the Silver Spear goes in the Combat tab after its Golden Spear, which it adds in
+# the same creative tab event (VanillaTabs), and is made with the spear components it registers.
+[[dependencies.${mod_id}]]
+modId = "spears"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

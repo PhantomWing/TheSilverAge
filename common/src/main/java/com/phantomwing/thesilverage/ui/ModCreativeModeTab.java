@@ -4,6 +4,7 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.SilverOxidation;
 import com.phantomwing.thesilverage.client.ServerContentSettings;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -21,22 +22,32 @@ public class ModCreativeModeTab {
             CREATIVE_MODE_TABS.register(TheSilverAge.MOD_ID + "_tab", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(ModItems.SILVER_INGOT.get()))
                     .title(Component.translatable(("item_group." + TheSilverAge.MOD_ID)))
-                    .displayItems((parameters, output) -> ModItems.CREATIVE_TAB_ITEMS.forEach(item -> {
-                        if (isShown(item.get())) {
-                            output.accept(item.get());
+                    // A category tab with nothing to show isn't drawn, which is how the option hides it.
+                    .displayItems((parameters, output) -> {
+                        if (!CommonConfig.creativeTab()) {
+                            return;
                         }
-                    }))
+                        ModItems.CREATIVE_TAB_ITEMS.forEach(item -> {
+                            if (isShown(item.get())) {
+                                output.accept(item.get());
+                            }
+                        });
+                    })
                     .build());
 
     /**
      * Whether the creative tabs list {@code item}: one of the mod's tab items, but not the weathered and waxed variants
-     * while oxidation is off, which are unobtainable in survival then, nor Silver Arrows while they can't be got.
+     * while oxidation is off, which are unobtainable in survival then, nor Silver Arrows or silver gear while they can't
+     * be got.
      */
     public static boolean isShown(Item item) {
         if (ModItems.CREATIVE_TAB_ITEMS.stream().noneMatch(entry -> entry.get() == item)) {
             return false;
         }
         if (item == ModItems.SILVER_ARROW.get() && !ServerContentSettings.arrows()) {
+            return false;
+        }
+        if (ModItems.isSilverGear(item) && !ServerContentSettings.gear()) {
             return false;
         }
         return SilverOxidation.enabledOnClient() || !(item instanceof BlockItem blockItem)

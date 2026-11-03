@@ -97,7 +97,7 @@ public class ModRecipeProvider extends RecipeProvider {
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
         // Caverns & Chasms crafts its own silver tools and armor from the same grids and tag, so a pack can turn ours off.
-        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID));
 
         // Tools
         sword(gearGated, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
@@ -110,7 +110,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // Gated on FD being present — without FD the item is a hidden fallback,
         // so it has no recipe. It is gear too, whose grid another mod's silver knife takes.
         var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT),
-                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID));
         shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
@@ -118,6 +118,21 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('I', Items.STICK)
                 .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
                 .save(fdGated);
+
+        // Backported Spears compat: the Silver Spear, as 1.21.11's (an ingot over two sticks, corner to corner), and
+        // its smelting into a nugget. Without the mod the item is a hidden fallback, so it has neither.
+        var spearsGated = output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS),
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID));
+        shaped(RecipeCategory.COMBAT, ModItems.SILVER_SPEAR.get(), 1)
+                .pattern("  #")
+                .pattern(" S ")
+                .pattern("S  ")
+                .define('#', SILVER_INGOTS)
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(SILVER_INGOTS), has(SILVER_INGOTS))
+                .save(spearsGated);
+        oreSmeltingRecipes(output.withConditions(new ModLoadedCondition(ModIds.BACKPORTED_SPEARS)),
+                ModItems.SILVER_SPEAR.get(), ModItems.SILVER_NUGGET.get(), XP_TINY);
 
         // Armor
         helmet(gearGated, ModItems.SILVER_HELMET.get(), SILVER_INGOTS);

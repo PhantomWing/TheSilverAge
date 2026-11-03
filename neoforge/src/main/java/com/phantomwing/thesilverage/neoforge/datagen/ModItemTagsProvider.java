@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.neoforge.datagen;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
+import com.phantomwing.thesilverage.tags.BackportTags;
 import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -66,7 +67,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.SILVER_PICKAXE.get())
                 .add(ModItems.SILVER_SHOVEL.get())
                 .add(ModItems.SILVER_HOE.get())
-                .add(ModItems.SILVER_KNIFE.get());
+                .add(ModItems.SILVER_KNIFE.get())
+                .add(ModItems.SILVER_SPEAR.get());
 
         // Silver armour burning the undead that strike its wearer: a piece's chance each, and a full set's for
         // Silver Horse Armor, all the silver a horse wears.
@@ -171,6 +173,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.PICKAXES).add(ModItems.SILVER_PICKAXE.get());
         tag(ItemTags.AXES).add(ModItems.SILVER_AXE.get());
         tag(ItemTags.HOES).add(ModItems.SILVER_HOE.get());
+        // 1.21.11's spears, which Backported Spears fills on this version and puts into the enchantable tags, so the
+        // Silver Spear takes Lunge and the melee enchantments through it.
+        tag(BackportTags.Items.SPEARS).add(ModItems.SILVER_SPEAR.get());
 
         // Every pickaxe gets an amethyst cluster's full four shards.
         tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(ModItems.SILVER_PICKAXE.get());

@@ -121,7 +121,7 @@ public final class ModNetworking {
             NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
         }
         if (NetworkManager.canPlayerReceive(player, ContentSyncPayload.TYPE)) {
-            NetworkManager.sendToPlayer(player, new ContentSyncPayload(SilverOxidation.enabled(), CommonConfig.silverArrows()));
+            NetworkManager.sendToPlayer(player, new ContentSyncPayload(SilverOxidation.enabled(), CommonConfig.silverArrows(), CommonConfig.silverGear()));
         }
     }
 
@@ -145,24 +145,26 @@ public final class ModNetworking {
                 (payload, context) -> context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings())));
         NetworkManager.registerReceiver(NetworkManager.Side.S2C,
                 ContentSyncPayload.TYPE, ContentSyncPayload.STREAM_CODEC,
-                (payload, context) -> context.queue(() -> setContentFromServer(payload.oxidation(), payload.arrows())));
+                (payload, context) -> context.queue(() -> setContentFromServer(payload.oxidation(), payload.arrows(), payload.gear())));
     }
 
     /**
-     * The server's {@code enable_silver_oxidation} and {@code enable_silver_arrows} on the client, or {@code null}s on
+     * The server's {@code enable_silver_oxidation}, {@code enable_silver_arrows} and {@code enable_silver_gear} on the client, or {@code null}s on
      * disconnect for the client's own. Where that changes what the creative tabs hide, they are built again the next
      * time one opens.
      */
-    public static void setContentFromServer(Boolean oxidation, Boolean arrows) {
+    public static void setContentFromServer(Boolean oxidation, Boolean arrows, Boolean gear) {
         boolean oxidationBefore = SilverOxidation.enabledOnClient();
         boolean arrowsBefore = ServerContentSettings.arrows();
+        boolean gearBefore = ServerContentSettings.gear();
         if (oxidation == null) {
             SilverOxidation.clearFromServer();
         } else {
             SilverOxidation.setFromServer(oxidation);
         }
-        ServerContentSettings.setArrowsFromServer(arrows);
-        if (SilverOxidation.enabledOnClient() != oxidationBefore || ServerContentSettings.arrows() != arrowsBefore) {
+        ServerContentSettings.setFromServer(arrows, gear);
+        if (SilverOxidation.enabledOnClient() != oxidationBefore || ServerContentSettings.arrows() != arrowsBefore
+                || ServerContentSettings.gear() != gearBefore) {
             CreativeModeTabs.CACHED_PARAMETERS = null;
         }
     }

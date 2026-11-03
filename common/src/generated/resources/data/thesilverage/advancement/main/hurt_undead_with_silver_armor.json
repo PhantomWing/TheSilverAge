@@ -6,6 +6,10 @@
     },
     {
       "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    },
+    {
+      "type": "thesilverage:config_boolean",
       "settingId": "enable_silver_thorns"
     }
   ],
@@ -31,6 +35,10 @@
     {
       "condition": "thesilverage:config_boolean",
       "settingId": "silver_affects_undead"
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
     },
     {
       "condition": "thesilverage:config_boolean",

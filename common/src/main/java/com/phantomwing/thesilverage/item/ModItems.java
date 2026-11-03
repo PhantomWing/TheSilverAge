@@ -8,6 +8,7 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
 import com.phantomwing.thesilverage.item.custom.SilverArrowItem;
+import com.phantomwing.thesilverage.platform.BackportPlatform;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.platform.KnifePlatform;
 import com.phantomwing.thesilverage.tool.ModTiers;
@@ -25,8 +26,11 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(TheSilverAge.MOD_ID, Registries.ITEM);
@@ -55,6 +59,9 @@ public class ModItems {
     // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
+    // 1.21.11's Silver Spear, made as Backported Spears makes a spear when it is installed.
+    public static final RegistrySupplier<Item> SILVER_SPEAR = registerWithModCompat("silver_spear",
+            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1).setId(itemKey("silver_spear"))), ModIds.BACKPORTED_SPEARS);
     public static final RegistrySupplier<Item> SILVER_ARROW = register("silver_arrow", SilverArrowItem::new, baseItem());
 
     // Silver armor
@@ -275,6 +282,13 @@ public class ModItems {
         return new Item.Properties();
     }
 
+    /** The tools, weapons and armor {@code enable_silver_gear} takes away. */
+    public static boolean isSilverGear(Item item) {
+        return Stream.of(SILVER_SHOVEL, SILVER_PICKAXE, SILVER_AXE, SILVER_HOE, SILVER_SWORD, SILVER_KNIFE, SILVER_SPEAR,
+                        SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, SILVER_HORSE_ARMOR)
+                .anyMatch(gear -> gear.get() == item);
+    }
+
     // Registry functions
     private static RegistrySupplier<Item> registerArmor(String name, ArmorMaterial material, ArmorType armorType) {
         // 1.21.5: ArmorItem removed — armor is a plain Item whose Item.Properties#humanoidArmor
@@ -346,8 +360,13 @@ public class ModItems {
 
     /** Register an item that only appears in the creative tab when the given mod is loaded. */
     private static RegistrySupplier<Item> registerWithModCompat(String name, String modId) {
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> new Item(baseItem().setId(itemKey(name))));
-        if (CommonPlatform.isModLoaded(modId)) {
+        return registerWithModCompat(name, () -> new Item(baseItem().setId(itemKey(name))), modId);
+    }
+
+    /** An item the creative tabs show only where one of {@code modIds} is loaded. */
+    private static RegistrySupplier<Item> registerWithModCompat(String name, Supplier<Item> factory, String... modIds) {
+        RegistrySupplier<Item> item = ITEMS.register(name, factory);
+        if (Arrays.stream(modIds).anyMatch(CommonPlatform::isModLoaded)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
         return item;

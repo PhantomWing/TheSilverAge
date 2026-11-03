@@ -65,8 +65,13 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients (`ContentSyncPayload`), so the creative
   tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour and horse
+  armour - as `enable_silver_arrows` takes the arrows: their recipes and the armour advancement through their conditions,
+  their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs spawning with it, folded into
+  `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made still works and still smelts
+  into nuggets.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -88,6 +93,35 @@ on a rung where they have no build; that does not block the line.
 - Play scenarios in `scenarios/`, one of them Fabric's alone (the config screen Mod Menu opens), and in `scenarios/server` one per modloader played on the line's dedicated server: turning `override_vanilla_recipes` off and on with `server_config` and `/reload`, the repeater's and comparator's textures following without a rejoin.
 - The recipe overrides' textures are three built-in resource packs, `silver_repeater`, `silver_comparator` and `silver_brewing_stand`, one per override option. The repeater's and comparator's packs hold a copy of vanilla's blockstate pointing at child models in the mod's namespace (`thesilverage:block/silver_repeater_*`), never copies of vanilla's models: 1.21.2 reworked the redstone torch in them (`kb/mc-deltas/1.21.1-to-1.21.3.md`, issue #10).
 - No Create for NeoForge, Create: Aquatic Ambitions, EMI, Enhanced Celestials (1 or 2) or Werewolves for 1.21.9 or 1.21.10 (checked 2026-11-01), so that part of 1.4's compat isn't on this line: no channeling, and `compat/LunarEvents` answers as for an ordinary night (the Moon Dial keeps its layered textures, and its moon takes the `thesilverage:lunar_event` tint source in its `items/` definition, `client/ModItemColors`: from 1.21.4 an item's tint is data, not a colour handler). JEI (26.3.0.31, both loaders) shows `compat/SilverInfo`'s info pages through the common `compat/jei` plugin, compiled against `jei-1.21.10-common-api`; Fabric names it as a `jei_mod_plugin` entrypoint. The Werewolves entries in the tags stay, optional, as on 1.21.1. `enable_create_spout_oxidation` does something on Fabric alone.
+- The Silver Spear (2026-11-03) is 1.21.11's, which Backported Spears (`spears`) backports to this version. It is always
+  registered, so a world keeps it, and only shown in the creative tabs with Backported Spears (`ModItems`,
+  `BackportPlatform`): with it the spear is made by its `Spears.registerSpearRaw(id, material, ...)`, which builds the item
+  without registering it, with 1.21.11's numbers; without it a plain item. Its recipe and smelting load only with the mod,
+  it is in `minecraft:spears` (`BackportTags`), which Backported Spears puts into the enchantable tags, and in
+  `silver_smite_tools`. Its `items/` definition draws the flat sprite in the GUI, on the ground and in a frame and
+  `silver_spear_in_hand` otherwise (`ModModelProvider.spear`), as Backported Spears draws its own, the held model's parent
+  the mod's own `spear_in_hand` copy. `weapon_attributes/silver_spear.json` gives it Better Combat's spear swings.
+  NeoForge's dev runs load Backported Spears 1.0.1 (`enable_backported_spears`), but for the game tests and datagen. Its
+  Fabric jar is built with Loom 1.17, which this rung's Loom 1.14 refuses to remap, and asks for Fabric Loader 0.19.5, so
+  Fabric compiles against a stub of its `Spears` (`fabric/src/main/java/com/notunanancyowen/spears`, left out of the jar
+  as the Farmer's Delight knife stub is) and its dev runs go without it. On Fabric the spear is only a spear where
+  Backported Spears registered its components first (`suggests` orders it); otherwise it falls back to a plain item and
+  logs a warning.
+- Yori3o's Grappling Hooks has no Silver Grappling Hook on this line: its 1.21.9-1.21.10 builds (3.8.0 NeoForge, 3.10.0
+  Fabric) register five fixed hooks in code and read no `yo_hooks/hooks.json`, which its 1.21.1 and 26.x builds do.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife in `farmersdelight:farmersdelight`
+  where Farmer's Delight Refabricated is installed, the sheet after Create Fly's Golden Sheet in `create:base`, the spear
+  after Backported Spears' Golden Spear). Redstone Blocks lists only the waxed bulbs, plates and rods, as vanilla does
+  its copper bulbs and rod. An anchor that only another mod adds needs that mod's insertions to run first, which
+  `neoforge.mods.toml` orders with an optional `AFTER` dependency on `spears`. That ordering only reaches listeners on
+  this mod's own bus, so on NeoForge the tabs are filled through `CreativeTabPlatform` rather than Architectury's
+  `CreativeTabRegistry.modify`, which listens on Architectury's bus and ran before the other mods had filled the tab.
+  NeoForge's `insertAfter` throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of anchors; Fabric's
+  `addAfter` would append one it doesn't list at the end, so its side throws too, and inserts in a phase after the default one.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (Create Fly,
+  Backported Spears); `-Penable_backported_spears=false` and the like test without one.
 - **Create Fly** (Fabric's Create, mod id `create`) gets 1.21.1's Create recipes in its own format, which isn't Create's (one `ingredient`, a Deployer's `target`, a Spout's water in droplets, 20250 for Create's 250 mB): `neoforge/.../datagen/CreateFlyRecipeProvider` writes them as JSON from `SilverWeatheringSpec` into `fabric/src/generated/resources`, which only the Fabric jar carries (`fabric/build.gradle`'s `main` resources; the data run passes the folder as `thesilverage.datagen.fabricOutput`), each under `fabric:load_conditions` alone. It also crushes the ore and raw silver, which Create Fly leaves out, and smelts Crushed Raw Silver. A Deployer's and Press's result is written as both `result` and `results`, since 6.0.9-2 reads the list and the builds before it one stack. The Fabric dev runs load Create Fly 1.21.10-6.0.9-1 (`enable_create_fly`), the game tests too, but for the portal's server scenarios, whose `/reload` with Create Fly held the dev server's thread past the client's 30-second timeout on 1.21.8 (`fabric/build.gradle` knows them by their init scripts); 6.0.9-2 is built with Loom 1.15, which this rung's Loom 1.14 refuses. It needs Fabric Loader 0.17.3, so the dev runs use `fabric_loader_dev_version` while the manifest keeps `fabric_loader_version`. `create_processes_silver` reads each recipe back through its serializer. `common/src/generated` holds no Create recipes: 1.21.1's, in Create's format, which Create Fly fails to parse, were left there by earlier ports and removed.
 - Lightning rods: 1.21.9 made vanilla's own rods oxidize and changed `LightningBolt` to power any `LightningRodBlock` and to scrape the struck block itself when it is a `WeatheringCopper`, so a Silver Lightning Rod powers and scrapes back to bare silver with no mixin (the 1.21.x lines before this have a `LightningBoltMixin`). The rods still need lightning's point of interest: NeoForge adds them through `ExtendPoiTypesEvent`, which every NeoForge for 1.21.9 and 1.21.10 has, Fabric through `PoiTypesAccessor`. They are in `minecraft:lightning_rods` too, which Channeling and the skeleton trap read, and the bars, chains and lanterns in 1.21.9's `minecraft:bars`, `chains` and `lanterns` (bars of two kinds side by side hide the faces between them only when both are in `bars`). Vanilla's chain is `minecraft:iron_chain` from 1.21.9.
 - 1.21.9 removed `IModFile.findResource`: NeoForge's `RecipeOverridePackHandler` finds and serves the three packs through the mod file's `JarContents` (`containsFile`, `JarContentsResourcesSupplier`), as NeoForge's own pack finder does; a folder resolved from its content roots exists in a dev run only (`kb/mc-deltas/1.21.8-to-1.21.10.md`, issue #9). The packs' `pack.mcmeta` give `min_format` 69 and `max_format` [69, 0].

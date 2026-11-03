@@ -113,6 +113,10 @@ dependencies {
         modLocalRuntime("maven.modrinth:create-fly:${rootProject.create_fly_version}")
     }
 
+    // Backported Spears, which the Silver Spear is made with (BackportPlatformImpl): its Fabric jar is built with Loom
+    // 1.17, which this rung's Loom refuses, and asks for Fabric Loader 0.19.5, past the dev loader, so the Fabric side
+    // compiles against a stub (com/notunanancyowen/spears/Spears, left out of the jar) and its dev runs go without it.
+
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the
     // Fabric AutoConfig config (TheSilverAgeFabricConfig), mirroring how
     // RusticDelight-Fabric does its config. Being a first-class modImplementation
@@ -180,6 +184,8 @@ shadowJar {
     // with it. (Harmless in TSA dev: FDR is absent there, so the guarded
     // SilverKnifeItem never loads and the stub is never touched.)
     exclude 'vectorwing/**'
+    // The compile-only Backported Spears stub, likewise: the real Spears binds at runtime.
+    exclude 'com/notunanancyowen/**'
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = 'dev-shadow'
