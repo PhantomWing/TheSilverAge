@@ -18,6 +18,7 @@ def playingOnServer = gradle.startParameter.initScripts.any {
     it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
 }
 def loadCreateFly = !playingOnServer && (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
+def loadHooks = (project.findProperty('enable_grappling_hooks') ?: rootProject.enable_grappling_hooks).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -97,6 +98,13 @@ dependencies {
     // into src/generated/resources, which only this jar carries (see sourceSets above).
     if (loadCreateFly) {
         localRuntime("maven.modrinth:create-fly:${rootProject.create_fly_version}")
+    }
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json. Never compiled against;
+    // its 26.1 build asks for Fabric Loader 0.19, which this line has.
+    if (loadHooks && !runningGameTest) {
+        localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}")
+        localRuntime("maven.modrinth:yacl:${rootProject.yacl_fabric_version}")
     }
 
     // Cloth Config — compiled + shipped; backs the Fabric AutoConfig config. fabric-api excluded to avoid a transitive downgrade.

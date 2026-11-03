@@ -43,6 +43,7 @@ public class ModAdvancementProvider implements AdvancementSubProvider {
     static final Map<Identifier, List<ICondition>> CONDITIONS = Map.of(
             Identifier.parse(getNameId(KILL_UNDEAD_WITH_SILVER_ARROW)), List.of(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_ARROWS_ID)),
             Identifier.parse(getNameId(HURT_UNDEAD_WITH_SILVER_ARMOR)), List.of(
+                    new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID),
                     new ConfigBooleanCondition(Configuration.SILVER_AFFECTS_UNDEAD_ID),
                     new ConfigBooleanCondition(Configuration.ENABLE_SILVER_THORNS_ID)));
 

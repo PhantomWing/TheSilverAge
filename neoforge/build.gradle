@@ -18,6 +18,9 @@ def datagenFabricOutput = rootProject.file('fabric/src/generated/resources/').ab
 
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().contains('data') }
+// Which optional mods the dev runs load, one switch each (gradle.properties).
+def loadHooks = (project.findProperty('enable_grappling_hooks') ?: rootProject.enable_grappling_hooks).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -124,6 +127,16 @@ dependencies {
     if (!runningGameTest) {
         localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
+    }
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json. Never compiled against.
+    if (loadHooks && !runningGameTest && !runningDataGen) {
+        localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
+        localRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
+        // The libraries YACL's jar bundles, which a dev run doesn't unpack.
+        forgeRuntimeLibrary("org.quiltmc.parsers:json:0.2.1")
+        forgeRuntimeLibrary("org.quiltmc.parsers:gson:0.2.1")
+        forgeRuntimeLibrary("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
     }
 }
 

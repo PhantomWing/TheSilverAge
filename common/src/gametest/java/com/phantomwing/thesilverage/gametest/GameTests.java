@@ -53,6 +53,8 @@ public final class GameTests {
             test("dispensers_fire_silver_arrows", SilverArrowGameTest::dispensersFireSilverArrows),
             test("silver_arrows_in_pillager_outposts", SilverLootGameTest::silverArrowsInPillagerOutposts),
             test("silver_arrow_loot_follows_its_config", SilverLootGameTest::silverArrowLootFollowsItsConfig),
+            test("silver_gear_loot_follows_its_config", SilverLootGameTest::silverGearLootFollowsItsConfig),
+            test("mob_gear_follows_the_gear_config", SilverGearGameTest::mobGearFollowsTheGearConfig),
             test("silver_armor_burns_undead_attackers", SilverArmorGameTest::silverArmorBurnsUndeadAttackers),
             test("silver_horse_armor_counts_as_a_full_set", SilverArmorGameTest::silverHorseArmorCountsAsAFullSet),
             test("hostile_mobs_dont_press_silver_plates", SilverPressurePlateGameTest::hostileMobsDontPressSilverPlates),

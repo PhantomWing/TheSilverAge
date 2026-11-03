@@ -65,8 +65,14 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
-  tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
+  (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
+  honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour, horse
+  and nautilus armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and
+  the armour advancement through their conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs
+  spawning with it, folded into `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made
+  still works and still smelts into nuggets.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -97,5 +103,27 @@ on a rung where they have no build; that does not block the line.
 - 26.1 names this line's code uses: `EntityType` tags through `builtInRegistryHolder().is(tag)`, `Entity#entityTags`, Fabric API's `ParticleProviderRegistry`, Cloth Config's `AutoConfigClient` for the Mod Menu screen (Mod Menu 18.0.2, `compileOnly`).
 - The Silver Spear's charge curve is vanilla copper_spear's on this version: 26.1 raised its dismount threshold from 9.0 to 12.0. The first float, 1.0, is the mod's own attack speed.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`, the NeoForge one from `neoforge_minecraft_versions` (26.1.2 alone: it needs NeoForge 26.1.2, which 26.1 and 26.1.1 don't have).
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight Refabricated's Golden Knife, the sheet after
+  Create Fly's Golden Sheet in `create:base`, both Fabric's alone on this rung). Redstone Blocks lists only the waxed
+  bulbs, plates and rods, as vanilla does its copper bulbs. The tabs are filled through `CreativeTabPlatform`, not
+  Architectury's `CreativeTabRegistry.modify`: NeoForge's on the mod's own bus, which `neoforge.mods.toml`'s ordering
+  reaches (this line has no NeoForge mod whose items are anchors, so it orders none), and Fabric's in a phase after
+  `Event.DEFAULT_PHASE` of Fabric API's `CreativeModeTabEvents.modifyOutputEvent`, so another mod's own items are there.
+  NeoForge's `insertAfter` throws on an anchor the tab doesn't list, and Fabric's side throws too (its own would append
+  the stack at the end), so `VanillaTabs` tries a list of anchors.
+- Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
+  `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability), its `yo_hooks` models with 26.1's
+  `items/` definitions (the `yo_hooks:hook_active` condition picks the handle, as its own hooks do), textures, names and
+  tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
+  `enable_silver_gear`. 5.4.0 for 26.1 runs in both loaders' dev runs with YACL 3.9.7, whose bundled libraries NeoForge's
+  dev run gets through `forgeRuntimeLibrary` (Quilt's maven); its Fabric build needs Fabric Loader 0.19, which this line has.
+- `weapon_attributes/silver_spear.json` gives the Silver Spear Better Combat's spear swings (`bettercombat:spear`),
+  which Better Combat 3.2.2 for 26.1 would also pick by name through its fallback; vanilla's spears have none of their own.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (Create Fly,
+  Grappling Hooks); `-Penable_grappling_hooks=false` and the like test without one. The game-test runs load none of them
+  but Create Fly on Fabric. JEI and Jade aren't switched. Farmer's Delight Refabricated 3.6.30 for 26.1 needs Fabric
+  Loader 0.19.5, past this line's 0.19.3, so it isn't in the dev runs, and the knife's tab is untested in dev.
 - GitHub Actions: `build.yml` and `release.yml`.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.
