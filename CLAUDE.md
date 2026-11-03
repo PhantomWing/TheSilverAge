@@ -128,7 +128,9 @@ on a rung where they have no build; that does not block the line.
   `can_wear_silver_armor`.
 - Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (JEI, Jade, Create
   Fly, Grappling Hooks); `-Penable_grappling_hooks=false` and the like test without one. The game-test runs load none of
-  them but Create Fly, whose recipes Fabric's tests read back.
+  them but Create Fly, whose recipes Fabric's tests read back. NeoForge's server scenarios leave Grappling Hooks out
+  (`neoforge/build.gradle` knows them by their init scripts): its and YACL's deprecated `logoFile` make "Mods loaded
+  with warnings", whose screen held the client that joins the server before the title screen, so it never joined.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`.
 - GitHub Actions: `build.yml` and `release.yml`.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.

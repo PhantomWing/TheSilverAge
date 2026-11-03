@@ -25,7 +25,13 @@ def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().ends
 def enabled = { String name -> (project.findProperty(name) ?: rootProject.property(name)).toString().toBoolean() }
 def loadJei = enabled('enable_jei')
 def loadJade = enabled('enable_jade')
-def loadHooks = enabled('enable_grappling_hooks')
+// Not in the portal's server scenarios, its server (an init script named *.server.gradle) or the client that joins it
+// (quick play into a server): Grappling Hooks' and YACL's deprecated `logoFile` make "Mods loaded with warnings", whose
+// screen holds the dev client before the title screen, so quick play never joins.
+def playingOnServer = gradle.startParameter.initScripts.any {
+    it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
+}
+def loadHooks = !playingOnServer && enabled('enable_grappling_hooks')
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
