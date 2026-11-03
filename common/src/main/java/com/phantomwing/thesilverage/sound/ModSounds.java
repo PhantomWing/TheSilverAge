@@ -18,6 +18,9 @@ public final class ModSounds {
     public static final SoundEvent SILVER_BULB_TURN_ON = register("block.silver_bulb.turn_on");
     public static final SoundEvent SILVER_BULB_TURN_OFF = register("block.silver_bulb.turn_off");
 
+    // A Moon Phase Detector inverted, "Moon Phase Detector clicks" where the comparator's click would say a comparator.
+    public static final SoundEvent MOON_PHASE_DETECTOR_CLICK = register("block.moon_phase_detector.click");
+
     // Silver armor put on, "Silver armor clinks". A holder, which the armor material takes.
     public static final RegistrySupplier<SoundEvent> ARMOR_EQUIP_SILVER = registerSupplier("item.armor.equip_silver");
 

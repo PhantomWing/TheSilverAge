@@ -83,6 +83,7 @@
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 - Fixed Silver Horse Armor missing from the `c:armors/horse` tag, so other mods didn't recognize it as horse armor
 - Fixed silver slabs, stairs, doors and trapdoors missing from the `minecraft:slabs`, `minecraft:stairs`, `minecraft:doors` and `minecraft:trapdoors` item tags
+- Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
 
 # 1.3.3
 ### Fixes
