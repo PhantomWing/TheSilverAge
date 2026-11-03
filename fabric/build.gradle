@@ -82,7 +82,7 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 }
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
-def loadBackports = (project.findProperty('enable_backports') ?: rootProject.enable_backports).toString().toBoolean()
+def loadVanillaBackport = (project.findProperty('enable_vanilla_backport') ?: rootProject.enable_vanilla_backport).toString().toBoolean()
 logger.lifecycle("[TheSilverAge] (fabric) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi})")
 
 dependencies {
@@ -164,7 +164,7 @@ dependencies {
     modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_fabric_version}") { transitive = false }
     modCompileOnly("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
     modCompileOnly("maven.modrinth:platform:${rootProject.platform_fabric_version}") { transitive = false }
-    if (loadBackports && !runningGameTest) {
+    if (loadVanillaBackport && !runningGameTest) {
         modLocalRuntime("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_fabric_version}") { transitive = false }
         modLocalRuntime("maven.modrinth:platform:${rootProject.platform_fabric_version}") { transitive = false }
     }

@@ -16,7 +16,7 @@ def datagenExisting = rootProject.file('common/src/main/resources/').absolutePat
 // Whether Farmer's Delight loads at dev runtime + datagen (see gradle.properties).
 // Defined here (before the loom { runs { data } } block) so the datagen
 // `--existing-mod farmersdelight` arg can be gated on it too.
-def loadFD = (project.findProperty('loadFD') ?: rootProject.loadFD).toString().toBoolean()
+def loadFD = (project.findProperty('enable_farmers_delight') ?: rootProject.enable_farmers_delight).toString().toBoolean()
 
 // The side-by-side comparison mod (The Lead Age) is useless — and per the sibling
 // project can hang/crash — in the headless game-test and data-generation runs, so
@@ -119,8 +119,7 @@ tasks.withType(net.fabricmc.loom.task.AbstractRunTask).matching { it.name != 'ru
     dependsOn tasks.named('processTestResources')
 }
 
-// Recipe viewer / Create toggles, ported verbatim from the pre-Architectury
-// single-loader build so NeoForge keeps identical dev-runtime behaviour.
+// Which optional mods the dev runs load, one switch each (gradle.properties).
 //   ./gradlew :neoforge:runClient -Precipe_viewer=jei|emi|both|none
 //   ./gradlew :neoforge:runClient -Penable_create=false
 def selectedRecipeViewer = (project.findProperty('recipe_viewer') ?: rootProject.recipe_viewer).toString().toLowerCase()
@@ -130,7 +129,11 @@ if (!['jei', 'emi', 'both', 'none'].contains(selectedRecipeViewer)) {
 def loadJei = selectedRecipeViewer == 'jei' || selectedRecipeViewer == 'both'
 def loadEmi = selectedRecipeViewer == 'emi' || selectedRecipeViewer == 'both'
 def loadCreate = (project.findProperty('enable_create') ?: rootProject.enable_create).toString().toBoolean()
-def loadBackports = (project.findProperty('enable_backports') ?: rootProject.enable_backports).toString().toBoolean()
+def loadAquaticAmbitions = loadCreate && (project.findProperty('enable_create_aquatic_ambitions') ?: rootProject.enable_create_aquatic_ambitions).toString().toBoolean()
+def loadSpears = (project.findProperty('enable_backported_spears') ?: rootProject.enable_backported_spears).toString().toBoolean()
+def loadVanillaBackport = (project.findProperty('enable_vanilla_backport') ?: rootProject.enable_vanilla_backport).toString().toBoolean()
+def loadHooks = (project.findProperty('enable_grappling_hooks') ?: rootProject.enable_grappling_hooks).toString().toBoolean()
+def loadMekanism = (project.findProperty('enable_mekanism') ?: rootProject.enable_mekanism).toString().toBoolean()
 
 // Which Enhanced Celestials is present at dev runtime (see gradle.properties). Both
 // compat paths compile regardless; this only decides what is loaded to test against.
@@ -139,7 +142,7 @@ if (!['1', '2', 'none'].contains(enhancedCelestialsVersion)) {
     throw new GradleException("Invalid enhanced_celestials='${enhancedCelestialsVersion}'. Valid values: 1, 2, none")
 }
 def loadEnhancedCelestials = enhancedCelestialsVersion != 'none'
-logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, FD: ${loadFD}, Enhanced Celestials: ${enhancedCelestialsVersion}")
+logger.lifecycle("[TheSilverAge] (neoforge) Recipe viewer: ${selectedRecipeViewer} (JEI=${loadJei}, EMI=${loadEmi}), Create: ${loadCreate}, Aquatic Ambitions: ${loadAquaticAmbitions}, FD: ${loadFD}, Backported Spears: ${loadSpears}, Vanilla Backport (datagen): ${loadVanillaBackport}, Grappling Hooks: ${loadHooks}, Mekanism: ${loadMekanism}, Enhanced Celestials: ${enhancedCelestialsVersion}")
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
@@ -202,7 +205,7 @@ dependencies {
     }
 
     // Farmer's Delight (optional compat — the Silver Knife). compileOnly ALWAYS so
-    // the FD KnifeItem subclass compiles; localRuntime only when -PloadFD (default
+    // the FD KnifeItem subclass compiles; localRuntime only when enable_farmers_delight (default
     // true) so FD is present for dev testing + datagen (--existing-mod farmersdelight).
     // The mod never hard-depends on FD (conditional class), so it is never shipped.
     modCompileOnly "maven.modrinth:farmers-delight:${rootProject.farmersdelight_neoforge_version}"
@@ -222,7 +225,9 @@ dependencies {
         modLocalRuntime("net.createmod.ponder:ponder-neoforge:${rootProject.ponder_version}+mc${rootProject.minecraft_version}")
         modLocalRuntime("dev.engine-room.flywheel:flywheel-neoforge-${rootProject.minecraft_version}:${rootProject.flywheel_version}")
         modLocalRuntime("com.tterrag.registrate:Registrate:${rootProject.registrate_version}")
-        // Create: Aquatic Ambitions (Create 6.0.8 and up), so the scenarios play its channeling.
+    }
+    // Create: Aquatic Ambitions (Create 6.0.8 and up), so the scenarios play its channeling.
+    if (loadAquaticAmbitions && !runningGameTest) {
         modLocalRuntime("maven.modrinth:create-aquatic-ambitions:1.21.1-6.0.10-2.0.4")
     }
 
@@ -237,16 +242,19 @@ dependencies {
     // Vanilla Backport and Backported Spears register the same spear components under vanilla's ids, and a held
     // spear crashes the client with both installed, so the game runs Backported Spears and datagen Vanilla Backport,
     // whose Copper Nautilus Armor the nautilus loot modifiers name. Fabric's runs play Vanilla Backport.
-    if (loadBackports && runningDataGen) {
+    if (loadVanillaBackport && runningDataGen) {
         modLocalRuntime("maven.modrinth:vanillabackport:${rootProject.vanilla_backport_neoforge_version}")
         modLocalRuntime("maven.modrinth:platform:${rootProject.platform_neoforge_version}")
     }
-    if (loadBackports && !runningGameTest && !runningDataGen) {
+    if (loadSpears && !runningGameTest && !runningDataGen) {
         modLocalRuntime("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}")
+    }
+    if (loadMekanism && !runningGameTest && !runningDataGen) {
+        modLocalRuntime("maven.modrinth:mekanism:${rootProject.mekanism_version}")
+    }
+    if (loadHooks && !runningGameTest && !runningDataGen) {
         modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
         modLocalRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
-        // Mekanism, whose Crusher and Enrichment Chamber make the Silver Dust.
-        modLocalRuntime("maven.modrinth:mekanism:${rootProject.mekanism_version}")
         // The libraries YACL's jar bundles, which a dev run doesn't unpack.
         forgeRuntimeLibrary("org.quiltmc.parsers:json:0.2.1")
         forgeRuntimeLibrary("org.quiltmc.parsers:gson:0.2.1")
