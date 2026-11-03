@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "銀材質",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "銀燈亮起",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "銀燈熄滅",
-  "subtitles.thesilverage.item.armor.equip_silver": "銀製盔甲叮噹聲"
+  "subtitles.thesilverage.item.armor.equip_silver": "銀製盔甲叮噹聲",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "月相感測器咔嗒聲"
 }

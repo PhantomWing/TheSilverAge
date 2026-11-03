@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Серебряный материал",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Серебряная лампа включается",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Серебряная лампа выключается",
-  "subtitles.thesilverage.item.armor.equip_silver": "Звон серебряной брони"
+  "subtitles.thesilverage.item.armor.equip_silver": "Звон серебряной брони",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Щелчок датчика фазы луны"
 }

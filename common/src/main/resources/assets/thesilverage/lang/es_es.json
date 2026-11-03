@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Material de plata",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Bombilla de plata se enciende",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Bombilla de plata se apaga",
-  "subtitles.thesilverage.item.armor.equip_silver": "Armadura de plata tintinea"
+  "subtitles.thesilverage.item.armor.equip_silver": "Armadura de plata tintinea",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Chasquido de detector de fase lunar"
 }

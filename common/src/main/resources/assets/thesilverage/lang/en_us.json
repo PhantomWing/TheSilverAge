@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Silver Material",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Silver Bulb turns on",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Silver Bulb turns off",
-  "subtitles.thesilverage.item.armor.equip_silver": "Silver armor clinks"
+  "subtitles.thesilverage.item.armor.equip_silver": "Silver armor clinks",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Moon Phase Detector clicks"
 }

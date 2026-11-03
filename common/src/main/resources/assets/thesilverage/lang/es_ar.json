@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Material de plata",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Lámpara de plata encendida",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Lámpara de plata apagada",
-  "subtitles.thesilverage.item.armor.equip_silver": "Tintineo de armadura de plata"
+  "subtitles.thesilverage.item.armor.equip_silver": "Tintineo de armadura de plata",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Chasquido de detector de fase lunar"
 }

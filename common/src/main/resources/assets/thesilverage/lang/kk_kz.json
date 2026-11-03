@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Күміс парша",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Күміс шам жанды",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Күміс шам сөнді",
-  "subtitles.thesilverage.item.armor.equip_silver": "Күміс сауыт сылдыр етті"
+  "subtitles.thesilverage.item.armor.equip_silver": "Күміс сауыт сылдыр етті",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Ай фазасының детекторы шертілді"
 }

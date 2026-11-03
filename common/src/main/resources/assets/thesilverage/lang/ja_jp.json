@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "銀の素材",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "銀の電球が点く",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "銀の電球が消える",
-  "subtitles.thesilverage.item.armor.equip_silver": "銀の防具が装着される"
+  "subtitles.thesilverage.item.armor.equip_silver": "銀の防具が装着される",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "月相感知器が切り替わる"
 }

@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Material de argint",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Becul de argint se aprinde",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Becul de argint se stinge",
-  "subtitles.thesilverage.item.armor.equip_silver": "Armura de argint clincăne"
+  "subtitles.thesilverage.item.armor.equip_silver": "Armura de argint clincăne",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Detectorul de fază lunară face clic"
 }

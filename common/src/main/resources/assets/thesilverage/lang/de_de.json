@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Silbermaterial",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Silberleuchte schaltet ein",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Silberleuchte schaltet aus",
-  "subtitles.thesilverage.item.armor.equip_silver": "Silberrüstung klimpert"
+  "subtitles.thesilverage.item.armor.equip_silver": "Silberrüstung klimpert",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Mondphasensensor klickt"
 }

@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Срібний матеріал",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Срібна лампа вмикається",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Срібна лампа вимикається",
-  "subtitles.thesilverage.item.armor.equip_silver": "Срібна броня бряжчить"
+  "subtitles.thesilverage.item.armor.equip_silver": "Срібна броня бряжчить",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Детектор фази місяця клацає"
 }

@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "은 재료",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "은 전구가 켜짐",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "은 전구가 꺼짐",
-  "subtitles.thesilverage.item.armor.equip_silver": "은 갑옷이 짤랑거림"
+  "subtitles.thesilverage.item.armor.equip_silver": "은 갑옷이 짤랑거림",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "달 위상 감지기가 딸깍함"
 }

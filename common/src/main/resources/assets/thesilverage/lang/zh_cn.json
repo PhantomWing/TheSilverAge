@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "银材料",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "银灯泡：亮起",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "银灯泡：熄灭",
-  "subtitles.thesilverage.item.armor.equip_silver": "银盔甲：叮当"
+  "subtitles.thesilverage.item.armor.equip_silver": "银盔甲：叮当",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "月相探测器：模式变更"
 }

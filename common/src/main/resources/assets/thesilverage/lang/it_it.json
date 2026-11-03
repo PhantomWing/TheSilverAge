@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Materiale d'argento",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Lampadina di argento si accende",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Lampadina di argento si spegne",
-  "subtitles.thesilverage.item.armor.equip_silver": "Armatura d'argento sferraglia"
+  "subtitles.thesilverage.item.armor.equip_silver": "Armatura d'argento sferraglia",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Rilevatore di fase lunare azionato"
 }

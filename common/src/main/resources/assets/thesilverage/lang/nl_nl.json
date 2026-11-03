@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Zilvermateriaal",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Zilveren lamp gaat aan",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Zilveren lamp gaat uit",
-  "subtitles.thesilverage.item.armor.equip_silver": "Zilveren harnas rammelt"
+  "subtitles.thesilverage.item.armor.equip_silver": "Zilveren harnas rammelt",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Maanfasesensor klikt"
 }

@@ -291,5 +291,6 @@
   "trim_material.thesilverage.silver": "Matériau en argent",
   "subtitles.thesilverage.block.silver_bulb.turn_on": "Ampoule en argent qui s'allume",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "Ampoule en argent qui s'éteint",
-  "subtitles.thesilverage.item.armor.equip_silver": "Tintement d'armure en argent"
+  "subtitles.thesilverage.item.armor.equip_silver": "Tintement d'armure en argent",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "Détecteur de phase lunaire actionné"
 }
