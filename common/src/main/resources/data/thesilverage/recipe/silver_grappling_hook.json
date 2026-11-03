@@ -3,6 +3,10 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "yo_hooks"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
     }
   ],
   "fabric:load_conditions": [
@@ -11,6 +15,10 @@
       "values": [
         "yo_hooks"
       ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
     }
   ],
   "type": "minecraft:crafting_shaped",

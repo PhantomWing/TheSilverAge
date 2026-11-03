@@ -2,7 +2,7 @@
   "neoforge:conditions": [
     {
       "type": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "type": "minecraft:crafting_shaped",
@@ -10,7 +10,7 @@
   "fabric:load_conditions": [
     {
       "condition": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "key": {

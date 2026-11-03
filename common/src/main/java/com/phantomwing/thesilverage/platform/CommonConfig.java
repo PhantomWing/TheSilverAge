@@ -133,9 +133,18 @@ public final class CommonConfig {
     }
 
     /**
+     * Gate for silver gear at all ({@link com.phantomwing.thesilverage.item.ModItems#isSilverGear}): its recipes through
+     * their condition, its loot, its place in the creative tabs, and mobs spawning with it. Gear already made still works.
+     */
+    @ExpectPlatform
+    public static boolean silverGear() {
+        throw new AssertionError("@ExpectPlatform stub – replaced per loader at build time");
+    }
+
+    /**
      * Gate for mobs spawning with silver gear
      * ({@link com.phantomwing.thesilverage.armor.MonsterArmorHandler}): silver armor
-     * in place of golden, silver swords, axes and shovels in place of iron.
+     * in place of golden, silver swords, axes and shovels in place of iron. Also off with {@link #silverGear()}.
      */
     @ExpectPlatform
     public static boolean mobSilverEquipment() {

@@ -57,8 +57,12 @@ public final class CommonConfigImpl {
         return Configuration.ENABLE_SILVER_OXIDATION.get();
     }
 
+    public static boolean silverGear() {
+        return Configuration.ENABLE_SILVER_GEAR.get();
+    }
+
     public static boolean mobSilverEquipment() {
-        return Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
+        return silverGear() && Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
     }
 
     public static boolean silverFloorDamage() {

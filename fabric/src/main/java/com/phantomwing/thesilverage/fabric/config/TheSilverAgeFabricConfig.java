@@ -73,8 +73,8 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_CREATE_SPOUT_OXIDATION_ID = "enable_create_spout_oxidation";
     public boolean enable_create_spout_oxidation = true;
 
-    public static final String ENABLE_SILVER_GEAR_RECIPES_ID = "enable_silver_gear_recipes";
-    public boolean enable_silver_gear_recipes = true;
+    public static final String ENABLE_SILVER_GEAR_ID = "enable_silver_gear";
+    public boolean enable_silver_gear = true;
 
     public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
     public boolean enable_mob_silver_equipment = true;
@@ -171,7 +171,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_SILVER_THORNS_ID -> config.enable_silver_thorns;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
             case ENABLE_CREATE_SPOUT_OXIDATION_ID -> config.enable_create_spout_oxidation;
-            case ENABLE_SILVER_GEAR_RECIPES_ID -> config.enable_silver_gear_recipes;
+            case ENABLE_SILVER_GEAR_ID -> config.enable_silver_gear;
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> config.enable_silver_floor_damage;
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> config.undead_avoid_silver_light;

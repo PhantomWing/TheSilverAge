@@ -15,7 +15,7 @@
     },
     {
       "type": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "type": "minecraft:crafting_shaped",
@@ -40,7 +40,7 @@
     },
     {
       "condition": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "key": {

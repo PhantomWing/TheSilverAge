@@ -70,9 +70,10 @@ public final class SilverLootSpec {
         }
     }
 
-    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows have an option of their own. */
+    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows and silver gear have options of their own. */
     public static boolean itemEnabled(Item item) {
-        return item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows();
+        return (item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows())
+                && (!ModItems.isSilverGear(item) || CommonConfig.silverGear());
     }
 
     private static ResourceLocation mc(String path) {

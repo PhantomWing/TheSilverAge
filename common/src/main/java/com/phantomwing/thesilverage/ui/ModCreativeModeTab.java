@@ -37,13 +37,17 @@ public class ModCreativeModeTab {
 
     /**
      * Whether the creative tabs list {@code item}: one of the mod's tab items, but not the weathered and waxed variants
-     * while oxidation is off, which are unobtainable in survival then, nor Silver Arrows while they can't be got.
+     * while oxidation is off, which are unobtainable in survival then, nor Silver Arrows or silver gear while they can't
+     * be got.
      */
     public static boolean isShown(Item item) {
         if (ModItems.CREATIVE_TAB_ITEMS.stream().noneMatch(entry -> entry.get() == item)) {
             return false;
         }
         if (item == ModItems.SILVER_ARROW.get() && !ServerContentSettings.arrows()) {
+            return false;
+        }
+        if (ModItems.isSilverGear(item) && !ServerContentSettings.gear()) {
             return false;
         }
         return SilverOxidation.enabledOnClient() || !(item instanceof BlockItem blockItem)

@@ -54,9 +54,10 @@ public class Configuration {
     public static final String ENABLE_CREATE_SPOUT_OXIDATION_ID = "enable_create_spout_oxidation";
     public static ModConfigSpec.BooleanValue ENABLE_CREATE_SPOUT_OXIDATION;
 
-    // Crafting silver tools and armor, off for packs whose other silver mod crafts its own from the same grids.
-    public static final String ENABLE_SILVER_GEAR_RECIPES_ID = "enable_silver_gear_recipes";
-    public static ModConfigSpec.BooleanValue ENABLE_SILVER_GEAR_RECIPES;
+    // Silver tools, weapons and armor at all - crafted, found, worn by mobs, listed in the creative tabs - off for packs
+    // whose other silver mod has its own.
+    public static final String ENABLE_SILVER_GEAR_ID = "enable_silver_gear";
+    public static ModConfigSpec.BooleanValue ENABLE_SILVER_GEAR;
 
     // Mobs spawning with silver armor and tools.
     public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
@@ -102,7 +103,7 @@ public class Configuration {
             case ENABLE_SILVER_THORNS_ID -> Configuration.ENABLE_SILVER_THORNS.get();
             case ENABLE_SILVER_OXIDATION_ID -> Configuration.ENABLE_SILVER_OXIDATION.get();
             case ENABLE_CREATE_SPOUT_OXIDATION_ID -> Configuration.ENABLE_CREATE_SPOUT_OXIDATION.get();
-            case ENABLE_SILVER_GEAR_RECIPES_ID -> Configuration.ENABLE_SILVER_GEAR_RECIPES.get();
+            case ENABLE_SILVER_GEAR_ID -> Configuration.ENABLE_SILVER_GEAR.get();
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> Configuration.ENABLE_MOB_SILVER_EQUIPMENT.get();
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> Configuration.ENABLE_SILVER_FLOOR_DAMAGE.get();
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> Configuration.UNDEAD_AVOID_SILVER_LIGHT.get();
@@ -143,7 +144,7 @@ public class Configuration {
         SILVER_THORNS_CHANCE = COMMON_BUILDER.defineInRange(SILVER_THORNS_CHANCE_ID, 0.2, 0.0, 1.0);
         ENABLE_SILVER_OXIDATION = COMMON_BUILDER.define(ENABLE_SILVER_OXIDATION_ID, true);
         ENABLE_CREATE_SPOUT_OXIDATION = COMMON_BUILDER.define(ENABLE_CREATE_SPOUT_OXIDATION_ID, true);
-        ENABLE_SILVER_GEAR_RECIPES = COMMON_BUILDER.define(ENABLE_SILVER_GEAR_RECIPES_ID, true);
+        ENABLE_SILVER_GEAR = COMMON_BUILDER.define(ENABLE_SILVER_GEAR_ID, true);
         ENABLE_MOB_SILVER_EQUIPMENT = COMMON_BUILDER.define(ENABLE_MOB_SILVER_EQUIPMENT_ID, true);
         ENABLE_SILVER_FLOOR_DAMAGE = COMMON_BUILDER.define(ENABLE_SILVER_FLOOR_DAMAGE_ID, true);
         UNDEAD_AVOID_SILVER_LIGHT = COMMON_BUILDER.define(UNDEAD_AVOID_SILVER_LIGHT_ID, true);

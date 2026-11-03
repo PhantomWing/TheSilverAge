@@ -31,7 +31,9 @@
   - Can be turned off with the `enable_silver_floor_damage` config option
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools
 - Silver tools and armor can now be found in more chests, including bastions and trial chambers
-- Added 2 advancements: kill an undead mob with a Silver Arrow, and hurt an undead mob that hits you while wearing Silver Armor
+- Added 2 advancements
+  - Sterling Shot: kill an undead mob with a Silver Arrow
+  - Look, Don't Touch: hurt an undead mob that hits you while wearing Silver Armor
 - Silver items now also show up in the vanilla creative tabs, beside their vanilla counterparts
   - The Silver Knife shows up in Farmer's Delight's tab, and the Silver Sheet in Create's
   - Added the `enable_creative_tab` and `enable_vanilla_creative_tabs` config options, to choose which tabs silver items show up in
@@ -43,7 +45,8 @@
 - Added the `generate_silver_ore` config option, for modpacks that use another mod's silver ore
 - Added a config option for each vanilla recipe override, so they can be turned off one by one (Lodestone, Brewing Stand, Redstone Comparator, Redstone Repeater and Glistering Melon Slice)
 - Added the `enable_create_spout_oxidation` config option, to stop Create's Spout from oxidizing silver blocks with water
-- Added the `enable_silver_gear_recipes` config option, for modpacks where another mod's silver tools and armor take the same recipes, like Caverns & Chasms
+- Added the `enable_silver_gear` config option, for modpacks where another mod's silver gear takes its place, like Caverns & Chasms
+  - Turning it off stops silver tools, weapons and armor (horse and nautilus armor too) from being crafted, found in chests or worn by mobs, and hides them from the creative tabs
 - Added the `silver_affects_undead` config option, which turns off everything silver does to undead mobs at once
 - Added config options for how much extra damage silver tools and Silver Arrows deal to undead mobs (`silver_smite_damage`, `silver_arrow_smite_damage`), and for each piece of Silver Armor's chance to hurt undead mobs that hit you (`silver_thorns_chance`)
 - Added a config screen on Fabric (opened from Mod Menu)

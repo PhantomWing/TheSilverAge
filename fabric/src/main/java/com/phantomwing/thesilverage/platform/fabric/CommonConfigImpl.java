@@ -66,8 +66,12 @@ public final class CommonConfigImpl {
                 TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);
     }
 
+    public static boolean silverGear() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_SILVER_GEAR_ID);
+    }
+
     public static boolean mobSilverEquipment() {
-        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+        return silverGear() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_MOB_SILVER_EQUIPMENT_ID);
     }
 
