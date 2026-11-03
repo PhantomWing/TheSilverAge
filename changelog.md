@@ -1,3 +1,9 @@
+# 1.4.1
+
+### Fixes
+- Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
+
+
 # 1.4.0
 ### Additions
 - Added Silver Bars (including oxidized and waxed variants)

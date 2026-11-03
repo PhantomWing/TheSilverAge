@@ -307,6 +307,7 @@
   "subtitles.thesilverage.block.silver_bulb.turn_on": "銀燈亮起",
   "subtitles.thesilverage.block.silver_bulb.turn_off": "銀燈熄滅",
   "subtitles.thesilverage.item.armor.equip_silver": "銀製盔甲叮噹聲",
+  "subtitles.thesilverage.block.moon_phase_detector.click": "月相感測器咔嗒聲",
   "thesilverage.info.silver_pressure_plate": "敵對生物無法壓下銀製壓力板，站在上面的不死生物會受到傷害。氧化程度越高，輸出最大訊號所需的生物就越多：1、3、5或15隻。",
   "thesilverage.info.silver_light": "不死生物在沒有目標時會遠離銀火把和銀燈籠。",
   "thesilverage.info.silver_arrow": "銀箭飛得比普通箭矢更快，因此威力更大，並對不死生物造成額外傷害。"
