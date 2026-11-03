@@ -118,7 +118,7 @@ on a rung where they have no build; that does not block the line.
   `items/` definitions (the `yo_hooks:hook_active` condition picks the handle, as its own hooks do), textures, names and
   tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
   `enable_silver_gear`. 5.4.0 for 26.1 runs in both loaders' dev runs with YACL 3.9.7, whose bundled libraries NeoForge's
-  dev run gets through `forgeRuntimeLibrary` (Quilt's maven); its Fabric build needs Fabric Loader 0.19, which this line has.
+  dev run gets through `forgeRuntimeLibrary` (Quilt's maven); its Fabric build needs Fabric Loader 0.19, which this line has. YACL's `ContainerEventHandlerMixin` stops the Fabric client in `main` with the MixinExtras 0.5.4 Fabric Loader 0.19.3 brings ("ArrayList cannot be cast to AnnotationNode" in `FactoryRedirectWrapperMixinTransformer`), so the Fabric dev runs add MixinExtras 0.5.5 beside it, which the loader takes as the newest.
 - `weapon_attributes/silver_spear.json` gives the Silver Spear Better Combat's spear swings (`bettercombat:spear`),
   which Better Combat 3.2.2 for 26.1 would also pick by name through its fallback; vanilla's spears have none of their own.
 - Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (Create Fly,

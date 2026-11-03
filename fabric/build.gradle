@@ -105,6 +105,10 @@ dependencies {
     if (loadHooks && !runningGameTest) {
         localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}")
         localRuntime("maven.modrinth:yacl:${rootProject.yacl_fabric_version}")
+        // YACL's ContainerEventHandlerMixin stops the client in main with MixinExtras 0.5.4, which Fabric Loader 0.19.3
+        // brings ("ArrayList cannot be cast to AnnotationNode" in FactoryRedirectWrapperMixinTransformer); the loader
+        // takes the newest MixinExtras it is offered.
+        localRuntime("io.github.llamalad7:mixinextras-fabric:0.5.5")
     }
 
     // Cloth Config — compiled + shipped; backs the Fabric AutoConfig config. fabric-api excluded to avoid a transitive downgrade.
