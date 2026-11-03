@@ -5,10 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
 import com.phantomwing.thesilverage.block.entity.MoonPhaseDetectorBlockEntity;
+import com.phantomwing.thesilverage.sound.ModSounds;
 import com.phantomwing.thesilverage.utils.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -88,7 +88,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(player, blockstate));
                 updateSignalStrength(blockstate, level, pos);
 
-                level.playSound(null, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.PLAYERS, 0.3f, 0.7f);
+                level.playSound(null, pos, ModSounds.MOON_PHASE_DETECTOR_CLICK, SoundSource.PLAYERS, 0.3f, 0.7f);
 
                 return InteractionResult.CONSUME;
             }
