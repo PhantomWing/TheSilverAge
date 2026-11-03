@@ -18,6 +18,9 @@ def datagenFabricOutput = rootProject.file('fabric/src/generated/resources/').ab
 
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().contains('data') }
+// Which optional mods the dev runs load, one switch each (gradle.properties).
+def loadSpears = (project.findProperty('enable_backported_spears') ?: rootProject.enable_backported_spears).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -150,6 +153,14 @@ dependencies {
     if (!runningGameTest) {
         modLocalRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
         modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_neoforge_version}")
+    }
+
+    // Backported Spears, which the Silver Spear is made with (BackportPlatformImpl). Not in the game tests, whose server
+    // is the check that the mod loads alone, nor in datagen, whose output is the same without it. Yori3o's Grappling
+    // Hooks is Fabric's alone on this line (fabric/build.gradle).
+    modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}") { transitive = false }
+    if (loadSpears && !runningGameTest && !runningDataGen) {
+        modLocalRuntime("maven.modrinth:backported-spears:${rootProject.backported_spears_neoforge_version}") { transitive = false }
     }
 
     // NOTE (1.21.8 branch): AppleSkin is dropped. Create + Farmer's

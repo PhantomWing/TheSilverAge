@@ -17,6 +17,7 @@ def playingOnServer = gradle.startParameter.initScripts.any {
     it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
 }
 def loadCreateFly = !playingOnServer && (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
+def loadHooks = (project.findProperty('enable_grappling_hooks') ?: rootProject.enable_grappling_hooks).toString().toBoolean()
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -111,6 +112,15 @@ dependencies {
     // into src/generated/resources, which only this jar carries (see sourceSets below).
     if (loadCreateFly) {
         modLocalRuntime("maven.modrinth:create-fly:${rootProject.create_fly_version}")
+    }
+
+    // Backported Spears, which the Silver Spear is made with (BackportPlatformImpl). Its Fabric build asks for Fabric
+    // Loader 0.18.4, past the dev runs' 0.17.2, so it is only compiled against here; NeoForge's dev runs load it.
+    modCompileOnly("maven.modrinth:backported-spears:${rootProject.backported_spears_fabric_version}") { transitive = false }
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from every mod's yo_hooks/hooks.json: this jar's,
+    // which carries the hook's data (src/main/resources), since its NeoForge build reads only one. Never compiled against.
+    if (loadHooks && !runningGameTest) {
+        modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}") { transitive = false }
     }
 
     // Cloth Config — a real (compiled + shipped) Fabric dependency: it backs the

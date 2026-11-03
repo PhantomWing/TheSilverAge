@@ -6,13 +6,18 @@ import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.client.ModEntityRenderers;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
+import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.network.chat.Component;
 
 /**
  * Fabric client entrypoint for The Silver Age.
@@ -53,6 +58,16 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // disabling the recipe-override config also drops the visual overrides.
         RecipeOverridePack.register();
 
+        // The Silver Grappling Hook's items/ definition names Grappling Hooks' own condition property, which fails to
+        // parse, with an error in the log, wherever that mod isn't installed; so it is in a pack of its own.
+        if (FabricLoader.getInstance().isModLoaded(ModIds.GRAPPLING_HOOKS)) {
+            FabricLoader.getInstance().getModContainer(TheSilverAge.MOD_ID).ifPresent(container ->
+                    ResourceManagerHelper.registerBuiltinResourcePack(
+                            TheSilverAge.resourceLocation("silver_grappling_hook"), container,
+                            Component.literal("The Silver Age: Silver Grappling Hook"),
+                            ResourcePackActivationType.ALWAYS_ENABLED));
+        }
+
         // Match the recipe-override texture pack to the server on join, and
         // revert to the local config value on disconnect. The server sends its
         // override_vanilla_recipes value via ModNetworking; the receiver caches
@@ -62,7 +77,7 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ServerOverrideState.clear();
             ServerUndeadSettings.clear();
-            ModNetworking.setContentFromServer(null, null);
+            ModNetworking.setContentFromServer(null, null, null);
             client.execute(RecipeOverridePack::refresh);
         });
 

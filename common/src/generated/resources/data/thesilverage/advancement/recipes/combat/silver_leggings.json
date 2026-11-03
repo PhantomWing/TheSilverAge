@@ -2,7 +2,7 @@
   "neoforge:conditions": [
     {
       "type": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -27,7 +27,7 @@
   "fabric:load_conditions": [
     {
       "condition": "thesilverage:config_boolean",
-      "settingId": "enable_silver_gear_recipes"
+      "settingId": "enable_silver_gear"
     }
   ],
   "requirements": [

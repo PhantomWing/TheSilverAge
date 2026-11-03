@@ -29,11 +29,13 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
@@ -257,6 +259,7 @@ public class ModModelProvider extends ModelProvider {
         handheld(img, ModItems.SILVER_HOE);
         handheld(img, ModItems.SILVER_SWORD);
         handheld(img, ModItems.SILVER_KNIFE);
+        spear(img, ModItems.SILVER_SPEAR); // Backported Spears compat
         flat(img, ModItems.SILVER_ARROW);
     }
 
@@ -624,6 +627,22 @@ public class ModModelProvider extends ModelProvider {
 
     private static void handheld(ItemModelGenerators img, RegistrySupplier<Item> item) {
         img.generateFlatItem(item.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    }
+
+    /**
+     * A spear as Backported Spears draws one: flat in the inventory, on the ground and in a frame, and its
+     * {@code _in_hand} texture held, picked by the display context as its own spears' definitions do. The held model's
+     * parent is its spear_in_hand copied into this namespace, so nothing is missing without the mod.
+     */
+    private static void spear(ItemModelGenerators img, RegistrySupplier<Item> item) {
+        Item spear = item.get();
+        ResourceLocation flat = ModelTemplates.FLAT_ITEM.create(spear, TextureMapping.layer0(spear), img.modelOutput);
+        ResourceLocation inHand = new ModelTemplate(Optional.of(itemTexture("spear_in_hand")), Optional.empty(), TextureSlot.LAYER0)
+                .create(ModelLocationUtils.getModelLocation(spear, "_in_hand"),
+                        TextureMapping.layer0(TextureMapping.getItemTexture(spear, "_in_hand")), img.modelOutput);
+        img.itemModelOutput.accept(spear, ItemModelUtils.select(new DisplayContext(), ItemModelUtils.plainModel(inHand),
+                ItemModelUtils.when(List.of(ItemDisplayContext.GUI, ItemDisplayContext.GROUND, ItemDisplayContext.FIXED),
+                        ItemModelUtils.plainModel(flat))));
     }
 
     /**

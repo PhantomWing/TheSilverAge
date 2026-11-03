@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "yo_hooks"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "#c:ingots/silver",
+    "B": "#c:nuggets/silver"
+  },
+  "pattern": [
+    "AA",
+    "BA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "yo_hooks:silver_hook_head"
+  }
+}

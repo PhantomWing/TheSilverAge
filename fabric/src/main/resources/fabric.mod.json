@@ -40,6 +40,8 @@
     "cloth-config": "${dep_cloth}"
   },
   "suggests": {
-    "jei": "*"
+    "jei": "*",
+    "spears": "*",
+    "yo_hooks": "*"
   }
 }
