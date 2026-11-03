@@ -18,6 +18,14 @@ def datagenFabricOutput = rootProject.file('fabric/src/generated/resources/').ab
 
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().endsWith('rundata') }
+
+// Which optional mods the dev runs load, one switch each (gradle.properties):
+//   ./gradlew :neoforge:runClient -Penable_grappling_hooks=false
+def enabled = { String name -> (project.findProperty(name) ?: rootProject.property(name)).toString().toBoolean() }
+def loadJei = enabled('enable_jei')
+def loadJade = enabled('enable_jade')
+def loadHooks = enabled('enable_grappling_hooks')
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -121,9 +129,18 @@ dependencies {
 
     // Jade + JEI — dev-runtime only (never compiled against, never shipped). Never on the game-test run: they send
     // their packets to a test's mock player, whose connection has none of them, and crash the server.
-    if (!runningGameTest) {
+    if (loadJade && !runningGameTest) {
         localRuntime("maven.modrinth:jade:${rootProject.jade_neoforge_version}")
+    }
+    if (loadJei && !runningGameTest) {
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
+    }
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json, and YACL, which it
+    // needs. Never compiled against: the hook is data alone.
+    if (loadHooks && !runningGameTest && !runningDataGen) {
+        localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
+        localRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
     }
 }
 

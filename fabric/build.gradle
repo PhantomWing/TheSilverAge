@@ -10,14 +10,18 @@ architectury {
 
 // The dev niceties below can only get in the way of the headless game-test server, which tests this mod alone.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
-// Create Fly, loaded in the dev runs:   ./gradlew :fabric:runClient -Penable_create_fly=false
+// Which optional mods the dev runs load, one switch each (gradle.properties):
+//   ./gradlew :fabric:runClient -Penable_create_fly=false
 // Not in the portal's server scenarios, its server (an init script named *.server.gradle) or the client that joins it
 // (quick play into a server): with Create Fly a dev server's /reload holds its thread over 30 seconds on a busy machine,
 // and the client times out. The scenarios test the recipe overrides' textures, which Create Fly has nothing to do with.
 def playingOnServer = gradle.startParameter.initScripts.any {
     it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
 }
-def loadCreateFly = !playingOnServer && (project.findProperty('enable_create_fly') ?: rootProject.enable_create_fly).toString().toBoolean()
+def enabled = { String name -> (project.findProperty(name) ?: rootProject.property(name)).toString().toBoolean() }
+def loadCreateFly = !playingOnServer && enabled('enable_create_fly')
+def loadJei = enabled('enable_jei')
+def loadHooks = enabled('enable_grappling_hooks')
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -89,8 +93,17 @@ dependencies {
 
     // JEI — recipe viewer, dev-runtime only; its info pages' plugin is in common (compat/jei). Not on the game-test
     // run, where it has nothing to show.
-    if (!runningGameTest) {
+    if (loadJei && !runningGameTest) {
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}")
+    }
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json, and YACL, which it
+    // needs. Never compiled against: the hook is data alone.
+    if (loadHooks && !runningGameTest) {
+        localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}")
+        localRuntime("maven.modrinth:yacl:${rootProject.yacl_fabric_version}") {
+            exclude group: "net.fabricmc.fabric-api"
+        }
     }
 
     // Create Fly, the Fabric port of Create: never compiled against. Its recipes are ours, written by NeoForge's datagen

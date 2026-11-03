@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.LinkedHashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(TheSilverAge.MOD_ID, Registries.ITEM);
@@ -267,6 +268,13 @@ public class ModItems {
     // Helper functions
     public static Item.Properties baseItem() {
         return new Item.Properties();
+    }
+
+    /** The tools, weapons and armor {@code enable_silver_gear} takes away. */
+    public static boolean isSilverGear(Item item) {
+        return Stream.of(SILVER_SHOVEL, SILVER_PICKAXE, SILVER_AXE, SILVER_HOE, SILVER_SWORD, SILVER_KNIFE, SILVER_SPEAR,
+                        SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, SILVER_HORSE_ARMOR, SILVER_NAUTILUS_ARMOR)
+                .anyMatch(gear -> gear.get() == item);
     }
 
     // Registry functions

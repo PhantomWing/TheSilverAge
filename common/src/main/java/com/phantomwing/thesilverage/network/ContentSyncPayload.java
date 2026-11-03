@@ -9,18 +9,19 @@ import net.minecraft.resources.Identifier;
 
 /**
  * Server → client packet carrying the server's options that decide what a client shows of the mod's content -
- * {@code enable_silver_oxidation} and {@code enable_silver_arrows} - sent on join and whenever its config changes, for
+ * {@code enable_silver_oxidation}, {@code enable_silver_arrows} and {@code enable_silver_gear} - sent on join and whenever its config changes, for
  * the creative tabs, the recipe viewers and honeycomb on the client
  * ({@link com.phantomwing.thesilverage.block.SilverOxidation#enabled(net.minecraft.world.level.Level)},
  * {@link com.phantomwing.thesilverage.client.ServerContentSettings}).
  */
-public record ContentSyncPayload(boolean oxidation, boolean arrows) implements CustomPacketPayload {
+public record ContentSyncPayload(boolean oxidation, boolean arrows, boolean gear) implements CustomPacketPayload {
     public static final Identifier ID = TheSilverAge.resourceLocation("content_sync");
     public static final Type<ContentSyncPayload> TYPE = new Type<>(ID);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ContentSyncPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.BOOL, ContentSyncPayload::oxidation,
             ByteBufCodecs.BOOL, ContentSyncPayload::arrows,
+            ByteBufCodecs.BOOL, ContentSyncPayload::gear,
             ContentSyncPayload::new);
 
     @Override

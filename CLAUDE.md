@@ -65,8 +65,14 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
-  tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
+  (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
+  honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour, horse
+  and nautilus armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and
+  the armour advancement through their conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs
+  spawning with it, folded into `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made
+  still works and still smelts into nuggets.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -97,6 +103,30 @@ on a rung where they have no build; that does not block the line.
 - 26.1 names this line's code uses: `EntityType` tags through `builtInRegistryHolder().is(tag)`, `Entity#entityTags`, Fabric API's `ParticleProviderRegistry`, Cloth Config's `AutoConfigClient` for the Mod Menu screen (Mod Menu 20.0.3, `compileOnly`).
 - 26.2's: entity types are `EntityTypes.X`; the copper families are `WeatheringCopperCollection`s (`Blocks.COPPER_BULB.weathering().unaffected()`, `Items.COPPER_CHAIN.waxed().oxidized()`), which the vanilla tabs' anchors follow; `ItemTags` lost the constants of the tags that mirror a block family (`ModItemTagsProvider.vanillaItemTag`); a tag appender takes keys, so the providers hand out The Lead Age's `ValueAppender`; advancement criteria are in `advancements.triggers` and `advancements.predicates`; `LivingEntity#knockback` takes the damage source and the damage dealt (`SilverFloor` passes its own, since a Sulfur Cube reads the source's entity); `Minecraft#gui` holds the screen and the overlay. Architectury 21: `RIGHT_CLICK_BLOCK` returns `EventResult`, and a `RegistrySupplier` is no longer a `Holder` (`asHolder()` is null on NeoForge until it registers), so the silver armour material is made when the armour registers (`ModArmorMaterials.SILVER_ARMOR_MATERIAL` is a memoized supplier).
 - The Silver Spear's charge curve is vanilla copper_spear's on this version: 26.1 raised its dismount threshold from 9.0 to 12.0. The first float, 1.0, is the mod's own attack speed.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife, the sheet after Create's Golden
+  Sheet in `create:base`, which Create Fly has too). Redstone Blocks lists only the waxed bulbs, plates and rods, as
+  vanilla does its copper ones; the Silver Arrow follows the Arrow, before the Spectral Arrow. An anchor another mod adds
+  needs that mod's insertions to run first, so the tabs are filled through `CreativeTabPlatform` rather than
+  Architectury's `CreativeTabRegistry.modify`, which on NeoForge listens on Architectury's bus, before the mods
+  `neoforge.mods.toml` orders before this one: NeoForge's side listens on the mod's own bus, and Fabric's
+  (`CreativeModeTabEvents.modifyOutputEvent`, Fabric API's creative tab API from 26.1) in a phase after the default one.
+  NeoForge's `insertAfter` throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of anchors; Fabric's
+  would append the stack at the end, so its side throws too. No mod whose items are anchors has a NeoForge 26.2 build,
+  so `neoforge.mods.toml` names none.
+- Yori3o's Grappling Hooks (5.4.0, both loaders, with YACL) reads every jar's `yo_hooks/hooks.json`, so the Silver
+  Grappling Hook is data alone, in `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability), its
+  `yo_hooks` models and `items/` definitions (the `yo_hooks:hook_active` condition switching to the mod's own handle
+  model), textures, names and tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders'
+  mod-loaded conditions and `enable_silver_gear`. `weapon_attributes/silver_spear.json` gives the Silver Spear Better
+  Combat's spear swings (its fallback config would match the id anyway; the file keeps it when that is off).
+- Sulfur Cubes swallow silver's blocks, ores, cut and chiseled silver and bulbs as copper's, in vanilla's
+  `minecraft:sulfur_cube_archetype/slow_flat` (`ModItemTagsProvider`, `vanillaItemTag`). Parched is in
+  `can_wear_silver_armor`.
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (JEI, Jade, Create
+  Fly, Grappling Hooks); `-Penable_grappling_hooks=false` and the like test without one. The game-test runs load none of
+  them but Create Fly, whose recipes Fabric's tests read back.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`.
 - GitHub Actions: `build.yml` and `release.yml`.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.

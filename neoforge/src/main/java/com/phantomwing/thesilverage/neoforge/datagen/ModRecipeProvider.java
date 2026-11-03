@@ -104,7 +104,7 @@ public class ModRecipeProvider extends RecipeProvider {
         storageItemRecipes(output, RecipeCategory.MISC, ModItems.RAW_SILVER.get(), ModItems.RAW_SILVER_BLOCK.get());
 
         // Caverns & Chasms crafts its own silver tools and armor from the same grids and tag, so a pack can turn ours off.
-        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+        var gearGated = output.withConditions(new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID));
 
         // Tools
         sword(gearGated, ModItems.SILVER_SWORD.get(), SILVER_INGOTS);
@@ -118,7 +118,7 @@ public class ModRecipeProvider extends RecipeProvider {
         // Gated on FD being present — without FD the item is a hidden fallback,
         // so it has no recipe. It is gear too, whose grid another mod's silver knife takes.
         var fdGated = output.withConditions(new ModLoadedCondition(ModIds.FARMERS_DELIGHT),
-                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_RECIPES_ID));
+                new ConfigBooleanCondition(Configuration.ENABLE_SILVER_GEAR_ID));
         shaped(RecipeCategory.TOOLS, ModItems.SILVER_KNIFE.get(), 1)
                 .pattern("X")
                 .pattern("I")
