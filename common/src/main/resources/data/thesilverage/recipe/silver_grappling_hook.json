@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "yo_hooks"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "yo_hooks"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "yo_hooks:silver_hook_head",
+    "B": "thesilverage:silver_chain",
+    "C": "minecraft:stick"
+  },
+  "pattern": [
+    "  A",
+    " B ",
+    "C  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "yo_hooks:silver_grappling_hook"
+  }
+}

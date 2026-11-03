@@ -63,9 +63,10 @@ public final class SilverLootSpec {
                         Supplier<Item> item, int min, int max, List<Supplier<Item>> removedItems) {
     }
 
-    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows have an option of their own. */
+    /** Whether an entry adding this item applies, past the loot gates: Silver Arrows and silver gear have options of their own. */
     public static boolean itemEnabled(Item item) {
-        return item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows();
+        return (item != ModItems.SILVER_ARROW.get() || CommonConfig.silverArrows())
+                && (!ModItems.isSilverGear(item) || CommonConfig.silverGear());
     }
 
     private static Identifier mc(String path) {

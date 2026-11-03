@@ -39,7 +39,7 @@ public final class SilverRecipeConditionsGameTest {
     }
 
     /**
-     * The silver gear's recipes ask {@code enable_silver_gear_recipes}, the Silver Arrows' {@code enable_silver_arrows},
+     * The silver gear's recipes ask {@code enable_silver_gear}, the Silver Arrows' {@code enable_silver_arrows},
      * Create's Spout's {@code enable_create_spout_oxidation} and oxidation's, Aquatic Ambitions' channeling oxidation's
      * (where the line has Create), and each vanilla override and its fallback the master switch and the override's own option.
      */
@@ -47,7 +47,7 @@ public final class SilverRecipeConditionsGameTest {
         ResourceManager resources = helper.getLevel().getServer().getResourceManager();
         List<String> problems = new ArrayList<>();
         for (String piece : GEAR) {
-            expect(resources, TheSilverAge.MOD_ID, "recipe/silver_" + piece + ".json", Set.of("enable_silver_gear_recipes"), problems);
+            expect(resources, TheSilverAge.MOD_ID, "recipe/silver_" + piece + ".json", Set.of("enable_silver_gear"), problems);
         }
         expect(resources, TheSilverAge.MOD_ID, "recipe/silver_arrow.json", Set.of("enable_silver_arrows"), problems);
         for (Map.Entry<String, Set<String>> folder : TestCompat.createRecipeFolders().entrySet()) {

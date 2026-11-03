@@ -78,6 +78,29 @@ public final class SilverGearGameTest {
         helper.succeed();
     }
 
+    /** With enable_silver_gear off, no mob spawns with silver gear, though enable_mob_silver_equipment is on. */
+    public static void mobGearFollowsTheGearConfig(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        Mob zombie = TestCompat.create(ZOMBIE, level);
+        boolean swapped = TestSettings.with("enable_silver_gear", false, () -> {
+            for (int i = 0; i < TRIES; i++) {
+                zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+                zombie.removeTag(MonsterArmorHandler.ROLLED_TAG);
+                MonsterArmorHandler.tryEquipSilverGear(zombie, level, false);
+                if (!zombie.getItemBySlot(EquipmentSlot.MAINHAND).is(Items.IRON_SWORD)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        zombie.discard();
+        if (swapped) {
+            fail(helper, "A zombie spawned with a silver sword with enable_silver_gear off");
+            return;
+        }
+        helper.succeed();
+    }
+
     /** A husk spawning in golden armor sometimes wears silver armor instead, as a zombie does. */
     public static void husksWearSilverArmor(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();

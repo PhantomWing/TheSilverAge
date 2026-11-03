@@ -66,8 +66,12 @@ public final class CommonConfigImpl {
                 TheSilverAgeFabricConfig.ENABLE_SILVER_OXIDATION_ID);
     }
 
+    public static boolean silverGear() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_SILVER_GEAR_ID);
+    }
+
     public static boolean mobSilverEquipment() {
-        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+        return silverGear() && TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_MOB_SILVER_EQUIPMENT_ID);
     }
 
@@ -84,5 +88,13 @@ public final class CommonConfigImpl {
     public static boolean silverArrows() {
         return TheSilverAgeFabricConfig.getBooleanConfigurationValue(
                 TheSilverAgeFabricConfig.ENABLE_SILVER_ARROWS_ID);
+    }
+
+    public static boolean creativeTab() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_CREATIVE_TAB_ID);
+    }
+
+    public static boolean vanillaCreativeTabs() {
+        return TheSilverAgeFabricConfig.getBooleanConfigurationValue(TheSilverAgeFabricConfig.ENABLE_VANILLA_CREATIVE_TABS_ID);
     }
 }

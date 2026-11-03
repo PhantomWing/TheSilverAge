@@ -73,8 +73,8 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     public static final String ENABLE_CREATE_SPOUT_OXIDATION_ID = "enable_create_spout_oxidation";
     public boolean enable_create_spout_oxidation = true;
 
-    public static final String ENABLE_SILVER_GEAR_RECIPES_ID = "enable_silver_gear_recipes";
-    public boolean enable_silver_gear_recipes = true;
+    public static final String ENABLE_SILVER_GEAR_ID = "enable_silver_gear";
+    public boolean enable_silver_gear = true;
 
     public static final String ENABLE_MOB_SILVER_EQUIPMENT_ID = "enable_mob_silver_equipment";
     public boolean enable_mob_silver_equipment = true;
@@ -87,6 +87,13 @@ public class TheSilverAgeFabricConfig implements ConfigData {
 
     public static final String ENABLE_SILVER_ARROWS_ID = "enable_silver_arrows";
     public boolean enable_silver_arrows = true;
+
+    // Where the creative menu lists silver's items, each player's own: a tab of the mod's own, and vanilla's tabs.
+    public static final String ENABLE_CREATIVE_TAB_ID = "enable_creative_tab";
+    public boolean enable_creative_tab = true;
+
+    public static final String ENABLE_VANILLA_CREATIVE_TABS_ID = "enable_vanilla_creative_tabs";
+    public boolean enable_vanilla_creative_tabs = true;
 
     /** Keeps the numbers in NeoForge's ranges, which a hand-edited file can step out of. */
     @Override
@@ -164,11 +171,13 @@ public class TheSilverAgeFabricConfig implements ConfigData {
             case ENABLE_SILVER_THORNS_ID -> config.enable_silver_thorns;
             case ENABLE_SILVER_OXIDATION_ID -> config.enable_silver_oxidation;
             case ENABLE_CREATE_SPOUT_OXIDATION_ID -> config.enable_create_spout_oxidation;
-            case ENABLE_SILVER_GEAR_RECIPES_ID -> config.enable_silver_gear_recipes;
+            case ENABLE_SILVER_GEAR_ID -> config.enable_silver_gear;
             case ENABLE_MOB_SILVER_EQUIPMENT_ID -> config.enable_mob_silver_equipment;
             case ENABLE_SILVER_FLOOR_DAMAGE_ID -> config.enable_silver_floor_damage;
             case UNDEAD_AVOID_SILVER_LIGHT_ID -> config.undead_avoid_silver_light;
             case ENABLE_SILVER_ARROWS_ID -> config.enable_silver_arrows;
+            case ENABLE_CREATIVE_TAB_ID -> config.enable_creative_tab;
+            case ENABLE_VANILLA_CREATIVE_TABS_ID -> config.enable_vanilla_creative_tabs;
             case "override_lodestone_recipe" -> config.override_lodestone_recipe;
             case "override_brewing_stand_recipe" -> config.override_brewing_stand_recipe;
             case "override_comparator_recipe" -> config.override_comparator_recipe;

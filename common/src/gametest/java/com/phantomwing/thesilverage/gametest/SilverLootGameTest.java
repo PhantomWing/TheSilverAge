@@ -114,6 +114,21 @@ public final class SilverLootGameTest {
         helper.succeed();
     }
 
+    /** With enable_silver_gear off, no chest that has it holds silver gear, the horse armor included. */
+    public static void silverGearLootFollowsItsConfig(GameTestHelper helper) {
+        List<Item> gear = List.of(ModItems.SILVER_SWORD.get(), ModItems.SILVER_PICKAXE.get(), ModItems.SILVER_HELMET.get(),
+                ModItems.SILVER_CHESTPLATE.get(), ModItems.SILVER_LEGGINGS.get(), ModItems.SILVER_BOOTS.get(),
+                ModItems.SILVER_HORSE_ARMOR.get());
+        for (String table : List.of("chests/stronghold_corridor", "chests/jungle_temple")) {
+            int found = TestSettings.with("enable_silver_gear", false, () -> countIn(helper, table, gear, ROLLS / 3));
+            if (found > 0) {
+                fail(helper, found + " of " + ROLLS / 3 + " rolls of " + table + " held silver gear with enable_silver_gear off");
+                return;
+            }
+        }
+        helper.succeed();
+    }
+
     /** A swap that takes every stack takes two lying side by side too: the one after each swapped stack was skipped. */
     public static void replacingTakesNeighbouringStacks(GameTestHelper helper) {
         ObjectArrayList<ItemStack> loot = ObjectArrayList.of(new ItemStack(Items.ARROW, 4), new ItemStack(Items.ARROW, 4),

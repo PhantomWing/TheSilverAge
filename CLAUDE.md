@@ -65,8 +65,14 @@ check.
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
-- **`enable_silver_oxidation` and `enable_silver_arrows`** are sent to clients (`ContentSyncPayload`), so the creative
-  tabs and honeycomb follow the server's (the recipe viewers too, on the lines that have JEI or EMI); a dispenser's honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
+  (`ContentSyncPayload`), so the creative tabs, JEI's info pages (the arrows') and honeycomb follow the server's; a dispenser's
+  honeycomb is refused too (`SilverOxidation`).
+- **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour, horse
+  and nautilus armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and
+  the armour advancement through their conditions, their loot (`SilverLootSpec.itemEnabled`), the creative tabs, and mobs
+  spawning with it, folded into `mobSilverEquipment()` as `silver_affects_undead` is into its effects. Gear already made
+  still works and still smelts into nuggets.
 - **Silver's colours** - bare silver is meant to be very light, and each tarnish stage darker; unlike
   copper, whose stages change hue, silver's change lightness. Each stage's block texture holds its ramp.
   A thin part takes a band of it: the bars' three lighter shades are the stage's chain's, their two
@@ -94,6 +100,33 @@ on a rung where they have no build; that does not block the line.
 - Models are vanilla's `ModelProvider` (`ModModelProvider`), which also writes the `items/` client item definitions; NeoForge's datagen runs as `clientData`. Blockstates are written with 1.21.5's `MultiVariant` and `VariantMutator` (`plainVariant`, `Y_ROT_90`, `ROTATIONS_COLUMN_WITH_FACING`). Render layers aren't in the model JSON from 1.21.4: the cutout and translucent blocks (doors, trapdoors, lanterns, chains, bars, the torch, grates) are registered in `client/ModItemProperties` on both loaders, as `ChunkSectionLayer`s (1.21.6) through Architectury's `RenderTypeRegistry`. Tag providers are 1.21.6's: NeoForge's `ItemTagsProvider`, which copies no block tags, so the block items go into item tags directly, and the damage type tags extend `DamageTypeTagsProvider` (`KeyTagProvider`).
 - 1.21.11's own content: the Silver Spear (`Item.Properties#spear`, the copper spear's charge curve, `minecraft:spears`, `generateSpear`'s two models) and the Silver Nautilus Armor (`#nautilusArmor`, loot only, swapped for copper's in the ocean chests). The spear is one of `thesilverage:silver_smite_tools` and a zombie's iron spear can turn into it as its sword does (`MonsterArmorHandler`); the nautilus armour counts as a full set of silver armour for the hurt, as the horse armour does. Horse and nautilus armour are in `c:armors/horse` and `c:armors/nautilus`, which exist from 1.21.11. In the vanilla tabs they follow the golden spear and nautilus armour.
 - 1.21.11 renamed `ResourceLocation` to `Identifier`, spelt `advancements.criterion` right, moved most entities into subpackages (`monster.zombie.Zombie`, `npc.villager.*`, `projectile.arrow.*`, `projectile.hurtingprojectile.windcharge.*`) and gave `ItemListing#getOffer` the level first. The test bodies name none of them: `TestCompat` has `tag`, `resource`, `jsonPaths`, `plainArrow`, `hurtByArrow` and `villagerOffers` on every line. Item sprites have their own atlas from 1.21.11, so the trim palettes are in `assets/minecraft/atlases/items.json`.
+- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
+  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
+  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife, the sheet after Create Fly's Golden
+  Sheet in `create:base`). Redstone Blocks lists only the waxed bulbs, plates and rods, as vanilla does its copper ones.
+  The tabs are filled through `CreativeTabPlatform`: on NeoForge on the mod's own bus (`buildContents`), which the
+  optional `AFTER` dependencies of `neoforge.mods.toml` order after a mod whose items are anchors (none on this line yet:
+  NeoForge has no Farmer's Delight or Create for 1.21.11); on Fabric in a phase after `Event.DEFAULT_PHASE`. NeoForge's
+  `insertAfter` throws on an anchor the tab doesn't list, and Fabric's side throws too where `addAfter` would append it at
+  the end, so `VanillaTabs` can try a list of anchors. Farmer's Delight Refabricated's 1.21.11 builds need Fabric Loader
+  0.19 and Loom 1.17 (`kb/mc-deltas/1.21.10-to-1.21.11.md`), so the dev runs don't load it and the knife's place in its
+  tab is unchecked here.
+- Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
+  `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability, between iron's and gold's as silver's
+  tools are), its `yo_hooks` models and `items/` definitions (the `yo_hooks:hook_active` condition picks the handle, as
+  the mod's own hooks do from 1.21.4), textures (iron's recoloured onto the Silver Pickaxe's ramp), names and tags, and
+  its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
+  `enable_silver_gear`. `enable_grappling_hooks` (off by default) loads 4.5.2 in both loaders' dev runs: Fabric's 5.0.1
+  needs YACL, 4.5.2 only Fabric API. It is off because in a NeoForge dev run 4.5.2 registers none of its hooks, so its
+  enchantments fail to load and the agent's world never opens ("stuck while loading"), and on both it logs an ERROR
+  moving config files that aren't there on every start, which fails the client load check. On Fabric the silver hook
+  works with it on.
+  `weapon_attributes/silver_spear.json` gives the spear Better Combat's spear swings (Better Combat's fallback would match
+  `spear` in its id anyway).
+- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (JEI, Jade, Create
+  Fly, Grappling Hooks); `-Penable_create_fly=false` and the like test without one, `-Penable_grappling_hooks=true` with
+  the hooks. The game-test runs load none of
+  them but Create Fly, so their servers are the check that the mod loads alone.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions` (1.21.11 alone).
 - GitHub Actions: `build.yml` and `release.yml`.
 - Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.
