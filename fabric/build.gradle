@@ -108,7 +108,7 @@ dependencies {
     if (loadJei && !runningGameTest) {
         modLocalRuntime("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_neoforge_version}")
     }
-    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from common's yo_hooks/hooks.json.
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from Fabric's yo_hooks/hooks.json.
     if (loadHooks && !runningGameTest) {
         modLocalRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_fabric_version}") { transitive = false }
     }

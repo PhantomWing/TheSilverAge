@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "The Silver Age: the Silver Grappling Hook drawn as Grappling Hooks draws its own. Only with Grappling Hooks installed.",
+    "min_format": 75,
+    "max_format": [75, 0]
+  }
+}

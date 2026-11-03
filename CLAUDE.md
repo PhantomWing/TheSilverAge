@@ -111,21 +111,22 @@ on a rung where they have no build; that does not block the line.
   the end, so `VanillaTabs` can try a list of anchors. Farmer's Delight Refabricated's 1.21.11 builds need Fabric Loader
   0.19 and Loom 1.17 (`kb/mc-deltas/1.21.10-to-1.21.11.md`), so the dev runs don't load it and the knife's place in its
   tab is unchecked here.
-- Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
-  `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability, between iron's and gold's as silver's
-  tools are), its `yo_hooks` models and `items/` definitions (the `yo_hooks:hook_active` condition picks the handle, as
-  the mod's own hooks do from 1.21.4), textures (iron's recoloured onto the Silver Pickaxe's ramp), names and tags, and
-  its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
-  `enable_silver_gear`. `enable_grappling_hooks` (off by default) loads 4.5.2 in both loaders' dev runs: Fabric's 5.0.1
-  needs YACL, 4.5.2 only Fabric API. It is off because in a NeoForge dev run 4.5.2 registers none of its hooks, so its
-  enchantments fail to load and the agent's world never opens ("stuck while loading"), and on both it logs an ERROR
-  moving config files that aren't there on every start, which fails the client load check. On Fabric the silver hook
-  works with it on.
+- Yori3o's Grappling Hooks reads `yo_hooks/hooks.json` to make its hooks, so the Silver Grappling Hook is data alone:
+  the hook (62 durability, 14 long, 10 enchantability, between iron's and gold's as silver's tools are), its `yo_hooks`
+  models, textures (iron's recoloured onto the Silver Pickaxe's ramp), names, tags and recipes (behind both mod-loaded
+  conditions and `enable_silver_gear`), all in `fabric/src/main/resources`, Fabric's alone. Its Fabric build (4.5.2)
+  reads every mod's `hooks.json` (`FabricLoader#getAllMods`, `findPath`); its NeoForge build (4.5.2) reads only the first
+  the class loader finds (`getResourceAsStream`), which was ours, so its own hooks went unregistered and its enchantments
+  failed to load with the world ("stuck while loading"). The hook's `items/` definition (the handle while cast) names the
+  mod's `yo_hooks:hook_active` condition, which fails to parse with an error wherever the mod is missing, so it is in a
+  built-in pack, `resourcepacks/silver_grappling_hook`, that the Fabric client registers only with the mod loaded. Fabric's
+  dev runs load 4.5.2 with `enable_grappling_hooks` (off by default: it logs an ERROR moving config files that aren't
+  there on every start, which fails the client load check), NeoForge's never; Fabric's 5.0.1 needs YACL.
   `weapon_attributes/silver_spear.json` gives the spear Better Combat's spear swings (Better Combat's fallback would match
   `spear` in its id anyway).
 - Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (JEI, Jade, Create
-  Fly, Grappling Hooks); `-Penable_create_fly=false` and the like test without one, `-Penable_grappling_hooks=true` with
-  the hooks. The game-test runs load none of
+  Fly, Grappling Hooks on Fabric); `-Penable_create_fly=false` and the like test without one,
+  `-Penable_grappling_hooks=true` with the hooks. The game-test runs load none of
   them but Create Fly, so their servers are the check that the mod loads alone.
 - Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions` (1.21.11 alone).
 - GitHub Actions: `build.yml` and `release.yml`.

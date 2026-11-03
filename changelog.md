@@ -35,6 +35,7 @@
 - Added compatibility with Create Fly on Fabric. Spout oxidizing, Deployer waxing and scraping, pressing Silver Sheets and crushing and washing Raw Silver work as with Create
 - Added compatibility with Better Combat: the Silver Spear swings like a spear
 - Added compatibility with Yori3o's Grappling Hooks: the Silver Grappling Hook, with a range of 14 blocks
+  - Fabric only on this version
 - Added compatibility with JEI: Silver Pressure Plates, Silver Torches and Lanterns and Silver Arrows have an info page
 - Added Spanish (Argentina), Spanish (Chile), Kazakh, Vietnamese and Traditional Chinese translations
 - Updated tags for better compatibility with vanilla and other mods
