@@ -117,9 +117,11 @@ on a rung where they have no build; that does not block the line.
   so `neoforge.mods.toml` names none.
 - Yori3o's Grappling Hooks (5.4.0, both loaders, with YACL) reads every jar's `yo_hooks/hooks.json`, so the Silver
   Grappling Hook is data alone, in `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability), its
-  `yo_hooks` models and `items/` definitions (the `yo_hooks:hook_active` condition switching to the mod's own handle
-  model), textures, names and tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders'
-  mod-loaded conditions and `enable_silver_gear`. `weapon_attributes/silver_spear.json` gives the Silver Spear Better
+  `yo_hooks` models and `items/` definitions, textures, names and tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders'
+  mod-loaded conditions and `enable_silver_gear`. The hook's own `items/` definition switches to the mod's handle model on
+  its `yo_hooks:hook_active` condition, which fails to parse, with an error, wherever Grappling Hooks isn't installed,
+  so it is in the built-in pack `resourcepacks/silver_grappling_hook`, provided only with the mod (NeoForge's
+  `GrapplingHookPack`, Fabric's client entrypoint). `weapon_attributes/silver_spear.json` gives the Silver Spear Better
   Combat's spear swings (its fallback config would match the id anyway; the file keeps it when that is off).
 - Sulfur Cubes swallow silver's blocks, ores, cut and chiseled silver and bulbs as copper's, in vanilla's
   `minecraft:sulfur_cube_archetype/slow_flat` (`ModItemTagsProvider`, `vanillaItemTag`). Parched is in
