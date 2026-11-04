@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
  * delegate to {@link #register()}:</p>
  *
  * <ul>
- *   <li><b>NeoForge</b>: {@code platform.neoforge.ClientPlatformImpl} →
+ *   <li><b>NeoForge</b>: {@code platform.forge.ClientPlatformImpl} →
  *       {@code neoforge.item.ModItemProperties.register()} → here, invoked from
  *       {@code FMLClientSetupEvent} (unchanged lifecycle/behaviour).</li>
  *   <li><b>Fabric</b>: {@code platform.fabric.ClientPlatformImpl} → here,
@@ -37,7 +37,7 @@ import net.minecraft.world.level.Level;
 public final class ModItemProperties {
     /** {@code thesilverage:moon_phase} — identical id to the original NeoForge registration. */
     public static final ResourceLocation MOON_PHASE =
-            ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "moon_phase");
+            new ResourceLocation(TheSilverAge.MOD_ID, "moon_phase");
 
     /** The two {@link LevelUtils#getMoonPhaseSignal} values whose overlay is the full moon. */
     private static final int FULL_MOON_NIGHT = 0;

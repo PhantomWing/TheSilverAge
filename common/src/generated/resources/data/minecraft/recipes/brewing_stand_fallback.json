@@ -1,0 +1,56 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:and",
+        "values": [
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_brewing_stand_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:and",
+        "values": [
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_brewing_stand_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "S": {
+      "tag": "minecraft:stone_crafting_materials"
+    }
+  },
+  "pattern": [
+    " B ",
+    "SSS"
+  ],
+  "result": {
+    "item": "minecraft:brewing_stand"
+  },
+  "show_notification": true
+}

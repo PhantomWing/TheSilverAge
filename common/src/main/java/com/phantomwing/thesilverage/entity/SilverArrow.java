@@ -7,7 +7,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * An arrow that flies faster than vanilla's, and so hits harder, since an arrow's damage is its base damage times its
@@ -24,12 +23,12 @@ public class SilverArrow extends AbstractArrow {
         super(type, level);
     }
 
-    public SilverArrow(Level level, LivingEntity owner, ItemStack pickupItem, @Nullable ItemStack firedFromWeapon) {
-        super(ModEntityTypes.SILVER_ARROW.get(), owner, level, pickupItem, firedFromWeapon);
+    public SilverArrow(Level level, LivingEntity owner) {
+        super(ModEntityTypes.SILVER_ARROW.get(), owner, level);
     }
 
-    public SilverArrow(Level level, double x, double y, double z, ItemStack pickupItem, @Nullable ItemStack firedFromWeapon) {
-        super(ModEntityTypes.SILVER_ARROW.get(), x, y, z, level, pickupItem, firedFromWeapon);
+    public SilverArrow(Level level, double x, double y, double z) {
+        super(ModEntityTypes.SILVER_ARROW.get(), x, y, z, level);
     }
 
     // Bows, crossbows and dispensers all launch an arrow through here.
@@ -38,8 +37,9 @@ public class SilverArrow extends AbstractArrow {
         super.shoot(x, y, z, velocity * SPEED_MULTIPLIER, inaccuracy);
     }
 
+    // Public, for the game tests to read.
     @Override
-    protected @NotNull ItemStack getDefaultPickupItem() {
+    public @NotNull ItemStack getPickupItem() {
         return new ItemStack(ModItems.SILVER_ARROW.get());
     }
 }

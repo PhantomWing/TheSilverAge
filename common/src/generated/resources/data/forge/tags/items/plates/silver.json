@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:silver_sheet",
+    {
+      "id": "#c:silver_plates",
+      "required": false
+    }
+  ]
+}

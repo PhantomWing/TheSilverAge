@@ -1,12 +1,6 @@
-# 1.4.1
-
-### Fixes
-- Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
-- Fixed caves not carving through silver ore and Blocks of Raw Silver
-
-
 # 1.4.0
 ### Additions
+- Added Fabric support (the mod now runs on both Forge and Fabric)
 - Added Silver Bars (including oxidized and waxed variants)
 - Added Silver Chain (including oxidized and waxed variants)
 - Added Silver Brick Wall (including oxidized and waxed variants)
@@ -18,7 +12,7 @@
   - The Silver Torch is crafted with a Silver Nugget
 - Added Silver Arrows, crafted from 8 arrows around a Silver Ingot
   - They fly faster than normal arrows, so they hit harder
-  - Sold by master Fletchers, and found in pillager outposts and trial chambers
+  - Sold by master Fletchers, and found in pillager outposts
   - Can be turned off with `enable_silver_arrows`, which stops them from being crafted, traded or found
 - Silver now harms undead mobs, which can all be turned off at once with `silver_affects_undead`
   - Silver tools deal +1 extra damage to undead mobs (+0.5 for the Silver Hoe), stacking with Smite, and Silver Arrows +1 (can be turned off with `enable_silver_smite`, and set with `silver_smite_damage` and `silver_arrow_smite_damage`)
@@ -26,7 +20,7 @@
   - Undead mobs take damage on silver blocks and Silver Pressure Plates, the slower the more the silver tarnishes, avoid walking over them, walk off them when they have no target, and can't spawn on them except from monster spawners (can be turned off with `enable_silver_floor_damage`)
   - Undead mobs keep away from Silver Torches and Silver Lanterns when they have no target (can be turned off with `undead_avoid_silver_light`)
 - Zombies, husks, zombie villagers and vindicators can now spawn with silver weapons and tools (mobs spawning with silver gear can be turned off with `enable_mob_silver_equipment`)
-- Silver tools and armor can now be found in more chests, including bastions and trial chambers
+- Silver tools and armor can now be found in more chests, including bastions
 - Added 2 advancements
   - Sterling Shot: kill an undead mob with a Silver Arrow
   - Look, Don't Touch: hurt an undead mob that hits you while wearing Silver Armor
@@ -44,14 +38,12 @@
   - The Spout oxidizing silver blocks with water can be turned off with `enable_create_spout_oxidation`
 - Added compatibility with Create: Aquatic Ambitions: channeling oxidizes silver blocks, like copper
 - Added compatibility with Mekanism: Silver Dust, Dirty Silver Dust, Silver Clumps, Silver Shards, Silver Crystals and silver slurries for its ore processing, only shown when Mekanism is installed
-- Added compatibility with Backported Spears: the Silver Spear, crafted like other spears
 - Added compatibility with Vanilla Backport
   - The Silver Spear, crafted like other spears
   - Silver Nautilus Armor, found in ocean chests in place of Copper Nautilus Armor
   - Sulfur Cubes can swallow silver blocks, ores and bulbs, like copper's
   - Parched can spawn with silver armor
   - Silver Bars, Chains, Lanterns and Lightning Rods are in the tags it uses for copper's
-- Added compatibility with Copper Age Backport: Silver Bars, Chains, Lanterns and Lightning Rods are in the tags it uses for copper's
 - Added compatibility with Better Combat: the Silver Spear swings like a spear
 - Added compatibility with Yori3o's Grappling Hooks: the Silver Grappling Hook, with a range of 14 blocks
 - Added compatibility with Enhanced Celestials (and Enhanced Celestials 2) and its add-ons: the Moon Dial shows the current lunar event's name and color
@@ -62,50 +54,36 @@
   - Added `thesilverage:sensitive_to_silver`, so modpacks can make other mobs sensitive to silver
   - Added `thesilverage:cannot_press_silver_pressure_plates`, so modpacks can keep other mobs from pressing Silver Pressure Plates
   - Added `thesilverage:undead_repellents`, so modpacks can make other blocks keep undead mobs away
-  - Added husks to `thesilverage:can_wear_silver_armor`, and `c:is_overworld` to `thesilverage:has_silver_ore`
-  - Added Silver Ore to `minecraft:snaps_goat_horn`, Silver Doors to `minecraft:mob_interactable_doors` and the Silver Pickaxe to `minecraft:cluster_max_harvestables`
-  - Added Silver Chain to `c:chains`
+  - Added husks to `thesilverage:can_wear_silver_armor`
+  - Added Silver Ore to `minecraft:snaps_goat_horn` and the Silver Pickaxe to `minecraft:cluster_max_harvestables`
   - Added Silver Chains, Lanterns and Brick Walls to Sable's tags
 
 ### Changes
-- Silver Axe attack damage increased from 8 to 8.5
+- Now requires Architectury API, on Forge too
+- Silver Axe attack damage lowered from 9.5 to 8.5 and attack speed raised from 0.9 to 1, like on the other Minecraft versions
 - Silver Trapdoors are now crafted from 4 Silver Ingots, like iron trapdoors
 - Silver Bricks are now crafted from 4 Cut Silver, and Silver Bricks and their stairs, slabs and walls can be cut from Cut Silver in a stonecutter (including oxidized and waxed variants)
-- Recipes that take Silver Ingots or Silver Nuggets now accept other mods' silver too, such as Occultism's (the `c:ingots/silver` and `c:nuggets/silver` tags), and silver tools can be repaired with it
-- Silver Doors and Silver Trapdoors can now be opened by wind charges
+- Recipes that take Silver Ingots or Silver Nuggets now accept other mods' silver too, such as Occultism's (the `forge:ingots/silver` and `forge:nuggets/silver` tags, `c:` on Fabric), and silver tools can be repaired with it
 - Silver Bulbs and Silver Armor now have their own subtitles
-- Moved Silver Ore from the `c:ore_rates/singular` tag to `c:ore_rates/dense`
-- The Fabric version now also supports Minecraft 1.21
+- Moved Silver Ore from the `forge:ore_rates/singular` tag to `forge:ore_rates/dense`
 
 ### Fixes
 - Fixed Silver Bulbs crafting 1 instead of 4, like copper bulbs (including oxidized and waxed variants)
 - Fixed Chiseled Silver crafting 2 from Cut Silver Slabs instead of 1 (including oxidized and waxed variants)
 - Fixed Glistering Melon Slices accepting Silver Nuggets, and the Brewing Stand needing Stone instead of Cobblestone, with `override_vanilla_recipes` turned off
-- Fixed the Lodestone and Glistering Melon Slice recipe overrides on NeoForge not applying with fewer than about 25 mods installed, and not accepting other mods' gold nuggets and netherite
 - Fixed the textures of overridden vanilla recipes not updating after /reload until rejoining the world
 - Fixed jungle temples giving a Silver Ingot instead of Silver Horse Armor
 - Fixed chests sometimes keeping an iron or gold item where the item before it was swapped for a silver one
-- Fixed the Cleric being able to offer the same Silver Ingot trade twice on Fabric
 - Fixed mobs losing their armor trims and names when their gear turns into silver gear
 - Fixed mobs getting another chance at silver gear each time they go through a portal
-- Fixed silver trims on worn silver armor using a lighter color than in the inventory
 - Fixed trims from other mods showing as silver on armor in the inventory
 - Fixed Create's Deployer not waxing or scraping, and its Spout not oxidizing, Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars
-- Fixed the Silver Wall Torch dropping a normal torch on Fabric
-- Fixed the Fabric config not reloading with /reload
-- Fixed the mod icon missing in Mod Menu on Fabric
 - Fixed the mod's tags having no names in recipe viewers like JEI and EMI
 - Fixed the Silver Knife having no name in every language besides English
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 
-# 1.3.1
-### Fixes
-- Fixed server crashing on startup when using NeoForge.
-
 
 # 1.3.0
-First version released for Fabric.
-
 ### Additions
 - Added new Silver Pillar, Silver Bricks, Silver Brick Stairs and Silver Brick Slab decorative blocks (including oxidized and waxed variants)
 - Added compatibility with Farmer's Delight (Silver Knife, available when Farmer's Delight is installed)
@@ -113,14 +91,12 @@ First version released for Fabric.
 - Added Chinese, French, Italian, Japanese, Korean, Romanian, Russian, Spanish and Ukrainian language support (auto-translated, might need adjustments)
 
 ### Changes
-- Important! Now requires `Architectury API` as a dependency to support both NeoForge and Fabric platforms.
 - Silver Ore and Deepslate Silver Ore now drop between 1-3 Raw Silver (instead of just 1). This makes building with silver a lot easier.
 - Added tooltip to Moon Dial showing the current moon phase.
-- Improved NeoForge config screen
 - Improved some textures
 
 ### Fixes
-- Setting `override_vanilla_recipes` to `false` now also keeps the original vanilla textures, instead of my overrides. 
+- Setting `override_vanilla_recipes` to `false` now also keeps the original vanilla textures, instead of my overrides.
 
 
 # 1.2.0
@@ -131,8 +107,6 @@ First version released for Fabric.
   - Support for Crushed Raw Silver (obtain by crushing silver with Create's Crushing Wheel)
   - Added Silver Sheet (obtain by pressing silver ingots with Create's Mechanical Press)
     - Can be used in recipes by Create add-on mods through tags (`c:plates/silver`).
-- Added compatibility with EMI
-  - World Interaction recipes for waxing/scraping silver blocks
 - Added Dutch and German language support
 
 ### Fixes

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "silver_ingot",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/silver"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "item": "thesilverage:silver_trapdoor"
+  },
+  "show_notification": true
+}

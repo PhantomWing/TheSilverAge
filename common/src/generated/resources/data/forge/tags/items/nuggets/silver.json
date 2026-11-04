@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:silver_nugget",
+    {
+      "id": "#c:silver_nuggets",
+      "required": false
+    }
+  ]
+}

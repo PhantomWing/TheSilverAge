@@ -1,7 +1,6 @@
 package com.phantomwing.thesilverage.world;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * generated after it, and what has generated stays.
  */
 public class ConfigBooleanPlacementFilter extends PlacementFilter {
-    public static final MapCodec<ConfigBooleanPlacementFilter> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<ConfigBooleanPlacementFilter> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("settingId").forGetter(ConfigBooleanPlacementFilter::settingId)
     ).apply(instance, ConfigBooleanPlacementFilter::new));
 

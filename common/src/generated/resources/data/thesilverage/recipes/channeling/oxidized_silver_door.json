@@ -1,0 +1,35 @@
+{
+  "type": "create_aquatic_ambitions:channeling",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create_aquatic_ambitions"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create_aquatic_ambitions"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thesilverage:weathered_silver_door"
+    }
+  ],
+  "results": [
+    {
+      "item": "thesilverage:oxidized_silver_door"
+    }
+  ]
+}

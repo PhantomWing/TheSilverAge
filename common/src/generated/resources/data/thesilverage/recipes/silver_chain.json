@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/silver"
+    },
+    "N": {
+      "tag": "forge:nuggets/silver"
+    }
+  },
+  "pattern": [
+    "N",
+    "I",
+    "N"
+  ],
+  "result": {
+    "item": "thesilverage:silver_chain"
+  },
+  "show_notification": true
+}

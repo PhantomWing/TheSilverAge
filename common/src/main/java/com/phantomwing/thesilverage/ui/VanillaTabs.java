@@ -46,7 +46,8 @@ public final class VanillaTabs {
                 building.add(staged(stage, family));
             }
         }
-        add(CreativeModeTabs.BUILDING_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, building);
+        // 1.20.1 has no copper grates, doors or bulbs, so silver follows its last copper building block.
+        add(CreativeModeTabs.BUILDING_BLOCKS, Items.WAXED_OXIDIZED_CUT_COPPER_SLAB, building);
 
         add(CreativeModeTabs.NATURAL_BLOCKS, Items.DEEPSLATE_GOLD_ORE, List.of("silver_ore", "deepslate_silver_ore"));
         add(CreativeModeTabs.NATURAL_BLOCKS, Items.RAW_GOLD_BLOCK, List.of("raw_silver_block"));
@@ -54,11 +55,11 @@ public final class VanillaTabs {
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.SOUL_TORCH, List.of("silver_torch"));
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.SOUL_LANTERN, everyStage("silver_lantern"));
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.CHAIN, everyStage("silver_chain"));
-        add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, everyStage("silver_bulb"));
+        add(CreativeModeTabs.FUNCTIONAL_BLOCKS, List.of(Items.REDSTONE_LAMP, Items.SEA_LANTERN), everyStage("silver_bulb"));
         add(CreativeModeTabs.FUNCTIONAL_BLOCKS, Items.LIGHTNING_ROD, everyStage("silver_lightning_rod"));
 
-        // Only the waxed forms, as vanilla lists only its waxed copper bulbs here.
-        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.WAXED_OXIDIZED_COPPER_BULB, waxedStages("silver_bulb"));
+        // Only the waxed forms, as 1.21 lists only its waxed copper bulbs here; after the lamp, 1.20.1 having no bulb.
+        add(CreativeModeTabs.REDSTONE_BLOCKS, Items.REDSTONE_LAMP, waxedStages("silver_bulb"));
         add(CreativeModeTabs.REDSTONE_BLOCKS, Items.HEAVY_WEIGHTED_PRESSURE_PLATE, waxedStages("silver_pressure_plate"));
         add(CreativeModeTabs.REDSTONE_BLOCKS, Items.LIGHTNING_ROD, waxedStages("silver_lightning_rod"));
         add(CreativeModeTabs.REDSTONE_BLOCKS, Items.DAYLIGHT_DETECTOR, List.of("moon_phase_detector"));
@@ -154,7 +155,7 @@ public final class VanillaTabs {
     }
 
     private static ItemLike vanilla(String path) {
-        return () -> BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(path));
+        return () -> BuiltInRegistries.ITEM.get(new ResourceLocation(path));
     }
 
     private static ItemLike silver(String path) {
@@ -174,11 +175,11 @@ public final class VanillaTabs {
     }
 
     private static ItemLike modItem(String namespace, String path) {
-        return () -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(namespace, path));
+        return () -> BuiltInRegistries.ITEM.get(new ResourceLocation(namespace, path));
     }
 
     private static ResourceKey<CreativeModeTab> modTab(String namespace, String path) {
-        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(namespace, path));
+        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(namespace, path));
     }
 
     // Each after the one before: inserted after the same anchor, they would come out in reverse.

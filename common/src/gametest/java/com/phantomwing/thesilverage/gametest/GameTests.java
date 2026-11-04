@@ -11,19 +11,18 @@ import java.util.function.Consumer;
  * alone, so porting a test never touches a registration class or a JSON.
  */
 public final class GameTests {
+    // Not on 1.20.1, which has neither wind charges nor trial chambers, and whose trim materials darken only on vanilla's
+    // armour: wind_charge_opens_silver_door and _trapdoor, silver_axe_in_trial_chamber_corridors,
+    // silver_gear_in_trial_vaults and silver_trim_darkens_on_silver_armor.
     public static final List<Test> ALL = List.of(
             test("moon_phase_detector_full_moon", SilverBlocksGameTest::moonPhaseDetectorFullMoon),
             test("waxing_silver_block", SilverBlocksGameTest::waxingSilverBlock),
             test("silver_bulb_lighting", SilverBlocksGameTest::silverBulbLighting),
-            test("wind_charge_opens_silver_door", SilverBlocksGameTest::windChargeOpensSilverDoor),
-            test("wind_charge_opens_silver_trapdoor", SilverBlocksGameTest::windChargeOpensSilverTrapdoor),
             test("silverfish_drops_silver", SilverLootGameTest::silverfishDropsSilver),
             test("loot_entries_give_what_they_name", SilverLootGameTest::lootEntriesGiveWhatTheyName),
             test("jungle_temples_give_silver_horse_armor", SilverLootGameTest::jungleTemplesGiveSilverHorseArmor),
             test("silver_gear_in_stronghold_corridors", SilverLootGameTest::silverGearInStrongholdCorridors),
             test("silver_shovel_in_toolsmith_chests", SilverLootGameTest::silverShovelInToolsmithChests),
-            test("silver_axe_in_trial_chamber_corridors", SilverLootGameTest::silverAxeInTrialChamberCorridors),
-            test("silver_gear_in_trial_vaults", SilverLootGameTest::silverGearInTrialVaults),
             test("silver_sword_in_bastions", SilverLootGameTest::silverSwordInBastions),
             test("replacing_takes_neighbouring_stacks", SilverLootGameTest::replacingTakesNeighbouringStacks),
             test("mobs_hold_silver_tools", SilverGearGameTest::mobsHoldSilverTools),
@@ -32,7 +31,6 @@ public final class GameTests {
             test("converted_mobs_keep_their_roll", SilverGearGameTest::convertedMobsKeepTheirRoll),
             test("thorns_take_no_weapon_bonus", SilverGearGameTest::thornsTakeNoWeaponBonus),
             test("swapped_gear_keeps_its_wear", SilverGearGameTest::swappedGearKeepsItsWear),
-            test("silver_trim_darkens_on_silver_armor", SilverGearGameTest::silverTrimDarkensOnSilverArmor),
             test("silver_wall_torch_drops_a_silver_torch", SilverBlocksGameTest::silverWallTorchDropsASilverTorch),
             test("config_condition_naming_no_setting_is_false", SilverRecipesGameTest::configConditionNamingNoSettingIsFalse),
             test("silver_joins_vanilla_tags", SilverTagsGameTest::silverJoinsVanillaTags),

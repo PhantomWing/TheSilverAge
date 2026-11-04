@@ -16,22 +16,25 @@ accessible	method	net/minecraft/client/renderer/item/ItemProperties	register	(Ln
 # Silver Nugget firework-star parity (common ModFireworks). Vanilla
 # FireworkStarRecipe keeps SHAPE_BY_ITEM (item -> shape) and SHAPE_INGREDIENT
 # (== keySet) as private static final; the loader-agnostic patch reads and
-# reassigns both, so widen them accessible + mutable. NeoForge production
-# mirrors these with `public-f` entries in accesstransformer.cfg (the AW is not
-# converted to an AT in remapJar).
+# reassigns both, so widen them accessible + mutable. Forge production gets
+# them from the access transformer its build converts this widener into.
 accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
 mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_BY_ITEM	Ljava/util/Map;
 accessible	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
 mutable	field	net/minecraft/world/item/crafting/FireworkStarRecipe	SHAPE_INGREDIENT	Lnet/minecraft/world/item/crafting/Ingredient;
 
 # Mob.goalSelector (protected): LeaveSilverFloorGoal.addTo gives the mobs silver harms the goal as they join a level.
-# Mirrored in NeoForge's accesstransformer.cfg.
+# Forge's build converts it into the jar's access transformer.
 accessible	field	net/minecraft/world/entity/Mob	goalSelector	Lnet/minecraft/world/entity/ai/goal/GoalSelector;
 
 # LivingEntity.lastHurt (protected): SilverThornsHandler puts back the attacker's damage cooldown after a burn, so
-# Thorns still hurts in full. Mirrored in NeoForge's accesstransformer.cfg.
+# Thorns still hurts in full. Forge's build converts it into the jar's access transformer.
 accessible	field	net/minecraft/world/entity/LivingEntity	lastHurt	F
 
 # CreativeModeTabs.CACHED_PARAMETERS (private): ModNetworking drops it when the server's enable_silver_oxidation
-# changes what the tab hides, so the tab is built again. Mirrored in NeoForge's accesstransformer.cfg.
+# changes what the tab hides, so the tab is built again. Forge's build converts it into the jar's access transformer.
 accessible	field	net/minecraft/world/item/CreativeModeTabs	CACHED_PARAMETERS	Lnet/minecraft/world/item/CreativeModeTab$ItemDisplayParameters;
+
+# DispenserBlock.DISPENSER_REGISTRY (private): SilverOxidation wraps honeycomb's dispense behaviour, which 1.20.1 has no
+# getter for. Forge's build converts it into the jar's access transformer.
+accessible	field	net/minecraft/world/level/block/DispenserBlock	DISPENSER_REGISTRY	Ljava/util/Map;

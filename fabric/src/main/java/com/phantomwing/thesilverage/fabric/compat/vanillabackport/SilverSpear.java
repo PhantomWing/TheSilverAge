@@ -5,11 +5,11 @@ import com.blackgear.vanillabackport.common.level.items.spear.SpearItem;
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.tool.ModTiers;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.Item;
 
 /**
- * The Silver Spear as Vanilla Backport makes a spear, where Backported Spears isn't installed. Only loaded when Vanilla
- * Backport is.
+ * The Silver Spear as Vanilla Backport makes a spear. Only loaded when Vanilla Backport is.
  */
 public final class SilverSpear {
     private SilverSpear() {
@@ -26,6 +26,6 @@ public final class SilverSpear {
      */
     public static void registerHeldModel() {
         GameRendering.registerHandHeldModels(event ->
-                event.register(ModItems.SILVER_SPEAR.get(), TheSilverAge.resourceLocation("silver_spear_in_hand")));
+                event.register(ModItems.SILVER_SPEAR.get(), new ModelResourceLocation(TheSilverAge.resourceLocation("silver_spear_in_hand"), "inventory")));
     }
 }

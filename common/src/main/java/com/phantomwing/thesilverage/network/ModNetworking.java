@@ -13,7 +13,9 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
-import dev.architectury.utils.Env;
+import io.netty.buffer.Unpooled;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -22,6 +24,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Registration + send/receive plumbing for {@link RecipeOverrideSyncPayload}, {@link UndeadSettingsSyncPayload} and
@@ -48,25 +51,8 @@ public final class ModNetworking {
     private ModNetworking() {
     }
 
-    /**
-     * Server-side / common registration. The physical dedicated server registers
-     * the S2C payload type so it can encode and send; the physical client must
-     * NOT also register it here — it registers the type via
-     * {@link #registerClientReceiver(Runnable)} instead. Architectury routes both
-     * paths to {@code PayloadTypeRegistry.playS2C().register(...)} on Fabric,
-     * which throws if the same id is registered twice on one JVM, so the
-     * {@link Env} gate is mandatory rather than cosmetic.
-     */
+    /** Server-side / common registration: the server only sends, so these packets need no type registered here. */
     public static void register() {
-        if (Platform.getEnvironment() == Env.SERVER) {
-            NetworkManager.registerS2CPayloadType(
-                    RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC);
-            NetworkManager.registerS2CPayloadType(
-                    UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC);
-            NetworkManager.registerS2CPayloadType(
-                    ContentSyncPayload.TYPE, ContentSyncPayload.STREAM_CODEC);
-        }
-
         // On join, tell the player whether this server overrides vanilla recipes
         // so their client can match its texture pack to the server. Fires for the
         // local player on the integrated server too, so single-player flows
@@ -108,21 +94,36 @@ public final class ModNetworking {
 
     private static void onPlayerJoin(ServerPlayer player) {
         sendSettings(player);
-        // Skip clients that can't decode the packet (no mod / older version):
-        // sending anyway would be silently dropped, but guarding is explicit and
-        // avoids log noise on mixed setups.
-        if (!NetworkManager.canPlayerReceive(player, RecipeOverrideSyncPayload.TYPE)) return;
+        if (!canReceive(player, RecipeOverrideSyncPayload.ID)) return;
         List<String> enabled = overridesInForce;
-        NetworkManager.sendToPlayer(player, new RecipeOverrideSyncPayload(enabled != null ? enabled : configuredOverrides()));
+        send(player, RecipeOverrideSyncPayload.ID, new RecipeOverrideSyncPayload(enabled != null ? enabled : configuredOverrides())::write);
     }
 
     private static void sendSettings(ServerPlayer player) {
-        if (NetworkManager.canPlayerReceive(player, UndeadSettingsSyncPayload.TYPE)) {
-            NetworkManager.sendToPlayer(player, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig()));
+        if (canReceive(player, UndeadSettingsSyncPayload.ID)) {
+            send(player, UndeadSettingsSyncPayload.ID, new UndeadSettingsSyncPayload(SilverUndeadSettings.fromConfig())::write);
         }
-        if (NetworkManager.canPlayerReceive(player, ContentSyncPayload.TYPE)) {
-            NetworkManager.sendToPlayer(player, new ContentSyncPayload(SilverOxidation.enabled(), CommonConfig.silverArrows(), CommonConfig.silverGear()));
+        if (canReceive(player, ContentSyncPayload.ID)) {
+            send(player, ContentSyncPayload.ID, new ContentSyncPayload(SilverOxidation.enabled(), CommonConfig.silverArrows(), CommonConfig.silverGear())::write);
         }
+    }
+
+    /**
+     * Whether {@code player}'s client can decode a packet of {@code id}: on Fabric, whether it has the mod (a vanilla or
+     * older client is skipped rather than sent what it would drop). On Forge always: Forge refuses a client without
+     * the mod at login (its default {@code displayTest}, and the registries it syncs), and Architectury 9's Forge
+     * {@code canPlayerReceive} never holds on join. It is empty until the client answers {@code architectury:sync_ids},
+     * which is sent from the same login event as the join, and even then holds the client's C2S ids, not the S2C ones
+     * these packets are, so the join sync and every resend after it reached no Forge client.
+     */
+    private static boolean canReceive(ServerPlayer player, ResourceLocation id) {
+        return Platform.isForge() || NetworkManager.canPlayerReceive(player, id);
+    }
+
+    private static void send(ServerPlayer player, ResourceLocation id, Consumer<FriendlyByteBuf> writer) {
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        writer.accept(buf);
+        NetworkManager.sendToPlayer(player, id, buf);
     }
 
     /**
@@ -133,19 +134,22 @@ public final class ModNetworking {
      * client entrypoint — never on a dedicated server.
      */
     public static void registerClientReceiver(Runnable refresh) {
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C,
-                RecipeOverrideSyncPayload.TYPE, RecipeOverrideSyncPayload.STREAM_CODEC,
-                (payload, context) -> context.queue(() -> {
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, RecipeOverrideSyncPayload.ID, (buf, context) -> {
+            RecipeOverrideSyncPayload payload = RecipeOverrideSyncPayload.read(buf);
+            context.queue(() -> {
                     ServerOverrideState.setFromServer(Set.copyOf(payload.enabledSettingIds()));
                     TheSilverAge.LOGGER.debug("Server recipe overrides on: {}; syncing their texture packs.", payload.enabledSettingIds());
                     refresh.run();
-                }));
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C,
-                UndeadSettingsSyncPayload.TYPE, UndeadSettingsSyncPayload.STREAM_CODEC,
-                (payload, context) -> context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings())));
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C,
-                ContentSyncPayload.TYPE, ContentSyncPayload.STREAM_CODEC,
-                (payload, context) -> context.queue(() -> setContentFromServer(payload.oxidation(), payload.arrows(), payload.gear())));
+            });
+        });
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, UndeadSettingsSyncPayload.ID, (buf, context) -> {
+            UndeadSettingsSyncPayload payload = UndeadSettingsSyncPayload.read(buf);
+            context.queue(() -> ServerUndeadSettings.setFromServer(payload.settings()));
+        });
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, ContentSyncPayload.ID, (buf, context) -> {
+            ContentSyncPayload payload = ContentSyncPayload.read(buf);
+            context.queue(() -> setContentFromServer(payload.oxidation(), payload.arrows(), payload.gear()));
+        });
     }
 
     /**

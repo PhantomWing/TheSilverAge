@@ -32,7 +32,7 @@ public final class SilverSmiteTooltip {
 
     /** Hooks the cross-loader item-tooltip event. Called from both client entrypoints. */
     public static void register() {
-        ClientTooltipEvent.ITEM.register((stack, lines, context, flag) -> {
+        ClientTooltipEvent.ITEM.register((stack, lines, flag) -> {
             // The server's settings where it sent them: with the bonus off or set otherwise there, the line would lie.
             SilverUndeadSettings settings = ServerUndeadSettings.current();
             if (!settings.smite()) {

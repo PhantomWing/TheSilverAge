@@ -18,8 +18,9 @@ public class ModTags {
         /**
          * Mobs silver harms: silver tools' bonus damage, silver armour's protection and {@link Blocks#SILVER_FLOORS}, and
          * through {@link #CANNOT_PRESS_SILVER_PRESSURE_PLATES} the Silver Pressure Plate. Holds
-         * {@code #minecraft:sensitive_to_smite} and, where Werewolves: Become a Beast is installed, its werewolves; a pack
-         * can add another mob that Smite leaves alone.
+         * vanilla's undead (1.20.1 has no {@code #minecraft:sensitive_to_smite}) and, where Werewolves: Become a Beast is
+         * installed, its werewolves; a pack can add another mob. Read through
+         * {@link com.phantomwing.thesilverage.combat.SilverSensitivity}, which adds every undead mob.
          */
         public static final TagKey<EntityType<?>> SENSITIVE_TO_SILVER = tag("sensitive_to_silver");
         /**
@@ -29,7 +30,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CANNOT_PRESS_SILVER_PRESSURE_PLATES = tag("cannot_press_silver_pressure_plates");
 
         private static TagKey<EntityType<?>> tag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -39,7 +40,7 @@ public class ModTags {
         public static final TagKey<Biome> HAS_EXTRA_SILVER_ORE = tag("has_extra_silver_ore");
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -80,7 +81,7 @@ public class ModTags {
         public static final TagKey<Block> SILVER_BARS = tag("silver_bars");
 
         private static TagKey<Block> tag(String name) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 
@@ -110,7 +111,7 @@ public class ModTags {
         public static final TagKey<Item> SILVER_THORNS_ARMOR = tag("silver_thorns_armor");
 
         private static TagKey<Item> tag(String name) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(TheSilverAge.MOD_ID, name));
         }
     }
 }

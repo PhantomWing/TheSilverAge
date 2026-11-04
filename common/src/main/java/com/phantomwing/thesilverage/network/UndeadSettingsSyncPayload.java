@@ -1,10 +1,9 @@
 package com.phantomwing.thesilverage.network;
 
+import net.minecraft.network.FriendlyByteBuf;
+
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.combat.SilverUndeadSettings;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -12,17 +11,14 @@ import net.minecraft.resources.ResourceLocation;
  * {@code /reload}, for the tooltips. Like {@link RecipeOverrideSyncPayload} it is skipped for a client that doesn't
  * know its id, which keeps its own config.
  */
-public record UndeadSettingsSyncPayload(SilverUndeadSettings settings) implements CustomPacketPayload {
+public record UndeadSettingsSyncPayload(SilverUndeadSettings settings) {
     public static final ResourceLocation ID = TheSilverAge.resourceLocation("undead_settings_sync");
-    public static final Type<UndeadSettingsSyncPayload> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, UndeadSettingsSyncPayload> STREAM_CODEC =
-            StreamCodec.composite(
-                    SilverUndeadSettings.STREAM_CODEC, UndeadSettingsSyncPayload::settings,
-                    UndeadSettingsSyncPayload::new);
+    public void write(FriendlyByteBuf buf) {
+        settings.write(buf);
+    }
 
-    @Override
-    public Type<UndeadSettingsSyncPayload> type() {
-        return TYPE;
+    public static UndeadSettingsSyncPayload read(FriendlyByteBuf buf) {
+        return new UndeadSettingsSyncPayload(SilverUndeadSettings.read(buf));
     }
 }

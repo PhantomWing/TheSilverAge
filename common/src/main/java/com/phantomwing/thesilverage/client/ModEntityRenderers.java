@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /** The mod's entity renderers, through Architectury's registry on both loaders. Called from each client entrypoint. */
 public final class ModEntityRenderers {
     private static final ResourceLocation SILVER_ARROW_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, "textures/entity/projectiles/silver_arrow.png");
+            new ResourceLocation(TheSilverAge.MOD_ID, "textures/entity/projectiles/silver_arrow.png");
 
     private ModEntityRenderers() {
     }

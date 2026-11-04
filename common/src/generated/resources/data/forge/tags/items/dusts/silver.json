@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:silver_dust",
+    {
+      "id": "#c:silver_dusts",
+      "required": false
+    }
+  ]
+}

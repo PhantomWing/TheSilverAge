@@ -1,19 +1,12 @@
 package com.phantomwing.thesilverage.advancement;
 
-import com.phantomwing.thesilverage.TheSilverAge;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.advancements.CriteriaTriggers;
 
+/** The mod's advancement triggers. 1.20.1 has no trigger registry: a trigger is added to vanilla's list by its id. */
 public class ModCriteriaTriggers {
-    public static final DeferredRegister<CriterionTrigger<?>> TRIGGERS =
-            DeferredRegister.create(TheSilverAge.MOD_ID, Registries.TRIGGER_TYPE);
-
-    public static final RegistrySupplier<SilverArmorHurtTrigger> SILVER_ARMOR_HURT =
-            TRIGGERS.register("silver_armor_hurt", SilverArmorHurtTrigger::new);
+    public static final SilverArmorHurtTrigger SILVER_ARMOR_HURT = CriteriaTriggers.register(new SilverArmorHurtTrigger());
 
     public static void register() {
-        TRIGGERS.register();
+        // Loading the class registers the triggers.
     }
 }

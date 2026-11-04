@@ -13,10 +13,10 @@ import net.minecraft.network.chat.Component;
 import java.util.List;
 
 /**
- * EMI's info pages ({@link SilverInfo}), the JEI plugin's counterpart. The waxing and scraping EMI shows on NeoForge are
- * {@code neoforge}'s {@code ModEmiPlugin}'s.
+ * EMI's info pages ({@link SilverInfo}), the JEI plugin's counterpart. The waxing and scraping EMI shows are its own
+ * vanilla plugin's, read from vanilla's maps, which hold silver's on both loaders.
  *
- * <p>Found through {@link EmiEntrypoint} on NeoForge and the {@code emi} entrypoint on Fabric, and only ever
+ * <p>Found through {@link EmiEntrypoint} on Forge and the {@code emi} entrypoint on Fabric, and only ever
  * classloaded by EMI, so EMI stays optional.</p>
  */
 @EmiEntrypoint

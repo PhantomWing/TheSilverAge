@@ -20,10 +20,10 @@ import net.minecraft.world.item.ItemStack;
  * to the stack, cannot be removed at a grindstone, and stacks additively on top
  * of a real Smite enchantment.</p>
  *
- * <p>A player's swing takes it where it takes Smite's, in {@code ServerPlayer#getEnchantedDamage} (each loader's
- * {@code ServerPlayerMixin}), so it is scaled by how charged the swing was and shown with vanilla's magic-crit burst. Every
- * other hit takes it as it comes in, before armour and resistance: NeoForge's {@code LivingIncomingDamageEvent} and a
- * Fabric mixin, bridged through {@link SmitePlatform}.</p>
+ * <p>A player's swing takes it where it takes Smite's, in {@code Player#attack}'s {@code EnchantmentHelper.getDamageBonus}
+ * (each loader's {@code PlayerMixin}), so it is scaled by how charged the swing was and shown with vanilla's magic-crit
+ * burst. Every other hit takes it as it comes in, at the head of {@code LivingEntity#hurt}, before armour and
+ * resistance: each loader's {@code LivingEntityMixin}.</p>
  */
 public final class SilverSmiteHandler {
     /**
@@ -133,8 +133,8 @@ public final class SilverSmiteHandler {
             return 0.0f;
         }
 
-        // Holds every mob vanilla Smite targets, so modded undead are covered too.
-        if (!target.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
+        // Every mob vanilla Smite targets, modded undead too, and what the tag adds.
+        if (!SilverSensitivity.isSensitive(target)) {
             return 0.0f;
         }
 

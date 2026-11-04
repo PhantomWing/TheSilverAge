@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/silver"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "###",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "thesilverage:silver_pickaxe"
+  },
+  "show_notification": true
+}

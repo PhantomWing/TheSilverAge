@@ -6,7 +6,7 @@ import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.item.custom.MoonDialItem;
-import com.phantomwing.thesilverage.item.custom.SilverArmorItem;
+import com.phantomwing.thesilverage.item.custom.SilverHorseArmorItem;
 import com.phantomwing.thesilverage.item.custom.SilverArrowItem;
 import com.phantomwing.thesilverage.platform.BackportPlatform;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
@@ -15,7 +15,6 @@ import com.phantomwing.thesilverage.tool.ModTiers;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -56,9 +55,9 @@ public class ModItems {
     // SwordItem fallback otherwise (so the mod loads standalone). Only appears in
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
-    // 1.21.11's Silver Spear, made as Backported Spears or Vanilla Backport makes a spear when one is installed.
+    // 1.21.11's Silver Spear, made as Vanilla Backport makes a spear when it is installed.
     public static final RegistrySupplier<Item> SILVER_SPEAR = registerWithModCompat("silver_spear",
-            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1)), ModIds.BACKPORTED_SPEARS, ModIds.VANILLA_BACKPORT);
+            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1)), ModIds.VANILLA_BACKPORT);
     public static final RegistrySupplier<Item> SILVER_ARROW = register("silver_arrow", SilverArrowItem::new, baseItem());
 
     // Silver armor
@@ -66,7 +65,7 @@ public class ModItems {
     public static final RegistrySupplier<Item> SILVER_CHESTPLATE = registerArmor("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 10);
     public static final RegistrySupplier<Item> SILVER_LEGGINGS = registerArmor("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 10);
     public static final RegistrySupplier<Item> SILVER_BOOTS = registerArmor("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 10);
-    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new AnimalArmorItem(ModArmorMaterials.SILVER_ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, props), baseItem().stacksTo(1));
+    public static final RegistrySupplier<Item> SILVER_HORSE_ARMOR = register("silver_horse_armor", (props) -> new SilverHorseArmorItem(8, props), baseItem().stacksTo(1));
     // 1.21.11's Silver Nautilus Armor, Vanilla Backport's kind of nautilus armour when it is installed. Loot only.
     public static final RegistrySupplier<Item> SILVER_NAUTILUS_ARMOR = registerWithModCompat("silver_nautilus_armor",
             () -> BackportPlatform.createSilverNautilusArmor(baseItem().stacksTo(1)), ModIds.VANILLA_BACKPORT);
@@ -287,15 +286,14 @@ public class ModItems {
     }
 
     // Registry functions
-    private static RegistrySupplier<Item> registerArmor(String name, Holder<ArmorMaterial> material, ArmorItem.Type armorItemType, int durabilityFactor) {
-        Item.Properties baseProps = baseItem().durability(armorItemType.getDurability(durabilityFactor));
-        return register(name, (props) -> new SilverArmorItem(material, armorItemType, props), baseProps);
+    // The durability factor is the material's own on 1.20.1 (ModArmorMaterials), so it isn't passed here.
+    private static RegistrySupplier<Item> registerArmor(String name, ArmorMaterial material, ArmorItem.Type armorItemType, @SuppressWarnings("unused") int durabilityFactor) {
+        return register(name, (props) -> new ArmorItem(material, armorItemType, props), baseItem());
     }
 
 
     private static RegistrySupplier<Item> registerSword(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(SwordItem.createAttributes(tier, 3, -2.4f));
-        return register(name, (props) -> new SwordItem(tier, props), baseProps);
+        return register(name, (props) -> new SwordItem(tier, 3, -2.4f, props), baseItem());
     }
 
     /**
@@ -303,13 +301,12 @@ public class ModItems {
      * {@link com.phantomwing.thesilverage.platform.KnifePlatform} (FD's KnifeItem
      * when present, SwordItem fallback otherwise), so the item is always
      * registered but the FD-referencing class only loads when FD is installed.
-     * Attack attributes ({@code 0.5}, {@code -2.0}) match FD's own knives, set
-     * here via the vanilla {@link DiggerItem#createAttributes}. The item only
+     * Attack attributes ({@code 0.5}, {@code -2.0}) match FD's own knives, and
+     * are given by each loader's {@code KnifePlatformImpl}. The item only
      * joins the creative tab when {@code modId} is loaded.
      */
     private static RegistrySupplier<Item> registerKnife(String name, Tier tier, String modId) {
-        Item.Properties props = baseItem().attributes(DiggerItem.createAttributes(tier, 0.5f, -2.0f));
-        RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(props, tier));
+        RegistrySupplier<Item> item = ITEMS.register(name, () -> KnifePlatform.createSilverKnife(baseItem(), tier));
         if (CommonPlatform.isModLoaded(modId)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
@@ -317,24 +314,22 @@ public class ModItems {
     }
 
     private static RegistrySupplier<Item> registerShovel(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(ShovelItem.createAttributes(tier, 1.5f, -3.0f));
-        return register(name, (props) -> new ShovelItem(tier, props), baseProps);
+        return register(name, (props) -> new ShovelItem(tier, 1.5f, -3.0f, props), baseItem());
     }
 
     private static RegistrySupplier<Item> registerPickaxe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(PickaxeItem.createAttributes(tier, 1.0f, -2.8f));
-        return register(name, (props) -> new PickaxeItem(tier, props), baseProps);
+        return register(name, (props) -> new PickaxeItem(tier, 1, -2.8f, props), baseItem());
     }
 
     private static RegistrySupplier<Item> registerAxe(String name, Tier tier) {
         // 5.0 + the 2.5 tier bonus + the player's 1.0 base = 8.5 displayed damage.
-        Item.Properties baseProps = baseItem().attributes(AxeItem.createAttributes(tier, 5.0f, -3.0f));
-        return register(name, (props) -> new AxeItem(tier, props), baseProps);
+        return register(name, (props) -> new AxeItem(tier, 5.0f, -3.0f, props), baseItem());
     }
 
     private static RegistrySupplier<Item> registerHoe(String name, Tier tier) {
-        Item.Properties baseProps = baseItem().attributes(HoeItem.createAttributes(tier, -2.5f, -0.5f));
-        return register(name, (props) -> new HoeItem(tier, props), baseProps);
+        // 1.20.1's hoe takes a whole number, so 1.21's -2.5 can't be had: -2 with the tier's 2.5 gives 1.5 attack damage and
+        // speed 3.0, as 1.3.0, the last Forge-only 1.20.1 release, had them.
+        return register(name, (props) -> new HoeItem(tier, -2, -1.0f, props), baseItem());
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlock(String name, RegistrySupplier<T> block) {

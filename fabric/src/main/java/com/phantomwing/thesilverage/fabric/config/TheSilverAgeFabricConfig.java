@@ -118,7 +118,7 @@ public class TheSilverAgeFabricConfig implements ConfigData {
     }
 
     private static double inRange(double value, double max, double fallback) {
-        return Double.isFinite(value) ? Math.clamp(value, 0.0, max) : fallback;
+        return Double.isFinite(value) ? Math.max(0.0, Math.min(value, max)) : fallback;
     }
 
     public static TheSilverAgeFabricConfig get() {

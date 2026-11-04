@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "key": {
+    "#": {
+      "item": "thesilverage:oxidized_cut_silver_slab"
+    }
+  },
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "result": {
+    "item": "thesilverage:oxidized_chiseled_silver"
+  },
+  "show_notification": true
+}

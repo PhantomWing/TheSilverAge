@@ -1,6 +1,5 @@
 package com.phantomwing.thesilverage.combat;
 
-import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 
@@ -17,8 +16,8 @@ public final class SilverUndeadGoals {
      * every mob join, those loaded with their chunk too.
      */
     public static void addTo(Entity entity) {
-        // The type first: every entity joining a level comes through here.
-        if (entity instanceof PathfinderMob mob && !mob.level().isClientSide() && mob.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)
+        // Every entity joining a level comes through here, which is how SilverSensitivity learns the undead types.
+        if (entity instanceof PathfinderMob mob && !mob.level().isClientSide() && SilverSensitivity.isSensitive(mob)
                 && mob.goalSelector.getAvailableGoals().stream().noneMatch(goal -> goal.getGoal() instanceof LeaveSilverFloorGoal)) {
             mob.goalSelector.addGoal(LeaveSilverFloorGoal.PRIORITY, new LeaveSilverFloorGoal(mob));
             mob.goalSelector.addGoal(AvoidSilverLightGoal.PRIORITY, new AvoidSilverLightGoal(mob));

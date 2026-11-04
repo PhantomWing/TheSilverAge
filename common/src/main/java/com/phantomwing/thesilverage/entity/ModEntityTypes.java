@@ -15,7 +15,6 @@ public class ModEntityTypes {
     public static final RegistrySupplier<EntityType<SilverArrow>> SILVER_ARROW =
             ENTITY_TYPES.register("silver_arrow", () -> EntityType.Builder.<SilverArrow>of(SilverArrow::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
-                    .eyeHeight(0.13f)
                     .clientTrackingRange(4)
                     .updateInterval(20)
                     .build("silver_arrow"));

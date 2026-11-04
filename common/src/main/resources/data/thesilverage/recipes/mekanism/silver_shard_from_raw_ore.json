@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "mekanism"
+      ]
+    }
+  ],
+  "type": "mekanism:injecting",
+  "chemicalInput": {
+    "amount": 1,
+    "gas": "mekanism:hydrogen_chloride"
+  },
+  "itemInput": {
+    "amount": 3,
+    "ingredient": {
+      "tag": "forge:raw_materials/silver"
+    }
+  },
+  "output": {
+    "count": 8,
+    "item": "thesilverage:silver_shard"
+  }
+}

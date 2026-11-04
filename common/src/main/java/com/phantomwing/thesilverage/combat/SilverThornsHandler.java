@@ -10,7 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.AnimalArmorItem;
+import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -41,10 +41,10 @@ public final class SilverThornsHandler {
         if (!stack.is(ModTags.Items.SILVER_THORNS_ARMOR)) {
             return 0.0F;
         }
-        return settings.thornsChance() * (stack.getItem() instanceof AnimalArmorItem ? FULL_SET : 1);
+        return settings.thornsChance() * (stack.getItem() instanceof HorseArmorItem ? FULL_SET : 1);
     }
 
-    /** The chance from everything {@code wearer} wears: its armour slots and the body slot horse armour goes in. */
+    /** The chance from everything {@code wearer} wears: its armour slots, horse armour among them (a horse wears it in its chest slot). */
     public static float chanceOf(LivingEntity wearer, SilverUndeadSettings settings) {
         float chance = 0.0F;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -60,7 +60,7 @@ public final class SilverThornsHandler {
         // A burn is Thorns damage itself, so one silver wearer burning another can't answer it.
         if (!(wearer.level() instanceof ServerLevel level) || !(source.getEntity() instanceof LivingEntity attacker)
                 || source.getDirectEntity() != attacker || source.is(DamageTypes.THORNS)
-                || !attacker.getType().is(ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
+                || !SilverSensitivity.isSensitive(attacker)) {
             return;
         }
         SilverUndeadSettings settings = SilverUndeadSettings.fromConfig();
@@ -77,7 +77,7 @@ public final class SilverThornsHandler {
             SilverSparks.burst(level, attacker);
             level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.THORNS_HIT, attacker.getSoundSource(), 1.0F, 1.0F);
             if (wearer instanceof ServerPlayer player) {
-                ModCriteriaTriggers.SILVER_ARMOR_HURT.get().trigger(player);
+                ModCriteriaTriggers.SILVER_ARMOR_HURT.trigger(player);
             }
         }
     }

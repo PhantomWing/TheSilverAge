@@ -6,8 +6,8 @@ loom {
     accessWidenerPath = file('src/main/resources/thesilverage.accesswidener')
 }
 
-// Datagen output is committed and shared across loaders. The NeoForge data
-// generator (see :neoforge) writes to src/generated/resources; wire that as an
+// Datagen output is committed and shared across loaders. The Forge data
+// generator (see :forge) writes to src/generated/resources; wire that as an
 // additional resource source directory so the generated assets/data ship in the
 // common jar (and therefore in every loader's mod jar).
 sourceSets {
@@ -32,35 +32,18 @@ dependencies {
 
     // JEI plugin API and EMI's xplat artifact, compile-time only, for the info pages' plugins in common: each is only
     // ever classloaded by its viewer, so neither is required or shipped.
-    modCompileOnly "mezz.jei:jei-1.21.1-common-api:${rootProject.jei_version}"
+    modCompileOnly "mezz.jei:jei-1.20.1-common-api:${rootProject.jei_version}"
     modCompileOnly "dev.emi:emi-xplat-intermediary:${rootProject.emi_version}"
 
-    // Enhanced Celestials (optional Moon Dial compat). compileOnly: the API classes are
-    // identical on both loaders (EC is Architectury-based), so common compiles against
-    // the intermediary-mapped Fabric jar and neither jar is ever shipped.
-    modCompileOnly "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_common_version}"
-    modCompileOnly "maven.modrinth:data-anchor:${rootProject.data_anchor_common_version}"
+    // Enhanced Celestials (optional Moon Dial compat), compiled against only: its API classes are the same on both
+    // loaders, so common compiles against the intermediary-mapped Fabric jar and neither jar is ever shipped.
+    modCompileOnly "maven.modrinth:enhanced-celestials:${rootProject.enhanced_celestials_fabric_version}"
+    modCompileOnly "maven.modrinth:data-anchor:${rootProject.data_anchor_fabric_version}"
 
-    // Enhanced Celestials 2 — a different mod, not an upgrade, so it is compiled
-    // against alongside EC1 and dispatched between at runtime (see compat/LunarEvents).
-    //
-    // Plain compileOnly, NOT modCompileOnly, and the NeoForge build rather than the
-    // Fabric one. EC2's Fabric jar declares `Fabric-Loom-Mixin-Remap-Type: static`,
-    // and loom only runs its "built with a newer version of Loom" check on static
-    // jars (ArtifactMetadata: the check is skipped entirely for the classic `mixin`
-    // type) — which is why EC1's Fabric jar passes despite ALSO being newer than ours
-    // (Loom 1.10.453 vs 1.7.435), while EC2's 1.16.3 is refused. Same reason CorgiLib
-    // Fabric and FD Refabricated are unusable here; all three are static.
-    //
-    // The NeoForge jar sidesteps it: not Loom-produced, and already Mojmap, so it
-    // lines up with our named mappings with no remap step. Only signatures are needed
-    // here and nothing is shipped, and the Fabric jar exposes identical class names,
-    // so the shipped Fabric build binds to the real classes fine.
-    //
-    // The alternative is -Ploom.ignoreDependencyLoomVersionValidation=true, which
-    // would allow the Fabric jar via modCompileOnly, but it disables the check for
-    // EVERY dependency including runtime ones, so it is not worth it for signatures.
-    compileOnly "${rootProject.enhanced_celestials_2_core_neoforge}"
+    // Enhanced Celestials 2, a different mod, dispatched between at runtime (compat/LunarEvents). Plain compileOnly
+    // of the Forge jar: its Fabric jar was built with a newer Loom (1.16.3), which this one refuses to remap. Only its
+    // own classes' signatures are read, and Forge 1.20.1 keeps Mojang's class names, so nothing needs remapping.
+    compileOnly "maven.modrinth:enhanced-celestials-2-core:${rootProject.enhanced_celestials_2_core_forge}"
 }
 
 publishing {

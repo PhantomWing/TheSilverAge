@@ -19,8 +19,8 @@ import net.minecraft.world.item.Tier;
  * mappings so the subclass compiles.</p>
  *
  * <p><b>Why it's safe.</b> The signature mirrors the real FDR class exactly
- * (verified via javap: {@code extends DiggerItem}, ctor {@code (Tier,
- * Item.Properties)}). It is stripped from the published jar, so in a production
+ * (verified via javap on FDR 1.20.1-2.4.1 and 2.5.5: {@code extends DiggerItem}, ctor
+ * {@code (Tier, float, float, Item.Properties)}). It is stripped from the published jar, so in a production
  * instance the real {@code vectorwing.farmersdelight.common.item.KnifeItem} is
  * what {@code SilverKnifeItem} binds to. In TheSilverAge's own dev runtime the
  * stub is present but never touched — FDR is absent there, so the
@@ -28,7 +28,7 @@ import net.minecraft.world.item.Tier;
  * never instantiated. The constructor body below never runs.</p>
  */
 public class KnifeItem extends DiggerItem {
-    public KnifeItem(Tier tier, Item.Properties properties) {
-        super(tier, BlockTags.MINEABLE_WITH_AXE, properties);
+    public KnifeItem(Tier tier, float attackDamage, float attackSpeed, Item.Properties properties) {
+        super(attackDamage, attackSpeed, tier, BlockTags.MINEABLE_WITH_AXE, properties);
     }
 }

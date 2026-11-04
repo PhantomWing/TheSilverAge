@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
@@ -58,7 +57,7 @@ public final class SilverArrowGameTest {
     public static void silverArrowsFlyFaster(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         Projectile plain = TestCompat.plainArrow(level);
-        SilverArrow silver = new SilverArrow(level, 0, 0, 0, new ItemStack(ModItems.SILVER_ARROW.get()), null);
+        SilverArrow silver = TestCompat.silverArrow(level);
         plain.shoot(0, 0, 1, 3.0f, 0.0f);
         silver.shoot(0, 0, 1, 3.0f, 0.0f);
         double ratio = silver.getDeltaMovement().length() / plain.getDeltaMovement().length();
@@ -92,9 +91,9 @@ public final class SilverArrowGameTest {
             problems.add("eight arrows around a Silver Ingot craft " + crafted);
         }
 
-        SilverArrow fired = new SilverArrow(helper.getLevel(), 0, 0, 0, stack.copy(), null);
-        if (!fired.getPickupItemStackOrigin().is(ModItems.SILVER_ARROW.get())) {
-            problems.add("one picked up gives " + fired.getPickupItemStackOrigin());
+        SilverArrow fired = TestCompat.silverArrow(helper.getLevel());
+        if (!TestCompat.pickupItem(fired).is(ModItems.SILVER_ARROW.get())) {
+            problems.add("one picked up gives " + TestCompat.pickupItem(fired));
         }
 
         if (problems.isEmpty()) {
@@ -126,7 +125,7 @@ public final class SilverArrowGameTest {
         ServerLevel level = helper.getLevel();
         Mob forPlain = helper.spawnWithNoFreeWill(type, new BlockPos(1, 2, z));
         Mob forSilver = helper.spawnWithNoFreeWill(type, new BlockPos(5, 2, z));
-        return lost(forSilver, new SilverArrow(level, 0, 0, 0, new ItemStack(ModItems.SILVER_ARROW.get()), null))
+        return lost(forSilver, TestCompat.silverArrow(level))
                 - lost(forPlain, TestCompat.plainArrow(level));
     }
 

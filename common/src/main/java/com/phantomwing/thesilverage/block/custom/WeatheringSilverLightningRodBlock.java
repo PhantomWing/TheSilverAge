@@ -1,7 +1,5 @@
 package com.phantomwing.thesilverage.block.custom;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phantomwing.thesilverage.block.SilverOxidation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -20,17 +18,8 @@ import org.jetbrains.annotations.NotNull;
  * stands on is vanilla's to scrape.
  */
 public class WeatheringSilverLightningRodBlock extends LightningRodBlock implements WeatheringCopper {
-    public static final MapCodec<WeatheringSilverLightningRodBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
-            .group(WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(ChangeOverTimeBlock::getAge), propertiesCodec())
-            .apply(instance, WeatheringSilverLightningRodBlock::new));
     private final WeatheringCopper.WeatherState weatherState;
 
-    // LightningRodBlock's codec() returns exactly MapCodec<LightningRodBlock> in 1.21.1, as ChainBlock's does.
-    @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public @NotNull MapCodec<LightningRodBlock> codec() {
-        return (MapCodec) CODEC;
-    }
 
     public WeatheringSilverLightningRodBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
         super(properties);
@@ -49,15 +38,15 @@ public class WeatheringSilverLightningRodBlock extends LightningRodBlock impleme
         }
     }
 
-    protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!SilverOxidation.enabled()) {
             return;
         }
 
-        this.changeOverTime(state, level, pos, random);
+        this.onRandomTick(state, level, pos, random);
     }
 
-    protected boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return WeatheringCopper.getNext(state.getBlock()).isPresent();
     }
 

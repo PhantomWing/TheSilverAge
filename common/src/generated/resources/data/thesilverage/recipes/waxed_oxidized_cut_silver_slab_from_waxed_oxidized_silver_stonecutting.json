@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:stonecutting",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "count": 8,
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredient": {
+    "item": "thesilverage:waxed_oxidized_silver"
+  },
+  "result": "thesilverage:waxed_oxidized_cut_silver_slab"
+}

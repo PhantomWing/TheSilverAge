@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.phantomwing.thesilverage.fabric.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockMixin",
     "BlockStateBaseMixin",
@@ -11,7 +11,7 @@
     "MobMixin",
     "LootTableMixin",
     "PersistentEntitySectionManagerMixin",
-    "ServerPlayerMixin",
+    "PlayerMixin",
     "PoiTypesAccessor",
     "RandomPosMixin",
     "WalkNodeEvaluatorMixin",
@@ -19,6 +19,7 @@
     "ZombieMixin"
   ],
   "client": [
+    "client.HumanoidArmorLayerMixin",
     "client.PackSelectionModelMixin"
   ],
   "injectors": {

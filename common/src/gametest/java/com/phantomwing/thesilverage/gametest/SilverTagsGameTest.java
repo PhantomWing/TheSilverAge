@@ -18,25 +18,22 @@ import static com.phantomwing.thesilverage.gametest.TestCompat.VINDICATOR;
 
 /** Game tests for the tags silver joins so vanilla and other mods treat it as their own. Listed in {@link GameTests}. */
 public final class SilverTagsGameTest {
-    private static final TagKey<Block> CHAINS = TestCompat.tag(Registries.BLOCK, "c", "chains");
-    private static final TagKey<Item> CHAIN_ITEMS = TestCompat.tag(Registries.ITEM, "c", "chains");
-    private static final TagKey<Block> DENSE_ORES = TestCompat.tag(Registries.BLOCK, "c", "ore_rates/dense");
-    private static final TagKey<Block> SINGULAR_ORES = TestCompat.tag(Registries.BLOCK, "c", "ore_rates/singular");
+    private static final TagKey<Block> CHAINS = TestCompat.tag(Registries.BLOCK, TestCompat.CHAINS_NAMESPACE, "chains");
+    private static final TagKey<Item> CHAIN_ITEMS = TestCompat.tag(Registries.ITEM, TestCompat.CHAINS_NAMESPACE, "chains");
+    private static final TagKey<Block> DENSE_ORES = TestCompat.tag(Registries.BLOCK, TestCompat.COMMON_NAMESPACE, "ore_rates/dense");
+    private static final TagKey<Block> SINGULAR_ORES = TestCompat.tag(Registries.BLOCK, TestCompat.COMMON_NAMESPACE, "ore_rates/singular");
     private static final TagKey<Item> WEREWOLVES_SILVER_TOOLS = TestCompat.tag(Registries.ITEM, "werewolves", "tools/silver");
     private static final TagKey<Item> WEREWOLVES_SILVER_ARMOR = TestCompat.tag(Registries.ITEM, "werewolves", "armor/silver");
 
     private SilverTagsGameTest() {
     }
 
-    /** Silver ore snaps a goat's horn and is dense, the pickaxe gets a cluster's full drop, villagers open silver doors, the chain is a chain. */
+    /** Silver ore snaps a goat's horn and is dense, the pickaxe gets a cluster's full drop, the chain is a chain. 1.20.1 has no mob_interactable_doors. */
     public static void silverJoinsVanillaTags(GameTestHelper helper) {
         if (!ModBlocks.SILVER_ORE.get().defaultBlockState().is(BlockTags.SNAPS_GOAT_HORN)) {
             fail(helper, "Silver Ore isn't in minecraft:snaps_goat_horn");
         } else if (!new ItemStack(ModItems.SILVER_PICKAXE.get()).is(ItemTags.CLUSTER_MAX_HARVESTABLES)) {
             fail(helper, "The Silver Pickaxe isn't in minecraft:cluster_max_harvestables");
-        } else if (!ModBlocks.SILVER_DOOR.get().defaultBlockState().is(BlockTags.MOB_INTERACTABLE_DOORS)
-                || !ModBlocks.WAXED_OXIDIZED_SILVER_DOOR.get().defaultBlockState().is(BlockTags.MOB_INTERACTABLE_DOORS)) {
-            fail(helper, "Silver Doors aren't in minecraft:mob_interactable_doors");
         } else if (!ModBlocks.SILVER_CHAIN.get().defaultBlockState().is(CHAINS)
                 || !new ItemStack(ModItems.WAXED_OXIDIZED_SILVER_CHAIN.get()).is(CHAIN_ITEMS)) {
             fail(helper, "Silver Chains aren't in c:chains");

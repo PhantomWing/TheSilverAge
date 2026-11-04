@@ -10,10 +10,9 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
  * {@code EventResult} (allow/deny) and cannot change the damage amount, so the
  * hook has to be loader-specific.</p>
  *
- * <p>NeoForge: subscribes {@code LivingIncomingDamageEvent} and adds to
- * {@code event.getAmount()}.<br>
- * Fabric: a no-op — the equivalent hook is the always-active
- * {@code LivingEntityMixin}, registered through {@code thesilverage.mixins.json}.</p>
+ * <p>Both loaders on this line: a no-op - the hook is each loader's {@code LivingEntityMixin}, adding the bonus
+ * at the head of {@code LivingEntity#hurt}, where neither Fabric API nor Forge's {@code LivingHurtEvent} (which comes after
+ * the damage cooldown) can.</p>
  */
 public final class SmitePlatform {
     private SmitePlatform() {

@@ -2,7 +2,7 @@ package com.phantomwing.thesilverage.firework;
 
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.crafting.FireworkStarRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Loader-agnostic firework-star recipe patch: lets the Silver Nugget act as a
- * {@link FireworkExplosion.Shape#STAR} shape ingredient in the vanilla
+ * {@link FireworkRocketItem.Shape#STAR} shape ingredient in the vanilla
  * {@link FireworkStarRecipe}, exactly like a Gold Nugget.
  *
  * <p>Vanilla keeps two {@code private static final} fields in sync:
@@ -23,17 +23,16 @@ import java.util.Map;
  * accepted-item set, and working on both loaders.</p>
  *
  * <p>Both fields are exposed (accessible + mutable) via the shared
- * {@code thesilverage.accesswidener}; NeoForge production additionally ships the
- * mirrored {@code public-f} access-transformer entries (the AW is not converted
- * to an AT in {@code remapJar}).</p>
+ * {@code thesilverage.accesswidener}, which Forge production gets as the access
+ * transformer its build converts the widener into.</p>
  *
  * <p>Call once during mod setup, after item registration: NeoForge runs it in
  * {@code FMLCommonSetupEvent} (enqueued onto the main thread); Fabric from the
  * {@code ModInitializer} after the common bootstrap.</p>
  */
 public final class ModFireworks {
-    private static final Map<Item, FireworkExplosion.Shape> SILVER_SHAPES = Map.of(
-            ModItems.SILVER_NUGGET.get(), FireworkExplosion.Shape.STAR);
+    private static final Map<Item, FireworkRocketItem.Shape> SILVER_SHAPES = Map.of(
+            ModItems.SILVER_NUGGET.get(), FireworkRocketItem.Shape.STAR);
 
     private ModFireworks() {
     }
@@ -42,7 +41,7 @@ public final class ModFireworks {
         // Merge the Silver shapes into vanilla's item→shape map. Start from the
         // Silver entries and putAll vanilla so vanilla wins on the off chance of
         // an overlap — identical ordering to the original NeoForge doApply.
-        Map<Item, FireworkExplosion.Shape> merged = new HashMap<>(SILVER_SHAPES);
+        Map<Item, FireworkRocketItem.Shape> merged = new HashMap<>(SILVER_SHAPES);
         merged.putAll(FireworkStarRecipe.SHAPE_BY_ITEM);
         FireworkStarRecipe.SHAPE_BY_ITEM = merged;
 

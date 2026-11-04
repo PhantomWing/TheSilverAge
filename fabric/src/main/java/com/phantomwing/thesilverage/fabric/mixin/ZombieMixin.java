@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric.mixin;
 
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -18,10 +19,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Zombie.class)
 public abstract class ZombieMixin {
-    @Inject(method = "finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;)Lnet/minecraft/world/entity/SpawnGroupData;",
+    @Inject(method = "finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/entity/SpawnGroupData;",
             at = @At("RETURN"))
     private void thesilverage$rollSilverGear(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type,
-                                             SpawnGroupData data, CallbackInfoReturnable<SpawnGroupData> cir) {
+                                             SpawnGroupData data, CompoundTag tag, CallbackInfoReturnable<SpawnGroupData> cir) {
         if (type == MobSpawnType.CONVERSION) {
             MonsterArmorHandler.rollAfterConversion((Zombie) (Object) this);
         }

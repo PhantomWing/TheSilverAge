@@ -6,8 +6,13 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+/**
+ * The tags other mods share silver through. On 1.20.1 those are Forge's ({@code forge:ingots/silver}), which recipes and
+ * code read on both loaders, since the mod ships them; Fabric's mods share theirs under Fabric API's own names
+ * ({@code c:silver_ingots}, {@link FabricTags}), which each Forge tag takes in too, so their silver counts here as well.
+ */
 public class CommonTags {
-    private static final String COMMON_MOD_ID = "c";
+    private static final String COMMON_MOD_ID = "forge";
 
     // Block tags
     public static class Blocks {
@@ -16,7 +21,7 @@ public class CommonTags {
         public static final TagKey<Block> ORES_SILVER = tag("ores/silver");
 
         private static TagKey<Block> tag(String path) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(COMMON_MOD_ID, path));
         }
     }
 
@@ -33,19 +38,24 @@ public class CommonTags {
         public static final TagKey<Item> PLATES_SILVER = tag("plates/silver");
 
         // TOOLS
-        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knife"); // Reserved for future use
+        // Plural on 1.20.1: forge:tools/knives is the tag Farmer's Delight's cutting recipes accept.
+        public static final TagKey<Item> TOOLS_KNIFE = tag("tools/knives");
         public static final TagKey<Item> DUSTS = tag("dusts");
         public static final TagKey<Item> DUSTS_SILVER = tag("dusts/silver");
-        // Mekanism's ore processing, under the c: tags it gives its own metals.
-        public static final TagKey<Item> DIRTY_DUSTS_SILVER = tag("dirty_dusts/silver");
-        public static final TagKey<Item> CLUMPS_SILVER = tag("clumps/silver");
-        public static final TagKey<Item> SHARDS_SILVER = tag("shards/silver");
-        public static final TagKey<Item> CRYSTALS_SILVER = tag("crystals/silver");
-        // 1.21.11's nautilus armour, which Vanilla Backport tags its own with on this version.
-        public static final TagKey<Item> ARMORS_NAUTILUS = tag("armors/nautilus");
+        // Mekanism's ore processing, under the tags it gives its own metals: its own namespace's on 1.20.1.
+        public static final TagKey<Item> DIRTY_DUSTS_SILVER = mekanism("dirty_dusts/silver");
+        public static final TagKey<Item> CLUMPS_SILVER = mekanism("clumps/silver");
+        public static final TagKey<Item> SHARDS_SILVER = mekanism("shards/silver");
+        public static final TagKey<Item> CRYSTALS_SILVER = mekanism("crystals/silver");
+        // 1.21.11's nautilus armour, under the c: tag the newer versions give it.
+        public static final TagKey<Item> ARMORS_NAUTILUS = TagKey.create(Registries.ITEM, new ResourceLocation("c", "armors/nautilus"));
 
         private static TagKey<Item> tag(String path) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(COMMON_MOD_ID, path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(COMMON_MOD_ID, path));
+        }
+
+        private static TagKey<Item> mekanism(String path) {
+            return TagKey.create(Registries.ITEM, new ResourceLocation("mekanism", path));
         }
     }
 }

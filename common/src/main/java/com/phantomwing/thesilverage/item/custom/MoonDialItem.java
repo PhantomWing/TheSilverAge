@@ -11,6 +11,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The Moon Dial item. Adds a hover tooltip naming the moon phase the dial is
@@ -60,7 +61,7 @@ public class MoonDialItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context,
+    public void appendHoverText(ItemStack stack, @Nullable Level context,
                                 List<Component> tooltip, TooltipFlag flag) {
         Level level = EnvExecutor.getEnvSpecific(
                 () -> () -> net.minecraft.client.Minecraft.getInstance().level,

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:silver_ingot",
+    {
+      "id": "#c:silver_ingots",
+      "required": false
+    }
+  ]
+}

@@ -2,7 +2,6 @@ package com.phantomwing.thesilverage.sound;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import dev.architectury.registry.registries.DeferredRegister;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 
@@ -21,8 +20,8 @@ public final class ModSounds {
     // A Moon Phase Detector inverted, "Moon Phase Detector clicks" where the comparator's click would say a comparator.
     public static final SoundEvent MOON_PHASE_DETECTOR_CLICK = register("block.moon_phase_detector.click");
 
-    // Silver armor put on, "Silver armor clinks". A holder, which the armor material takes.
-    public static final Holder<SoundEvent> ARMOR_EQUIP_SILVER = registerHolder("item.armor.equip_silver");
+    // Silver armor put on, "Silver armor clinks".
+    public static final SoundEvent ARMOR_EQUIP_SILVER = register("item.armor.equip_silver");
 
     private ModSounds() {
     }
@@ -33,9 +32,6 @@ public final class ModSounds {
         return event;
     }
 
-    private static Holder<SoundEvent> registerHolder(String name) {
-        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(TheSilverAge.resourceLocation(name)));
-    }
 
     public static void register() {
         SOUNDS.register();

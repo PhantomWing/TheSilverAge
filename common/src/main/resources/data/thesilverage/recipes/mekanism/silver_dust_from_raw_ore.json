@@ -1,0 +1,27 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "mekanism"
+      ]
+    }
+  ],
+  "type": "mekanism:enriching",
+  "input": {
+    "amount": 3,
+    "ingredient": {
+      "tag": "forge:raw_materials/silver"
+    }
+  },
+  "output": {
+    "count": 4,
+    "item": "thesilverage:silver_dust"
+  }
+}

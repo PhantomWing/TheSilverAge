@@ -1,14 +1,13 @@
 package com.phantomwing.thesilverage.utils;
 
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
@@ -16,11 +15,11 @@ import java.util.Objects;
 
 public class ItemUtils {
     /**
-     * What the stack a swap replaces keeps beyond its wear and enchantments: what a player, a structure or a trial
-     * spawner gave it - a name, lore, a trim. Not its attribute modifiers, which would take the new item's own away.
+     * The parts of a stack's tag a swap doesn't carry over as they are: its wear and enchantments, which are carried
+     * over as they suit the new item, and its attribute modifiers, which would take the new item's own away. The rest -
+     * what a player or a structure gave it, a name, lore, a trim - is kept.
      */
-    private static final List<DataComponentType<?>> KEPT = List.of(DataComponents.CUSTOM_NAME, DataComponents.LORE,
-            DataComponents.TRIM, DataComponents.UNBREAKABLE, DataComponents.CUSTOM_DATA);
+    private static final List<String> NOT_KEPT = List.of(ItemStack.TAG_DAMAGE, ItemStack.TAG_ENCH, "AttributeModifiers");
 
     public static ResourceLocation getResourceLocation(ItemLike item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
@@ -41,7 +40,7 @@ public class ItemUtils {
 
     public static ResourceLocation getPrefixedResourceLocation(ItemLike item, String prefix, String suffix) {
         String namespace = getNamespace(item);
-        return ResourceLocation.fromNamespaceAndPath(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
+        return new ResourceLocation(namespace, prefix + "/" + getName(item) + (suffix != null && !suffix.isEmpty() ? ("_" + suffix) : ""));
     }
 
     public static ResourceLocation getItemResourceLocation(ItemLike item) {
@@ -53,7 +52,7 @@ public class ItemUtils {
     }
 
     public static String getTrimNameForArmor(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
-        String itemName = item.toString();
+        String itemName = getNameWithNamespace(item);
         String trimName = trimMaterial.location().getPath();
 
         if (itemName.contains(trimName)) {
@@ -64,7 +63,7 @@ public class ItemUtils {
     }
 
     public static String getArmorTrimModelName(ItemLike item, ResourceKey<TrimMaterial> trimMaterial) {
-        return item.toString() + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
+        return getNameWithNamespace(item) + "_" + getTrimNameForArmor(item, trimMaterial) + "_trim";
     }
 
     /**
@@ -82,28 +81,23 @@ public class ItemUtils {
             to.setDamageValue(Math.min(Math.round(worn * to.getMaxDamage()), to.getMaxDamage() - 1));
         }
 
+        CompoundTag tag = from.getTag();
+        if (tag != null) {
+            CompoundTag kept = tag.copy();
+            NOT_KEPT.forEach(kept::remove);
+            if (!kept.isEmpty()) {
+                to.getOrCreateTag().merge(kept);
+            }
+        }
+
         // Carry over enchantments from the replaced item to the new item (if supported).
-        // (Uses vanilla ItemStack/Enchantment APIs rather than the NeoForge
-        // convenience helpers so this stays loader-agnostic; behaviour is the same.)
         if (from.isEnchanted() && to.isEnchantable()) {
-            ItemEnchantments enchantments = from.getEnchantments();
-            enchantments.keySet().forEach(enchantment -> {
-                if (enchantment.value().canEnchant(to)) {
-                    to.enchant(enchantment, enchantments.getLevel(enchantment));
+            EnchantmentHelper.getEnchantments(from).forEach((enchantment, level) -> {
+                if (enchantment.canEnchant(to)) {
+                    to.enchant(enchantment, level);
                 }
             });
         }
-
-        for (DataComponentType<?> type : KEPT) {
-            copy(from, to, type);
-        }
         return to;
-    }
-
-    private static <T> void copy(ItemStack from, ItemStack to, DataComponentType<T> type) {
-        T value = from.get(type);
-        if (value != null) {
-            to.set(type, value);
-        }
     }
 }

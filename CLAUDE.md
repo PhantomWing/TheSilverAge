@@ -1,9 +1,10 @@
 @~/Documents/Projects/Minecraft/MinecraftDeveloperPortal/.claude/profiles/architectury.md
 
-# The Silver Age - `version/1.21`
+# The Silver Age - `version/1.20`
 
-**This file describes the `version/1.21` line**: Minecraft 1.21.1 (the jar covers 1.21 and 1.21.1), Fabric and NeoForge. A **baseline** line: new features start here.
+**This file describes the `version/1.20` line**: Minecraft 1.20.1, Fabric and Forge (the Forge jar also runs on NeoForge 1.20.1).
 Built with Architectury Loom (`dev.architectury.loom`) with Mojang mappings layered with Parchment; `remapJar` is the shipped jar.
+Branched from `version/1.21` on 2026-11-04, at 1.4.0, to replace the single-loader `forge/1.20`.
 
 It belongs to whichever folder has this branch checked out - the main `TheSilverAge` folder or a worktree
 under `TheSilverAge/.worktrees/`. A session started in a worktree also loads the main folder's CLAUDE.md,
@@ -14,7 +15,7 @@ Vanilla-friendly mod adding oxidizable silver content. Mod ID `thesilverage`, pa
 `com.phantomwing.thesilverage`. `TheSilverAge-Wiki` in the workspace root is its GitHub wiki.
 
 Every `version/*` line is Architectury. `neoforge/1.21` and `forge/1.20` are single-loader
-leftovers from before the split, not lines. A root `src/` folder may linger on disk from that
+leftovers from before the split, not lines; this line takes `forge/1.20`'s place. A root `src/` folder may linger on disk from that
 layout; nothing in it is tracked or built.
 
 ## Layout
@@ -22,7 +23,7 @@ layout; nothing in it is tracked or built.
 ```
 common/src/main/java/com/phantomwing/thesilverage/   loader-agnostic code
 fabric/   ... /fabric/ + /platform/                  Fabric entry point and platform implementations
-neoforge/ ... /neoforge/ + /platform/                NeoForge entry point and platform implementations
+forge/    ... /forge/ + /platform/                   Forge entry point and platform implementations
 ```
 
 `platform/` is the Architectury expect/actual boundary: the interface lives in `common`, each loader
@@ -33,40 +34,46 @@ check.
 
 - **Weathering/oxidation** - silver blocks follow the copper pattern: `UNAFFECTED → EXPOSED →
   WEATHERED → OXIDIZED`, each with a normal and a waxed variant. Registered through generic helpers
-  in `ModBlocks`; the state mappings live in `ModOxidizables` and `ModWaxables`. Adding a silver
-  block usually means touching all three.
+  in `ModBlocks`; the state mappings are handed to each loader by `WeatheringPlatform` (see This line). Adding a
+  silver block usually means touching both.
 - **Creative tab** - `ModItems.CREATIVE_TAB_ITEMS` is a `LinkedHashSet`, so insertion order *is* tab
   order. Items are added by the registration helpers, not by hand.
-- **Tags** - `ModTags` for the mod namespace, `CommonTags` for `c:`. Silver interoperates with other
-  mods almost entirely through `c:ingots/silver` and friends; keep new materials tagged there.
+- **Tags** - `ModTags` for the mod namespace, `CommonTags` for `forge:` on this line (`c:` from 1.21). Silver interoperates with other
+  mods almost entirely through `forge:ingots/silver` (`c:silver_ingots` on Fabric) and friends; keep new materials tagged there.
 - **Config** - options that change recipes or loot are emitted by datagen wrapped in a condition, so
   the condition lands in the JSON rather than in a runtime branch.
-- **Undead** - every silver effect on mobs (the tools' bonus, the armour hurting undead attackers, silver floors) checks
-  `thesilverage:sensitive_to_silver`, which holds `#minecraft:sensitive_to_smite` and, optionally,
-  Werewolves: Become a Beast's `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. Never check the
-  smite tag directly. The `silver_affects_undead` option turns every one of them off: each loader's `CommonConfigImpl`
+- **Undead** - every silver effect on mobs (the tools' bonus, the armour hurting undead attackers, silver floors, the
+  goals, the pressure plate) asks `combat/SilverSensitivity`: a mob whose `getMobType()` is `MobType.UNDEAD`, as Smite
+  asks on 1.20.1, so another mod's undead count too, or one in `thesilverage:sensitive_to_silver`, which lists vanilla's
+  undead (1.20.1 has no `#minecraft:sensitive_to_smite`) and, optionally, Werewolves: Become a Beast's
+  `#werewolves:werewolf`, and lets a pack add a mob Smite leaves alone. A check with a type and no entity (a spawn's)
+  takes the tag and the types an entity has shown to be undead, which every mob joining a level teaches it. Never
+  check the tag directly; the advancement's entity predicate is the one place that reads it alone. The `silver_affects_undead` option turns every one of them off: each loader's `CommonConfigImpl`
   folds it into the getter of each effect's own option, so a new effect's getter needs it too. The tooltips read the
   server's settings, sent on join and whenever the config changes (`SilverUndeadSettings`, `ModNetworking.configChanged`). A
-  player's swing takes the tools' bonus in `ServerPlayer#getEnchantedDamage` (twin `ServerPlayerMixin`s), where Smite's goes, so the
-  swing's charge scales it; every other hit takes it as it comes in. Silver armour's hurt (`combat/SilverThornsHandler`,
+  player's swing takes the tools' bonus in `Player#attack`'s `EnchantmentHelper.getDamageBonus` (twin `PlayerMixin`s), where
+  Smite's goes, so the swing's charge scales it; every other hit, a Silver Arrow's among them, takes it at the head of
+  `LivingEntity#hurt` (twin `LivingEntityMixin`s' `@ModifyVariable`), before the damage cooldown and armour. Forge's
+  `LivingHurtEvent` is not used: it comes inside `actuallyHurt`, after the cooldown, and counted other hits than Fabric. Silver armour's hurt (`combat/SilverThornsHandler`,
   `silver_thorns_chance` a piece, 20% by default, Thorns damage) is called from `LivingEntity#hurt`'s return by twin
   `LivingEntityMixin`s, so it fires only on a hit that landed, and puts back the attacker's damage cooldown after, or
   vanilla's Thorns, which hurts later in the same strike, lost the burn's damage. Silver floors (`combat/SilverFloor`, the blocks in
   `thesilverage:silver_floors`) are hooked by twin mixins in each loader: `Block#stepOn`, `isValidSpawn`, and the
   walk evaluator and `RandomPos` for avoidance. Path types can't carry the avoidance, since a level caches them once
-  for every mob. `SilverUndeadGoals` gives every such mob two goals as it joins a level (NeoForge's `EntityJoinLevelEvent`,
+  for every mob. `SilverUndeadGoals` gives every such mob two goals as it joins a level (Forge's `EntityJoinLevelEvent`,
   Fabric's `PersistentEntitySectionManagerMixin`, which Architectury's `EntityEvent.ADD` misses for chunk loads), both of
   which give way to a target: `LeaveSilverFloorGoal` walks it off silver, and `AvoidSilverLightGoal` keeps it 6 blocks
   from the blocks in `thesilverage:undead_repellents` (the Silver Torch and Lantern), The Lead Age's
-  `AvoidRepellentBlockGoal` with silver's rule. The floor's damage type is in `minecraft:no_knockback`, as magma's is, and
-  `SilverFloor` hops a mob itself, at most every 3 seconds. The Silver Pressure Plate is a silver floor a mob stands in rather than on: it hurts through its own
+  `AvoidRepellentBlockGoal` with silver's rule. 1.20.1 has no `minecraft:no_knockback`; a hurt with no entity behind it
+  knocks nothing back here, as magma's doesn't, and `SilverFloor` hops a mob itself, at most every 3 seconds. The Silver Pressure Plate is a silver floor a mob stands in rather than on: it hurts through its own
   `entityInside`, and `SilverFloor` looks at the block a mob stands in for a plate. It is pressed by any living entity
   but a hostile one (`Enemy`) or one in `thesilverage:cannot_press_silver_pressure_plates`, which holds
-  `sensitive_to_silver`.
+  `sensitive_to_silver`, besides every mob `SilverSensitivity` counts.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
   to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
 - **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
-  (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
+  (`ContentSyncPayload`, with `UndeadSettingsSyncPayload` and `RecipeOverrideSyncPayload`, on join, after a reload and
+  when the config changes; to a Forge client unguarded - see This line), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
   honeycomb is refused too (`SilverOxidation`).
 - **`enable_silver_gear`** takes away the gear in `ModItems.isSilverGear` - the tools, sword, knife, spear, armour, horse
   and nautilus armour - as `enable_silver_arrows` takes the arrows: their recipes (and the Silver Grappling Hook's) and
@@ -88,72 +95,16 @@ on a rung where they have no build; that does not block the line.
 
 ## This line
 
-- Java 21, Mojang mappings with Parchment. `org.gradle.java.home` is pinned in `gradle.properties` to a JDK on this machine; if the daemon fails to start, check that path first.
-- Datagen: `:neoforge:runData`. Output: `common/src/generated/resources`, never hand-edited.
-- Game tests in `common/src/gametest`, run on both loaders: `:neoforge:runGameTest` and `:fabric:runGameTest`. Fabric's test source set is a mod of its own, `thesilverage_gametest`, whose `fabric.mod.json` names the `fabric-gametest` entrypoint. Laid out with The Lead Age's test shim (`verification.md`): the test classes and `GameTests` read the same on every line, `TestCompat` holds the calls whose shape differs between versions, and each loader's `src/test` has a `GameTestRegistration` that registers them. They run in `silver_test_arena`, a 7x5x7 box with a stone floor and no walls. A test's positions count from the structure block a layer below the arena, so the floor is at y = 1 and what stands on it at y = 2: a mob spawned at y = 1 is inside the stone and plans no path.
-- 11 play scenarios in `scenarios/`, one of them Fabric's alone (the config screen Mod Menu opens), and in `scenarios/server` one per modloader played on the line's dedicated server: turning `override_vanilla_recipes` off and on with `server_config` and `/reload`, the repeater's and comparator's textures following without a rejoin. Each modloader keeps its config in a file of its own, so each names its `loader`.
-- Create is NeoForge's alone on this rung (no Fabric Create or Create Fly for 1.21.1), and the game-test run can't load it (`neoforge/build.gradle`), so its machines on silver are six NeoForge scenarios, `scenarios/create-*.json`, each a machine on a Create Depot driven by a Creative Motor, its result taken off the Depot by hand: the Press, the Deployer (waxing with a Honeycomb Block, scraping wax and a tarnish stage with an axe), the Spout (one stage per 250 mB; it keeps pouring while a block stays under it, so it is filled with 250 alone through the block entity's `Tanks`), the Encased Fan washing through water, the Crushing Wheels (one wheel's motor on each side, so they turn inward) and smelting Crushed Raw Silver. A Deployer takes the item in its hand from a click on its working face; a click on its side sets its filter. Create: Aquatic Ambitions (NeoForge's dev runs carry 2.0.4, which takes Create 6.0.8 and up) is played in `create-aquatic-ambitions-channeling-*.json`: a fan blowing through a Conduit Cage channels one tarnish stage and leaves waxed silver alone. The cage awakens only while it has water to burn, so it is set again with 1000 mB in its `InputTanks` (not `Tanks`) before each item, and `setblock` over the same block does nothing, so it goes through air first.
-- Newer vanilla content that mods backport to 1.21.1, under vanilla's own ids (2026-11-02):
-  - The Silver Spear and Silver Nautilus Armor are always registered, so a world keeps them, and only shown in the
-    creative tabs with the mod that backports them (`ModItems`, `BackportPlatform`). With Backported Spears (`spears`)
-    the spear is made by its `Spears.registerSpearRaw` with 1.21.11's numbers, and with Vanilla Backport the armour
-    is its `NautilusArmorItem`, whose renderer reads `thesilverage:textures/entity/nautilus/armor/silver.png`.
-    Without them each is a plain item. The two mods register the same spear components and crash a client holding a
-    spear when both are installed, so NeoForge's game runs take Backported Spears and its datagen Vanilla Backport
-    (whose Copper Nautilus Armor the nautilus loot modifiers name), and Fabric's runs Vanilla Backport alone.
-  - On Fabric, Backported Spears registers its components in its own initializer, so the spear is only a spear
-    where it ran first (`suggests` orders it); otherwise it falls back to a plain item and logs a warning.
-  - Without Backported Spears, Vanilla Backport makes the spear: its `SpearItem` takes the same numbers in the same
-    order. It draws only its own seven spears held as spears, so the Silver Spear's held model is registered with its
-    Platform library's `GameRendering.registerHandHeldModels` in each loader's client setup, after the items exist.
-    Its recipe and smelting load with either mod (`neoforge:or`, which `FabricConditionsProvider` turns into
-    `fabric:or`). `weapon_attributes/silver_spear.json` gives it Better Combat's spear swings, as Backported Spears
-    does its own.
-  - Vanilla Backport's Sulfur Cube swallows silver's blocks, ores, cut and chiseled silver and bulbs as copper's,
-    in `minecraft:sulfur_cube_archetype/slow_flat` (26.2's vanilla tag, which the 26.x lines lack too). Its Parched
-    is in `can_wear_silver_armor`, optional; its Camel Husk, Zombie Nautilus and Parched are in vanilla's zombie and
-    skeleton tags, so silver hurts them with nothing added. A play session's world is Peaceful: summon hostile mobs
-    with `difficulty normal`.
-  - Silver Nautilus Armor takes 1.21.11's six ocean chest swaps from Copper Nautilus Armor (`SilverLootSpec`), each
-    with `requiredMod`, so its loot modifier loads, and Fabric's mixin applies it, only with Vanilla Backport.
-  - `BackportTags` holds the 1.21.9 tags (`minecraft:bars`, `chains`, `lanterns`, `lightning_rods`, `spears`) that
-    Vanilla Backport and Copper Age Backport fill on this version.
-  - Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
-    `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability, between iron's and gold's as
-    silver's tools are), its `yo_hooks` models, textures (iron's recoloured onto the Silver Pickaxe's ramp), names and
-    tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions.
-  - Backported Spears needs Fabric Loader 0.18.1 and Grappling Hooks 0.19, past this line's 0.16.14, so both are
-    only tried on NeoForge in dev. YACL's jar bundles libraries a dev run doesn't unpack, which
-    `forgeRuntimeLibrary` adds.
-- Mekanism (NeoForge only, 10.7, `modCompileOnly`) has no silver, so the mod adds gold's whole ore processing for it:
-  Silver Dust (`c:dusts/silver`), Dirty Silver Dust, Silver Clump, Shard and Crystal (`c:dirty_dusts/silver`,
-  `c:clumps/silver`, `c:shards/silver`, `c:crystals/silver`, which have no parent tags in Mekanism), and the dirty and
-  clean silver slurries, registered in Mekanism's chemical registry only when it is loaded
-  (`neoforge/compat/mekanism/SilverSlurries`). The recipes are hand-written in `data/thesilverage/recipe/mekanism` with
-  gold's numbers, behind its mod-loaded condition. Without Mekanism the items are hidden, as the Create-only Silver Sheet
-  is. Their textures are Mekanism's gold ones (MIT) recoloured onto the Silver Ingot's ramp. No Enriched Silver:
-  Mekanism's enriched metals are circuit and alloy materials, which silver has no recipe for. Mekanism's machine recipes
-  aren't in the recipe book, so `recipe give` answers "No new recipes were learned" for them.
-- Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,
-  hidden by giving it no items) and `enable_vanilla_creative_tabs` (`ui/VanillaTabs`: each item after its counterpart,
-  in vanilla's tabs and other mods' - the knife after Farmer's Delight's Golden Knife, the sheet after Create's Golden
-  Sheet in `create:base`, Mekanism's processing items after gold's in its tab and Ingredients). Redstone Blocks lists
-  only the waxed bulbs, plates and rods, as vanilla does its copper bulbs. An anchor that only another mod adds (the
-  Golden Spear, the Golden Nautilus Armor, Mekanism's gold dust) needs that mod's insertions to run first, which
-  `neoforge.mods.toml` orders with optional `AFTER` dependencies. That ordering only reaches listeners on this mod's own
-  bus, so on NeoForge the tabs are filled through `CreativeTabPlatform` rather than Architectury's
-  `CreativeTabRegistry.modify`, which listens on Architectury's bus and ran before Backported Spears and Mekanism had
-  filled the tab. NeoForge's `insertAfter` throws on an anchor the tab doesn't list, so `VanillaTabs` tries a list of
-  anchors; Fabric's `addAfter` would append one it doesn't list at the end, so its side throws too, and inserts in a phase after the default one, where Vanilla Backport adds its spears.
-- Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>` (Farmer's Delight,
-  Create, Create: Aquatic Ambitions, Backported Spears, Vanilla Backport, Grappling Hooks, Mekanism), beside
-  `recipe_viewer` and `enhanced_celestials`; `-Penable_mekanism=false` and the like test without one. The game-test
-  runs load none of them, so their servers are the check that the mod loads alone.
-- Published with `publishMods` from `fabric/build.gradle` and `neoforge/build.gradle`, with the `-PpublishDryRun` flag. The Fabric upload is tagged from `supported_minecraft_versions`, 1.21 and 1.21.1, and the NeoForge one from `neoforge_minecraft_versions`, 1.21.1 alone, since NeoForge 21.1 exists for 1.21.1 only. The Fabric manifest asks for `fabric-api >=0.102.0`, the newest for 1.21: a change that needs a newer Fabric API raises that floor and drops 1.21 from the list.
-- Orevolution (NeoForge, 6.0.0 and up) compiles against two of this line's fields to give silver its tier and armour
-  powers: `tool.ModTiers.SILVER` (a `Tier`) and `armor.ModArmorMaterials.SILVER_ARMOR_MATERIAL` (a
-  `Holder<ArmorMaterial>`). Renaming, moving or retyping either crashes the game where both mods are installed.
-- Other mods' compatibility is mostly through the `c:` silver tags, which Silent Gear, Immersive Engineering, Goety,
-  Iron Furnaces, Modern Industrialization, Occultism and Werewolves all read; `TODO.md` has what was checked
-  (2026-10-20) and what is left.
-- Hand-authored access wideners and transformers: `common/src/main/resources/thesilverage.accesswidener` and `neoforge/src/main/resources/META-INF/accesstransformer.cfg`. A first suspect when a port fails to load.
+- Java 17 (`options.release = 17`; the daemon may run on JDK 21), Mojang mappings with Parchment 2023.09.03, Architectury Loom 1.7 on the Forge platform (`forge/gradle.properties`: `loom.platform=forge`), Forge 47.4.20, Fabric Loader 0.16.10, Fabric API 0.92.2, Architectury 9.2.14. `org.gradle.java.home` is pinned in `gradle.properties` to a JDK on this machine; if the daemon fails to start, check that path first.
+- Forge's mixins are `thesilverage.forge.mixins.json`, with its own refmap. Forge 47 doesn't bundle MixinExtras, so `forge/build.gradle` jar-in-jars `mixinextras-forge`. The common access widener is converted into Forge's access transformer (`convertAccessWideners`); there is no hand-written `accesstransformer.cfg`.
+- Datagen: `:forge:runData` (`DataGenerators` subscribes on the MOD bus; Forge 47's default is the FORGE bus, where it never fires). Output: `common/src/generated/resources`, never hand-edited, in 1.20.1's folder names (`recipes`, `advancements`, `loot_tables`, `tags/items`, `tags/blocks`). Conditional recipes and advancements carry Forge's top-level `conditions`, built through `datagen/RecipeOutput`, and `FabricConditionsProvider` adds the `fabric:load_conditions` twin to every one. A global loot modifier's `conditions` are loot conditions on 1.20.1, so a modifier naming another mod's item stores its id and resolves it at roll time instead of being gated.
+- The portal has no Forge tasks for an Architectury line yet: it offers datagen and game tests only for `neoforge` and `fabric` subprojects. Run Forge's datagen and game tests as Gradle tasks (`:forge:runData`, `:forge:runGameTest`); its client load check (`checkClient:forge`) works.
+- Game tests in `common/src/gametest`, run on both loaders: `:forge:runGameTest` and `:fabric:runGameTest`, 65 each (2026-11-04). Forge's run is `server()` with the `gameTestServer` template and the `forge.gameTestServer` property, which Forge's patched `Main` reads (Loom launches a `server()` run with the plain server's arguments, so without it the run waits on its EULA). Fabric's test source set is a mod of its own, `thesilverage_gametest`, with the `fabric-gametest` entrypoint. Laid out with The Lead Age's test shim: `TestCompat` holds 1.20.1's calls - horse armour in the chest slot, `forge:` as the material namespace and `minecraft:chains`, an arrow without its pickup stack, `NaturalSpawner.isSpawnPositionOk`, `CraftingInput` as a shim over a `TransientCraftingContainer`, NBT names and trims, loot tables through `getLootData`, 1.21's `recipe/` paths read from `recipes/` with Forge's `conditions` shown as `neoforge:conditions`, and 1.21's bolt and flow trim patterns mapped to coast. The bodies still differ from `version/1.21`'s where 1.21's name an API 1.20.1 hasn't (`EquipmentSlot.BODY`, `DataComponents`, `CraftingInput`, the `BlockSource` record, `CopperBulbBlock`, `makeMockPlayer(GameType)`, `SpawnPlacements.isSpawnPositionOk`, `EntityTypeTags.SENSITIVE_TO_SMITE`, `assertItemEntityPresent(Item)`, `BlockTags.MOB_INTERACTABLE_DOORS`, the 1.20.5 arrow constructor): making them one needs those calls moved into `TestCompat` on every line. Forge's `TestLoader` makes a `FakePlayer` (the mock server player's connection has no channel on Forge 47) and sets a config option's cached value rather than calling `set`, which writes the file Forge's watcher then holds. Left out, with no 1.20.1 counterpart: the wind charge tests, trial chamber loot and `silver_trim_darkens`.
+- Tags: `CommonTags` is the `forge:` namespace here (`forge:ingots/silver`, `forge:tools/knives`), and `FabricTags` the Fabric conventional ones of 1.20.1 (`c:silver_ingots`, `c:silver_nuggets`, `c:tools/knives`). Datagen gives each `forge:` tag its Fabric twin as an optional tag, and the `c:` tag lists the mod's own items, so one tree serves both loaders. Mekanism's tags are in `mekanism:`. `thesilverage:sensitive_to_silver` lists vanilla's undead itself, since 1.20.1 has no `minecraft:sensitive_to_smite`; the code adds every `MobType.UNDEAD` mob (`SilverSensitivity`).
+- 1.20.1's API, as this line uses it: blocks have no codecs and their methods are public; `onRandomTick` in place of `changeOverTime`; no vanilla copper door, trapdoor, grate or bulb, so `SilverDoorBlock`, `SilverGrateBlock` and `SilverBulbBlock` are the mod's own; `ModArmorMaterials` is an enum implementing `ArmorMaterial`, named `thesilverage:silver` (Fabric resolves the armour texture's namespace through `HumanoidArmorLayerMixin`); horse armour is `SilverHorseArmorItem`; tiers take `getLevel()`; payloads are `FriendlyByteBuf` writers through Architectury 9's `NetworkManager`, whose Forge `canPlayerReceive` answers from the ids the client sends back for `architectury:sync_ids` - its own C2S receivers, not the S2C ones the server sends, and only after the login event the join sync is sent from - so it never holds for this mod's packets, and `ModNetworking.canReceive` takes every Forge client as able (Forge refuses one without the mod at login) and asks Architectury on Fabric alone; `SilverArmorHurtTrigger` is registered with `CriteriaTriggers.register`. A player's swing takes the tools' bonus in `Player#attack`'s `EnchantmentHelper.getDamageBonus` (twin `PlayerMixin`s), where Smite's goes.
+- Weathering: Forge 47 has no data maps, so `WeatheringPlatformImpl.apply()` swaps `WeatheringCopper`'s and `HoneycombItem`'s maps for merged ones through `Unsafe` at common setup; Fabric uses `OxidizableBlocksRegistry`. Lightning rods: Forge patches `PoiTypes`, so its `PoiTypesMixin` answers lightning's point of interest for the silver rods, and `LightningBoltMixin` powers and scrapes them on both loaders.
+- Compat on this line: JEI (both, runtime; its common API compiled against), EMI (runtime only on Forge; its own vanilla plugin covers the info pages), Farmer's Delight (Forge) and Farmer's Delight Refabricated (Fabric) for the Silver Knife, Create 6.0.8 and Create: Aquatic Ambitions (Forge), Mekanism 10.4 (Forge, `Slurry`), Vanilla Backport (Forge) for the Silver Spear and Silver Nautilus Armor, Yori3o's Grappling Hooks (data only, both; Forge's dev runs need YACL's bundled libraries as `forgeRuntimeLibrary`), Enhanced Celestials 1 and 2 (compiled against only). Not here: Backported Spears (no 1.20.1 build), Jade (its Forge mixin crashes the dev client), Vanilla Backport on Fabric's dev runs (its nested MixinSquared isn't unpacked) and in Forge's game runs (its sulfur caves mixin names an SRG field, `f_189553_`, so every world a dev run generates crashes with `NoSuchFieldError`; Forge's datagen still loads it), a Forge config screen.
+- Enhanced Celestials can't be loaded in the Forge dev runs: with it on the classpath Loom fails to set up Minecraft at its access-widener step, so `enhanced_celestials=none` and the Moon Dial's lunar events are untested in dev.
+- Content 1.20.1 has no room for: wind-charge door opening, trial chamber loot, the darker silver trim on silver armour, `minecraft:mob_interactable_doors`, `c:chains`, the enchantable armour tags and `minecraft:no_knockback`, and the bolt and flow trims in the armour trim atlas.
+- Published with `publishMods` from `fabric/build.gradle` and `forge/build.gradle`, with the `-PpublishDryRun` flag. Uploads are tagged from `supported_minecraft_versions`, 1.20.1; the Forge upload names both `forge` and `neoforge` as its loaders, since NeoForge 1.20.1 loads Forge mods.
+- Hand-authored access widener: `common/src/main/resources/thesilverage.accesswidener`. A first suspect when a port fails to load.

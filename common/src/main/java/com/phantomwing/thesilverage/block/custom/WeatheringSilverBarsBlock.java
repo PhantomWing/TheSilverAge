@@ -1,8 +1,6 @@
 package com.phantomwing.thesilverage.block.custom;
 
 import com.phantomwing.thesilverage.block.SilverOxidation;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -18,14 +16,8 @@ import org.jetbrains.annotations.NotNull;
  * {@link IronBarsBlock} parent in.
  */
 public class WeatheringSilverBarsBlock extends IronBarsBlock implements WeatheringCopper {
-    public static final MapCodec<WeatheringSilverBarsBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
-            .group(WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(ChangeOverTimeBlock::getAge), propertiesCodec())
-            .apply(instance, WeatheringSilverBarsBlock::new));
     private final WeatheringCopper.WeatherState weatherState;
 
-    public @NotNull MapCodec<WeatheringSilverBarsBlock> codec() {
-        return CODEC;
-    }
 
     public WeatheringSilverBarsBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
         super(properties);
@@ -33,15 +25,15 @@ public class WeatheringSilverBarsBlock extends IronBarsBlock implements Weatheri
         this.weatherState = weatherState;
     }
 
-    protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!SilverOxidation.enabled()) {
             return;
         }
 
-        this.changeOverTime(state, level, pos, random);
+        this.onRandomTick(state, level, pos, random);
     }
 
-    protected boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return WeatheringCopper.getNext(state.getBlock()).isPresent();
     }
 

@@ -5,10 +5,8 @@ import com.phantomwing.thesilverage.platform.CommonConfig;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 
-import java.util.Optional;
 
 /**
  * Loader-agnostic source of truth for the Silver villager trades.
@@ -43,7 +41,7 @@ public final class SilverVillagerTrades {
      */
     public static VillagerTrades.ItemListing clericSilverIngotForEmerald() {
         return (trader, random) -> new MerchantOffer(
-                new ItemCost(ModItems.SILVER_INGOT.get(), 3),
+                new ItemStack(ModItems.SILVER_INGOT.get(), 3),
                 new ItemStack(Items.EMERALD, 1),
                 12,
                 10,
@@ -57,8 +55,8 @@ public final class SilverVillagerTrades {
      */
     public static VillagerTrades.ItemListing fletcherSilverArrows() {
         return (trader, random) -> !CommonConfig.silverArrows() ? null : new MerchantOffer(
-                new ItemCost(Items.EMERALD, 2),
-                Optional.of(new ItemCost(Items.ARROW, 5)),
+                new ItemStack(Items.EMERALD, 2),
+                new ItemStack(Items.ARROW, 5),
                 new ItemStack(ModItems.SILVER_ARROW.get(), 5),
                 12,
                 30,

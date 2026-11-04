@@ -6,12 +6,9 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class ModBlockSetTypes {
-    // Opens like copper: by hand and by a wind charge, not by an arrow on its button.
+    // Opens like copper: by hand. (1.20.1 has no wind charge, and its block set types say nothing of arrows.)
     public static final BlockSetType SILVER = BlockSetType.register(new BlockSetType("silver",
             true,   // canOpenByHand
-            true,   // canOpenByWindCharge
-            false,  // canButtonBeActivatedByArrows
-            BlockSetType.PressurePlateSensitivity.EVERYTHING,
             ModSoundTypes.SILVER,
             SoundEvents.IRON_DOOR_CLOSE,
             SoundEvents.IRON_DOOR_OPEN,

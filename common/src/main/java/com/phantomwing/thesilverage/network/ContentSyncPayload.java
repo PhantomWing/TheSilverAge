@@ -1,10 +1,8 @@
 package com.phantomwing.thesilverage.network;
 
+import net.minecraft.network.FriendlyByteBuf;
+
 import com.phantomwing.thesilverage.TheSilverAge;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -14,18 +12,16 @@ import net.minecraft.resources.ResourceLocation;
  * ({@link com.phantomwing.thesilverage.block.SilverOxidation#enabled(net.minecraft.world.level.Level)},
  * {@link com.phantomwing.thesilverage.client.ServerContentSettings}).
  */
-public record ContentSyncPayload(boolean oxidation, boolean arrows, boolean gear) implements CustomPacketPayload {
+public record ContentSyncPayload(boolean oxidation, boolean arrows, boolean gear) {
     public static final ResourceLocation ID = TheSilverAge.resourceLocation("content_sync");
-    public static final Type<ContentSyncPayload> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ContentSyncPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, ContentSyncPayload::oxidation,
-            ByteBufCodecs.BOOL, ContentSyncPayload::arrows,
-            ByteBufCodecs.BOOL, ContentSyncPayload::gear,
-            ContentSyncPayload::new);
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBoolean(oxidation);
+        buf.writeBoolean(arrows);
+        buf.writeBoolean(gear);
+    }
 
-    @Override
-    public Type<ContentSyncPayload> type() {
-        return TYPE;
+    public static ContentSyncPayload read(FriendlyByteBuf buf) {
+        return new ContentSyncPayload(buf.readBoolean(), buf.readBoolean(), buf.readBoolean());
     }
 }

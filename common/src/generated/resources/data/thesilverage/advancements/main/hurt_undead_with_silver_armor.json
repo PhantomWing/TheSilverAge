@@ -1,0 +1,59 @@
+{
+  "parent": "thesilverage:main/obtain_silver_ingot",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "silver_affects_undead"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_thorns"
+    }
+  ],
+  "criteria": {
+    "hurt_undead": {
+      "conditions": {},
+      "trigger": "thesilverage:silver_armor_hurt"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "thesilverage.advancement.hurt_undead_with_silver_armor.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "thesilverage:silver_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "thesilverage.advancement.hurt_undead_with_silver_armor"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "silver_affects_undead"
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_thorns"
+    }
+  ],
+  "requirements": [
+    [
+      "hurt_undead"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

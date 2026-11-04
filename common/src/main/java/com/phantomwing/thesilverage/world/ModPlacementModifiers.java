@@ -1,6 +1,6 @@
 package com.phantomwing.thesilverage.world;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.phantomwing.thesilverage.TheSilverAge;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -15,11 +15,11 @@ public class ModPlacementModifiers {
     public static final RegistrySupplier<PlacementModifierType<ConfigBooleanPlacementFilter>> CONFIG_BOOLEAN =
             register("config_boolean", ConfigBooleanPlacementFilter.CODEC);
 
-    private static <P extends PlacementModifier> RegistrySupplier<PlacementModifierType<P>> register(String name, MapCodec<P> codec) {
+    private static <P extends PlacementModifier> RegistrySupplier<PlacementModifierType<P>> register(String name, Codec<P> codec) {
         return PLACEMENT_MODIFIERS.register(name, () -> typeConvert(codec));
     }
 
-    private static <P extends PlacementModifier> PlacementModifierType<P> typeConvert(MapCodec<P> codec) {
+    private static <P extends PlacementModifier> PlacementModifierType<P> typeConvert(Codec<P> codec) {
         return () -> codec;
     }
 

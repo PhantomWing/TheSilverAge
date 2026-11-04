@@ -1,0 +1,60 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:and",
+        "values": [
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_comparator_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:and",
+        "values": [
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_comparator_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "pattern": [
+    " T ",
+    "TQT",
+    "SSS"
+  ],
+  "result": {
+    "item": "minecraft:comparator"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,48 @@
+{
+  "type": "create:filling",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_create_spout_oxidation"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_create_spout_oxidation"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thesilverage:weathered_silver_lantern"
+    },
+    {
+      "amount": 250,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "thesilverage:oxidized_silver_lantern"
+    }
+  ]
+}

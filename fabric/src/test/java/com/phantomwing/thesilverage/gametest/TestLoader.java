@@ -1,5 +1,8 @@
 package com.phantomwing.thesilverage.gametest;
 
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerPlayer;
+
 import com.phantomwing.thesilverage.fabric.config.TheSilverAgeFabricConfig;
 
 /**
@@ -24,5 +27,10 @@ public final class TestLoader {
         } catch (ReflectiveOperationException e) {
             throw new IllegalArgumentException("No option " + id, e);
         }
+    }
+
+    /** A player in the test's level, who clicks blocks as a real one does. Vanilla's mock player, on Fabric. */
+    public static ServerPlayer mockServerPlayer(GameTestHelper helper) {
+        return helper.makeMockServerPlayerInLevel();
     }
 }

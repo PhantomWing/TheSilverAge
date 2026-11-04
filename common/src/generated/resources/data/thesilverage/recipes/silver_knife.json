@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_gear"
+    }
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "forge:ingots/silver"
+    }
+  },
+  "pattern": [
+    "X",
+    "I"
+  ],
+  "result": {
+    "item": "thesilverage:silver_knife"
+  },
+  "show_notification": true
+}

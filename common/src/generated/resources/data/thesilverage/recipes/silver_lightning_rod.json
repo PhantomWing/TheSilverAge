@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/silver"
+    }
+  },
+  "pattern": [
+    "I",
+    "I",
+    "I"
+  ],
+  "result": {
+    "item": "thesilverage:silver_lightning_rod"
+  },
+  "show_notification": true
+}

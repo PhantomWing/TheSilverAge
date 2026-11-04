@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "mekanism"
+      ]
+    }
+  ],
+  "type": "mekanism:dissolution",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekanism:sulfuric_acid"
+  },
+  "itemInput": {
+    "amount": 3,
+    "ingredient": {
+      "tag": "forge:raw_materials/silver"
+    }
+  },
+  "output": {
+    "amount": 2000,
+    "chemicalType": "slurry",
+    "slurry": "thesilverage:dirty_silver"
+  }
+}

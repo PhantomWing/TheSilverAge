@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.phantomwing.thesilverage.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BlockMixin",
+    "BlockStateBaseMixin",
+    "LightningBoltMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "PlayerMixin",
+    "PoiTypesMixin",
+    "RandomPosMixin",
+    "WalkNodeEvaluatorMixin",
+    "WorldGenRegionMixin",
+    "ZombieMixin"
+  ],
+  "client": [
+    "client.PackSelectionModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "thesilverage.forge.refmap.json"
+}

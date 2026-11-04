@@ -2,7 +2,7 @@
   "type": "thesilverage:replace_item",
   "conditions": [
     {
-      "condition": "neoforge:loot_table_id",
+      "condition": "forge:loot_table_id",
       "loot_table_id": "minecraft:gameplay/hero_of_the_village/weaponsmith_gift"
     },
     {

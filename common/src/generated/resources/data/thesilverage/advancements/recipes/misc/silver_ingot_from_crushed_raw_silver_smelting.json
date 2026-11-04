@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "criteria": {
+    "has_crushed_raw_silver": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:crushed_raw_silver"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:silver_ingot_from_crushed_raw_silver_smelting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    }
+  ],
+  "requirements": [
+    [
+      "has_crushed_raw_silver",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:silver_ingot_from_crushed_raw_silver_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

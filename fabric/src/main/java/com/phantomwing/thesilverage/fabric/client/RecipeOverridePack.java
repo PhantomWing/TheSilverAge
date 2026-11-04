@@ -43,7 +43,7 @@ public final class RecipeOverridePack {
                 if (!override.hasTexturePack()) continue;
                 // The path is looked up in the mod jar as resourcepacks/<path>, so it must be the folder's name.
                 ResourceManagerHelper.registerBuiltinResourcePack(
-                        ResourceLocation.fromNamespaceAndPath(TheSilverAge.MOD_ID, override.texturePack()),
+                        new ResourceLocation(TheSilverAge.MOD_ID, override.texturePack()),
                         container,
                         Component.literal("The Silver Age: " + override.texturePack()),
                         ResourcePackActivationType.DEFAULT_ENABLED);

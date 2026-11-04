@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "I": {
+      "tag": "forge:ingots/silver"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "AIA",
+    "AAA"
+  ],
+  "result": {
+    "count": 8,
+    "item": "thesilverage:silver_arrow"
+  },
+  "show_notification": true
+}

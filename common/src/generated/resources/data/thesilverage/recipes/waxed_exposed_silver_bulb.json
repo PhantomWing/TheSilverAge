@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "thesilverage:waxed_exposed_silver"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SBS",
+    " R "
+  ],
+  "result": {
+    "count": 4,
+    "item": "thesilverage:waxed_exposed_silver_bulb"
+  },
+  "show_notification": true
+}

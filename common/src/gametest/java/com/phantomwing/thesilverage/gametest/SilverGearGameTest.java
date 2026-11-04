@@ -5,11 +5,9 @@ import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.item.ModItems;
 import com.phantomwing.thesilverage.utils.ItemUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -190,11 +188,11 @@ public final class SilverGearGameTest {
     public static void swappedGearKeepsItsWear(GameTestHelper helper) {
         ItemStack sword = new ItemStack(Items.IRON_SWORD);
         sword.setDamageValue(sword.getMaxDamage() / 2);
-        sword.set(DataComponents.CUSTOM_NAME, Component.literal("Old Faithful"));
+        TestCompat.setCustomName(sword, "Old Faithful");
         ItemStack silver = ItemUtils.tryTransmuteStack(sword, ModItems.SILVER_SWORD.get());
-        if (silver.getDamageValue() != Math.round(silver.getMaxDamage() / 2.0F) || !silver.has(DataComponents.CUSTOM_NAME)) {
+        if (silver.getDamageValue() != Math.round(silver.getMaxDamage() / 2.0F) || !TestCompat.hasCustomName(silver)) {
             fail(helper, "A half-worn named iron sword became a silver one worn " + silver.getDamageValue() + " of "
-                    + silver.getMaxDamage() + (silver.has(DataComponents.CUSTOM_NAME) ? "" : ", its name lost"));
+                    + silver.getMaxDamage() + (TestCompat.hasCustomName(silver) ? "" : ", its name lost"));
             return;
         }
         ItemStack nearlyBroken = new ItemStack(Items.IRON_AXE);
@@ -207,8 +205,8 @@ public final class SilverGearGameTest {
         ServerLevel level = helper.getLevel();
         var trim = TestCompat.trim(level, "copper", "flow");
         ItemStack helmet = new ItemStack(Items.GOLDEN_HELMET);
-        helmet.set(DataComponents.TRIM, trim);
-        if (!trim.equals(ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get()).get(DataComponents.TRIM))) {
+        TestCompat.setTrim(level, helmet, trim);
+        if (!trim.equals(TestCompat.trimOf(level, ItemUtils.tryTransmuteStack(helmet, ModItems.SILVER_HELMET.get())))) {
             fail(helper, "A trimmed golden helmet became an untrimmed silver one");
             return;
         }

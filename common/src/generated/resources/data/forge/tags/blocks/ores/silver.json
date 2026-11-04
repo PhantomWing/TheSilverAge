@@ -1,0 +1,10 @@
+{
+  "values": [
+    "thesilverage:silver_ore",
+    "thesilverage:deepslate_silver_ore",
+    {
+      "id": "#c:silver_ores",
+      "required": false
+    }
+  ]
+}

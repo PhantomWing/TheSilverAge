@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:raw_silver",
+    {
+      "id": "#c:raw_silver_ores",
+      "required": false
+    }
+  ]
+}

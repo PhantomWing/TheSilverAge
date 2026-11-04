@@ -24,7 +24,7 @@ public class WeatheringSilverFullBlock extends WeatheringCopperFullBlock {
     }
 
     @Override
-    protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!SilverOxidation.enabled()) {
             return;
         }

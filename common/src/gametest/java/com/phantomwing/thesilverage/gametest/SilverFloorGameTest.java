@@ -7,13 +7,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.level.block.Block;
@@ -157,7 +155,7 @@ public final class SilverFloorGameTest {
         TagKey<EntityType<?>> werewolves = TestCompat.tag(Registries.ENTITY_TYPE, "werewolves", "werewolf");
         List<String> problems = new ArrayList<>();
         for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-            boolean sensitive = TestCompat.isIn(type, EntityTypeTags.SENSITIVE_TO_SMITE) || TestCompat.isIn(type, werewolves);
+            boolean sensitive = TestCompat.isSensitiveToSmite(helper.getLevel(), type) || TestCompat.isIn(type, werewolves);
             if (sensitive != TestCompat.isIn(type, ModTags.EntityTypes.SENSITIVE_TO_SILVER)) {
                 problems.add(BuiltInRegistries.ENTITY_TYPE.getKey(type) + (sensitive ? " isn't" : " is"));
             }
@@ -191,7 +189,7 @@ public final class SilverFloorGameTest {
     }
 
     private static boolean spawnsOn(GameTestHelper helper, EntityType<?> type, BlockPos floor) {
-        return SpawnPlacements.isSpawnPositionOk(type, helper.getLevel(), helper.absolutePos(floor.above()));
+        return TestCompat.isSpawnPositionOk(type, helper.getLevel(), helper.absolutePos(floor.above()));
     }
 
     /** The route a {@code type} standing at the arena's near side plans to {@code target}. */

@@ -1,13 +1,13 @@
 {
   "block.silver_bulb.turn_on": {
     "sounds": [
-      { "name": "minecraft:block.copper_bulb.turn_on", "type": "event" }
+      { "name": "minecraft:block.lever.click", "type": "event" }
     ],
     "subtitle": "subtitles.thesilverage.block.silver_bulb.turn_on"
   },
   "block.silver_bulb.turn_off": {
     "sounds": [
-      { "name": "minecraft:block.copper_bulb.turn_off", "type": "event" }
+      { "name": "minecraft:block.lever.click", "type": "event" }
     ],
     "subtitle": "subtitles.thesilverage.block.silver_bulb.turn_off"
   },

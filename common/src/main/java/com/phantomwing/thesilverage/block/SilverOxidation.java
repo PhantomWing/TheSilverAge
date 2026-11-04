@@ -5,7 +5,7 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
@@ -102,8 +102,8 @@ public final class SilverOxidation {
             }
         };
         DispenserBlock.registerBehavior(Items.HONEYCOMB, (source, stack) -> {
-            BlockPos target = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-            boolean silver = waxableSources().contains(source.level().getBlockState(target).getBlock());
+            BlockPos target = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            boolean silver = waxableSources().contains(source.getLevel().getBlockState(target).getBlock());
             return (!silver || enabled() ? waxing : refused).dispense(source, stack);
         });
     }

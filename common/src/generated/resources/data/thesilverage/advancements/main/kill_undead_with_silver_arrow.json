@@ -1,0 +1,57 @@
+{
+  "parent": "thesilverage:main/obtain_silver_ingot",
+  "conditions": [
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "criteria": {
+    "killed_undead": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "#thesilverage:sensitive_to_silver"
+            }
+          }
+        ],
+        "killing_blow": {
+          "direct_entity": {
+            "type": "thesilverage:silver_arrow"
+          }
+        }
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "thesilverage.advancement.kill_undead_with_silver_arrow.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "thesilverage:silver_arrow"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "thesilverage.advancement.kill_undead_with_silver_arrow"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_arrows"
+    }
+  ],
+  "requirements": [
+    [
+      "killed_undead"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -27,8 +27,8 @@ public final class CreativeTabPlatformImpl {
 
     // Fabric appends a stack whose anchor the tab doesn't list; throwing as NeoForge does lets the next anchor be tried.
     private static void insertAfter(FabricItemGroupEntries entries, ItemStack anchor, ItemStack stack) {
-        boolean listed = entries.getDisplayStacks().stream().anyMatch(shown -> ItemStack.isSameItemSameComponents(shown, anchor))
-                || entries.getSearchTabStacks().stream().anyMatch(shown -> ItemStack.isSameItemSameComponents(shown, anchor));
+        boolean listed = entries.getDisplayStacks().stream().anyMatch(shown -> ItemStack.isSameItemSameTags(shown, anchor))
+                || entries.getSearchTabStacks().stream().anyMatch(shown -> ItemStack.isSameItemSameTags(shown, anchor));
         if (!listed) {
             throw new IllegalArgumentException(anchor + " isn't in the tab");
         }

@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:and",
+        "values": [
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_repeater_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:and",
+        "values": [
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_repeater_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "pattern": [
+    "TRT",
+    "SSS"
+  ],
+  "result": {
+    "item": "minecraft:repeater"
+  },
+  "show_notification": true
+}

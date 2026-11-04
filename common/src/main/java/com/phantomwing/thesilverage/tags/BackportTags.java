@@ -18,7 +18,7 @@ public class BackportTags {
         public static final TagKey<Block> LIGHTNING_RODS = tag("lightning_rods");
 
         private static TagKey<Block> tag(String path) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace(path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(path));
         }
     }
 
@@ -33,7 +33,7 @@ public class BackportTags {
         public static final TagKey<Item> SULFUR_CUBE_SLOW_FLAT = tag("sulfur_cube_archetype/slow_flat");
 
         private static TagKey<Item> tag(String path) {
-            return TagKey.create(Registries.ITEM, ResourceLocation.withDefaultNamespace(path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(path));
         }
     }
 }

@@ -10,12 +10,12 @@ import net.minecraft.world.level.block.SoundType;
  * sound types with tweaked volume/pitch. (The original NeoForge build used
  * {@code DeferredSoundType}, but every referenced sound is a built-in vanilla
  * {@link SoundEvent} that is always present, so no deferral is needed and this
- * stays loader-agnostic.)</p>
+ * stays loader-agnostic.) 1.20.1 has no copper grate or bulb sounds, so those two copy metal's.</p>
  */
 public class ModSoundTypes {
     public static final SoundType SILVER = ofCopy(SoundType.METAL, 1.0f, 0.9f);
-    public static final SoundType SILVER_GRATE = ofCopy(SoundType.COPPER_GRATE, 1.0f, 0.8f);
-    public static final SoundType SILVER_BULB = ofCopy(SoundType.COPPER_BULB, 1.0f, 0.8f);
+    public static final SoundType SILVER_GRATE = ofCopy(SoundType.METAL, 1.0f, 0.8f);
+    public static final SoundType SILVER_BULB = ofCopy(SoundType.METAL, 1.0f, 0.8f);
 
     private static SoundType ofCopy(SoundType soundType, float volume, float pitch) {
         float baseVolume = soundType.getVolume();

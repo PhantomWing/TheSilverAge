@@ -22,8 +22,9 @@ public final class KnifePlatformImpl {
         // here: an inline `new` makes the verifier load SilverKnifeItem's FDR-only
         // superclass when THIS method is verified, crashing without FDR.
         if (CommonPlatform.isModLoaded(ModIds.FARMERS_DELIGHT)) {
-            return SilverKnifeItem.create(tier, properties);
+            return SilverKnifeItem.create(tier, 0.5f, -2.0f, properties);
         }
-        return new SwordItem(tier, properties);
+        // SwordItem takes a whole number, so the fallback rounds the knives' 0.5 to 0.
+        return new SwordItem(tier, 0, -2.0f, properties);
     }
 }

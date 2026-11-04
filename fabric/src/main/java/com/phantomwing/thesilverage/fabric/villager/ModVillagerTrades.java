@@ -40,11 +40,6 @@ public final class ModVillagerTrades {
         // Fletcher, profession level 5 — the NeoForge FLETCHER / trades.get(5) branch.
         registerOffer(VillagerProfession.FLETCHER, 5, SilverVillagerTrades.fletcherSilverArrows());
 
-        // NOTE for the wandering-trader trade below: if it is ever enabled, use the same
-        // sharesRebalancedPool guard. Vanilla DOES rebalance the wandering trader, so its
-        // two pools are separate objects and the listing must be added on both passes —
-        // an unconditional `if (rebalanced) return;` would drop it in rebalanced worlds.
-
         // Wandering trader: parity with NeoForge ModVillagerTrades —
         // addWanderingTraderTrades is gated by ENABLE_WANDERING_TRADER_TRADES
         // but currently registers no offers (the Silver Horse Armor trade is a
@@ -54,33 +49,13 @@ public final class ModVillagerTrades {
         // when it is.
     }
 
+    // Fabric API 0.92's offers take no rebalanced flag: 1.20.1 has no rebalanced trades.
     private static void registerOffer(VillagerProfession profession, int level, VillagerTrades.ItemListing trade) {
-        TradeOfferHelper.registerVillagerOffers(profession, level, (factories, rebalanced) -> {
-            // Checked INSIDE the callback: TradeOfferHelper only sets up its trade maps
-            // when registerVillagerOffers is first called, so testing beforehand would
-            // read an uninitialised state and wrongly report the pools as distinct.
-            if (rebalanced && sharesRebalancedPool(profession)) {
-                return;
-            }
-            factories.add((trader, random) ->
-                    TheSilverAgeFabricConfig.getBooleanConfigurationValue(
-                            TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
-                            ? trade.getOffer(trader, random)
-                            : null);
-        });
-    }
-
-    /**
-     * True when the profession's normal and rebalanced trade pools are the same object.
-     *
-     * <p>On this MC version the trade maps are keyed by {@link VillagerProfession} itself;
-     * later versions key them by {@code ResourceKey<VillagerProfession>}.</p>
-     */
-    private static boolean sharesRebalancedPool(VillagerProfession profession) {
-        var normal = VillagerTrades.TRADES.get(profession);
-        var rebalanced = VillagerTrades.EXPERIMENTAL_TRADES.get(profession);
-        // A null rebalanced entry means Fabric will create a fresh map for it, so the
-        // two are distinct and the listing must be added on both passes.
-        return normal != null && normal == rebalanced;
+        TradeOfferHelper.registerVillagerOffers(profession, level, factories ->
+                factories.add((trader, random) ->
+                        TheSilverAgeFabricConfig.getBooleanConfigurationValue(
+                                TheSilverAgeFabricConfig.ENABLE_VILLAGER_TRADES_ID)
+                                ? trade.getOffer(trader, random)
+                                : null));
     }
 }

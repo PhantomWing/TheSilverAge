@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 /**
  * A struck Silver Lightning Rod powers, and scrapes the block it stands on, as vanilla's does. Vanilla
- * 1.21.1 asks for {@code Blocks.LIGHTNING_ROD} itself, so any other rod took the strike and did nothing;
- * NeoForge patches both checks to {@code instanceof LightningRodBlock}, which this matches.
+ * 1.20.1 asks for {@code Blocks.LIGHTNING_ROD} itself, on Forge too, so any other rod took the strike and did
+ * nothing; 1.21's NeoForge patches both checks to {@code instanceof LightningRodBlock}, which this matches.
  */
 @Mixin(LightningBolt.class)
 public abstract class LightningBoltMixin {

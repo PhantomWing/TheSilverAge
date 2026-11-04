@@ -1,0 +1,39 @@
+{
+  "type": "create:deploying",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    },
+    {
+      "type": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "condition": "thesilverage:config_boolean",
+      "settingId": "enable_silver_oxidation"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thesilverage:exposed_silver_pillar"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "thesilverage:waxed_exposed_silver_pillar"
+    }
+  ]
+}

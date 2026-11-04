@@ -59,7 +59,7 @@ public final class SilverArmorGameTest {
         Mob horse = helper.spawnWithNoFreeWill(HORSE, new BlockPos(4, 2, 4));
         List<String> problems = new ArrayList<>();
         expect(problems, "Silver Horse Armor struck by a husk",
-                burns(helper, horse, Map.of(EquipmentSlot.BODY, ModItems.SILVER_HORSE_ARMOR.get()), husk), 120, 190);
+                burns(helper, horse, Map.of(TestCompat.HORSE_ARMOR_SLOT, ModItems.SILVER_HORSE_ARMOR.get()), husk), 120, 190);
         finish(helper, problems, husk, horse);
     }
 

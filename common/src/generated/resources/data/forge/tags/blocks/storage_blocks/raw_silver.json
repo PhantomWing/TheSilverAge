@@ -1,0 +1,9 @@
+{
+  "values": [
+    "thesilverage:raw_silver_block",
+    {
+      "id": "#c:raw_silver_blocks",
+      "required": false
+    }
+  ]
+}

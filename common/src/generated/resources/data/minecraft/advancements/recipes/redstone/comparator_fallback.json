@@ -1,0 +1,71 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:and",
+        "values": [
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "type": "thesilverage:config_boolean",
+            "settingId": "override_comparator_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "criteria": {
+    "has_redstone_torch": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:redstone_torch"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:comparator_fallback"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:and",
+        "values": [
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_vanilla_recipes"
+          },
+          {
+            "condition": "thesilverage:config_boolean",
+            "settingId": "override_comparator_recipe"
+          }
+        ]
+      }
+    }
+  ],
+  "requirements": [
+    [
+      "has_redstone_torch",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:comparator_fallback"
+    ]
+  },
+  "sends_telemetry_event": false
+}

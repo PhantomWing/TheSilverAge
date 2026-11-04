@@ -1,7 +1,6 @@
 package com.phantomwing.thesilverage.block.custom;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.phantomwing.thesilverage.combat.SilverSensitivity;
 import com.phantomwing.thesilverage.block.ModBlockSetTypes;
 import com.phantomwing.thesilverage.combat.SilverFloor;
 import com.phantomwing.thesilverage.tags.ModTags;
@@ -24,25 +23,16 @@ import org.jetbrains.annotations.NotNull;
  * counts them as a weighted plate does. The waxed variants keep their stage's count and never tarnish.
  */
 public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
-    /** Typed as the parent's codec type: {@code WeightedPressurePlateBlock#codec} is declared concretely, so an override must match. */
-    public static final MapCodec<WeightedPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(block -> ((SilverPressurePlateBlock) block).weatherState),
-            propertiesCodec()
-    ).apply(instance, SilverPressurePlateBlock::new));
 
     private static final int MAX_SIGNAL = 15;
 
     protected final WeatheringCopper.WeatherState weatherState;
 
     public SilverPressurePlateBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
-        super(MAX_SIGNAL, ModBlockSetTypes.SILVER, properties);
+        super(MAX_SIGNAL, properties, ModBlockSetTypes.SILVER);
         this.weatherState = weatherState;
     }
 
-    @Override
-    public @NotNull MapCodec<WeightedPressurePlateBlock> codec() {
-        return CODEC;
-    }
 
     /** How much signal each mob adds at a stage: full power at 1, 3, 5 and 15 mobs. */
     public static int signalPerMob(WeatheringCopper.WeatherState weatherState) {
@@ -58,7 +48,8 @@ public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
         return EntitySelector.NO_SPECTATORS.test(entity)
                 && !entity.isIgnoringBlockTriggers()
                 && !(entity instanceof Enemy)
-                && !entity.getType().is(ModTags.EntityTypes.CANNOT_PRESS_SILVER_PRESSURE_PLATES);
+                && !entity.getType().is(ModTags.EntityTypes.CANNOT_PRESS_SILVER_PRESSURE_PLATES)
+                && !SilverSensitivity.isSensitive(entity);
     }
 
     @Override
@@ -68,7 +59,7 @@ public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
     }
 
     @Override
-    protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+    public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, level, pos, entity);
         // Asked of every block a mob's box reaches, so a zombie beside the plate was hurt, and never walked off, since
         // its goal looks only at the block it stands in.
@@ -80,7 +71,7 @@ public class SilverPressurePlateBlock extends WeightedPressurePlateBlock {
     // A plate that tarnished, or was waxed or scraped, while pressed stayed powered for good without
     // this: the check its old block had scheduled doesn't run on the new one.
     @Override
-    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (!level.isClientSide() && getSignalForState(state) > 0) {
             level.scheduleTick(pos, this, getPressedTime());

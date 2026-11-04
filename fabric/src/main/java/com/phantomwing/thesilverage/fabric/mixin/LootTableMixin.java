@@ -124,7 +124,7 @@ public abstract class LootTableMixin implements SilverLootTableId {
         // UniformGenerator / random_chance draws match a normal roll.
         LootContext context = new LootContext.Builder(params)
                 .withOptionalRandomSeed(seed)
-                .create(Optional.empty());
+                .create(null);
 
         ObjectArrayList<ItemStack> appended = new ObjectArrayList<>();
         thesilverage$applyMatchingEntries(tableId, context, appended);

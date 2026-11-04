@@ -49,7 +49,7 @@ public final class SilverLootGameTest {
                         TestCompat.kill(silverfish);
                     }
                 })
-                .thenExecuteAfter(2, () -> helper.assertItemEntityPresent(ModItems.SILVER_NUGGET.get()))
+                .thenExecuteAfter(2, () -> TestCompat.assertItemEntityPresent(helper, ModItems.SILVER_NUGGET.get()))
                 .thenSucceed();
     }
 

@@ -57,7 +57,7 @@ public final class SilverBlocksGameTest {
     /** Right-clicking an unwaxed Block of Silver with a Honeycomb waxes it. */
     public static void waxingSilverBlock(GameTestHelper helper) {
         helper.setBlock(CENTER, ModBlocks.SILVER_BLOCK.get());
-        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        Player player = TestCompat.mockPlayer(helper, GameType.SURVIVAL);
         player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.HONEYCOMB));
         helper.useBlock(CENTER, player);
         helper.succeedWhenBlockPresent(ModBlocks.WAXED_SILVER_BLOCK.get(), CENTER);

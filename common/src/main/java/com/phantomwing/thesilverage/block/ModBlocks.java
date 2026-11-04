@@ -4,6 +4,8 @@ import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.block.custom.HorizontalFacingBlock;
 import com.phantomwing.thesilverage.block.custom.MoonPhaseDetectorBlock;
 import com.phantomwing.thesilverage.block.custom.SilverBulbBlock;
+import com.phantomwing.thesilverage.block.custom.SilverDoorBlock;
+import com.phantomwing.thesilverage.block.custom.SilverGrateBlock;
 import com.phantomwing.thesilverage.block.custom.SilverTorchBlock;
 import com.phantomwing.thesilverage.block.custom.SilverWallTorchBlock;
 import com.phantomwing.thesilverage.block.custom.WeatheringSilverHorizontalFacingBlock;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 public class ModBlocks {
@@ -40,17 +43,17 @@ public class ModBlocks {
 
     // Ores
     public static final RegistrySupplier<Block> SILVER_ORE = registerSilverBlock("silver_ore",
-            BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE),
-            (props) -> new DropExperienceBlock(ConstantInt.of(0), props)
+            BlockBehaviour.Properties.copy(Blocks.GOLD_ORE),
+            (props) -> new DropExperienceBlock(props, ConstantInt.of(0))
     );
     public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = registerSilverBlock("deepslate_silver_ore",
-            BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE),
-            (props) -> new DropExperienceBlock(ConstantInt.of(0), props)
+            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_GOLD_ORE),
+            (props) -> new DropExperienceBlock(props, ConstantInt.of(0))
     );
 
     // Storage blocks
     public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = registerSilverBlock("raw_silver_block",
-            BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.METAL),
+            BlockBehaviour.Properties.copy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.METAL),
             Block::new
     );
 
@@ -197,15 +200,15 @@ public class ModBlocks {
     public static final RegistrySupplier<TrapDoorBlock> WAXED_WEATHERED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_weathered_silver_trapdoor", WeatheringCopper.WeatherState.WEATHERED);
     public static final RegistrySupplier<TrapDoorBlock> WAXED_OXIDIZED_SILVER_TRAPDOOR = registerSilverTrapdoor("waxed_oxidized_silver_trapdoor", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final RegistrySupplier<DoorBlock> SILVER_DOOR = registerWeatheringSilverDoor("silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final RegistrySupplier<DoorBlock> EXPOSED_SILVER_DOOR = registerWeatheringSilverDoor("exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
-    public static final RegistrySupplier<DoorBlock> WEATHERED_SILVER_DOOR = registerWeatheringSilverDoor("weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
-    public static final RegistrySupplier<DoorBlock> OXIDIZED_SILVER_DOOR = registerWeatheringSilverDoor("oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final RegistrySupplier<SilverDoorBlock> SILVER_DOOR = registerWeatheringSilverDoor("silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<SilverDoorBlock> EXPOSED_SILVER_DOOR = registerWeatheringSilverDoor("exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<SilverDoorBlock> WEATHERED_SILVER_DOOR = registerWeatheringSilverDoor("weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<SilverDoorBlock> OXIDIZED_SILVER_DOOR = registerWeatheringSilverDoor("oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
-    public static final RegistrySupplier<DoorBlock> WAXED_SILVER_DOOR = registerSilverDoor("waxed_silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
-    public static final RegistrySupplier<DoorBlock> WAXED_EXPOSED_SILVER_DOOR = registerSilverDoor("waxed_exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
-    public static final RegistrySupplier<DoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerSilverDoor("waxed_weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
-    public static final RegistrySupplier<DoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerSilverDoor("waxed_oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
+    public static final RegistrySupplier<SilverDoorBlock> WAXED_SILVER_DOOR = registerSilverDoor("waxed_silver_door", WeatheringCopper.WeatherState.UNAFFECTED);
+    public static final RegistrySupplier<SilverDoorBlock> WAXED_EXPOSED_SILVER_DOOR = registerSilverDoor("waxed_exposed_silver_door", WeatheringCopper.WeatherState.EXPOSED);
+    public static final RegistrySupplier<SilverDoorBlock> WAXED_WEATHERED_SILVER_DOOR = registerSilverDoor("waxed_weathered_silver_door", WeatheringCopper.WeatherState.WEATHERED);
+    public static final RegistrySupplier<SilverDoorBlock> WAXED_OXIDIZED_SILVER_DOOR = registerSilverDoor("waxed_oxidized_silver_door", WeatheringCopper.WeatherState.OXIDIZED);
 
     // Silver Pressure Plate (pressed by undead alone, counting them more coarsely as it tarnishes)
     public static final RegistrySupplier<Block> SILVER_PRESSURE_PLATE = registerWeatheringSilverPressurePlate("silver_pressure_plate", WeatheringCopper.WeatherState.UNAFFECTED);
@@ -264,12 +267,12 @@ public class ModBlocks {
 
     // Silver Torch (non-oxidizable; violet flame via the custom silver_flame particle)
     public static final RegistrySupplier<TorchBlock> SILVER_TORCH = registerSilverBlock("silver_torch",
-            BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH),
+            BlockBehaviour.Properties.copy(Blocks.TORCH),
             SilverTorchBlock::new);
     // dropsLike, as vanilla's wall torch has: the copy would otherwise carry its loot table, a torch's, which Fabric
     // keeps where NeoForge doesn't. Inside the supplier, since the Silver Torch must be registered first.
     public static final RegistrySupplier<WallTorchBlock> SILVER_WALL_TORCH = BLOCKS.register("silver_wall_torch",
-            () -> new SilverWallTorchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WALL_TORCH).dropsLike(SILVER_TORCH.get())));
+            () -> new SilverWallTorchBlock(BlockBehaviour.Properties.copy(Blocks.WALL_TORCH).dropsLike(SILVER_TORCH.get())));
 
     private static RegistrySupplier<Block> registerWeatheringSilverBlock(String name, WeatheringCopper.WeatherState weatherState) {
         return registerSilverBlock(name, getSilverProps(weatherState), (props) -> new WeatheringSilverFullBlock(weatherState, props));
@@ -286,23 +289,44 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<Block> registerWeatheringSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverGrateBlock(weatherState, props));
+        return registerSilverBlock(name, getSilverGrateProps(weatherState), (props) -> new WeatheringSilverGrateBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverGrate(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_GRATE)).sound(ModSoundTypes.SILVER_GRATE);
-        return registerSilverBlock(name, baseProps, WaterloggedTransparentBlock::new);
+        return registerSilverBlock(name, getSilverGrateProps(weatherState), SilverGrateBlock::new);
     }
 
     private static RegistrySupplier<Block> registerWeatheringSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
-        return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBulbBlock(weatherState, props));
+        return registerSilverBlock(name, getSilverBulbProps(weatherState), (props) -> new WeatheringSilverBulbBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB)).sound(ModSoundTypes.SILVER_BULB);
-        return registerSilverBlock(name, baseProps, SilverBulbBlock::new);
+        return registerSilverBlock(name, getSilverBulbProps(weatherState), SilverBulbBlock::new);
+    }
+
+    // 1.21's copper grate, which 1.20.1 doesn't have to copy: see-through, and no mob spawns on it or suffocates in it.
+    private static BlockBehaviour.Properties getSilverGrateProps(WeatheringCopper.WeatherState weatherState) {
+        return getSilverProps(weatherState)
+                .sound(ModSoundTypes.SILVER_GRATE)
+                .noOcclusion()
+                .isSuffocating((state, level, pos) -> false)
+                .isViewBlocking((state, level, pos) -> false)
+                .isValidSpawn((state, level, pos, type) -> false)
+                .isRedstoneConductor((state, level, pos) -> false);
+    }
+
+    // 1.21's copper bulb, which 1.20.1 doesn't have to copy: lit, it gives 15, 12, 8 and 4 light by its stage.
+    private static BlockBehaviour.Properties getSilverBulbProps(WeatheringCopper.WeatherState weatherState) {
+        int light = switch (weatherState) {
+            case UNAFFECTED -> 15;
+            case EXPOSED -> 12;
+            case WEATHERED -> 8;
+            case OXIDIZED -> 4;
+        };
+        return getSilverProps(weatherState)
+                .sound(ModSoundTypes.SILVER_BULB)
+                .isRedstoneConductor((state, level, pos) -> false)
+                .lightLevel(state -> state.getValue(SilverBulbBlock.LIT) ? light : 0);
     }
 
     private static RegistrySupplier<SlabBlock> registerWeatheringSilverSlab(String name, WeatheringCopper.WeatherState weatherState) {
@@ -348,28 +372,28 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<TrapDoorBlock> registerWeatheringSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_TRAPDOOR));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
     private static RegistrySupplier<TrapDoorBlock> registerSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR));
-        return registerSilverBlock(name, baseProps, (props) -> new TrapDoorBlock(ModBlockSetTypes.SILVER, props));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_TRAPDOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new TrapDoorBlock(props, ModBlockSetTypes.SILVER));
     }
 
-    private static RegistrySupplier<DoorBlock> registerWeatheringSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+    private static RegistrySupplier<SilverDoorBlock> registerWeatheringSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_DOOR));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
-    private static RegistrySupplier<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
-        return registerSilverBlock(name, baseProps, (props) -> new DoorBlock(ModBlockSetTypes.SILVER, props));
+    private static RegistrySupplier<SilverDoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_DOOR));
+        return registerSilverBlock(name, baseProps, (props) -> new SilverDoorBlock(ModBlockSetTypes.SILVER, props));
     }
 
     // Breaks as fast as vanilla's weighted plates, which also take any pickaxe.
     private static BlockBehaviour.Properties getSilverPressurePlateProps(WeatheringCopper.WeatherState weatherState) {
-        return getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)).strength(0.5F);
+        return getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)).strength(0.5F);
     }
 
     private static RegistrySupplier<Block> registerWeatheringSilverPressurePlate(String name, WeatheringCopper.WeatherState weatherState) {
@@ -381,42 +405,42 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<LanternBlock> registerWeatheringSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.LANTERN));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLanternBlock(weatherState, props));
     }
 
     private static RegistrySupplier<LanternBlock> registerSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.LANTERN));
         return registerSilverBlock(name, baseProps, LanternBlock::new);
     }
 
     private static RegistrySupplier<ChainBlock> registerWeatheringSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.CHAIN));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.CHAIN));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverChainBlock(weatherState, props));
     }
 
     private static RegistrySupplier<ChainBlock> registerSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.CHAIN));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.CHAIN));
         return registerSilverBlock(name, baseProps, ChainBlock::new);
     }
 
     private static RegistrySupplier<LightningRodBlock> registerWeatheringSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLightningRodBlock(weatherState, props));
     }
 
     private static RegistrySupplier<LightningRodBlock> registerSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD));
         return registerSilverBlock(name, baseProps, LightningRodBlock::new);
     }
 
     private static RegistrySupplier<IronBarsBlock> registerWeatheringSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_BARS));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBarsBlock(weatherState, props));
     }
 
     private static RegistrySupplier<IronBarsBlock> registerSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_BARS));
         return registerSilverBlock(name, baseProps, IronBarsBlock::new);
     }
 
@@ -465,7 +489,22 @@ public class ModBlocks {
         return getSilverProps(WeatheringCopper.WeatherState.UNAFFECTED);
     }
 
-    /** Every Silver Lightning Rod, which lightning has to be told about: 1.21.1 only knows its own. */
+    private static volatile Set<Block> silverLightningRodSet;
+
+    /** Whether {@code block} is a Silver Lightning Rod. Cheap for any other block: asked at every block change. */
+    public static boolean isSilverLightningRod(Block block) {
+        if (!(block instanceof LightningRodBlock) || block == Blocks.LIGHTNING_ROD) {
+            return false;
+        }
+        Set<Block> rods = silverLightningRodSet;
+        if (rods == null) {
+            rods = Set.copyOf(silverLightningRods());
+            silverLightningRodSet = rods;
+        }
+        return rods.contains(block);
+    }
+
+    /** Every Silver Lightning Rod, which lightning has to be told about: 1.20.1 only knows its own. */
     public static List<LightningRodBlock> silverLightningRods() {
         return List.of(SILVER_LIGHTNING_ROD.get(), EXPOSED_SILVER_LIGHTNING_ROD.get(), WEATHERED_SILVER_LIGHTNING_ROD.get(), OXIDIZED_SILVER_LIGHTNING_ROD.get(),
                 WAXED_SILVER_LIGHTNING_ROD.get(), WAXED_EXPOSED_SILVER_LIGHTNING_ROD.get(), WAXED_WEATHERED_SILVER_LIGHTNING_ROD.get(), WAXED_OXIDIZED_SILVER_LIGHTNING_ROD.get());

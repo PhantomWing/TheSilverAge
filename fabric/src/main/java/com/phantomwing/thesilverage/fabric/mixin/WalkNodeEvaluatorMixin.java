@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(WalkNodeEvaluator.class)
 public abstract class WalkNodeEvaluatorMixin extends NodeEvaluator {
-    @ModifyReturnValue(method = "findAcceptedNode(IIIIDLnet/minecraft/core/Direction;Lnet/minecraft/world/level/pathfinder/PathType;)Lnet/minecraft/world/level/pathfinder/Node;",
+    @ModifyReturnValue(method = "findAcceptedNode(IIIIDLnet/minecraft/core/Direction;Lnet/minecraft/world/level/pathfinder/BlockPathTypes;)Lnet/minecraft/world/level/pathfinder/Node;",
             at = @At("RETURN"), require = 0)
     private Node thesilverage$silverCostsMore(Node node) {
-        return SilverFloor.costed(node, this.mob, this.currentContext);
+        return SilverFloor.costed(node, this.mob, this.level);
     }
 }

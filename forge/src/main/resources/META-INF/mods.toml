@@ -1,0 +1,92 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+issueTrackerURL = "https://github.com/PhantomWing/TheSilverAge/issues"
+license = "MIT License"
+
+[[mods]]
+modId = "thesilverage"
+version = "${version}"
+displayName = "The Silver Age"
+displayURL = "https://github.com/PhantomWing/TheSilverAge"
+authors = "PhantomWing"
+description = '''
+A vanilla-friendly expansion that introduces (oxidizable) silver, designed and polished to feel like an official game drop.
+'''
+
+logoFile = "logo.png"
+
+# AFTER, so the mod's data, its overrides of vanilla recipes among it, outranks Forge's own.
+[[dependencies.thesilverage]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: when Enhanced Celestials is present the Moon Dial names the active
+# lunar event (Blood Moon, ...) above the vanilla phase and tints its moon to match.
+[[dependencies.thesilverage]]
+modId = "enhancedcelestials"
+mandatory = false
+versionRange = "[5.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: Enhanced Celestials 2 is a separate mod rather than an update, so it is
+# supported alongside the above. This is the library half — the events themselves
+# come from enhancedcelestials2defaultlunarevents (or any other add-on), which we
+# never touch directly, so it is deliberately not listed.
+[[dependencies.thesilverage]]
+modId = "enhancedcelestials2core"
+mandatory = false
+versionRange = "[1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: after Vanilla Backport, so the Silver Spear goes in the Combat tab after its Golden Spear, which it adds
+# in the same creative tab event (VanillaTabs).
+[[dependencies.thesilverage]]
+modId = "vanillabackport"
+mandatory = false
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: after Mekanism, which lists its ore processing in Ingredients in the same creative tab event, so silver's
+# goes after gold's there (VanillaTabs).
+[[dependencies.thesilverage]]
+modId = "mekanism"
+mandatory = false
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: after Create and Farmer's Delight, which fill their creative tabs in the same event, so the Silver Sheet
+# and Silver Knife go after their golden ones there (VanillaTabs).
+[[dependencies.thesilverage]]
+modId = "create"
+mandatory = false
+versionRange = "[6.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.thesilverage]]
+modId = "farmersdelight"
+mandatory = false
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

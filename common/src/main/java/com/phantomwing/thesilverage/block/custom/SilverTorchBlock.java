@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class SilverTorchBlock extends TorchBlock {
     public SilverTorchBlock(Properties properties) {
-        super(ParticleTypes.SMOKE, properties); // the ctor particle is unused — animateTick is overridden
+        super(properties, ParticleTypes.SMOKE); // the ctor particle is unused — animateTick is overridden
     }
 
     @Override

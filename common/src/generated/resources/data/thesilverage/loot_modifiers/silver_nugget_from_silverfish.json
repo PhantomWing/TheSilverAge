@@ -2,7 +2,7 @@
   "type": "thesilverage:silverfish_drop_silver_modifier",
   "conditions": [
     {
-      "condition": "neoforge:loot_table_id",
+      "condition": "forge:loot_table_id",
       "loot_table_id": "minecraft:entities/silverfish"
     },
     {

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
  * (generated JSON under {@code worldgen/} + {@code tags/worldgen/biome/}, read
  * by both loaders). The biome → placed-feature <em>link</em>, however, is
  * loader-specific: NeoForge emits {@code neoforge:add_features} biome-modifier
- * JSON (built by {@code com.phantomwing.thesilverage.neoforge.world.ModBiomeModifiers}),
+ * JSON (built by {@code com.phantomwing.thesilverage.forge.world.ModBiomeModifiers}),
  * which Fabric does not parse. Without an equivalent the placed features load
  * but are never attached to any biome, so silver ore would never generate on
  * Fabric.</p>

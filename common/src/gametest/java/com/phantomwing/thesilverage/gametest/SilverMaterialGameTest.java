@@ -5,16 +5,15 @@ import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CopperBulbBlock;
+import com.phantomwing.thesilverage.block.custom.SilverBulbBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -123,19 +122,19 @@ public final class SilverMaterialGameTest {
         helper.setBlock(bulb, ModBlocks.WAXED_SILVER_BULB.get());
         helper.setBlock(power, Blocks.REDSTONE_BLOCK);
         helper.runAfterDelay(2, () -> {
-            if (!helper.getBlockState(bulb).getValue(CopperBulbBlock.LIT)) {
+            if (!helper.getBlockState(bulb).getValue(SilverBulbBlock.LIT)) {
                 fail(helper, "A redstone pulse didn't turn the Waxed Silver Bulb on");
                 return;
             }
             helper.setBlock(power, Blocks.AIR);
             helper.runAfterDelay(2, () -> {
-                if (!helper.getBlockState(bulb).getValue(CopperBulbBlock.LIT)) {
+                if (!helper.getBlockState(bulb).getValue(SilverBulbBlock.LIT)) {
                     fail(helper, "The Waxed Silver Bulb turned off when its power went");
                     return;
                 }
                 helper.setBlock(power, Blocks.REDSTONE_BLOCK);
                 helper.runAfterDelay(2, () -> {
-                    if (helper.getBlockState(bulb).getValue(CopperBulbBlock.LIT)) {
+                    if (helper.getBlockState(bulb).getValue(SilverBulbBlock.LIT)) {
                         fail(helper, "A second redstone pulse didn't turn the Waxed Silver Bulb off");
                     } else {
                         helper.succeed();
@@ -184,7 +183,7 @@ public final class SilverMaterialGameTest {
         BlockPos at = helper.absolutePos(dispenser);
         BlockState state = level.getBlockState(at);
         DispenserBlockEntity entity = (DispenserBlockEntity) level.getBlockEntity(at);
-        BlockSource source = new BlockSource(level, at, state, entity);
+        BlockSource source = TestCompat.blockSource(level, at);
         List<String> problems = new ArrayList<>();
 
         helper.setBlock(target, ModBlocks.SILVER_BLOCK.get());

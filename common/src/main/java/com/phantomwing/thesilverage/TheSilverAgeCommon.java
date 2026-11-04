@@ -19,7 +19,7 @@ import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import com.phantomwing.thesilverage.ui.VanillaTabs;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
 import dev.architectury.event.events.common.LifecycleEvent;
-import net.minecraft.world.level.block.DispenserBlock;
+import com.phantomwing.thesilverage.item.custom.SilverArrowItem;
 
 /**
  * Common (loader-agnostic) entrypoint for The Silver Age.
@@ -68,7 +68,7 @@ public final class TheSilverAgeCommon {
         SilverSmiteHandler.register();
 
         // A dispenser fires only the projectiles it has a behaviour for, which vanilla registers for its own arrows alone.
-        LifecycleEvent.SETUP.register(() -> DispenserBlock.registerProjectileBehavior(ModItems.SILVER_ARROW.get()));
+        LifecycleEvent.SETUP.register(() -> SilverArrowItem.registerDispenseBehavior((SilverArrowItem) ModItems.SILVER_ARROW.get()));
 
         // Refuses honeycomb on silver while the oxidation config is off.
         SilverOxidation.register();

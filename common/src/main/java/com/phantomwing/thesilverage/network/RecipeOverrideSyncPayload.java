@@ -1,10 +1,8 @@
 package com.phantomwing.thesilverage.network;
 
+import net.minecraft.network.FriendlyByteBuf;
+
 import com.phantomwing.thesilverage.TheSilverAge;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
@@ -22,17 +20,14 @@ import java.util.List;
  * <p>Named apart from the single-boolean packet of 1.3.x, so neither side sends the other a
  * packet it can't read: a client that doesn't know this id is skipped and keeps its own config.</p>
  */
-public record RecipeOverrideSyncPayload(List<String> enabledSettingIds) implements CustomPacketPayload {
+public record RecipeOverrideSyncPayload(List<String> enabledSettingIds) {
     public static final ResourceLocation ID = TheSilverAge.resourceLocation("recipe_overrides_sync");
-    public static final Type<RecipeOverrideSyncPayload> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, RecipeOverrideSyncPayload> STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), RecipeOverrideSyncPayload::enabledSettingIds,
-                    RecipeOverrideSyncPayload::new);
+    public void write(FriendlyByteBuf buf) {
+        buf.writeCollection(enabledSettingIds, FriendlyByteBuf::writeUtf);
+    }
 
-    @Override
-    public Type<RecipeOverrideSyncPayload> type() {
-        return TYPE;
+    public static RecipeOverrideSyncPayload read(FriendlyByteBuf buf) {
+        return new RecipeOverrideSyncPayload(buf.readList(FriendlyByteBuf::readUtf));
     }
 }

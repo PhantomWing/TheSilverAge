@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Node;
-import net.minecraft.world.level.pathfinder.PathfindingContext;
+import net.minecraft.world.level.BlockGetter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.IdentityHashMap;
@@ -65,7 +65,7 @@ public final class SilverFloor {
      */
     public static void stepOn(Level level, BlockState state, Entity entity) {
         if (level.isClientSide() || !state.is(ModTags.Blocks.SILVER_FLOORS) || !(entity instanceof LivingEntity living)
-                || entity.isSteppingCarefully() || !isSensitive(entity.getType()) || !CommonConfig.silverFloorDamage()) {
+                || entity.isSteppingCarefully() || !SilverSensitivity.isSensitive(entity) || !CommonConfig.silverFloorDamage()) {
             return;
         }
         if (living.tickCount % hitInterval(state) == 0 && living.hurt(ModDamageTypes.silverFloor(level), DAMAGE)) {
@@ -74,8 +74,8 @@ public final class SilverFloor {
     }
 
     /**
-     * Smite's burst of particles at every hit, and a hop once the last one has worn off. The damage type is in
-     * {@code minecraft:no_knockback}, as magma's is, so the hurt itself doesn't hop the mob every half second.
+     * Smite's burst of particles at every hit, and a hop once the last one has worn off. A hurt with no entity behind
+     * it knocks nothing back on 1.20.1, as magma's doesn't, so the hurt itself doesn't hop the mob every half second.
      */
     private static void reactToHit(ServerLevel level, LivingEntity living) {
         SilverSparks.burst(level, living);
@@ -88,7 +88,7 @@ public final class SilverFloor {
 
     /** Whether silver is hurting {@code mob} where it stands: it is on a silver floor, and silver harms it. */
     public static boolean isHurting(Mob mob) {
-        if (!isSensitive(mob.getType()) || mob.isSteppingCarefully() || !CommonConfig.silverFloorDamage()) {
+        if (!SilverSensitivity.isSensitive(mob) || mob.isSteppingCarefully() || !CommonConfig.silverFloorDamage()) {
             return false;
         }
         Level level = mob.level();
@@ -102,7 +102,7 @@ public final class SilverFloor {
 
     /** Whether a {@code type} may spawn on {@code state}: not where it is silver that harms it. */
     public static boolean allowsSpawn(BlockState state, EntityType<?> type) {
-        return !state.is(ModTags.Blocks.SILVER_FLOORS) || !isSensitive(type) || !CommonConfig.silverFloorDamage();
+        return !state.is(ModTags.Blocks.SILVER_FLOORS) || !SilverSensitivity.isSensitive(type) || !CommonConfig.silverFloorDamage();
     }
 
     /**
@@ -111,8 +111,8 @@ public final class SilverFloor {
      * of a step a path finds twice, so the cost is set rather than added to.
      */
     @Nullable
-    public static Node costed(@Nullable Node node, Mob mob, PathfindingContext context) {
-        if (node == null || node.costMalus < 0.0F || !isSensitive(mob.getType())) {
+    public static Node costed(@Nullable Node node, Mob mob, BlockGetter context) {
+        if (node == null || node.costMalus < 0.0F || !SilverSensitivity.isSensitive(mob)) {
             return node;
         }
         float cost = Math.max(0.0F, mob.getPathfindingMalus(node.type)) + PATH_COST;
@@ -125,7 +125,7 @@ public final class SilverFloor {
 
     /** {@code scorer}, the mob's own liking for a place to go, with a place on silver scoring worst where silver harms it. */
     public static ToDoubleFunction<BlockPos> scorer(PathfinderMob mob, ToDoubleFunction<BlockPos> scorer) {
-        if (!isSensitive(mob.getType()) || !CommonConfig.silverFloorDamage()) {
+        if (!SilverSensitivity.isSensitive(mob) || !CommonConfig.silverFloorDamage()) {
             return scorer;
         }
         Level level = mob.level();
@@ -140,10 +140,6 @@ public final class SilverFloor {
     /** Whether {@code state} is a silver floor a mob stands in rather than on: a pressure plate. */
     private static boolean isStoodIn(BlockState state) {
         return state.is(ModTags.Blocks.SILVER_FLOORS) && state.getBlock() instanceof BasePressurePlateBlock;
-    }
-
-    private static boolean isSensitive(EntityType<?> type) {
-        return type.is(ModTags.EntityTypes.SENSITIVE_TO_SILVER);
     }
 
     /** Ticks between hits on {@code state}: magma's pace on fresh silver, half a second more for each tarnish stage. */

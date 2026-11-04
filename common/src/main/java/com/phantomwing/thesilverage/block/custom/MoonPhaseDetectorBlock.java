@@ -1,6 +1,5 @@
 package com.phantomwing.thesilverage.block.custom;
 
-import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
@@ -11,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -37,29 +37,25 @@ import org.jetbrains.annotations.NotNull;
 public class MoonPhaseDetectorBlock extends BaseEntityBlock {
     private static final int MAX_POWER = 15;
 
-    public static final MapCodec<MoonPhaseDetectorBlock> CODEC = simpleCodec(MoonPhaseDetectorBlock::new);
     public static final IntegerProperty POWER;
     public static final BooleanProperty INVERTED;
     protected static final VoxelShape SHAPE;
 
-    public @NotNull MapCodec<MoonPhaseDetectorBlock> codec() {
-        return CODEC;
-    }
 
     public MoonPhaseDetectorBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(POWER, 0).setValue(INVERTED, false));
     }
 
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPE;
     }
 
-    protected boolean useShapeForLightOcclusion(@NotNull BlockState state) {
+    public boolean useShapeForLightOcclusion(@NotNull BlockState state) {
         return true;
     }
 
-    protected int getSignal(BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
+    public int getSignal(BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
         return blockState.getValue(POWER);
     }
 
@@ -78,7 +74,7 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
         }
     }
 
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull BlockHitResult hitResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (player.mayBuild()) {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
@@ -95,15 +91,15 @@ public class MoonPhaseDetectorBlock extends BaseEntityBlock {
                 return InteractionResult.CONSUME;
             }
         } else {
-            return super.useWithoutItem(state, level, pos, player, hitResult);
+            return super.use(state, level, pos, player, hand, hitResult);
         }
     }
 
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 
-    protected boolean isSignalSource(@NotNull BlockState state) {
+    public boolean isSignalSource(@NotNull BlockState state) {
         return true;
     }
 

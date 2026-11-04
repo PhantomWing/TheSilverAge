@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * <p>The {@code targetLootTable} is {@code minecraft:<path>} where {@code path}
  * is the {@code BuiltInLootTables} key path — exactly what the original
  * {@code isVanillaLootTable(key)} produced
- * ({@code ResourceLocation.withDefaultNamespace(key.location().getPath())}) and
+ * ({@code new ResourceLocation(key.location().getPath())}) and
  * what the {@code neoforge:loot_table_id} condition matches against. For the
  * silverfish entry it is {@code EntityType.SILVERFISH.getDefaultLootTable()}
  * ({@code minecraft:entities/silverfish}).</p>
@@ -77,14 +77,14 @@ public final class SilverLootSpec {
     }
 
     private static ResourceLocation mc(String path) {
-        return ResourceLocation.withDefaultNamespace(path);
+        return new ResourceLocation(path);
     }
 
     private static Supplier<Item> vanilla(Item item) {
         return () -> item;
     }
 
-    /** A vanilla item newer than 1.21.1, which a mod backports here under vanilla's id. */
+    /** A vanilla item newer than 1.20.1, which a mod backports here under vanilla's id. */
     private static Supplier<Item> backported(String path) {
         return () -> BuiltInRegistries.ITEM.get(mc(path));
     }
@@ -109,13 +109,6 @@ public final class SilverLootSpec {
     private static final ResourceLocation STRONGHOLD_CROSSING = mc("chests/stronghold_crossing");
     private static final ResourceLocation STRONGHOLD_LIBRARY = mc("chests/stronghold_library");
     private static final ResourceLocation PILLAGER_OUTPOST = mc("chests/pillager_outpost");
-    private static final ResourceLocation TRIAL_CHAMBERS_REWARD = mc("chests/trial_chambers/reward");
-    private static final ResourceLocation TRIAL_CHAMBERS_REWARD_OMINOUS = mc("chests/trial_chambers/reward_ominous");
-    private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION = mc("chests/trial_chambers/intersection");
-    private static final ResourceLocation TRIAL_CHAMBERS_INTERSECTION_BARREL = mc("chests/trial_chambers/intersection_barrel");
-    private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR = mc("chests/trial_chambers/corridor");
-    private static final ResourceLocation TRIAL_CHAMBERS_CORRIDOR_POT = mc("pots/trial_chambers/corridor");
-    private static final ResourceLocation TRIAL_CHAMBERS_SUPPLY = mc("chests/trial_chambers/supply");
     private static final ResourceLocation BASTION_OTHER = mc("chests/bastion_other");
     private static final ResourceLocation ANCIENT_CITY = mc("chests/ancient_city");
     private static final ResourceLocation END_CITY_TREASURE = mc("chests/end_city_treasure");
@@ -245,32 +238,7 @@ public final class SilverLootSpec {
                 new Entry("silver_arrow_from_pillager_outpost", PILLAGER_OUTPOST, 0.5f, Op.REPLACE,
                         ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
 
-                // Trial Chambers
-                new Entry("silver_ingot_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
-                        ModItems.SILVER_INGOT::get, 1, 1, List.of(vanilla(Items.IRON_INGOT))),
-                // The vault rolls chests/trial_chambers/reward, which reaches reward_rare's iron gear as a
-                // nested table; loot modifiers only ever see the table that was rolled.
-                new Entry("silver_axe_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.1f, Op.REPLACE,
-                        ModItems.SILVER_AXE::get, 1, 1, List.of(vanilla(Items.IRON_AXE))),
-                new Entry("silver_chestplate_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.1f, Op.REPLACE,
-                        ModItems.SILVER_CHESTPLATE::get, 1, 1, List.of(vanilla(Items.IRON_CHESTPLATE))),
-                new Entry("silver_axe_from_trial_chambers_corridor", TRIAL_CHAMBERS_CORRIDOR, 0.1f, Op.REPLACE,
-                        ModItems.SILVER_AXE::get, 1, 1, List.of(vanilla(Items.IRON_AXE))),
-                new Entry("silver_block_from_trial_chambers_reward_ominous", TRIAL_CHAMBERS_REWARD_OMINOUS, 0.1f, Op.REPLACE,
-                        ModItems.SILVER_BLOCK::get, 1, 1, List.of(vanilla(Items.IRON_BLOCK))),
-                new Entry("silver_block_from_trial_chambers_intersection", TRIAL_CHAMBERS_INTERSECTION, 0.1f, Op.REPLACE,
-                        ModItems.SILVER_BLOCK::get, 1, 1, List.of(vanilla(Items.IRON_BLOCK))),
-                new Entry("silver_axe_from_trial_chambers_intersection_barrel", TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_AXE::get, 1, 1, List.of(vanilla(Items.GOLDEN_AXE))),
-                new Entry("silver_pickaxe_from_trial_chambers_intersection_barrel", TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_PICKAXE::get, 1, 1, List.of(vanilla(Items.GOLDEN_PICKAXE))),
-                new Entry("silver_ingot_from_trial_chambers_corridor_pot", TRIAL_CHAMBERS_CORRIDOR_POT, 0.25f, Op.REPLACE,
-                        ModItems.SILVER_INGOT::get, 1, 1, List.of(vanilla(Items.IRON_INGOT))),
-                // Its undead are what Silver Arrows are for. The reward reaches reward_common's arrows.
-                new Entry("silver_arrow_from_trial_chambers_supply", TRIAL_CHAMBERS_SUPPLY, 0.5f, Op.REPLACE,
-                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
-                new Entry("silver_arrow_from_trial_chambers_reward", TRIAL_CHAMBERS_REWARD, 0.25f, Op.REPLACE,
-                        ModItems.SILVER_ARROW::get, 1, 1, List.of(vanilla(Items.ARROW))),
+                // Trial Chambers: 1.21's, which 1.20.1 hasn't got.
 
                 // Ancient City
                 new Entry("silver_leggings_from_ancient_city", ANCIENT_CITY, 0.5f, Op.REPLACE,

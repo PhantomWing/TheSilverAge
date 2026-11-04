@@ -1,9 +1,8 @@
 package com.phantomwing.thesilverage.combat;
 
+import net.minecraft.network.FriendlyByteBuf;
+
 import com.phantomwing.thesilverage.platform.CommonConfig;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 
 /**
  * How silver weapons and armour treat the undead, as the config says, with {@code silver_affects_undead} already
@@ -17,13 +16,17 @@ import net.minecraft.network.codec.StreamCodec;
  * @param thornsChance      each worn piece's chance of it, Silver Horse Armor counting as four
  */
 public record SilverUndeadSettings(boolean smite, float smiteDamage, float arrowSmiteDamage, boolean thorns, float thornsChance) {
-    public static final StreamCodec<ByteBuf, SilverUndeadSettings> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, SilverUndeadSettings::smite,
-            ByteBufCodecs.FLOAT, SilverUndeadSettings::smiteDamage,
-            ByteBufCodecs.FLOAT, SilverUndeadSettings::arrowSmiteDamage,
-            ByteBufCodecs.BOOL, SilverUndeadSettings::thorns,
-            ByteBufCodecs.FLOAT, SilverUndeadSettings::thornsChance,
-            SilverUndeadSettings::new);
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBoolean(smite);
+        buf.writeFloat(smiteDamage);
+        buf.writeFloat(arrowSmiteDamage);
+        buf.writeBoolean(thorns);
+        buf.writeFloat(thornsChance);
+    }
+
+    public static SilverUndeadSettings read(FriendlyByteBuf buf) {
+        return new SilverUndeadSettings(buf.readBoolean(), buf.readFloat(), buf.readFloat(), buf.readBoolean(), buf.readFloat());
+    }
 
     /** This side's own config. */
     public static SilverUndeadSettings fromConfig() {

@@ -11,8 +11,8 @@ import com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades;
 import com.phantomwing.thesilverage.fabric.world.ModWorldGen;
 import com.phantomwing.thesilverage.firework.ModFireworks;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -69,7 +69,7 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // can evaluate the translated block. `fabric:all_mods_loaded` (the
         // create-gated recipes) is built into fabric-api and needs no
         // registration here.
-        ResourceConditions.register(ConfigBooleanResourceCondition.TYPE);
+        ConfigBooleanResourceCondition.register();
 
         // Future-proof Create hook. No-ops today (no Create build exists for
         // Fabric 1.21.1 — external blocker). Recipe parity is already handled by
@@ -80,11 +80,11 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // Vanilla LootTable carries no id of its own. Once all loot tables are
         // loaded, stamp each instance with its registry id (read back by the
         // Silver loot mixin — mirrors the GLM neoforge:loot_table_id condition).
-        LootTableEvents.ALL_LOADED.register((resourceManager, lootRegistry) ->
-                lootRegistry.entrySet().forEach(e -> {
-                    LootTable table = e.getValue();
+        LootTableEvents.ALL_LOADED.register((resourceManager, lootData) ->
+                lootData.getKeys(LootDataType.TABLE).forEach(id -> {
+                    LootTable table = lootData.getLootTable(id);
                     if (table instanceof SilverLootTableId holder) {
-                        holder.thesilverage$setLootTableId(e.getKey().location());
+                        holder.thesilverage$setLootTableId(id);
                     }
                 }));
     }
