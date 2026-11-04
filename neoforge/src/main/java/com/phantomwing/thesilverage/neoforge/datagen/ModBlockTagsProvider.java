@@ -444,6 +444,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         // A goat ramming silver ore loses a horn, as on iron or copper ore (vanilla lists only the stone ores).
         tag(BlockTags.SNAPS_GOAT_HORN).add(ModBlocks.SILVER_ORE.get());
+        // Caves are carved after the ore is placed: as vanilla's iron and copper ores and raw blocks, silver's are carved
+        // through, or a cave crossing them leaves the ore standing in it.
+        tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(ModBlocks.SILVER_ORE.get(), ModBlocks.DEEPSLATE_SILVER_ORE.get(),
+                ModBlocks.RAW_SILVER_BLOCK.get());
 
         // Walls
         tag(BlockTags.WALLS)
