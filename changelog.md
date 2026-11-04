@@ -2,6 +2,7 @@
 
 ### Fixes
 - Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
+- Fixed caves not carving through silver ore and Blocks of Raw Silver
 
 
 # 1.4.0
