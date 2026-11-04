@@ -80,7 +80,6 @@
 - Fixed the Silver Knife, Silver Spear and Silver Nautilus Armor having no name in every language besides English
 - Fixed the Japanese names of Cut Silver and Silver Grates to match vanilla's
 - Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
-- Fixed caves not carving through silver ore and Blocks of Raw Silver
 
 # 1.3.3
 ### Fixes
