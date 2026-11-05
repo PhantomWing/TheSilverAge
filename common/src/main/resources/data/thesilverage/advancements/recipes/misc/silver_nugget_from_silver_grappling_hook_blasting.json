@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "yo_hooks"
+    }
+  ],
+  "criteria": {
+    "has_silver_grappling_hook": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "yo_hooks:silver_grappling_hook",
+              "yo_hooks:silver_hook_head"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thesilverage:silver_nugget_from_silver_grappling_hook_blasting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "yo_hooks"
+      ]
+    }
+  ],
+  "requirements": [
+    [
+      "has_silver_grappling_hook",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thesilverage:silver_nugget_from_silver_grappling_hook_blasting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

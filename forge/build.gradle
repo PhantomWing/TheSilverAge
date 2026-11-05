@@ -255,9 +255,10 @@ dependencies {
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'minecraft_version_range', rootProject.minecraft_version_range
 
     filesMatching('META-INF/mods.toml') {
-        expand 'version': project.version
+        expand 'version': project.version, 'minecraft_version_range': rootProject.minecraft_version_range
     }
 
     // Copy the built-in resource packs from common into the Forge mod's resource output so

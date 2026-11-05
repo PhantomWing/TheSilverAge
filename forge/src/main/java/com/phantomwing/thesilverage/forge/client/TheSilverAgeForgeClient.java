@@ -7,7 +7,7 @@ import com.phantomwing.thesilverage.client.ServerUndeadSettings;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.compat.ModIds;
-import com.phantomwing.thesilverage.forge.compat.vanillabackport.SilverSpear;
+import com.phantomwing.thesilverage.forge.client.compat.SilverSpearModels;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.particle.ModParticles;
 import com.phantomwing.thesilverage.platform.ClientPlatform;
@@ -34,6 +34,9 @@ public final class TheSilverAgeForgeClient {
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(TheSilverAgeForgeClient::clientSetup);
         modEventBus.addListener(TheSilverAgeForgeClient::registerParticleProviders);
+        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT)) {
+            modEventBus.addListener(SilverSpearModels::registerAdditional);
+        }
 
         // "+1.5 Damage to Undead" line on silver tools. Cross-loader Architectury
         // tooltip event, so the same common class is called from the Fabric client too.
@@ -75,10 +78,9 @@ public final class TheSilverAgeForgeClient {
         // game's item colours at once, so it waits for the client, which datagen's run hasn't got.
         event.enqueueWork(ModItemColors::register);
 
-        // The Silver Spear held as a spear where Vanilla Backport makes it one. Backported Spears picks the held
-        // model through the item model's own override.
-        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT) && !CommonPlatform.isModLoaded(ModIds.BACKPORTED_SPEARS)) {
-            SilverSpear.registerHeldModel();
+        // The Silver Spear held as a spear where Vanilla Backport makes it one.
+        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT)) {
+            SilverSpearModels.registerHeldModel();
         }
     }
 }

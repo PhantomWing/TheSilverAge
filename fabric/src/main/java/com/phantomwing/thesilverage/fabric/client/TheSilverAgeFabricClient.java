@@ -8,7 +8,7 @@ import com.phantomwing.thesilverage.client.ModEntityRenderers;
 import com.phantomwing.thesilverage.client.SilverSmiteTooltip;
 import com.phantomwing.thesilverage.client.SilverThornsTooltip;
 import com.phantomwing.thesilverage.compat.ModIds;
-import com.phantomwing.thesilverage.fabric.compat.vanillabackport.SilverSpear;
+import com.phantomwing.thesilverage.fabric.client.compat.SilverSpearModels;
 import com.phantomwing.thesilverage.network.ModNetworking;
 import com.phantomwing.thesilverage.platform.CommonPlatform;
 import com.phantomwing.thesilverage.particle.ModParticles;
@@ -57,10 +57,9 @@ public final class TheSilverAgeFabricClient implements ClientModInitializer {
         // opaque black on Fabric.
         ModRenderLayers.register();
 
-        // The Silver Spear held as a spear where Vanilla Backport makes it one. Backported Spears picks the held
-        // model through the item model's own override.
-        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT) && !CommonPlatform.isModLoaded(ModIds.BACKPORTED_SPEARS)) {
-            SilverSpear.registerHeldModel();
+        // The Silver Spear held as a spear where Vanilla Backport makes it one.
+        if (CommonPlatform.isModLoaded(ModIds.VANILLA_BACKPORT)) {
+            SilverSpearModels.registerHeldModel();
         }
 
         // Built-in resource pack carrying the silver brewing-stand / comparator

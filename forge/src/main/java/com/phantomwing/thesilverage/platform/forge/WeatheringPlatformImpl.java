@@ -17,10 +17,15 @@ import java.util.function.Supplier;
  *
  * <p>Forge 1.20.1 has neither data maps nor a registry for oxidizable and waxable blocks: vanilla reads both from the
  * memoized maps in {@link WeatheringCopper} and {@link HoneycombItem}, which tarnishing, an axe's scraping and
- * honeycomb all go through. The pairs are gathered as the common code names them, and {@link #apply()} puts them in
- * those maps once the blocks exist, at common setup. The maps are {@code static final} - an interface's constant for
- * the copper ones, which no access transformer can open - so they are replaced through {@code Unsafe}, as The Silver
- * Age's single-loader Forge build did.</p>
+ * honeycomb all go through. The pairs are gathered as the common code names them, and {@link #apply()} wraps those
+ * maps' suppliers at common setup in ones that add the pairs when first read. The maps are {@code static final} - an
+ * interface's constant for the copper ones, which no access transformer can open - so they are replaced through
+ * {@code Unsafe}, as The Silver Age's single-loader Forge build did.</p>
+ *
+ * <p>Nothing is read at setup: Vanilla Backport's Platform library adds its copper pairs at load complete, after
+ * common setup, by swapping the delegate of {@code NEXT_BY_BLOCK}'s memoizer and wrapping {@code WAXABLES}, so a map
+ * merged here then would leave its blocks out. The reverse maps are vanilla's own, which invert whatever
+ * {@code NEXT_BY_BLOCK} and {@code WAXABLES} hold when they are first read, so they are left alone.</p>
  */
 public final class WeatheringPlatformImpl {
     private static final List<Supplier<Block>[]> OXIDATION = new ArrayList<>();
@@ -39,16 +44,17 @@ public final class WeatheringPlatformImpl {
         WAXING.add(new Supplier[]{unwaxed, waxed});
     }
 
-    /** Adds the gathered pairs to vanilla's maps. Called once, on the main thread, at common setup. */
+    /** Wraps vanilla's maps so the gathered pairs join them when first read. Called once, at common setup. */
     public static void apply() {
-        BiMap<Block, Block> next = merged(WeatheringCopper.NEXT_BY_BLOCK.get(), OXIDATION);
-        BiMap<Block, Block> waxables = merged(HoneycombItem.WAXABLES.get(), WAXING);
+        Supplier<BiMap<Block, Block>> next = WeatheringCopper.NEXT_BY_BLOCK;
+        Supplier<BiMap<Block, Block>> waxables = HoneycombItem.WAXABLES;
         try {
-            // Dev runs use Mojang's names, a shipped jar Forge's (SRG) ones.
-            setStaticFinal(WeatheringCopper.class, "NEXT_BY_BLOCK", "f_154886_", Suppliers.memoize(() -> next));
-            setStaticFinal(WeatheringCopper.class, "PREVIOUS_BY_BLOCK", "f_154887_", Suppliers.memoize(next::inverse));
-            setStaticFinal(HoneycombItem.class, "WAXABLES", "f_150863_", Suppliers.memoize(() -> waxables));
-            setStaticFinal(HoneycombItem.class, "WAX_OFF_BY_BLOCK", "f_150864_", Suppliers.memoize(waxables::inverse));
+            // Dev runs use Mojang's names, a shipped jar Forge's (SRG) ones. Kept Guava memoizers, since Platform
+            // swaps the delegate of the one in NEXT_BY_BLOCK.
+            setStaticFinal(WeatheringCopper.class, "NEXT_BY_BLOCK", "f_154886_",
+                    Suppliers.memoize(() -> merged(next.get(), OXIDATION)));
+            setStaticFinal(HoneycombItem.class, "WAXABLES", "f_150863_",
+                    Suppliers.memoize(() -> merged(waxables.get(), WAXING)));
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("Couldn't add silver's oxidation and waxing to vanilla's", e);
         }

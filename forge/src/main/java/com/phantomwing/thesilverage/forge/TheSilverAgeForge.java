@@ -2,6 +2,7 @@ package com.phantomwing.thesilverage.forge;
 
 import com.phantomwing.thesilverage.TheSilverAge;
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
 import com.phantomwing.thesilverage.combat.SilverUndeadGoals;
 import com.phantomwing.thesilverage.compat.ModIds;
 import com.phantomwing.thesilverage.firework.ModFireworks;
@@ -71,7 +72,10 @@ public final class TheSilverAgeForge {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        // Vanilla's maps aren't thread-safe and this event runs in parallel with other mods', so on the main thread.
         event.enqueueWork(() -> {
+            ModCriteriaTriggers.register();
+            TheSilverAgeCommon.setup();
             // Register Firework Star Recipes (mutates the AT-exposed static fields).
             ModFireworks.register();
             // Silver's oxidation and waxing, into vanilla's maps.

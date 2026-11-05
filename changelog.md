@@ -1,6 +1,8 @@
 # 1.4.0
 ### Additions
 - Added Fabric support (the mod now runs on both Forge and Fabric)
+- Exposed, weathered and oxidized Silver Bulbs can now be crafted from their silver blocks, like copper bulbs (including waxed variants)
+- Silver Ore and Deepslate Silver Ore can now be smelted and blasted into Silver Ingots
 - Added Silver Bars (including oxidized and waxed variants)
 - Added Silver Chain (including oxidized and waxed variants)
 - Added Silver Brick Wall (including oxidized and waxed variants)
@@ -65,10 +67,10 @@
 - Silver Bricks are now crafted from 4 Cut Silver, and Silver Bricks and their stairs, slabs and walls can be cut from Cut Silver in a stonecutter (including oxidized and waxed variants)
 - Recipes that take Silver Ingots or Silver Nuggets now accept other mods' silver too, such as Occultism's (the `forge:ingots/silver` and `forge:nuggets/silver` tags, `c:` on Fabric), and silver tools can be repaired with it
 - Silver Bulbs and Silver Armor now have their own subtitles
+- Silver Bulbs are now crafted with the Blaze Rod in the middle and Redstone at the bottom, like copper bulbs
 - Moved Silver Ore from the `forge:ore_rates/singular` tag to `forge:ore_rates/dense`
 
 ### Fixes
-- Fixed Silver Bulbs crafting 1 instead of 4, like copper bulbs (including oxidized and waxed variants)
 - Fixed Chiseled Silver crafting 2 from Cut Silver Slabs instead of 1 (including oxidized and waxed variants)
 - Fixed Glistering Melon Slices accepting Silver Nuggets, and the Brewing Stand needing Stone instead of Cobblestone, with `override_vanilla_recipes` turned off
 - Fixed the textures of overridden vanilla recipes not updating after /reload until rejoining the world

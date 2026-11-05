@@ -1,6 +1,5 @@
 package com.phantomwing.thesilverage;
 
-import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
 import com.phantomwing.thesilverage.armor.ModArmorMaterials;
 import com.phantomwing.thesilverage.armor.MonsterArmorHandler;
 import com.phantomwing.thesilverage.block.ModBlockEntityTypes;
@@ -18,7 +17,6 @@ import com.phantomwing.thesilverage.sound.ModSounds;
 import com.phantomwing.thesilverage.ui.ModCreativeModeTab;
 import com.phantomwing.thesilverage.ui.VanillaTabs;
 import com.phantomwing.thesilverage.world.ModPlacementModifiers;
-import dev.architectury.event.events.common.LifecycleEvent;
 import com.phantomwing.thesilverage.item.custom.SilverArrowItem;
 
 /**
@@ -53,7 +51,6 @@ public final class TheSilverAgeCommon {
         ModEntityTypes.register();
         ModParticles.register();
         ModSounds.register();
-        ModCriteriaTriggers.register();
         ModCreativeModeTab.register();
         VanillaTabs.register();
         ModArmorMaterials.register();
@@ -67,9 +64,6 @@ public final class TheSilverAgeCommon {
         // one loader-specific hook, wired here.
         SilverSmiteHandler.register();
 
-        // A dispenser fires only the projectiles it has a behaviour for, which vanilla registers for its own arrows alone.
-        LifecycleEvent.SETUP.register(() -> SilverArrowItem.registerDispenseBehavior((SilverArrowItem) ModItems.SILVER_ARROW.get()));
-
         // Refuses honeycomb on silver while the oxidation config is off.
         SilverOxidation.register();
 
@@ -80,9 +74,8 @@ public final class TheSilverAgeCommon {
         // receiver is wired separately from each loader's client entrypoint.
         ModNetworking.register();
 
-        // Silver oxidation / waxing relationships (single common spec). NeoForge
-        // keeps these in its committed data maps (impl is a no-op; its datagen
-        // provider iterates the same spec); Fabric registers them at runtime via
+        // Silver oxidation / waxing relationships (single common spec). Forge adds
+        // them to vanilla's maps at common setup; Fabric registers them through
         // OxidizableBlocksRegistry. Bridged through @ExpectPlatform.
         SilverWeatheringSpec.oxidationPairs().forEach(pair ->
                 WeatheringPlatform.registerOxidation(pair.from(), pair.to()));
@@ -93,5 +86,17 @@ public final class TheSilverAgeCommon {
         // (NeoForge: firework recipe patch via AT-exposed fields + config;
         // Fabric: Phase 4 no-ops). Bridged through @ExpectPlatform.
         CommonPlatform.onCommonSetup();
+    }
+
+    /**
+     * What goes in vanilla's maps once every mod is constructed: its dispenser behaviours. Not thread-safe, so Forge
+     * calls it from common setup's {@code enqueueWork} (Architectury 9 fires {@code LifecycleEvent.SETUP} there from
+     * the parallel setup event itself), and Fabric from {@code LifecycleEvent.SETUP}.
+     */
+    public static void setup() {
+        // A dispenser fires only the projectiles it has a behaviour for, which vanilla registers for its own arrows alone.
+        SilverArrowItem.registerDispenseBehavior((SilverArrowItem) ModItems.SILVER_ARROW.get());
+        // Refuses a dispenser's honeycomb on silver while the oxidation config is off.
+        SilverOxidation.registerDispenseBehavior();
     }
 }

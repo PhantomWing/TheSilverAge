@@ -371,13 +371,19 @@ public class ModBlocks {
         return registerSilverBlock(name, baseProps, RotatedPillarBlock::new);
     }
 
+    // 1.20.1's Properties.copy leaves out isValidSpawn, which keeps mobs off vanilla's iron trapdoor.
+    private static BlockBehaviour.Properties getSilverTrapdoorProps(WeatheringCopper.WeatherState weatherState) {
+        return getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_TRAPDOOR))
+                .isValidSpawn((state, level, pos, type) -> false);
+    }
+
     private static RegistrySupplier<TrapDoorBlock> registerWeatheringSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_TRAPDOOR));
+        BlockBehaviour.Properties baseProps = getSilverTrapdoorProps(weatherState);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverTrapDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
     private static RegistrySupplier<TrapDoorBlock> registerSilverTrapdoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.copy(Blocks.IRON_TRAPDOOR));
+        BlockBehaviour.Properties baseProps = getSilverTrapdoorProps(weatherState);
         return registerSilverBlock(name, baseProps, (props) -> new TrapDoorBlock(props, ModBlockSetTypes.SILVER));
     }
 

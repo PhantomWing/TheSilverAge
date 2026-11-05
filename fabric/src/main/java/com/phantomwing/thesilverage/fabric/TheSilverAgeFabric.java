@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.fabric;
 
 import com.phantomwing.thesilverage.TheSilverAgeCommon;
+import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
 import com.phantomwing.thesilverage.block.ModBlocks;
 import com.phantomwing.thesilverage.fabric.compat.create.CreateFabricCompat;
 import com.phantomwing.thesilverage.fabric.condition.ConfigBooleanResourceCondition;
@@ -10,6 +11,7 @@ import com.phantomwing.thesilverage.fabric.mixin.PoiTypesAccessor;
 import com.phantomwing.thesilverage.fabric.villager.ModVillagerTrades;
 import com.phantomwing.thesilverage.fabric.world.ModWorldGen;
 import com.phantomwing.thesilverage.firework.ModFireworks;
+import dev.architectury.event.events.common.LifecycleEvent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.world.level.storage.loot.LootDataType;
@@ -22,12 +24,11 @@ import net.minecraft.world.level.storage.loot.LootTable;
 /**
  * Fabric entrypoint for The Silver Age.
  *
- * <p>Delegates the loader-agnostic bootstrap to {@link TheSilverAgeCommon#init()}
- * and wires the one Fabric-only piece needed for loot parity: stamping each
- * loaded {@code LootTable} with its registry id so the {@code LootTableMixin}
- * (the Fabric equivalent of the NeoForge Global Loot Modifiers) knows which
- * {@link com.phantomwing.thesilverage.loot.SilverLootSpec} entries to apply at
- * roll time.</p>
+ * <p>Delegates the loader-agnostic bootstrap to {@link TheSilverAgeCommon#init()}, then wires what Forge does through
+ * its own events and data: the firework star, the villager trade, silver ore's world generation, the lightning rods'
+ * point of interest, the {@code config_boolean} resource condition, and each loaded {@code LootTable}'s id, which
+ * {@code LootTableMixin} (Fabric's twin of Forge's global loot modifiers) reads to know which
+ * {@link com.phantomwing.thesilverage.loot.SilverLootSpec} entries to apply at roll time.</p>
  */
 public final class TheSilverAgeFabric implements ModInitializer {
     @Override
@@ -38,8 +39,10 @@ public final class TheSilverAgeFabric implements ModInitializer {
         TheSilverAgeFabricConfig.register();
 
         TheSilverAgeCommon.init();
+        ModCriteriaTriggers.register();
+        LifecycleEvent.SETUP.register(TheSilverAgeCommon::setup);
 
-        // Silver Nugget firework-star parity. NeoForge mutates the vanilla
+        // Silver Nugget firework-star parity. Forge mutates the vanilla
         // FireworkStarRecipe static fields in FMLCommonSetupEvent; Fabric has no
         // equivalent staged setup, so do it here — registries are populated by
         // the time the ModInitializer runs (after TheSilverAgeCommon.init()),
@@ -47,39 +50,35 @@ public final class TheSilverAgeFabric implements ModInitializer {
         // from the merged key set (no loader-specific CompoundIngredient).
         ModFireworks.register();
 
-        // Silver villager-trade parity. NeoForge adds the Cleric trade from
+        // Silver villager-trade parity. Forge adds the Cleric trade from
         // VillagerTradesEvent; Fabric registers it once here via
         // TradeOfferHelper (the ENABLE_VILLAGER_TRADES gate is evaluated live
         // inside the listing so runtime config toggles still take effect).
         ModVillagerTrades.register();
 
-        // Silver ore world-gen parity. NeoForge attaches the placed features to
-        // biomes via neoforge:add_features biome-modifier JSON (which Fabric
+        // Silver ore world-gen parity. Forge attaches the placed features to
+        // biomes via forge:add_features biome-modifier JSON (which Fabric
         // ignores); this re-creates those three injections through the Fabric
         // BiomeModifications API so silver ore actually generates on Fabric.
         ModWorldGen.register();
 
         registerLightningRods();
 
-        // Parity twin of the NeoForge `thesilverage:config_boolean` recipe
-        // condition. The shared generated data carries BOTH dialects in each
-        // conditional file (NeoForge `neoforge:conditions` +
-        // Fabric `fabric:load_conditions`, the latter emitted by the NeoForge
-        // datagen post-processor); this registers the runtime handler so Fabric
-        // can evaluate the translated block. `fabric:all_mods_loaded` (the
+        // Twin of Forge's `thesilverage:config_boolean` recipe condition. The
+        // shared generated data carries both dialects in each conditional file
+        // (Forge's `conditions` and Fabric's `fabric:load_conditions`, the latter
+        // added by FabricConditionsProvider in Forge's datagen); this registers
+        // the handler Fabric evaluates the latter with. `fabric:all_mods_loaded` (the
         // create-gated recipes) is built into fabric-api and needs no
         // registration here.
         ConfigBooleanResourceCondition.register();
 
-        // Future-proof Create hook. No-ops today (no Create build exists for
-        // Fabric 1.21.1 — external blocker). Recipe parity is already handled by
-        // the shared condition-gated generated data; this is the live, guarded
-        // home for any future runtime Create-Fabric integration.
+        // The home of any runtime Create integration on Fabric; none today.
         CreateFabricCompat.init();
 
         // Vanilla LootTable carries no id of its own. Once all loot tables are
         // loaded, stamp each instance with its registry id (read back by the
-        // Silver loot mixin — mirrors the GLM neoforge:loot_table_id condition).
+        // Silver loot mixin, as Forge's GLMs read forge:loot_table_id).
         LootTableEvents.ALL_LOADED.register((resourceManager, lootData) ->
                 lootData.getKeys(LootDataType.TABLE).forEach(id -> {
                     LootTable table = lootData.getLootTable(id);
@@ -90,8 +89,8 @@ public final class TheSilverAgeFabric implements ModInitializer {
     }
 
     /**
-     * Lightning finds a rod by its point of interest, which 1.21.1 gives the vanilla rod alone. NeoForge adds
-     * the Silver Lightning Rods to it through {@code ExtendPoiTypesEvent}.
+     * Lightning finds a rod by its point of interest, which 1.20.1 gives the vanilla rod alone. Forge answers it for
+     * the Silver Lightning Rods through its {@code PoiTypesMixin}.
      */
     private static void registerLightningRods() {
         Holder<PoiType> lightningRod = BuiltInRegistries.POINT_OF_INTEREST_TYPE.getHolderOrThrow(PoiTypes.LIGHTNING_ROD);

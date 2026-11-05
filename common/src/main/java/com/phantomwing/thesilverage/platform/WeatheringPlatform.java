@@ -16,11 +16,9 @@ import java.util.function.Supplier;
  * relationship its own way:</p>
  *
  * <ul>
- *   <li><b>NeoForge</b>: no-op — oxidation/waxing continue to come from the
- *       committed, datagen-produced {@code oxidizables.json}/{@code waxables.json}
- *       data maps (the datagen provider now iterates the same common spec, so the
- *       regenerated JSON is byte-identical). Keeping the data-map path preserves
- *       NeoForge behaviour exactly.</li>
+ *   <li><b>Forge</b>: gathers the pairs and adds them to vanilla's
+ *       {@code WeatheringCopper} and {@code HoneycombItem} maps when those are
+ *       first read (Forge 1.20.1 has no data maps).</li>
  *   <li><b>Fabric</b>: registers the pair at runtime via Fabric API's
  *       {@code OxidizableBlocksRegistry} (Fabric has no equivalent data map).</li>
  * </ul>
@@ -38,9 +36,9 @@ public final class WeatheringPlatform {
      *
      * <p>Blocks are passed as {@link Supplier} so the call from
      * {@code TheSilverAgeCommon.init()} (which runs during mod construction,
-     * before NeoForge flushes its deferred registries) never resolves them
-     * eagerly. The NeoForge impl is a no-op and never calls {@code get()}; the
-     * Fabric impl resolves them when it registers the pair.</p>
+     * before Forge flushes its deferred registries) never resolves them
+     * eagerly. The Forge impl resolves them when vanilla's maps are first read;
+     * the Fabric impl when it registers the pair.</p>
      */
     @ExpectPlatform
     public static void registerOxidation(Supplier<Block> less, Supplier<Block> more) {

@@ -3,7 +3,6 @@ package com.phantomwing.thesilverage.block;
 import com.phantomwing.thesilverage.platform.CommonConfig;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -86,10 +85,10 @@ public final class SilverOxidation {
             Block block = player.level().getBlockState(pos).getBlock();
             return waxableSources().contains(block) ? EventResult.interruptFalse() : EventResult.pass();
         });
-        LifecycleEvent.SETUP.register(SilverOxidation::refuseDispensedHoneycomb);
     }
 
-    private static void refuseDispensedHoneycomb() {
+    /** Wraps vanilla's honeycomb dispenser behaviour. Called from {@code TheSilverAgeCommon.setup()}. */
+    public static void registerDispenseBehavior() {
         DispenseItemBehavior waxing = DispenserBlock.DISPENSER_REGISTRY.get(Items.HONEYCOMB);
         if (waxing == null) {
             return;

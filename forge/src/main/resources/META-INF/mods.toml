@@ -26,14 +26,14 @@ side = "BOTH"
 [[dependencies.thesilverage]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,1.21)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.thesilverage]]
 modId = "architectury"
 mandatory = true
-versionRange = "[9.2.14,)"
+versionRange = "[9.2.14,10)"
 ordering = "AFTER"
 side = "BOTH"
 

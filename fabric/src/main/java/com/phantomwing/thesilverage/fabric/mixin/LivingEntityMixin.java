@@ -13,21 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Fabric hooks for silver against the undead: the tools' bonus damage, and the armour's burn on undead attackers.
  *
- * <p>NeoForge adds the bonus from {@code LivingIncomingDamageEvent}. Fabric API
- * has no equivalent that can change the damage amount
- * ({@code ServerLivingEntityEvents.ALLOW_DAMAGE} is allow/deny only), so the
- * amount is modified directly on the vanilla entry point:</p>
- *
- * <pre>{@code
- * net.minecraft.world.entity.LivingEntity
- *     #hurt(DamageSource, float)                 // 1.21.1 Mojmap
- *     // descriptor: (Lnet/minecraft/world/damagesource/DamageSource;F)Z
- * }</pre>
- *
- * <p>Injecting at HEAD puts the bonus in before armour and resistance are
- * applied, which is the same point vanilla adds Smite's damage, so both loaders
- * behave identically. All the gating (config, melee-only, tag checks) lives in
- * {@link SilverSmiteHandler}.</p>
+ * <p>The bonus goes in at the head of {@code LivingEntity#hurt(DamageSource, float)}, before the damage cooldown,
+ * armour and resistance, as Forge's twin mixin puts it in (Forge's {@code LivingHurtEvent} comes after the cooldown).
+ * A player's own swing takes it in {@code Player#attack} instead ({@code PlayerMixin}). All the gating (config,
+ * melee-only, which mobs) lives in {@link SilverSmiteHandler}.</p>
  */
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -42,7 +31,7 @@ public abstract class LivingEntityMixin {
 
     /**
      * Silver armour's burn on undead attackers, and the tools' bonus shown, once a hit has landed: {@code hurt} answers true when it did, as it
-     * does for Thorns, and false for a hit a shield took whole. NeoForge's twin mixin is the same, so the loaders agree
+     * does for Thorns, and false for a hit a shield took whole. Forge's twin mixin is the same, so the loaders agree
      * on which hits count. All the gating lives in {@link SilverThornsHandler}.
      */
     @Inject(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("RETURN"))

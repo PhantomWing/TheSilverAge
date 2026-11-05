@@ -48,7 +48,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.SILVER_AXE);
         handheldItem(ModItems.SILVER_HOE);
         handheldItem(ModItems.SILVER_KNIFE); // Farmer's Delight compat
-        spearItem(ModItems.SILVER_SPEAR); // Backported Spears compat
+        spearItem(ModItems.SILVER_SPEAR); // Vanilla Backport compat
         simpleItem(ModItems.SILVER_ARROW);
 
         // Silver armor
@@ -87,6 +87,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         addModTrimsToArmorItem(Items.NETHERITE_CHESTPLATE);
         addModTrimsToArmorItem(Items.NETHERITE_LEGGINGS);
         addModTrimsToArmorItem(Items.NETHERITE_BOOTS);
+        addModTrimsToArmorItem(Items.TURTLE_HELMET);
 
         // Redstone blocks
         blockItem(ModBlocks.MOON_PHASE_DETECTOR);
@@ -318,20 +319,16 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * A spear as Backported Spears draws one: flat in the inventory, and its {@code _in_hand} texture held, which it
-     * picks through its {@code spears:in_gui} predicate. The held model's parent is the mod's own spear_in_hand
-     * copied into this namespace, so nothing is missing without the mod.
+     * A spear as Vanilla Backport draws one: flat in the inventory, and its {@code _in_hand} model held, which
+     * Vanilla Backport's hand-held model registration swaps in (see the spear's compat). The held model's parent is
+     * the mod's own spear_in_hand, so nothing is missing without the mod.
      */
     private <T extends Item> void spearItem(RegistrySupplier<T> item) {
         String name = ItemUtils.getName(item.get());
-        ModelFile inHand = withExistingParent(name + "_in_hand", modLoc("item/spear_in_hand"))
+        withExistingParent(name + "_in_hand", modLoc("item/spear_in_hand"))
                 .texture("layer0", modLoc("item/" + name + "_in_hand"));
         withExistingParent(name, new ResourceLocation("item/generated"))
-                .texture("layer0", ItemUtils.getItemResourceLocation(item.get()))
-                .override()
-                .predicate(new ResourceLocation("spears", "in_gui"), 0)
-                .model(inHand)
-                .end();
+                .texture("layer0", ItemUtils.getItemResourceLocation(item.get()));
     }
 
     private void wallItem(RegistrySupplier<WallBlock> wall, RegistrySupplier<Block> textureBlock) {

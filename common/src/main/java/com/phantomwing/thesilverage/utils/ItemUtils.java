@@ -12,14 +12,28 @@ import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class ItemUtils {
     /**
-     * The parts of a stack's tag a swap doesn't carry over as they are: its wear and enchantments, which are carried
-     * over as they suit the new item, and its attribute modifiers, which would take the new item's own away. The rest -
-     * what a player or a structure gave it, a name, lore, a trim - is kept.
+     * What the stack a swap replaces keeps beyond its wear and enchantments, as 1.21's swap keeps its name, lore, trim,
+     * unbreakable and custom data components: what a player or a structure gave it. Not its attribute modifiers, which
+     * would take the new item's own away, nor anything else vanilla keeps in a stack's tag.
      */
-    private static final List<String> NOT_KEPT = List.of(ItemStack.TAG_DAMAGE, ItemStack.TAG_ENCH, "AttributeModifiers");
+    private static final List<String> KEPT = List.of("Trim", "Unbreakable");
+    /** Of {@code display}, the name and lore; not a dyed colour. */
+    private static final List<String> KEPT_DISPLAY = List.of(ItemStack.TAG_DISPLAY_NAME, ItemStack.TAG_LORE);
+    /**
+     * The keys vanilla 1.20.1 keeps in a stack's tag, each of which 1.20.5 made a component of its own; any other key is
+     * another mod's or a command's, which 1.21 holds as custom data.
+     */
+    private static final Set<String> VANILLA = Set.of(ItemStack.TAG_DAMAGE, ItemStack.TAG_ENCH, "StoredEnchantments",
+            ItemStack.TAG_DISPLAY, "Unbreakable", "HideFlags", "CanDestroy", "CanPlaceOn", "AttributeModifiers",
+            "RepairCost", "CustomModelData", "Trim", "BlockEntityTag", "BlockStateTag", "EntityTag", "Potion",
+            "CustomPotionEffects", "CustomPotionColor", "Fireworks", "Explosion", "SkullOwner", "pages", "filtered_pages",
+            "title", "filtered_title", "author", "generation", "resolved", "Decorations", "map", "map_scale_direction",
+            "map_to_lock", "LodestoneDimension", "LodestonePos", "LodestoneTracked", "Charged", "ChargedProjectiles",
+            "Items", "DebugProperty", "BucketVariantTag", "Recipes", "effects", "instrument");
 
     public static ResourceLocation getResourceLocation(ItemLike item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem()));
@@ -83,8 +97,22 @@ public class ItemUtils {
 
         CompoundTag tag = from.getTag();
         if (tag != null) {
-            CompoundTag kept = tag.copy();
-            NOT_KEPT.forEach(kept::remove);
+            CompoundTag kept = new CompoundTag();
+            for (String key : tag.getAllKeys()) {
+                if (KEPT.contains(key) || !VANILLA.contains(key)) {
+                    kept.put(key, Objects.requireNonNull(tag.get(key)).copy());
+                }
+            }
+            CompoundTag display = tag.getCompound(ItemStack.TAG_DISPLAY);
+            CompoundTag keptDisplay = new CompoundTag();
+            for (String key : KEPT_DISPLAY) {
+                if (display.contains(key)) {
+                    keptDisplay.put(key, Objects.requireNonNull(display.get(key)).copy());
+                }
+            }
+            if (!keptDisplay.isEmpty()) {
+                kept.put(ItemStack.TAG_DISPLAY, keptDisplay);
+            }
             if (!kept.isEmpty()) {
                 to.getOrCreateTag().merge(kept);
             }
