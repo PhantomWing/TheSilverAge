@@ -300,13 +300,18 @@ public class ModBlocks {
         return registerSilverBlock(name, baseProps, WaterloggedTransparentBlock::new);
     }
 
+    // Each stage takes the light of copper's bulb of that stage: 15, 12, 8 and 4 when lit.
+    private static Block copperBulb(WeatheringCopper.WeatherState weatherState) {
+        return Blocks.COPPER_BULB.weathering().pick(weatherState);
+    }
+
     private static RegistrySupplier<Block> registerWeatheringSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB.weathering().unaffected())).sound(ModSoundTypes.SILVER_BULB);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(copperBulb(weatherState))).sound(ModSoundTypes.SILVER_BULB);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBulbBlock(weatherState, props));
     }
 
     private static RegistrySupplier<Block> registerSilverBulb(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BULB.weathering().unaffected())).sound(ModSoundTypes.SILVER_BULB);
+        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(copperBulb(weatherState))).sound(ModSoundTypes.SILVER_BULB);
         return registerSilverBlock(name, baseProps, SilverBulbBlock::new);
     }
 
