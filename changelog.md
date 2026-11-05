@@ -1,3 +1,9 @@
+# 1.4.1
+
+### Fixes
+- Fixed exposed, weathered and oxidized Silver Bulbs giving as much light as unaffected ones (including waxed variants)
+
+
 # 1.4.0
 ### Additions
 - Added Silver Bars (including oxidized and waxed variants)
