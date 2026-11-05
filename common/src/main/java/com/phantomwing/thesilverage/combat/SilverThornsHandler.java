@@ -1,6 +1,7 @@
 package com.phantomwing.thesilverage.combat;
 
 import com.phantomwing.thesilverage.advancement.ModCriteriaTriggers;
+import com.phantomwing.thesilverage.tags.CommonTags;
 import com.phantomwing.thesilverage.tags.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Silver armour burning the undead that strike its wearer, as Thorns burns any attacker: each piece worn adds
- * {@link #CHANCE_PER_PIECE}, so a full set burns four strikes in five, and Silver Horse Armor, all the silver a horse
- * wears, counts as a full set. A burn deals Thorns' damage at a smaller roll, with Smite's sparks and Thorns' sound, and
+ * {@link #CHANCE_PER_PIECE}, so a full set burns four strikes in five, and Silver Horse Armor and Silver Nautilus Armor,
+ * all the silver an animal wears, count as a full set. A burn deals Thorns' damage at a smaller roll, with Smite's sparks and Thorns' sound, and
  * knocks the attacker back as Thorns does. The chance is added up rather than rolled per piece, so a strike is burned
  * once at most.
  *
@@ -41,7 +42,12 @@ public final class SilverThornsHandler {
         if (!stack.is(ModTags.Items.SILVER_THORNS_ARMOR)) {
             return 0.0F;
         }
-        return settings.thornsChance() * (stack.getItem() instanceof AnimalArmorItem ? FULL_SET : 1);
+        return settings.thornsChance() * (isAnimalArmor(stack) ? FULL_SET : 1);
+    }
+
+    // Vanilla Backport's nautilus armour is an ArmorItem on 1.21.1, and a plain Item without it, so it is known by its tag.
+    private static boolean isAnimalArmor(ItemStack stack) {
+        return stack.getItem() instanceof AnimalArmorItem || stack.is(CommonTags.Items.ARMORS_NAUTILUS);
     }
 
     /** The chance from everything {@code wearer} wears: its armour slots and the body slot horse armour goes in. */

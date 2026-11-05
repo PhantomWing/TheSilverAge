@@ -2,7 +2,8 @@
 
 ### Fixes
 - Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
-- Fixed caves not carving through silver ore and Blocks of Raw Silver
+- Fixed exposed, weathered and oxidized Silver Bulbs giving as much light as unaffected ones (including waxed variants)
+- Fixed Silver Nautilus Armor counting as one piece of silver armor instead of a full set against undead mobs
 
 
 # 1.4.0
