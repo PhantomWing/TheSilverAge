@@ -43,13 +43,6 @@ public class SilverfishDropsModifier extends LootModifier {
             return generatedLoot;
         }
 
-        for (LootItemCondition condition: this.conditions) {
-            if (!condition.test(context))
-            {
-                return generatedLoot;
-            }
-        }
-
         // Delegate the count roll + add to the shared, loader-agnostic algorithm.
         SilverLootAlgorithms.applySilverfishDrops(generatedLoot, context, this.item, this.minAmount, this.maxAmount);
 
