@@ -49,13 +49,6 @@ public class SilverfishDropsModifier extends LootModifier {
             return generatedLoot;
         }
 
-        for (LootItemCondition condition: this.conditions) {
-            if (!condition.test(context))
-            {
-                return generatedLoot;
-            }
-        }
-
         SilverLootAlgorithms.applySilverfishDrops(generatedLoot, context, this.item, this.minAmount, this.maxAmount);
 
         return generatedLoot;
