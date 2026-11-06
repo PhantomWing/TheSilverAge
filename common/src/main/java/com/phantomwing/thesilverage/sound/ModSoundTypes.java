@@ -16,6 +16,10 @@ public class ModSoundTypes {
     public static final SoundType SILVER = ofCopy(SoundType.METAL, 1.0f, 0.9f);
     public static final SoundType SILVER_GRATE = ofCopy(SoundType.COPPER_GRATE, 1.0f, 0.8f);
     public static final SoundType SILVER_BULB = ofCopy(SoundType.COPPER_BULB, 1.0f, 0.8f);
+    // A thin part sounds as its vanilla counterpart does: chain, lantern and lightning rod (copper) sounds, not a block's
+    public static final SoundType SILVER_CHAIN = ofCopy(SoundType.CHAIN, 1.0f, 0.9f);
+    public static final SoundType SILVER_LANTERN = ofCopy(SoundType.LANTERN, 1.0f, 0.9f);
+    public static final SoundType SILVER_LIGHTNING_ROD = ofCopy(SoundType.COPPER, 1.0f, 0.8f);
 
     private static SoundType ofCopy(SoundType soundType, float volume, float pitch) {
         float baseVolume = soundType.getVolume();
