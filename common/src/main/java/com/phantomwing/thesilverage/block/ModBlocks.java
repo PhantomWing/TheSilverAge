@@ -391,42 +391,42 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<LanternBlock> registerWeatheringSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN), ModSoundTypes.SILVER_LANTERN);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLanternBlock(weatherState, props));
     }
 
     private static RegistrySupplier<LanternBlock> registerSilverLantern(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN), ModSoundTypes.SILVER_LANTERN);
         return registerSilverBlock(name, baseProps, LanternBlock::new);
     }
 
     private static RegistrySupplier<ChainBlock> registerWeatheringSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN), ModSoundTypes.SILVER_CHAIN);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverChainBlock(weatherState, props));
     }
 
     private static RegistrySupplier<ChainBlock> registerSilverChain(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN), ModSoundTypes.SILVER_CHAIN);
         return registerSilverBlock(name, baseProps, ChainBlock::new);
     }
 
     private static RegistrySupplier<LightningRodBlock> registerWeatheringSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD.weathering().unaffected()));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD.weathering().unaffected()), ModSoundTypes.SILVER_LIGHTNING_ROD);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverLightningRodBlock(weatherState, props));
     }
 
     private static RegistrySupplier<LightningRodBlock> registerSilverLightningRod(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD.weathering().unaffected()));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHTNING_ROD.weathering().unaffected()), ModSoundTypes.SILVER_LIGHTNING_ROD);
         return registerSilverBlock(name, baseProps, LightningRodBlock::new);
     }
 
     private static RegistrySupplier<IronBarsBlock> registerWeatheringSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS), ModSoundTypes.SILVER_BARS);
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverBarsBlock(weatherState, props));
     }
 
     private static RegistrySupplier<IronBarsBlock> registerSilverBars(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS));
+        BlockBehaviour.Properties baseProps = getSilverPartProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS), ModSoundTypes.SILVER_BARS);
         return registerSilverBlock(name, baseProps, IronBarsBlock::new);
     }
 
@@ -449,7 +449,15 @@ public class ModBlocks {
                 .sound(ModSoundTypes.SILVER)
                 .mapColor(MapColor.METAL)
                 .instrument(NoteBlockInstrument.BELL);
+        return withSilverMapColor(weatherState, props);
+    }
 
+    // A bar, chain, lantern or rod keeps its vanilla counterpart's hardness and note block sound, as copper's do
+    private static BlockBehaviour.Properties getSilverPartProps(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps, SoundType sound) {
+        return withSilverMapColor(weatherState, baseProps.requiresCorrectToolForDrops().sound(sound));
+    }
+
+    private static BlockBehaviour.Properties withSilverMapColor(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties props) {
         switch (weatherState) {
             case UNAFFECTED -> {
                 props = props.mapColor(MapColor.METAL);
