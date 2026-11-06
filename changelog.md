@@ -4,6 +4,10 @@
 - Fixed the Moon Phase Detector subtitle saying "Comparator clicks"
 - Fixed exposed, weathered and oxidized Silver Bulbs giving as much light as unaffected ones (including waxed variants)
 - Fixed Silver Nautilus Armor counting as one piece of silver armor instead of a full set against undead mobs
+- Fixed Silver Chains, Lanterns and Lightning Rods making the sounds of a block of silver
+
+### Changes
+- Silver Bars, Chains and Lanterns now take as long to break as iron ones
 
 
 # 1.4.0
