@@ -42,8 +42,8 @@ public class ModTrimMaterials {
         map.putAll(MINECRAFT_TRIM_MATERIALS);
     });
 
-    // On 1.20.1 a trim material's darker palettes are keyed by vanilla's armour materials alone, so silver armour
-    // can't take silver_darker as it does from 1.21: a silver trim on it draws in the plain silver palette.
+    // On 1.20.1 a trim material's darker palettes are keyed by vanilla's armour materials alone, so silver armour can't
+    // be named here: TrimPalettes gives silver trim on silver armour its silver_darker palette instead.
     public static void bootstrap(BootstapContext<TrimMaterial> context) {
         registerMaterial(context, SILVER,
                 ModItems.SILVER_INGOT.get(),

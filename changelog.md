@@ -78,6 +78,7 @@
 - Fixed chests sometimes keeping an iron or gold item where the item before it was swapped for a silver one
 - Fixed mobs losing their armor trims and names when their gear turns into silver gear
 - Fixed mobs getting another chance at silver gear each time they go through a portal
+- Fixed silver trims on worn silver armor using a lighter color than in the inventory
 - Fixed trims from other mods showing as silver on armor in the inventory
 - Fixed Create's Deployer not waxing or scraping, and its Spout not oxidizing, Silver Bricks, Silver Brick Slabs, Silver Brick Stairs and Silver Pillars
 - Fixed the mod's tags having no names in recipe viewers like JEI and EMI

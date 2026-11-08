@@ -32,11 +32,13 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimPatterns;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -258,11 +260,20 @@ public final class TestCompat {
     }
 
     /**
-     * The palette a trim of {@code material} draws with on worn {@code armor}, or null for its own. On 1.20.1 a trim
-     * material's palettes are keyed by vanilla's armour materials alone, so a mod's armour always takes its own.
+     * The palette a trim of {@code material} draws with on worn {@code armor}, or null for its own, read off the texture
+     * a trim of it draws with: the palettes a 1.20.1 trim material names are only ever vanilla armour's, and silver
+     * armour's comes from {@code ArmorTrimMixin}.
      */
     public static String trimPalette(ServerLevel level, ResourceKey<TrimMaterial> material, Item armor) {
-        return null;
+        if (!(armor instanceof ArmorItem armorItem)) {
+            return null;
+        }
+        var pattern = level.registryAccess().registryOrThrow(Registries.TRIM_PATTERN).getHolderOrThrow(TrimPatterns.COAST);
+        Holder<TrimMaterial> holder = level.registryAccess().registryOrThrow(Registries.TRIM_MATERIAL).getHolderOrThrow(material);
+        String path = new ArmorTrim(holder, pattern).innerTexture(armorItem.getMaterial()).getPath();
+        String prefix = "trims/models/armor/" + pattern.value().assetId().getPath() + "_leggings_";
+        String palette = path.startsWith(prefix) ? path.substring(prefix.length()) : path;
+        return palette.equals(holder.value().assetName()) ? null : palette;
     }
 
     /** The placed feature of that key. Registry lookups were renamed in 1.21.2. */
