@@ -104,9 +104,14 @@ on a rung where they have no build; that does not block the line.
   NeoForge's dev runs load Backported Spears 1.0.1 (`enable_backported_spears`), but for the game tests and datagen. Its
   Fabric jar is built with Loom 1.17, which this rung's Loom 1.14 refuses to remap, and asks for Fabric Loader 0.19.5, so
   Fabric compiles against a stub of its `Spears` (`fabric/src/main/java/com/notunanancyowen/spears`, left out of the jar
-  as the Farmer's Delight knife stub is) and its dev runs go without it. On Fabric the spear is only a spear where
-  Backported Spears registered its components first (`suggests` orders it); otherwise it falls back to a plain item and
-  logs a warning.
+  as the Farmer's Delight knife stub is: `WOODEN_SPEAR` and `registerSpearRaw`, as 1.0.1 declares them) and its dev
+  runs go without it, since the stub would shadow the real class. On Fabric Backported Spears registers the components
+  and sounds a spear is built of in its own initializer, and Fabric Loader starts the mods in no set order, `suggests`
+  or not, so `fabric/.../compat/spears/SilverSpear.register` registers the spear with the other items where Backported
+  Spears has started (its `WOODEN_SPEAR` is set), and otherwise from a `RegistryEntryAddedCallback` on the item
+  registry, with the next item after that is: built before them, it was a plain item (1.4.0). Both manifests ask for
+  Backported Spears 1.0.1 or newer (`breaks` `<1.0.1` on Fabric), the version the stub copies; 1.0.0 crashed opening
+  the inventory.
 - Yori3o's Grappling Hooks has no Silver Grappling Hook on this line: its 1.21.9-1.21.10 builds (3.8.0 NeoForge, 3.10.0
   Fabric) register five fixed hooks in code and read no `yo_hooks/hooks.json`, which its 1.21.1 and 26.x builds do.
 - Two config options pick the creative tabs, read from the player's own config: `enable_creative_tab` (the mod's tab,

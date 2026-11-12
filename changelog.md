@@ -3,6 +3,7 @@
 ### Fixes
 - Fixed exposed, weathered and oxidized Silver Bulbs giving as much light as unaffected ones (including waxed variants)
 - Fixed Silver Chains, Lanterns and Lightning Rods making the sounds of a block of silver
+- Fixed the Silver Spear sometimes being a plain item on Fabric with Backported Spears
 
 ### Changes
 - Silver Bars, Chains and Lanterns now take as long to break as iron ones

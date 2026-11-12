@@ -1,6 +1,5 @@
 package com.notunanancyowen.spears;
 
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
@@ -12,7 +11,7 @@ import net.minecraft.world.item.ToolMaterial;
  * binds at runtime.
  */
 public final class Spears {
-    public static DataComponentType<?> USE_EFFECTS;
+    public static Item WOODEN_SPEAR;
 
     private Spears() {
     }

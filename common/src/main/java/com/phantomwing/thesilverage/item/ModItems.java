@@ -60,8 +60,8 @@ public class ModItems {
     // the creative tab when FD is loaded — same pattern as the Create-gated sheet.
     public static final RegistrySupplier<Item> SILVER_KNIFE = registerKnife("silver_knife", ModTiers.SILVER, ModIds.FARMERS_DELIGHT);
     // 1.21.11's Silver Spear, made as Backported Spears makes a spear when it is installed.
-    public static final RegistrySupplier<Item> SILVER_SPEAR = registerWithModCompat("silver_spear",
-            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1).setId(itemKey("silver_spear"))), ModIds.BACKPORTED_SPEARS);
+    public static final RegistrySupplier<Item> SILVER_SPEAR = showWithModCompat(BackportPlatform.registerSilverSpear(ITEMS, "silver_spear",
+            () -> BackportPlatform.createSilverSpear(baseItem().stacksTo(1).setId(itemKey("silver_spear")))), ModIds.BACKPORTED_SPEARS);
     public static final RegistrySupplier<Item> SILVER_ARROW = register("silver_arrow", SilverArrowItem::new, baseItem());
 
     // Silver armor
@@ -365,7 +365,10 @@ public class ModItems {
 
     /** An item the creative tabs show only where one of {@code modIds} is loaded. */
     private static RegistrySupplier<Item> registerWithModCompat(String name, Supplier<Item> factory, String... modIds) {
-        RegistrySupplier<Item> item = ITEMS.register(name, factory);
+        return showWithModCompat(ITEMS.register(name, factory), modIds);
+    }
+
+    private static RegistrySupplier<Item> showWithModCompat(RegistrySupplier<Item> item, String... modIds) {
         if (Arrays.stream(modIds).anyMatch(CommonPlatform::isModLoaded)) {
             CREATIVE_TAB_ITEMS.add(item);
         }
