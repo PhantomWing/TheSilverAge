@@ -16,13 +16,20 @@ def datagenExisting = rootProject.file('common/src/main/resources/').absolutePat
 
 // The dev niceties are useless in the headless game-test run, and some crash it.
 def runningGameTest = gradle.startParameter.taskNames.any { it.toLowerCase().contains('gametest') }
+def runningDataGen = gradle.startParameter.taskNames.any { it.toLowerCase().contains('data') }
 
 // Which optional mods the dev runs load, one switch each (gradle.properties).
 //   ./gradlew :neoforge:runClient -Penable_jade=false
-// No Grappling Hooks here: its NeoForge build needs YACL, and YACL's 26.3 NeoForge build (3.9.7) asks for 26.2.
 def enabled = { String name -> (project.findProperty(name) ?: rootProject.property(name)).toString().toBoolean() }
 def loadJei = enabled('enable_jei')
 def loadJade = enabled('enable_jade')
+// Not in the portal's server scenarios, its server (an init script named *.server.gradle) or the client that joins it
+// (quick play into a server): Grappling Hooks' and YACL's deprecated `logoFile` make "Mods loaded with warnings", whose
+// screen holds the dev client before the title screen, so quick play never joins.
+def playingOnServer = gradle.startParameter.initScripts.any {
+    it.name.endsWith('.server.gradle') || (it.name.endsWith('.gradle') && it.isFile() && it.text.contains('--quickPlayMultiplayer'))
+}
+def loadHooks = !playingOnServer && enabled('enable_grappling_hooks')
 
 loom {
     accessWidenerPath = project(':common').loom.accessWidenerPath
@@ -130,6 +137,13 @@ dependencies {
     }
     if (loadJei && !runningGameTest) {
         localRuntime("mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}")
+    }
+
+    // Yori3o's Grappling Hooks, which reads the Silver Grappling Hook from yo_hooks/hooks.json, and YACL, which it
+    // needs. Never compiled against: the hook is data alone.
+    if (loadHooks && !runningGameTest && !runningDataGen) {
+        localRuntime("maven.modrinth:yori3os-grappling-hooks:${rootProject.grappling_hooks_neoforge_version}")
+        localRuntime("maven.modrinth:yacl:${rootProject.yacl_neoforge_version}")
     }
 }
 

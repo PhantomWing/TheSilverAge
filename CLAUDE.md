@@ -107,8 +107,9 @@ have no build; that does not block the line.
 - Villager trades are data from 26.1 (`ModVillagerTradeProvider`): the Cleric's level-2 Silver Ingot trade and the master Fletcher's level-5 Silver Arrows (2 Emeralds and 5 Arrows, as vanilla's tipped arrows, which ask for the emeralds first from 26.2) are `villager_trade` files added to vanilla's pool tags, gated by `enable_villager_trades` at load. `enable_silver_arrows` is read as the villager levels up, through the trade's merchant predicate, the loot condition `thesilverage:silver_arrows_enabled` (`villager/SilverArrowsEnabled`). `SilverVillagerTrades` and both loaders' `ModVillagerTrades` are vestigial.
 - No Create, Create: Aquatic Ambitions, EMI, Enhanced Celestials (1 or 2), Werewolves or NeoForge Farmer's Delight for 26.3 (checked 2026-11-01), so that part of 1.4's compat isn't on this line: no Create recipes, and `compat/LunarEvents` answers as for an ordinary night (the Moon Dial keeps its layered textures, and its moon takes the `thesilverage:lunar_event` tint source in its `items/` definition, `client/ModItemColors`). JEI (both loaders) shows `compat/SilverInfo`'s info pages through the common `compat/jei` plugin, compiled against `jei-26.3-common-api`; Fabric names it as a `jei_mod_plugin` entrypoint. The Werewolves entries in the tags stay, optional. `enable_create_spout_oxidation` is still in both configs and does nothing here.
 - Each optional mod the dev runs load has a switch of its own in `gradle.properties`, `enable_<mod>`: JEI (both loaders),
-  Jade (NeoForge), Farmer's Delight Refabricated (Fabric) and Yori3o's Grappling Hooks with its YACL (Fabric: YACL's 26.3 NeoForge build,
-  3.9.7, asks for 26.2, so NeoForge's dev runs can't have the hooks);
+  Jade (NeoForge), Farmer's Delight Refabricated (Fabric) and Yori3o's Grappling Hooks with its YACL (both loaders, but
+  NeoForge's server scenarios: Grappling Hooks' and YACL's deprecated `logoFile` make "Mods loaded with warnings", whose
+  screen holds a quick-play client before the title screen, so it never joins the server);
   `-Penable_grappling_hooks=false` and the like test without one. The game-test runs load none of them, so their servers
   are the check that the mod loads alone.
 - Farmer's Delight Refabricated (26.3-3.6.30, Fabric, from the Modrinth maven) is compiled against for the Silver Knife's
@@ -116,12 +117,17 @@ have no build; that does not block the line.
   since there is no NeoForge Farmer's Delight for 26.3. Fabric's dev runs load it, and the knife goes in its tab.
 - Yori3o's Grappling Hooks (5.4.0, both loaders) reads every `yo_hooks/hooks.json` on the classpath
   (`ClassLoader.getResources`; 1.21.1's NeoForge record has its hooks and ours), so the Silver Grappling Hook
-  (`yo_hooks:silver_grappling_hook`, range 14) is data only. It is Fabric's alone here, since YACL, which the hooks need,
-  has no NeoForge build for 26.3 (its 26.3 NeoForge file asks for 26.2): `fabric/src/main/resources` holds `hooks.json`,
-  the models, textures, names and tags under `yo_hooks`, and four hand-written recipes behind the mod-loaded condition
-  (the two crafting ones behind `enable_silver_gear` too). Its `items/` definitions name the hooks' own
-  `yo_hooks:hook_active` property, which fails to parse without the mod, so they are a built-in pack,
-  `resourcepacks/silver_grappling_hook`, that `TheSilverAgeFabricClient` turns on only where Grappling Hooks is loaded.
+  (`yo_hooks:silver_grappling_hook`, range 14) is data only, on both loaders: `common/src/main/resources` holds
+  `hooks.json`, the models, textures, names and tags under `yo_hooks`, and three hand-written recipes behind both
+  loaders' mod-loaded conditions (the crafting one behind `enable_silver_gear` too). YACL's 26.3 NeoForge build (3.9.7,
+  GL24RgOP), which the hooks need, writes `[26.2,26.3)` in its `neoforge.mods.toml`, but under the quoted key
+  `[["dependencies.yet_another_config_lib_v3"]]`, which TOML reads as one key with a dot in it rather than FML's
+  `dependencies.<modid>` table, so the range is never enforced and it loads on NeoForge 26.3.0.76 with Grappling Hooks
+  5.4.0 (YZqaRrf1). Its `items/` definitions name the hooks' own `yo_hooks:hook_active` property, which fails to parse
+  without the mod, so they are a built-in pack, `common/src/main/resources/resourcepacks/silver_grappling_hook`, which
+  both loaders' `processResources` copy in as they do the recipe overrides' packs, so the dev runs find it, provided only
+  where Grappling Hooks is loaded (`TheSilverAgeFabricClient`, NeoForge's `GrapplingHookPack`). `lint.js` fails Gate 1
+  on such a definition in the mod's own assets.
 - Sulfur Cubes swallow silver's blocks, ores, cut and chiseled silver and bulbs as copper's: `minecraft:sulfur_cube_archetype/slow_flat`.
   Better Combat (3.2.2 on 26.3) reads `data/thesilverage/weapon_attributes/silver_spear.json`, a `bettercombat:spear`.
 - Lightning rods: vanilla's `LightningBolt` powers any `LightningRodBlock` and scrapes the struck block itself when it is a `WeatheringCopper`, so a Silver Lightning Rod needs no mixin. The rods still need lightning's point of interest: NeoForge adds them through `ExtendPoiTypesEvent`, Fabric through `PoiTypesAccessor`. They are in `minecraft:lightning_rods` too, and the bars, chains and lanterns in `minecraft:bars`, `chains` and `lanterns`. Vanilla's chain is `minecraft:iron_chain`.

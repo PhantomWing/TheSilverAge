@@ -6,6 +6,7 @@
 
 ### Changes
 - Silver Bars, Chains and Lanterns now take as long to break as iron ones
+- The Silver Grappling Hook now works on NeoForge too, with Yori3o's Grappling Hooks
 
 
 # 1.4.0
