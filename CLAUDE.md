@@ -63,8 +63,9 @@ check.
   `entityInside`, and `SilverFloor` looks at the block a mob stands in for a plate. It is pressed by any living entity
   but a hostile one (`Enemy`) or one in `thesilverage:cannot_press_silver_pressure_plates`, which holds
   `sensitive_to_silver`.
-- **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain, lantern and pressure plate drop
-  to any pickaxe, as vanilla's iron ones and weighted plates do. Where a block has a vanilla counterpart, follow it.
+- **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain and pressure plate drop to any
+  pickaxe, as vanilla's iron ones and weighted plates do, and the lantern drops by hand, as vanilla's has from 1.21.4.
+  Where a block has a vanilla counterpart, follow it.
 - **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
   (`ContentSyncPayload`), so the creative tabs, the recipe viewers and honeycomb follow the server's; a dispenser's
   honeycomb is refused too (`SilverOxidation`).
