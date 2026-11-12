@@ -7,6 +7,7 @@ public final class ModIds {
     public static final String CREATE_AQUATIC_AMBITIONS = "create_aquatic_ambitions";
     /** Farmer's Delight — same mod id on NeoForge (vectorwing) and Fabric (Refabricated). */
     public static final String FARMERS_DELIGHT = "farmersdelight";
+    public static final String GRAPPLING_HOOKS = "yo_hooks";
     /** Adds lunar events (Blood Moon, Harvest Moon, ...) that the Moon Dial names. */
     public static final String ENHANCED_CELESTIALS = "enhancedcelestials";
     /**

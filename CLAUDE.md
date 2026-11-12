@@ -114,10 +114,13 @@ on a rung where they have no build; that does not block the line.
   NeoForge's `insertAfter` throws on an anchor the tab doesn't list, and Fabric's side throws too (its own would append
   the stack at the end), so `VanillaTabs` tries a list of anchors.
 - Yori3o's Grappling Hooks reads every jar's `yo_hooks/hooks.json`, so the Silver Grappling Hook is data alone, in
-  `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability), its `yo_hooks` models with 26.1's
-  `items/` definitions (the `yo_hooks:hook_active` condition picks the handle, as its own hooks do), textures, names and
-  tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
-  `enable_silver_gear`. 5.4.0 for 26.1 runs in both loaders' dev runs with YACL 3.9.7, whose bundled libraries NeoForge's
+  `common/src/main/resources`: the hook (62 durability, 14 long, 10 enchantability), its `yo_hooks` models and `items/`
+  definitions, textures, names and tags, and its recipes, hand-written in `data/thesilverage/recipe` behind both loaders' mod-loaded conditions and
+  `enable_silver_gear`. The hook's own `items/` definition picks the mod's handle model on its `yo_hooks:hook_active`
+  condition, which fails to parse, with an error on every resource load, wherever Grappling Hooks isn't installed, so it
+  is in the built-in pack `resourcepacks/silver_grappling_hook`, provided only with the mod (NeoForge's
+  `GrapplingHookPack`, Fabric's client entrypoint); both loaders' `processResources` copy common's packs in, so the dev
+  runs find it. `lint.js` fails Gate 1 on such a definition in the mod's own assets. 5.4.0 for 26.1 runs in both loaders' dev runs with YACL 3.9.7, whose bundled libraries NeoForge's
   dev run gets through `forgeRuntimeLibrary` (Quilt's maven); its Fabric build needs Fabric Loader 0.19, which this line has. YACL's `ContainerEventHandlerMixin` stops the Fabric client in `main` with the MixinExtras 0.5.4 Fabric Loader 0.19.3 brings ("ArrayList cannot be cast to AnnotationNode" in `FactoryRedirectWrapperMixinTransformer`), so the Fabric dev runs add MixinExtras 0.5.5 beside it, which the loader takes as the newest.
 - `weapon_attributes/silver_spear.json` gives the Silver Spear Better Combat's spear swings (`bettercombat:spear`),
   which Better Combat 3.2.2 for 26.1 would also pick by name through its fallback; vanilla's spears have none of their own.
