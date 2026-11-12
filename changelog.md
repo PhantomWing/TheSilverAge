@@ -4,6 +4,7 @@
 - Fixed exposed, weathered and oxidized Silver Bulbs giving as much light as unaffected ones (including waxed variants)
 - Fixed Silver Chains, Lanterns and Lightning Rods making the sounds of a block of silver
 - Fixed an error in the log on every resource reload about the Silver Grappling Hook's model when Yori3o's Grappling Hooks isn't installed
+- Fixed Silver Lanterns dropping nothing when broken without a pickaxe
 
 ### Changes
 - Silver Bars, Chains and Lanterns now take as long to break as iron ones
