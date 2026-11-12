@@ -368,12 +368,12 @@ public class ModBlocks {
     }
 
     private static RegistrySupplier<DoorBlock> registerWeatheringSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+        BlockBehaviour.Properties baseProps = getSilverPropsKeepingTool(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
         return registerSilverBlock(name, baseProps, (props) -> new WeatheringSilverDoorBlock(ModBlockSetTypes.SILVER, weatherState, props));
     }
 
     private static RegistrySupplier<DoorBlock> registerSilverDoor(String name, WeatheringCopper.WeatherState weatherState) {
-        BlockBehaviour.Properties baseProps = getSilverProps(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+        BlockBehaviour.Properties baseProps = getSilverPropsKeepingTool(weatherState, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
         return registerSilverBlock(name, baseProps, (props) -> new DoorBlock(ModBlockSetTypes.SILVER, props));
     }
 
@@ -443,9 +443,13 @@ public class ModBlocks {
     }
 
     private static BlockBehaviour.Properties getSilverProps(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps) {
+        return getSilverPropsKeepingTool(weatherState, baseProps).requiresCorrectToolForDrops();
+    }
+
+    // A door keeps the tool of vanilla's it copies, as copper's does: from 1.21.4 it drops by hand
+    private static BlockBehaviour.Properties getSilverPropsKeepingTool(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps) {
         BlockBehaviour.Properties props = baseProps
                 .strength(3.0F, 6.0F)
-                .requiresCorrectToolForDrops()
                 .sound(ModSoundTypes.SILVER)
                 .mapColor(MapColor.METAL)
                 .instrument(NoteBlockInstrument.BELL);
