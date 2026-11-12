@@ -458,9 +458,9 @@ public class ModBlocks {
         return withSilverMapColor(weatherState, props);
     }
 
-    // A bar, chain, lantern or rod keeps its vanilla counterpart's hardness and note block sound, as copper's do
+    // A bar, chain, lantern or rod keeps its vanilla counterpart's hardness, note block sound and tool, as copper's do
     private static BlockBehaviour.Properties getSilverPartProps(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties baseProps, SoundType sound) {
-        return withSilverMapColor(weatherState, baseProps.requiresCorrectToolForDrops().sound(sound));
+        return withSilverMapColor(weatherState, baseProps.sound(sound));
     }
 
     private static BlockBehaviour.Properties withSilverMapColor(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties props) {
