@@ -47,8 +47,11 @@
     "enhancedcelestials2core": ">=1.0",
     "jei": "*",
     "emi": "*",
-    "spears": "*",
+    "spears": ">=1.8.0",
     "vanillabackport": "*",
     "yo_hooks": "*"
+  },
+  "breaks": {
+    "spears": "<1.8.0"
   }
 }

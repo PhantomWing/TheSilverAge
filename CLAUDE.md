@@ -101,8 +101,13 @@ on a rung where they have no build; that does not block the line.
     Without them each is a plain item. The two mods register the same spear components and crash a client holding a
     spear when both are installed, so NeoForge's game runs take Backported Spears and its datagen Vanilla Backport
     (whose Copper Nautilus Armor the nautilus loot modifiers name), and Fabric's runs Vanilla Backport alone.
-  - On Fabric, Backported Spears registers its components in its own initializer, so the spear is only a spear
-    where it ran first (`suggests` orders it); otherwise it falls back to a plain item and logs a warning.
+  - On Fabric Backported Spears registers the components and sounds a spear is built of in its own initializer, and
+    Fabric Loader starts the mods in no set order, `suggests` or not, so `fabric/.../compat/spears/SilverSpear.register`
+    registers the spear with the other items where Backported Spears has started (its `WOODEN_SPEAR` is set), and
+    otherwise from a `RegistryEntryAddedCallback` on the item registry, with the next item after that is: built before
+    them, it was a plain item (1.4.0). The Lead Age's 1.21.1 line, which does the same, was played with Backported
+    Spears 1.8.0 started last and first, and kept its spear both ways. Both manifests ask for 1.8.0 or newer (`breaks`
+    `<1.8.0` on Fabric), the version it is built and checked against.
   - Without Backported Spears, Vanilla Backport makes the spear: its `SpearItem` takes the same numbers in the same
     order. It draws only its own seven spears held as spears, so the Silver Spear's held model is registered with its
     Platform library's `GameRendering.registerHandHeldModels` in each loader's client setup, after the items exist.
