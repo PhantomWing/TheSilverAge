@@ -45,9 +45,10 @@ side = "BOTH"
 
 # Optional: after Backported Spears, so the Silver Spear goes in the Combat tab after its Golden Spear, which it adds
 # in the same creative tab event (VanillaTabs).
+# Backported Spears from 1.0.5, the version the Silver Spear is built and checked against.
 [[dependencies.${mod_id}]]
 modId = "spears"
 type = "optional"
-versionRange = "[0,)"
+versionRange = "[1.0.5,)"
 ordering = "AFTER"
 side = "BOTH"

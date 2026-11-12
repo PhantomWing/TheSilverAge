@@ -1,7 +1,11 @@
 package com.phantomwing.thesilverage.platform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.world.item.Item;
+
+import java.util.function.Supplier;
 
 /**
  * {@code @ExpectPlatform} bridge that builds the item 1.21.11 added which a mod backports to this version: the Silver
@@ -13,6 +17,15 @@ import net.minecraft.world.item.Item;
  */
 public final class BackportPlatform {
     private BackportPlatform() {
+    }
+
+    /**
+     * Registers the spear {@code spear} makes, in {@code items}; on Fabric with Backported Spears, not before that has
+     * made its own spears, which a spear is built from.
+     */
+    @ExpectPlatform
+    public static RegistrySupplier<Item> registerSilverSpear(DeferredRegister<Item> items, String name, Supplier<Item> spear) {
+        throw new AssertionError();
     }
 
     /** {@code fallback} carries the item's id, which Backported Spears sets on its own properties from it too. */

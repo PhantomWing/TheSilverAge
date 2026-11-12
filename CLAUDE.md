@@ -110,9 +110,13 @@ on a rung where they have no build; that does not block the line.
   end, so its side throws too, and inserts in a phase after the default one.
 - The Silver Spear is always registered, so a world keeps it, and only shown in the creative tabs with Backported Spears
   (`spears`, `ModItems`, `BackportPlatform`), which makes it with its `Spears.registerSpearRaw(id, ModTiers.SILVER, ...)`
-  and 1.21.11's numbers; without it the spear is a plain item. On Fabric Backported Spears registers its components in
-  its own initializer, so the spear is only a spear where it ran first (`suggests`); otherwise it falls back to a plain
-  item and logs a warning. Its `items/` definition draws it flat in the GUI, on the ground and in a frame, and its
+  and 1.21.11's numbers; without it the spear is a plain item. On Fabric Backported Spears registers the components and
+  sounds a spear is built of in its own initializer, and Fabric Loader starts the mods in no set order, `suggests` or
+  not, so `fabric/.../compat/spears/SilverSpear.register` registers the spear with the other items where Backported
+  Spears has started (its `WOODEN_SPEAR` is set), and otherwise from a `RegistryEntryAddedCallback` on the item
+  registry, with the next item after that is: built before them, it was a plain item (1.4.0). The Lead Age's 1.21.8
+  line, which does the same, was played with Backported Spears 1.0.5 started last and kept its spear. Both manifests ask
+  for 1.0.5 or newer (`breaks` `<1.0.5` on Fabric), the version it is built and checked against. Its `items/` definition draws it flat in the GUI, on the ground and in a frame, and its
   `_in_hand` model held (`spear_in_hand`, copied into this namespace), as Backported Spears' own spears are. Its recipe and
   smelting load with the mod; it is in `minecraft:spears` (Lunge and the melee enchantments, through Backported Spears'
   enchantable tags) and `silver_smite_tools`. `weapon_attributes/silver_spear.json` gives it Better Combat's spear
