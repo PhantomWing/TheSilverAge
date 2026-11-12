@@ -64,8 +64,8 @@ check.
   but a hostile one (`Enemy`) or one in `thesilverage:cannot_press_silver_pressure_plates`, which holds
   `sensitive_to_silver`.
 - **Tool tiers** - silver's blocks need an iron pickaxe, as gold's do; the bars, chain and pressure plate drop to any
-  pickaxe, as vanilla's iron ones and weighted plates do, and the lantern drops by hand, as vanilla's has from 1.21.4.
-  Where a block has a vanilla counterpart, follow it.
+  pickaxe, as vanilla's iron ones and weighted plates do, and the lantern and doors drop by hand, as vanilla's have
+  from 1.21.4. Where a block has a vanilla counterpart, follow it.
 - **`enable_silver_oxidation`, `enable_silver_arrows` and `enable_silver_gear`** are sent to clients
   (`ContentSyncPayload`), so the creative tabs, JEI's info pages (the arrows') and honeycomb follow the server's; a dispenser's
   honeycomb is refused too (`SilverOxidation`).
